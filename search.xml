@@ -152,9 +152,9 @@ T = \{(x_1, y_1), (x_2, y_2), ..., (x_N, y_N)\}</script></li>
 <h3 id="1-3-统计学习三要素"><a href="#1-3-统计学习三要素" class="headerlink" title="1.3 统计学习三要素"></a>1.3 统计学习三要素</h3><script type="math/tex; mode=display">
 方法 = 模型+策略+算法</script><h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><p>X和Y是定义在输入空间与输出空间上的变量，F通常是由一个参数向量决定的函数组，此时为非概率模型。</p>
 <script type="math/tex; mode=display">
-{\cal F} = \{f|Y = f_\theta(X), \theta\in \bold R^n\}</script><p>假设空间也可以定义为条件概率的集合，此时表示的模型为概率模型。</p>
+{\cal F} = \{f|Y = f_\theta(X), \theta\in R^n\}</script><p>假设空间也可以定义为条件概率的集合，此时表示的模型为概率模型。</p>
 <script type="math/tex; mode=display">
-{\cal F} = \{P|P_\theta(Y|X), \theta\in \bold R^n\}</script><h3 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h3><h4 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h4><p>损失函数（loss function）或代价函数（cost function），度量预测错误的程度，是f(X)和Y的非负实值函数，记作L(Y, f(X))。</p>
+{\cal F} = \{P|P_\theta(Y|X), \theta\in R^n\}</script><h3 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h3><h4 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h4><p>损失函数（loss function）或代价函数（cost function），度量预测错误的程度，是f(X)和Y的非负实值函数，记作L(Y, f(X))。</p>
 <p>常用的损失函数：</p>
 <script type="math/tex; mode=display">
 \begin{array} \\
@@ -187,9 +187,11 @@ R_{emp}(f) = \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i))</script><p>测试误差是�
 R_{test}(f) = \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i))</script><h2 id="1-5-正则化与交叉验证"><a href="#1-5-正则化与交叉验证" class="headerlink" title="1.5 正则化与交叉验证"></a>1.5 正则化与交叉验证</h2><h3 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h3><p>正则化是结构风险最小化策略的实现，在经验风险上加一个正则化项或罚项。</p>
 <p>正则化项一般是模型复杂度的单调递增函数，模型越复杂，正则化值越大。</p>
 <script type="math/tex; mode=display">
-\min _{f\in {\cal F}} \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i)) + \lambda J(f)， \lambda \geq 0 \\
-L1: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \frac \lambda 2 \|w\|^2 \\
-L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \|w\|</script><blockquote>
+\min _{f\in {\cal F}} \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i)) + \lambda J(f)， \lambda \geq 0</script><script type="math/tex; mode=display">
+\begin{array}
+L1: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \frac \lambda 2 \Vert w\Vert ^2 \\
+L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert
+\end{array}</script><blockquote>
 <p>奥卡姆剃刀：在所有可能选择的模型中，能够很好解释已知数据并十分简单才是最好的模型。</p>
 </blockquote>
 <h3 id="交叉验证"><a href="#交叉验证" class="headerlink" title="交叉验证"></a>交叉验证</h3><ul>
