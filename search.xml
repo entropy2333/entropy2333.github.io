@@ -188,10 +188,8 @@ R_{test}(f) = \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i))</script><h2 id="1-5-正则
 <p>正则化项一般是模型复杂度的单调递增函数，模型越复杂，正则化值越大。</p>
 <script type="math/tex; mode=display">
 \min _{f\in {\cal F}} \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i)) + \lambda J(f)， \lambda \geq 0</script><script type="math/tex; mode=display">
-\begin{array}
 L1: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \frac \lambda 2 \Vert w\Vert ^2 \\
-L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert
-\end{array}</script><blockquote>
+L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert</script><blockquote>
 <p>奥卡姆剃刀：在所有可能选择的模型中，能够很好解释已知数据并十分简单才是最好的模型。</p>
 </blockquote>
 <h3 id="交叉验证"><a href="#交叉验证" class="headerlink" title="交叉验证"></a>交叉验证</h3><ul>
@@ -210,6 +208,85 @@ L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert
 <h2 id="1-6-泛化能力"><a href="#1-6-泛化能力" class="headerlink" title="1.6 泛化能力"></a>1.6 泛化能力</h2><p>泛化能力，是指该方法学习到的模型对未知数据的预测能力。</p>
 <script type="math/tex; mode=display">
 泛化误差 \ \ R_{exp}(\hat f) = E_P[L(Y, \hat f(X))] = \int _{x\times y} L(y, \hat f(x))P(x,y)dxdy</script><h2 id="1-7-生成模型与判别模型"><a href="#1-7-生成模型与判别模型" class="headerlink" title="1.7 生成模型与判别模型"></a>1.7 生成模型与判别模型</h2><h2 id="1-8-分类问题"><a href="#1-8-分类问题" class="headerlink" title="1.8 分类问题"></a>1.8 分类问题</h2><h2 id="1-9-标注问题"><a href="#1-9-标注问题" class="headerlink" title="1.9 标注问题"></a>1.9 标注问题</h2><h2 id="1-10-回归问题"><a href="#1-10-回归问题" class="headerlink" title="1.10 回归问题"></a>1.10 回归问题</h2>]]></content>
+      <tags>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>统计学习方法（二） 感知机</title>
+    <url>/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/</url>
+    <content><![CDATA[<p>感知机，是二分类的线性分类模型。输入为实例的特征向量，输出为±1。感知机学习属于判别模型，旨在求出将训练数据进行线性划分的分离超平面，是神经网络与SVM的基础</p>
+<a id="more"></a>
+<h2 id="2-1-感知机模型"><a href="#2-1-感知机模型" class="headerlink" title="2.1 感知机模型"></a>2.1 感知机模型</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><script type="math/tex; mode=display">
+f(x) = sign(w·x + b) \\
+{\cal X} \subset R^n, {\cal Y} = \{-1, +1\}</script><p>其中w和b为感知机模型参数，w称为权值（向量），b称为偏置（bias）。</p>
+<script type="math/tex; mode=display">
+sign(x) = \begin{cases} +1, x\geq 0 \\ -1, x < 0\end{cases}</script><h3 id="几何解释"><a href="#几何解释" class="headerlink" title="几何解释"></a>几何解释</h3><p>线性方程</p>
+<script type="math/tex; mode=display">
+w·x + b = 0</script><p>对应于特征空间中的一个超平面S，w表示超平面的法向量，b为超平面的截距。</p>
+<p><img src="D:\blog\source\_posts\统计学习方法（二）感知机\perc1.png" alt=""></p>
+<h2 id="2-2-感知机学习策略"><a href="#2-2-感知机学习策略" class="headerlink" title="2.2 感知机学习策略"></a>2.2 感知机学习策略</h2><h3 id="数据集的线性可分性"><a href="#数据集的线性可分性" class="headerlink" title="数据集的线性可分性"></a>数据集的线性可分性</h3><p>给定一个数据及，如果存在超平面S，能够将数据集的正实例点和负实例点完全正确划分，则称数据及为线性可分数据集。</p>
+<h4 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h4><p>损失函数的一个自然选择是误分类点的总数，但这样不是参数的连续可导函数，不易优化。</p>
+<p>感知机选择的损失函数是误分类点到超平面S的总距离，输入空间任一点到超平面S的距离为</p>
+<script type="math/tex; mode=display">
+\frac 1 {\|w\|} |w·x_0+b|,其中\|w\|为w的L_2范数</script><p>对于误分类的数据来说，始终有</p>
+<script type="math/tex; mode=display">
+-y_i(w·x_i+b) > 0</script><p>所以距离为</p>
+<script type="math/tex; mode=display">
+- \frac 1 {\|w\|}y_i(w·x_i+b)</script><p>假设误分类点集合为M，求和即得</p>
+<script type="math/tex; mode=display">
+- \frac 1 {\|w\|}\sum _{x_i\in M}y_i(w·x_i+b)</script><p>不考虑系数，损失函数即为</p>
+<script type="math/tex; mode=display">
+L(w, b) = - \sum _{x_i\in M}y_i(w·x_i+b)</script><p>误分类点越少，损失函数值越小，如果没有误分类点，损失函数值为0。</p>
+<h2 id="2-3-感知机学习算法"><a href="#2-3-感知机学习算法" class="headerlink" title="2.3 感知机学习算法"></a>2.3 感知机学习算法</h2><h3 id="形式化"><a href="#形式化" class="headerlink" title="形式化"></a>形式化</h3><p>给定训练集</p>
+<script type="math/tex; mode=display">
+T = \{(x_1, y_1), (x_2, y_2), ... , (x_N, y_N)\} \\
+x_i\in {\cal X} = R^n, y_i \in {\cal Y} = \{-1, +1\}</script><p>求参数w和b，使得损失函数极小化</p>
+<script type="math/tex; mode=display">
+\min_{w,b} L(w,b) = - \sum _{x_i\in M}y_i(w·x_i+b)</script><p>学习算法是误分类驱动的，具体采用随机梯度下降法，首先任意选取一个超平面，之后用梯度下降法不断极小化目标函数。</p>
+<p>损失函数的梯度为</p>
+<script type="math/tex; mode=display">
+\nabla_w L(w,b) = -\sum _{x_i\in M} y_ix_i \\
+\nabla_b L(w,b) = -\sum _{x_i\in M} y_i</script><p>随机选取一个误分类点，对参数进行更新</p>
+<script type="math/tex; mode=display">
+w \leftarrow w + \eta y_ix_i \\
+b \leftarrow b + \eta y_i \\
+\eta \in (0, 1]</script><h3 id="原始形式"><a href="#原始形式" class="headerlink" title="原始形式"></a>原始形式</h3><ol>
+<li><p>选取参数初值$w_0,b_0$</p>
+</li>
+<li><p>在训练集中选取数据$(x_i, y_i)$</p>
+</li>
+<li><p>如果$y_i(wx_i+b)\leq 0$，则更新参数</p>
+<script type="math/tex; mode=display">
+w \leftarrow w + \eta y_ix_i \\
+b \leftarrow b + \eta y_i</script></li>
+<li><p>转至2直至没有误分类点</p>
+</li>
+</ol>
+<h3 id="收敛性"><a href="#收敛性" class="headerlink" title="收敛性"></a>收敛性</h3><p>(<strong>Novikoff</strong>) 存在满足条件的超平面，且感知机算法的误分类次数k满足不等式</p>
+<script type="math/tex; mode=display">
+k \leq (\frac R \gamma)^2</script><h3 id="对偶形式"><a href="#对偶形式" class="headerlink" title="对偶形式"></a>对偶形式</h3><p>基本想法是，将w和b表示为实例x与标记y的线性组合，通过求解系数求得w和b。</p>
+<p>最后学习到的w和b可表示为</p>
+<script type="math/tex; mode=display">
+w = \sum _{i=1} ^N \alpha_iy_ix_i \\
+b = \sum _{i=1} ^N \alpha_iy_i</script><p>训练过程</p>
+<ol>
+<li><p>选取α和b为0,</p>
+</li>
+<li><p>在训练集中选取数据</p>
+</li>
+<li><p>若$y_i(\sum _{j=1} ^N \alpha_jy_jx_j\cdot x_i+b)\leq 0$，则更新参数</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+\alpha_i \leftarrow \alpha_i + \eta \\
+b \leftarrow b + \eta y_i</script><ol>
+<li>转至2直至没有误分类数据</li>
+</ol>
+<blockquote>
+<p>Gram矩阵？</p>
+</blockquote>
+]]></content>
       <tags>
         <tag>机器学习</tag>
       </tags>
