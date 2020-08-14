@@ -106,7 +106,7 @@
 ]]></content>
   </entry>
   <entry>
-    <title>《统计学习方法》（一） 概论</title>
+    <title>统计学习方法（一） 概论</title>
     <url>/2020/08/11/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%20%E6%A6%82%E8%AE%BA/</url>
     <content><![CDATA[<p>开始学习李航老师的《统计学习方法》。</p>
 <a id="more"></a>
@@ -280,7 +280,7 @@ P(Y\neq f(X)) = 1- P(Y=f(X)) \\
       </tags>
   </entry>
   <entry>
-    <title>《统计学习方法》（二） 感知机</title>
+    <title>统计学习方法（二） 感知机</title>
     <url>/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/</url>
     <content><![CDATA[<p>感知机，是二分类的线性分类模型。输入为实例的特征向量，输出为±1。感知机学习属于判别模型，旨在求出将训练数据进行线性划分的分离超平面，是神经网络与SVM的基础</p>
 <a id="more"></a>
@@ -360,6 +360,82 @@ b \leftarrow b + \eta y_i</script><ol>
       <tags>
         <tag>机器学习</tag>
         <tag>感知机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>统计学习方法（四）朴素贝叶斯法</title>
+    <url>/2020/08/14/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%9B%9B%EF%BC%89%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B3%95/</url>
+    <content><![CDATA[<p>朴素贝叶斯法基于贝叶斯定理，对于训练集，首先根据特征条件假设联合概率分布，基于此，对给定的输入，利用贝叶斯定理求出后验概率最大的输出。</p>
+<a id="more"></a>
+<h2 id="4-1-朴素贝叶斯法的学习与分类"><a href="#4-1-朴素贝叶斯法的学习与分类" class="headerlink" title="4.1 朴素贝叶斯法的学习与分类"></a>4.1 朴素贝叶斯法的学习与分类</h2><h3 id="基本方法"><a href="#基本方法" class="headerlink" title="基本方法"></a>基本方法</h3><p>先验概率分布</p>
+<script type="math/tex; mode=display">
+P(Y=c_k), \quad k=1,2,...K \tag{4.1}</script><p>条件概率分布</p>
+<script type="math/tex; mode=display">
+P(X=x|Y=c_k) = P(X^{(1)}=x^{(1)},...,X^{(n)}=x^{(n)}|Y=c_k) \tag{4.2}</script><p>条件独立性假设</p>
+<script type="math/tex; mode=display">
+\begin{align}
+P(X=x|Y=c_k) &= P(X^{(1)}x^{(1)},...,X^{(n)}=x^{(n)}|Y=c_k) \\
+&= \prod _{j=1}^nP(X^{(j)}=x^{(j)}|Y=c_k) \\
+\end{align}
+\tag{4.3}</script><p>后验概率计算</p>
+<script type="math/tex; mode=display">
+P(Y=c_k|X=x)=\frac {P(X=x|Y=c_k)P(Y=c_k)} {P(X=x)}= \frac {P(X=x|Y=c_k)P(Y=c_k)} {\sum_j P(X=x|Y=c_j)P(Y=c_j)} \tag{4.4}</script><p>代入(4.3)即得</p>
+<script type="math/tex; mode=display">
+\begin{align}
+P(Y=c_k|X=x)= \frac {P(Y=c_k)\prod_{j=1}^nP(X^{(j)}=x^{(j)}|Y=c_k)} {\sum_j P(Y=c_j)\prod _{i=1}^nP(X^{(i)}=x^{(i)}|Y=c_j)} \tag{4.5}</script><p>所以朴素贝叶斯分类器可表示为</p>
+<script type="math/tex; mode=display">
+\begin{align}
+y=f(x)&= \arg\max_{c_k}\frac {P(Y=c_k)\prod _{j=1}^nP(X^{(j)}=x^{(j)}|Y=c_k)} {\sum_j P(Y=c_j)\prod _{i=1}^nP(X^{(i)}=x^{(i)}|Y=c_j)} \\ 
+&=\arg\max_{c_k}P(Y=c_k)\prod _{j=1}^nP(X^{(j)}=x^{(j)}|Y=c_k)
+\end{align}
+\tag{4.6}</script><h3 id="后验概率最大化"><a href="#后验概率最大化" class="headerlink" title="后验概率最大化"></a>后验概率最大化</h3><p>假设选择0-1损失函数，这时期望风险函数为</p>
+<script type="math/tex; mode=display">
+\begin{align}
+R_{exp}(f) &= E[L(Y,f(X))]\\
+&= E_X\sum_{k=1}^K[L(c_k,f(X))]P(c_k|X)
+\end{align}</script><p>为最小化期望风险，只需对X=x逐个极小化</p>
+<script type="math/tex; mode=display">
+\begin{align}
+f(x) &= \arg\min_{y\in \cal Y}\sum_{k=1}^KL(c_k,y)P(c_k|X=x) \\
+&= \arg\min_{y\in \cal Y}\sum_{k=1}^KP(y\neq c_k|X=x) \\
+&= \arg\min_{y\in \cal Y}\sum_{k=1}^K(1-P(y= c_k|X=x)) \\
+&= \arg\max_{y\in \cal Y}\sum_{k=1}^KP(y= c_k|X=x)
+\end{align}</script><h2 id="4-2-朴素贝叶斯法的参数估计"><a href="#4-2-朴素贝叶斯法的参数估计" class="headerlink" title="4.2 朴素贝叶斯法的参数估计"></a>4.2 朴素贝叶斯法的参数估计</h2><h3 id="极大似然估计"><a href="#极大似然估计" class="headerlink" title="极大似然估计"></a>极大似然估计</h3><p>先验概率的极大似然估计是</p>
+<script type="math/tex; mode=display">
+P(Y=c_k) = \frac{\sum_{i=1}^NI(y_i=c_k)}{N},\quad k=1,2,..,K \tag{4.7}</script><p>条件概率的极大似然估计是</p>
+<script type="math/tex; mode=display">
+P(X^{(j)}=a_{ji}|Y=c_k) = \frac{\sum_{i=1}^NI(x_i^{(j)}=a_{ji},y_i=c_k)}{\sum_{i=1}^NI(y_i=c_k)},\quad k=1,2,..,K \tag{4.8}</script><h3 id="朴素贝叶斯算法"><a href="#朴素贝叶斯算法" class="headerlink" title="朴素贝叶斯算法"></a>朴素贝叶斯算法</h3><ol>
+<li><p>计算先验概率及条件概率</p>
+<script type="math/tex; mode=display">
+\begin{align}
+&P(Y=c_k) = \frac{\sum_{i=1}^NI(y_i=c_k)}{N},\quad k=1,2,..,K \\
+&P(X^{(j)}=a_{ji}|Y=c_k) = \frac{\sum_{i=1}^NI(x_i^{(j)}=a_{ji},y_i=c_k)}{\sum_{i=1}^NI(y_i=c_k)},\quad k=1,2,..,K \\
+&j=1,2,...,n;\quad k=1,2,...,K
+\end{align}</script></li>
+<li><p>对于给定实例，计算</p>
+<script type="math/tex; mode=display">
+P(Y=c_k)\prod _{j=1}^nP(X^{(j)}=x^{(j)}|Y=c_k)</script></li>
+<li><p>确定实例x的类</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+y=\arg\max_{c_k}P(Y=c_k)\prod _{j=1}^nP(X^{(j)}=x^{(j)}|Y=c_k)</script><h3 id="贝叶斯估计"><a href="#贝叶斯估计" class="headerlink" title="贝叶斯估计"></a>贝叶斯估计</h3><p>极大似然估计可能会出现所要估计的概率值为0的情况，这时会影响后验概率的计算结果，使分类产生偏差。</p>
+<p>条件概率的贝叶斯估计是</p>
+<script type="math/tex; mode=display">
+P_\lambda(X^{(j)}=a_{ji}|Y=c_k) = \frac {\sum_{i=1}^NI(x_i^{(j)}=a_{ji},y_i=c_k)+\lambda}{\sum_{i=1}^NI(y_i=c_k)+S_j\lambda}, \quad \lambda\geq0 \tag{4.9}</script><p>等价于在随机变量每个取值的频数上赋予一个正数，λ=0时即为极大似然估计，常取λ=1，称为拉普拉斯平滑。</p>
+<p>显然有</p>
+<script type="math/tex; mode=display">
+P_\lambda(X^{(j)}=a_{ji}|Y=c_k) > 0 \\
+\sum_{l=1}^{S_j}P(X^{(j)}=a_{ji}|Y=c_k) = 1</script><p>先验概率的贝叶斯估计是</p>
+<script type="math/tex; mode=display">
+P_\lambda(Y=c_k) = \frac {\sum_{i=1}^NI(y_i=c_k)+\lambda}{N+K\lambda}, \quad \lambda\geq0 \tag{4.10}</script><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>有点没怎么看懂，改天再复习一下。</p>
+]]></content>
+      <categories>
+        <category>统计学习方法</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>贝叶斯</tag>
       </tags>
   </entry>
 </search>
