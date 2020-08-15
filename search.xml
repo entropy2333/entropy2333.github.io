@@ -447,10 +447,10 @@ L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert</script
 <h2 id="5-1-决策树模型与学习"><a href="#5-1-决策树模型与学习" class="headerlink" title="5.1 决策树模型与学习"></a>5.1 决策树模型与学习</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>决策树是一种描述对实例进行分类的树形结构，由节点和有向边组成。</p>
 <p>节点有两种类型：内部节点和叶子节点，内部节点表示特征或属性，叶子结点表示一个类。</p>
 <p>决策树分类时，从根节点开始，对实例的某一特征进行测试，根据测试结果将其分配到子节点。如此递归，直至到达叶节点，最后分到叶节点的类中。</p>
-<img src="/.io//08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/1.png" class width="3">
+<p><img src="/2020/08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/1.png" alt></p>
 <h3 id="决策树学习"><a href="#决策树学习" class="headerlink" title="决策树学习"></a>决策树学习</h3><p>可以把决策树看成if-then规则的集合，每个实例只被一条路径或一条规则所覆盖。</p>
 <p>也可以从条件概率分布的角度理解，定义在特征空间的划分上，将特征空间分为互不相交的单元或区域，在每个单元上定义一个类的概率分布就构成了一个条件概率分布。</p>
-<img src="/.io//08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/2.png" class width="3">
+<p><img src="/2020/08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/2.png" alt></p>
 <p>决策树学习在本质上，是从训练集中归纳出一组分类规则，我们需要的是一个与训练集矛盾较小的决策树，同时具有很好的泛化能力。</p>
 <p>决策树的损失函数通常是正则化的极大似然函数，学习策略是最小化损失函数。</p>
 <h2 id="5-2-特征选择"><a href="#5-2-特征选择" class="headerlink" title="5.2 特征选择"></a>5.2 特征选择</h2><p>特征选择，是决定用哪个特征来划分特征空间。</p>
@@ -506,8 +506,53 @@ C_\alpha(T) = C(T) + \alpha|T|</script><p>剪枝算法</p>
 </li>
 <li>直至不能继续为止，得到损失函数最小的子树</li>
 </ul>
-<img src="/.io//08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/3.png" class width="3">
-<h2 id="5-5-CART算法"><a href="#5-5-CART算法" class="headerlink" title="5.5 CART算法"></a>5.5 CART算法</h2>]]></content>
+<p><img src="/2020/08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/3.png" alt></p>
+<h2 id="5-5-CART算法"><a href="#5-5-CART算法" class="headerlink" title="5.5 CART算法"></a>5.5 CART算法</h2><p>CART同样由特征选择、树的生成及剪枝组成，既可以用于分类也可以用于回归。</p>
+<h3 id="CART生成"><a href="#CART生成" class="headerlink" title="CART生成"></a>CART生成</h3><h4 id="回归树"><a href="#回归树" class="headerlink" title="回归树"></a>回归树</h4><p>X与Y为输入和输出变量，Y是连续变量，给定训练集</p>
+<script type="math/tex; mode=display">
+D = \{(x_1,y_1),(x_2,y_2),...,(x_N,y_N)\}</script><p>假设已将输入空间划分为M个单元<script type="math/tex">R_1,R_2,...,R_M</script>，并且在每个单元<script type="math/tex">R_m</script>上有一个固定的输出值<script type="math/tex">c_m</script>，那么回归树模型可表示为</p>
+<script type="math/tex; mode=display">
+f(x) = \sum_{m=1}^Mc_mI(x\in R_m)</script><p>当输入空间的划分确定时，可以用平方误差来表示回归树的预测误差</p>
+<script type="math/tex; mode=display">
+\sum_{x_i\in R_m}(y_i-f(x_i))^2 \\
+\hat c_m = {\rm ave} (y_i|x_i\in R_m)</script><p>采用启发式的方法对输入空间进行划分，选择第j个变量<script type="math/tex">x^{(j)}</script>和取值s，作为切分变量和切分点，并定义两个区域：</p>
+<script type="math/tex; mode=display">
+R_1(j,s) = \{x|x^{(j)}\leq s\} \quad R_2(j,s) = \{x|x^{(j)}> s\}</script><p>由此找到最优切分点s</p>
+<script type="math/tex; mode=display">
+\hat c_1 = {\rm ave} (y_i|x_i\in R_1(j,s)) \quad \hat c_2 = {\rm ave} (y_i|x_i\in R_2(j,s))</script><p>遍历所有变量，找到最优的切分变量j，以此划分输入空间，然后对每个区域重复上述过程，知道满足条件，由此生成一棵回归树，通常称为最小二乘回归树。</p>
+<h4 id="分类树"><a href="#分类树" class="headerlink" title="分类树"></a>分类树</h4><p>分类树用基尼指数选择最优特征，同时决定该特征的最优二值切分点。</p>
+<p>分类问题中，假如有K个类，样本点属于第k类的概率为<script type="math/tex">p_k</script>，则基尼指数定义为</p>
+<script type="math/tex; mode=display">
+Gini(p) = \sum_{k=1}^Kp_k(1-p_k) = 1 - \sum_{k=1}^Kp_k^2</script><p>K=2时</p>
+<script type="math/tex; mode=display">
+Gini(p) = 2p(1-p)</script><p>如果样本集合D根据特征A是否取可能值进行分割，即</p>
+<script type="math/tex; mode=display">
+D_1 = \{(x,y)\in D|A(x)=a\}, \quad D_2 = D - D_1</script><p>在特征A的条件下，基尼指数定义为</p>
+<script type="math/tex; mode=display">
+Gini(D,A) = \frac {|D_1|} {D} Gini(D_1)+\frac {|D_2|} {D} Gini(D_2)</script><p>基尼指数表示集合D的不确定性，基尼指数越大，样本集合的不确定性越大。</p>
+<p>在分类树中，选择基尼指数最小的特征作为最优特征。</p>
+<h3 id="CART剪枝"><a href="#CART剪枝" class="headerlink" title="CART剪枝"></a>CART剪枝</h3><p>输入：CART生成的决策树<script type="math/tex">T_0</script></p>
+<p>输出：最优决策树<script type="math/tex">T_\alpha</script></p>
+<ul>
+<li><p>设<script type="math/tex">k=0，T=T_0</script></p>
+</li>
+<li><p>设<script type="math/tex">\alpha=+\infty</script></p>
+</li>
+<li><p>自下而上地对各内部节点计算<script type="math/tex">C(T_t)，|T_t|</script>以及</p>
+<script type="math/tex; mode=display">
+g(t) = \frac {C(t) - C(T_t)} {|T_t|-1} \\
+\alpha = min(\alpha, g(t))</script></li>
+<li><p>自上而下地访问内部节点，如果<script type="math/tex">g(t) = \alpha</script>，进行剪枝，并以多数表决法决定其类，得到T</p>
+</li>
+<li><p>设<script type="math/tex">k=k+1，\alpha_k=\alpha，T_k=T</script></p>
+</li>
+<li><p>如果T不是由根节点单独构成的树，回到第四步</p>
+</li>
+<li><p>采用交叉验证法，在子树序列中选取最优子树</p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总体思路就是构造决策树，根据损失函数进行剪枝，具体细节没怎么看懂，回头找份代码瞧瞧。</p>
+]]></content>
       <categories>
         <category>统计学习方法</category>
       </categories>
