@@ -20,21 +20,25 @@
     var CONFIG = {"hostname":"entropy2333.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="朴素贝叶斯法基于贝叶斯定理，对于训练集，首先根据特征条件假设联合概率分布，基于此，对给定的输入，利用贝叶斯定理求出后验概率最大的输出。">
+  <meta name="description" content="决策树是一种基本的分类与回归方法，在分类问题中，用树形结构表示基于特征对实例进行分类的过程。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="统计学习方法（四）朴素贝叶斯法">
-<meta property="og:url" content="https://entropy2333.github.io/2020/08/14/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%9B%9B%EF%BC%89%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B3%95/index.html">
+<meta property="og:title" content="统计学习方法（五）决策树">
+<meta property="og:url" content="https://entropy2333.github.io/2020/08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/index.html">
 <meta property="og:site_name" content="entropy2333">
-<meta property="og:description" content="朴素贝叶斯法基于贝叶斯定理，对于训练集，首先根据特征条件假设联合概率分布，基于此，对给定的输入，利用贝叶斯定理求出后验概率最大的输出。">
+<meta property="og:description" content="决策树是一种基本的分类与回归方法，在分类问题中，用树形结构表示基于特征对实例进行分类的过程。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-08-14T15:23:09.000Z">
-<meta property="article:modified_time" content="2020-08-14T16:24:48.479Z">
+<meta property="og:image" content="https://entropy2333.github.io/.io//08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/1.png">
+<meta property="og:image" content="https://entropy2333.github.io/.io//08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/2.png">
+<meta property="og:image" content="https://entropy2333.github.io/.io//08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/3.png">
+<meta property="article:published_time" content="2020-08-15T11:12:57.000Z">
+<meta property="article:modified_time" content="2020-08-15T15:49:42.787Z">
 <meta property="article:author" content="entropy2333">
-<meta property="article:tag" content="机器学习">
-<meta property="article:tag" content="贝叶斯">
+<meta property="article:tag" content="统计学习方法">
+<meta property="article:tag" content="决策树">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://entropy2333.github.io/.io//08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/1.png">
 
-<link rel="canonical" href="https://entropy2333.github.io/2020/08/14/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%9B%9B%EF%BC%89%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B3%95/">
+<link rel="canonical" href="https://entropy2333.github.io/2020/08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/">
 
 
 <script id="page-configurations">
@@ -47,7 +51,7 @@
   };
 </script>
 
-  <title>统计学习方法（四）朴素贝叶斯法 | entropy2333</title>
+  <title>统计学习方法（五）决策树 | entropy2333</title>
   
 
 
@@ -196,7 +200,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2020/08/14/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%9B%9B%EF%BC%89%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2020/08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/myavatar.jpg">
@@ -209,7 +213,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          统计学习方法（四）朴素贝叶斯法
+          统计学习方法（五）决策树
         </h1>
 
         <div class="post-meta">
@@ -218,16 +222,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-08-14 23:23:09" itemprop="dateCreated datePublished" datetime="2020-08-14T23:23:09+08:00">2020-08-14</time>
+              <time title="创建时间：2020-08-15 19:12:57 / 修改时间：23:49:42" itemprop="dateCreated datePublished" datetime="2020-08-15T19:12:57+08:00">2020-08-15</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-15 00:24:48" itemprop="dateModified" datetime="2020-08-15T00:24:48+08:00">2020-08-15</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -247,8 +245,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/08/14/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%9B%9B%EF%BC%89%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B3%95/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/14/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%9B%9B%EF%BC%89%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B3%95/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -258,14 +256,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.3k</span>
+              <span>1.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -277,90 +275,78 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>朴素贝叶斯法基于贝叶斯定理，对于训练集，首先根据特征条件假设联合概率分布，基于此，对给定的输入，利用贝叶斯定理求出后验概率最大的输出。</p>
+        <p>决策树是一种基本的分类与回归方法，在分类问题中，用树形结构表示基于特征对实例进行分类的过程。</p>
 <a id="more"></a>
-<h2 id="4-1-朴素贝叶斯法的学习与分类"><a href="#4-1-朴素贝叶斯法的学习与分类" class="headerlink" title="4.1 朴素贝叶斯法的学习与分类"></a>4.1 朴素贝叶斯法的学习与分类</h2><h3 id="基本方法"><a href="#基本方法" class="headerlink" title="基本方法"></a>基本方法</h3><p>先验概率分布</p>
+<h2 id="5-1-决策树模型与学习"><a href="#5-1-决策树模型与学习" class="headerlink" title="5.1 决策树模型与学习"></a>5.1 决策树模型与学习</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>决策树是一种描述对实例进行分类的树形结构，由节点和有向边组成。</p>
+<p>节点有两种类型：内部节点和叶子节点，内部节点表示特征或属性，叶子结点表示一个类。</p>
+<p>决策树分类时，从根节点开始，对实例的某一特征进行测试，根据测试结果将其分配到子节点。如此递归，直至到达叶节点，最后分到叶节点的类中。</p>
+<img src="/.io//08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/1.png" class width="3">
+<h3 id="决策树学习"><a href="#决策树学习" class="headerlink" title="决策树学习"></a>决策树学习</h3><p>可以把决策树看成if-then规则的集合，每个实例只被一条路径或一条规则所覆盖。</p>
+<p>也可以从条件概率分布的角度理解，定义在特征空间的划分上，将特征空间分为互不相交的单元或区域，在每个单元上定义一个类的概率分布就构成了一个条件概率分布。</p>
+<img src="/.io//08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/2.png" class width="3">
+<p>决策树学习在本质上，是从训练集中归纳出一组分类规则，我们需要的是一个与训练集矛盾较小的决策树，同时具有很好的泛化能力。</p>
+<p>决策树的损失函数通常是正则化的极大似然函数，学习策略是最小化损失函数。</p>
+<h2 id="5-2-特征选择"><a href="#5-2-特征选择" class="headerlink" title="5.2 特征选择"></a>5.2 特征选择</h2><p>特征选择，是决定用哪个特征来划分特征空间。</p>
+<h3 id="信息增益"><a href="#信息增益" class="headerlink" title="信息增益"></a>信息增益</h3><p>首先给出熵与条件熵的定义</p>
 <script type="math/tex; mode=display">
-P(Y=c_k), \quad k=1,2,...K \tag{4.1}</script><p>条件概率分布</p>
+H(X)=-\sum_{i=1}^np_i\log p_i \\
+0 \leq H(p) \leq \log n</script><p>熵越大，随机变量的不确定性就越大。</p>
 <script type="math/tex; mode=display">
-P(X=x|Y=c_k) = P(X^{(1)}=x^{(1)},...,X^{(n)}=x^{(n)}|Y=c_k) \tag{4.2}</script><p>条件独立性假设</p>
+H(Y|X) = \sum_{i=1}^nP(X=x_i)H(Y|X=x_i)</script><p>当熵和条件熵中的概率由数据估计得到时，称为经验熵与经验条件熵。</p>
+<p>信息增益，定义为集合D的经验熵与特征A给定条件D下的经验条件熵之差</p>
 <script type="math/tex; mode=display">
-\begin{align}
-P(X=x|Y=c_k) &= P(X^{(1)}x^{(1)},...,X^{(n)}=x^{(n)}|Y=c_k) \\
-&= \prod _{j=1}^nP(X^{(j)}=x^{(j)}|Y=c_k) \\
-\end{align}
-\tag{4.3}</script><p>后验概率计算</p>
-<script type="math/tex; mode=display">
-P(Y=c_k|X=x)=\frac {P(X=x|Y=c_k)P(Y=c_k)} {P(X=x)}= \frac {P(X=x|Y=c_k)P(Y=c_k)} {\sum_j P(X=x|Y=c_j)P(Y=c_j)} \tag{4.4}</script><p>代入(4.3)即得</p>
-<script type="math/tex; mode=display">
-\begin{align}
-P(Y=c_k|X=x)= \frac {P(Y=c_k)\prod_{j=1}^nP(X^{(j)}=x^{(j)}|Y=c_k)} {\sum_j P(Y=c_j)\prod _{i=1}^nP(X^{(i)}=x^{(i)}|Y=c_j)} \tag{4.5}
-\end{align}</script><p>所以朴素贝叶斯分类器可表示为</p>
-<script type="math/tex; mode=display">
-\begin{align}
-y=f(x)&= \arg\max_{c_k}\frac {P(Y=c_k)\prod _{j=1}^nP(X^{(j)}=x^{(j)}|Y=c_k)} {\sum_j P(Y=c_j)\prod _{i=1}^nP(X^{(i)}=x^{(i)}|Y=c_j)} \\ 
-&=\arg\max_{c_k}P(Y=c_k)\prod _{j=1}^nP(X^{(j)}=x^{(j)}|Y=c_k)
-\end{align}
-\tag{4.6}</script><h3 id="后验概率最大化"><a href="#后验概率最大化" class="headerlink" title="后验概率最大化"></a>后验概率最大化</h3><p>假设选择0-1损失函数，这时期望风险函数为</p>
-<script type="math/tex; mode=display">
-\begin{align}
-R_{exp}(f) &= E[L(Y,f(X))]\\
-&= E_X\sum_{k=1}^K[L(c_k,f(X))]P(c_k|X)
-\end{align}</script><p>为最小化期望风险，只需对X=x逐个极小化</p>
-<script type="math/tex; mode=display">
-\begin{align}
-f(x) &= \arg\min_{y\in \cal Y}\sum_{k=1}^KL(c_k,y)P(c_k|X=x) \\
-&= \arg\min_{y\in \cal Y}\sum_{k=1}^KP(y\neq c_k|X=x) \\
-&= \arg\min_{y\in \cal Y}\sum_{k=1}^K(1-P(y= c_k|X=x)) \\
-&= \arg\max_{y\in \cal Y}\sum_{k=1}^KP(y= c_k|X=x)
-\end{align}</script><h2 id="4-2-朴素贝叶斯法的参数估计"><a href="#4-2-朴素贝叶斯法的参数估计" class="headerlink" title="4.2 朴素贝叶斯法的参数估计"></a>4.2 朴素贝叶斯法的参数估计</h2><h3 id="极大似然估计"><a href="#极大似然估计" class="headerlink" title="极大似然估计"></a>极大似然估计</h3><p>先验概率的极大似然估计是</p>
-<script type="math/tex; mode=display">
-P(Y=c_k) = \frac{\sum_{i=1}^NI(y_i=c_k)}{N},\quad k=1,2,..,K \tag{4.7}</script><p>条件概率的极大似然估计是</p>
-<script type="math/tex; mode=display">
-P(X^{(j)}=a_{ji}|Y=c_k) = \frac{\sum_{i=1}^NI(x_i^{(j)}=a_{ji},y_i=c_k)}{\sum_{i=1}^NI(y_i=c_k)},\quad k=1,2,..,K \tag{4.8}</script><h3 id="朴素贝叶斯算法"><a href="#朴素贝叶斯算法" class="headerlink" title="朴素贝叶斯算法"></a>朴素贝叶斯算法</h3><ol>
-<li><p>计算先验概率及条件概率</p>
-<script type="math/tex; mode=display">
-\begin{align}
-&P(Y=c_k) = \frac{\sum_{i=1}^NI(y_i=c_k)}{N},\quad k=1,2,..,K \\
-&P(X^{(j)}=a_{ji}|Y=c_k) = \frac{\sum_{i=1}^NI(x_i^{(j)}=a_{ji},y_i=c_k)}{\sum_{i=1}^NI(y_i=c_k)},\quad k=1,2,..,K \\
-&j=1,2,...,n;\quad k=1,2,...,K
-\end{align}</script></li>
-<li><p>对于给定实例，计算</p>
-<script type="math/tex; mode=display">
-P(Y=c_k)\prod _{j=1}^nP(X^{(j)}=x^{(j)}|Y=c_k)</script></li>
-<li><p>确定实例x的类</p>
+g(D,A) = H(D) - H(D|A)</script><blockquote>
+<p>一般，熵与条件熵之差称为互信息，信息增益等价于训练集中类与特征的互信息。</p>
+</blockquote>
+<p>对于训练数据集D，计算每个特征的信息增益，比较大小，选择信息增益最大的特征。</p>
+<h3 id="信息增益比"><a href="#信息增益比" class="headerlink" title="信息增益比"></a>信息增益比</h3><script type="math/tex; mode=display">
+g_k(D,A) = \frac {g(D,A)} {H(D)}</script><h2 id="5-3-决策树的生成"><a href="#5-3-决策树的生成" class="headerlink" title="5.3 决策树的生成"></a>5.3 决策树的生成</h2><h3 id="ID3算法"><a href="#ID3算法" class="headerlink" title="ID3算法"></a>ID3算法</h3><p>ID3算法，核心是在决策树每个节点上应用信息增益准则选择特征，递归地构建决策树。</p>
+<p>输入：训练数据集D，特征集A，阈值ε</p>
+<p>输出：决策树T</p>
+<ul>
+<li><p>若D中所有实例属于同一类<script type="math/tex">C_k</script>，则T为单节点树，返回T；</p>
 </li>
-</ol>
+<li><p>若A为空集，则返回T；</p>
+</li>
+<li><p>否则，计算A中各特征对D的信息增益，选择信息增益最大的特征<script type="math/tex">A_g</script>；</p>
+</li>
+<li><p>若<script type="math/tex">A_g</script>的信息增益小于阈值，则返回T；</p>
+</li>
+<li><p>否则，对<script type="math/tex">A_g</script>的每一可能值，以此将D分割成若干非空子集，将实例树最大的类作为标记，构建子节点，由节点及其子节点构成树T，返回T；</p>
+</li>
+<li><p>对第i个子节点，以<script type="math/tex">D_i</script>为训练集，<script type="math/tex">A-{A_g}</script>为特征集，递归调用上述步骤，得到子树<script type="math/tex">T_i</script>，返回<script type="math/tex">T_i</script>。</p>
+</li>
+</ul>
+<p>ID3算法只有树的生成，容易产生过拟合。</p>
+<h3 id="C4-5算法"><a href="#C4-5算法" class="headerlink" title="C4.5算法"></a>C4.5算法</h3><p>改进处在于，用信息增益比来选择特征。 </p>
+<h2 id="5-4-决策树的剪枝"><a href="#5-4-决策树的剪枝" class="headerlink" title="5.4 决策树的剪枝"></a>5.4 决策树的剪枝</h2><p>剪枝是为了解决过拟合现象，对已生成的决策树进行简化。</p>
+<p>剪枝往往通过极小化损失函数或代价函数来实现。</p>
+<p>设树T的叶子结点个数为|T|，t为T的叶子结点，t有<script type="math/tex">N_t</script>个样本点，其中k类的样本点有<script type="math/tex">N_{tk}</script>个，<script type="math/tex">H_t(T)</script>为t的经验熵，则损失函数可以定义为</p>
 <script type="math/tex; mode=display">
-y=\arg\max_{c_k}P(Y=c_k)\prod _{j=1}^nP(X^{(j)}=x^{(j)}|Y=c_k)</script><h3 id="贝叶斯估计"><a href="#贝叶斯估计" class="headerlink" title="贝叶斯估计"></a>贝叶斯估计</h3><p>极大似然估计可能会出现所要估计的概率值为0的情况，这时会影响后验概率的计算结果，使分类产生偏差。</p>
-<p>条件概率的贝叶斯估计是</p>
+C_\alpha(T) = \sum_{t=1}^{|T|}N_tH_t(T)+\alpha|T| \\
+H_t(T) = -\sum_k\frac{N_{tk}}{N_t}\log\frac{N_{tk}}{N_t}</script><p>记</p>
 <script type="math/tex; mode=display">
-P_\lambda(X^{(j)}=a_{ji}|Y=c_k) = \frac {\sum_{i=1}^NI(x_i^{(j)}=a_{ji},y_i=c_k)+\lambda}{\sum_{i=1}^NI(y_i=c_k)+S_j\lambda}, \quad \lambda\geq0 \tag{4.9}</script><p>等价于在随机变量每个取值的频数上赋予一个正数，λ=0时即为极大似然估计，常取λ=1，称为拉普拉斯平滑。</p>
-<p>显然有</p>
+C(T) = \sum_{t=1}^{|T|}N_tH_t(T) = -\sum_{t=1}^{|T|}\sum_{k=1}^KN_{tk}\log\frac{N_{tk}}{N_t}</script><p>则有</p>
 <script type="math/tex; mode=display">
-P_\lambda(X^{(j)}=a_{ji}|Y=c_k) > 0 \\
-\sum_{l=1}^{S_j}P(X^{(j)}=a_{ji}|Y=c_k) = 1</script><p>先验概率的贝叶斯估计是</p>
-<script type="math/tex; mode=display">
-P_\lambda(Y=c_k) = \frac {\sum_{i=1}^NI(y_i=c_k)+\lambda}{N+K\lambda}, \quad \lambda\geq0 \tag{4.10}</script><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>有点没怎么看懂，改天再复习一下。</p>
-
+C_\alpha(T) = C(T) + \alpha|T|</script><p>剪枝算法</p>
+<p>输入：生成算法产生的整个树T，参数α</p>
+<p>输出：修剪后的子树<script type="math/tex">T_\alpha</script></p>
+<ul>
+<li>计算每个节点的经验熵</li>
+<li>递归地从树的叶子结点向上回溯<ul>
+<li>设叶节点回溯到父节点之前与之后的树分别为<script type="math/tex">T_B</script>与<script type="math/tex">T_A</script>，如果<script type="math/tex">C_\alpha(T_A)\leq C_\alpha(T_B)</script>，则进行剪枝，将父节点变为新的叶子结点。</li>
+</ul>
+</li>
+<li>直至不能继续为止，得到损失函数最小的子树</li>
+</ul>
+<img src="/.io//08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/3.png" class width="3">
+<h2 id="5-5-CART算法"><a href="#5-5-CART算法" class="headerlink" title="5.5 CART算法"></a>5.5 CART算法</h2>
     </div>
 
     
     
     
       
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\13\统计学习方法（三）k近邻法\" rel="bookmark">统计学习方法（三）k近邻法</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\12\统计学习方法（二）感知机\" rel="bookmark">统计学习方法（二）感知机</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\11\统计学习方法（一）概论\" rel="bookmark">统计学习方法（一）概论</a></div>
-    </li>
-  </ul>
 
         <div class="reward-container">
   <div></div>
@@ -380,8 +366,8 @@ P_\lambda(Y=c_k) = \frac {\sum_{i=1}^NI(y_i=c_k)+\lambda}{N+K\lambda}, \quad \la
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
-              <a href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF/" rel="tag"># 贝叶斯</a>
+              <a href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/" rel="tag"># 统计学习方法</a>
+              <a href="/tags/%E5%86%B3%E7%AD%96%E6%A0%91/" rel="tag"># 决策树</a>
           </div>
 
         
@@ -390,13 +376,10 @@ P_\lambda(Y=c_k) = \frac {\sum_{i=1}^NI(y_i=c_k)+\lambda}{N+K\lambda}, \quad \la
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/" rel="prev" title="统计学习方法（三）k近邻法">
-      <i class="fa fa-chevron-left"></i> 统计学习方法（三）k近邻法
+    <a href="/2020/08/14/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%9B%9B%EF%BC%89%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B3%95/" rel="prev" title="统计学习方法（四）朴素贝叶斯法">
+      <i class="fa fa-chevron-left"></i> 统计学习方法（四）朴素贝叶斯法
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/" rel="next" title="统计学习方法（五）决策树">
-      统计学习方法（五）决策树 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -456,7 +439,7 @@ P_\lambda(Y=c_k) = \frac {\sum_{i=1}^NI(y_i=c_k)+\lambda}{N+K\lambda}, \quad \la
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B3%95%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B8%8E%E5%88%86%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">4.1 朴素贝叶斯法的学习与分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">基本方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E9%AA%8C%E6%A6%82%E7%8E%87%E6%9C%80%E5%A4%A7%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text">后验概率最大化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B3%95%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">4.2 朴素贝叶斯法的参数估计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1"><span class="nav-number">2.1.</span> <span class="nav-text">极大似然估计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%AE%97%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">朴素贝叶斯算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%B0%E8%AE%A1"><span class="nav-number">2.3.</span> <span class="nav-text">贝叶斯估计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E5%86%B3%E7%AD%96%E6%A0%91%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.</span> <span class="nav-text">5.1 决策树模型与学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.2.</span> <span class="nav-text">决策树学习</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9"><span class="nav-number">2.</span> <span class="nav-text">5.2 特征选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A"><span class="nav-number">2.1.</span> <span class="nav-text">信息增益</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A%E6%AF%94"><span class="nav-number">2.2.</span> <span class="nav-text">信息增益比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-%E5%86%B3%E7%AD%96%E6%A0%91%E7%9A%84%E7%94%9F%E6%88%90"><span class="nav-number">3.</span> <span class="nav-text">5.3 决策树的生成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ID3%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text">ID3算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C4-5%E7%AE%97%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">C4.5算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4-%E5%86%B3%E7%AD%96%E6%A0%91%E7%9A%84%E5%89%AA%E6%9E%9D"><span class="nav-number">4.</span> <span class="nav-text">5.4 决策树的剪枝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-5-CART%E7%AE%97%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">5.5 CART算法</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -599,6 +582,61 @@ P_\lambda(Y=c_k) = \frac {\sum_{i=1}^NI(y_i=c_k)+\lambda}{N+K\lambda}, \quad \la
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
