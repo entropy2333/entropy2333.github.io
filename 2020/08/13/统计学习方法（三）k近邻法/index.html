@@ -27,16 +27,15 @@
 <meta property="og:site_name" content="entropy2333">
 <meta property="og:description" content="k近邻法，是一种基本分类与回归方法。输入为特征向量，输出为类别。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://entropy2333.github.io/.io//1.png">
-<meta property="og:image" content="https://entropy2333.github.io/.io//2.png">
-<meta property="og:image" content="https://entropy2333.github.io/.io//3.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png">
 <meta property="article:published_time" content="2020-08-13T08:21:39.000Z">
-<meta property="article:modified_time" content="2020-08-14T16:22:01.442Z">
+<meta property="article:modified_time" content="2020-08-16T09:39:11.763Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="KNN">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://entropy2333.github.io/.io//1.png">
+<meta name="twitter:image" content="https://entropy2333.github.io/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png">
 
 <link rel="canonical" href="https://entropy2333.github.io/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/">
 
@@ -230,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-15 00:22:01" itemprop="dateModified" datetime="2020-08-15T00:22:01+08:00">2020-08-15</time>
+                <time title="修改时间：2020-08-16 17:39:11" itemprop="dateModified" datetime="2020-08-16T17:39:11+08:00">2020-08-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -262,7 +261,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.3k</span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -291,39 +290,42 @@
 <li>在邻域中根据分类决策规则（如多数表决）决定x的类别y。</li>
 <li>k=1时，称为最近邻算法，将与x最邻近点的类作为x的类。</li>
 </ul>
-<h2 id="3-2-k近邻模型"><a href="#3-2-k近邻模型" class="headerlink" title="3.2 k近邻模型"></a>3.2 k近邻模型</h2><h3 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h3><p>L_p距离定义为</p>
+<h2 id="3-2-k近邻模型"><a href="#3-2-k近邻模型" class="headerlink" title="3.2 k近邻模型"></a>3.2 k近邻模型</h2><h3 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h3><script type="math/tex; mode=display">L_p$$距离定义为</script><p>L_p(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^p)^{\frac 1 p}</p>
 <script type="math/tex; mode=display">
-L_p(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^p)^{\frac 1 p}</script><p>p=1时，称为曼哈顿距离</p>
+p=1时，称为曼哈顿距离</script><p>L_1(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|)</p>
 <script type="math/tex; mode=display">
-L_1(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|)</script><p>p=2时，即为欧式距离</p>
+p=2时，即为欧式距离</script><p>L_2(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^2)^{\frac 1 2}</p>
 <script type="math/tex; mode=display">
-L_2(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^2)^{\frac 1 2}</script><p>p=∞时，为各个坐标距离的最大值</p>
+p=∞时，称为切比雪夫距离，为各个坐标距离的最大值</script><p>L_\infty(x_i, x_j) = \max_l |x_i^{(l)}-x_j^{(l)}|</p>
 <script type="math/tex; mode=display">
-L_\infty(x_i, x_j) = \max_l |x_i^{(l)}-x_j^{(l)}|</script><p>下图给出了与原点距离为1的图形</p>
-<p><img src="/.io//1.png" alt></p>
-<h3 id="分类决策规则"><a href="#分类决策规则" class="headerlink" title="分类决策规则"></a>分类决策规则</h3><p>k近邻法中的分类决策规则往往是多数表决，即由k个临近点的多数类决定输入类。</p>
-<p>如果分类的损失函数为0-1损失函数，分类函数为</p>
+下图给出了与原点距离为1的图形
+
+![](统计学习方法（三）k近邻法/1.png)
+
+### 分类决策规则
+
+k近邻法中的分类决策规则往往是多数表决，即由k个临近点的多数类决定输入类。
+
+如果分类的损失函数为0-1损失函数，分类函数为</script><p>f: \mathbf R^n \rightarrow \{c_1, c_2, …, c_K\}</p>
 <script type="math/tex; mode=display">
-f: \mathbf R^n \rightarrow \{c_1, c_2, ..., c_K\}</script><p>那么误分类的概率为</p>
-<script type="math/tex; mode=display">
-P(Y\neq f(X)) = 1- P(Y=f(X)) \\
-\Leftrightarrow \frac 1 k \sum _{x_i\in N_k(x)} I(y_i\neq c_j) = 1 - \frac 1 k \sum _{x_i\in N_k(x)} I(y_i= c_j)</script><p>要降低误分类率，</p>
+那么误分类的概率为</script><p>P(Y\neq f(X)) = 1- P(Y=f(X)) \\<br>\Leftrightarrow \frac 1 k \sum _{x_i\in N_k(x)} I(y_i\neq c_j) = 1 - \frac 1 k \sum _{x_i\in N_k(x)} I(y_i= c_j)</p>
+<p>$$</p>
 <h2 id="3-3-k近邻法的实现：kd树"><a href="#3-3-k近邻法的实现：kd树" class="headerlink" title="3.3 k近邻法的实现：kd树"></a>3.3 k近邻法的实现：kd树</h2><h3 id="构造kd树"><a href="#构造kd树" class="headerlink" title="构造kd树"></a>构造kd树</h3><p>kd树是二叉树，表示对k维空间的一个划分。</p>
 <p>构造kd树相当于不断地用超平面切分k维空间，构成一系列的k维超矩形区域，kd树的每个节点对应于一个k维超矩形区域。</p>
 <p>构造算法如下</p>
 <ol>
 <li>开始：构造根节点，对应于包含T的k维空间的超矩形区域。<ul>
-<li>选择$x^{(1)}$为坐标轴，以T中所有实例的$x^{(1)}$坐标的中位数为切分点，将根节点对应的超矩形区域切分为两个子区域。</li>
-<li>由此生成深度为一的左右子节点，左子节点对应于坐标$x^{(1)}$小于切分点的子区域。</li>
+<li>选择<script type="math/tex">x^{(1)}</script>为坐标轴，以T中所有实例的<script type="math/tex">x^{(1)}</script>坐标的中位数为切分点，将根节点对应的超矩形区域切分为两个子区域。</li>
+<li>由此生成深度为一的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(1)}</script>小于切分点的子区域。</li>
 </ul>
 </li>
-<li>重复：对深度为j的节点，选择$x^{(l)}$为切分的坐标轴，其中$l=j(mod k)+1$，以坐标的中位数为切分点。<ul>
-<li>由此生成深度为j+1的左右子节点，左子节点对应于坐标$x^{(l)}$小于切分点的子区域。</li>
+<li>重复：对深度为j的节点，选择<script type="math/tex">x^{(l)}</script>为切分的坐标轴，其中<script type="math/tex">l=j(mod k)+1</script>，以坐标的中位数为切分点。<ul>
+<li>由此生成深度为j+1的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(l)}</script>小于切分点的子区域。</li>
 </ul>
 </li>
 <li>直到两个子区域没有实例存在时停止，形成kd树的区域划分。</li>
 </ol>
-<p><img src="/.io//2.png" alt></p>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png" alt></p>
 <h3 id="搜索kd树"><a href="#搜索kd树" class="headerlink" title="搜索kd树"></a>搜索kd树</h3><p>给定一个目标点，搜索其最近邻，首先找到包含目标点的叶节点。从叶节点出发，依次回退到父节点，不断查找与目标点最邻近的节点。</p>
 <p>给定如图所示的kd树，根节点为A，子节点为B、C等，输入实例点为S，求S的最近邻。</p>
 <ul>
@@ -332,7 +334,8 @@ P(Y\neq f(X)) = 1- P(Y=f(X)) \\
 <li>继续返回上一级父节点A，在A的另一子节点C的区域内搜索。</li>
 <li>点E比点D更近，成为最近邻。</li>
 </ul>
-<p><img src="/.io//3.png" alt></p>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png" alt></p>
+<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">clf_sk = KNeighborsClassifier()</span><br><span class="line">clf_sk.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf_sk.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -350,6 +353,9 @@ P(Y\neq f(X)) = 1- P(Y=f(X)) \\
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2020\08\11\统计学习方法（一）概论\" rel="bookmark">统计学习方法（一）概论</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\08\15\统计学习方法（五）决策树\" rel="bookmark">统计学习方法（五）决策树</a></div>
     </li>
   </ul>
 
@@ -447,7 +453,7 @@ P(Y\neq f(X)) = 1- P(Y=f(X)) \\
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-k%E8%BF%91%E9%82%BB%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">3.1 k近邻算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-k%E8%BF%91%E9%82%BB%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">3.2 k近邻模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F"><span class="nav-number">2.1.</span> <span class="nav-text">距离度量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB%E5%86%B3%E7%AD%96%E8%A7%84%E5%88%99"><span class="nav-number">2.2.</span> <span class="nav-text">分类决策规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-k%E8%BF%91%E9%82%BB%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%9Akd%E6%A0%91"><span class="nav-number">3.</span> <span class="nav-text">3.3 k近邻法的实现：kd树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0kd%E6%A0%91"><span class="nav-number">3.1.</span> <span class="nav-text">构造kd树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2kd%E6%A0%91"><span class="nav-number">3.2.</span> <span class="nav-text">搜索kd树</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-k%E8%BF%91%E9%82%BB%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">3.1 k近邻算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-k%E8%BF%91%E9%82%BB%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">3.2 k近邻模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F"><span class="nav-number">2.1.</span> <span class="nav-text">距离度量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-k%E8%BF%91%E9%82%BB%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%9Akd%E6%A0%91"><span class="nav-number">3.</span> <span class="nav-text">3.3 k近邻法的实现：kd树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0kd%E6%A0%91"><span class="nav-number">3.1.</span> <span class="nav-text">构造kd树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2kd%E6%A0%91"><span class="nav-number">3.2.</span> <span class="nav-text">搜索kd树</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scikit-learn"><span class="nav-number">4.</span> <span class="nav-text">Scikit-learn</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -476,7 +482,7 @@ P(Y\neq f(X)) = 1- P(Y=f(X)) \\
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -527,12 +533,12 @@ P(Y\neq f(X)) = 1- P(Y=f(X)) \\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">12k</span>
+    <span title="站点总字数">13k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">11 分钟</span>
+    <span title="站点阅读时长">12 分钟</span>
 </div>
 
         

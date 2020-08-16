@@ -118,39 +118,42 @@
 <li>在邻域中根据分类决策规则（如多数表决）决定x的类别y。</li>
 <li>k=1时，称为最近邻算法，将与x最邻近点的类作为x的类。</li>
 </ul>
-<h2 id="3-2-k近邻模型"><a href="#3-2-k近邻模型" class="headerlink" title="3.2 k近邻模型"></a>3.2 k近邻模型</h2><h3 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h3><p>L_p距离定义为</p>
+<h2 id="3-2-k近邻模型"><a href="#3-2-k近邻模型" class="headerlink" title="3.2 k近邻模型"></a>3.2 k近邻模型</h2><h3 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h3><script type="math/tex; mode=display">L_p$$距离定义为</script><p>L_p(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^p)^{\frac 1 p}</p>
 <script type="math/tex; mode=display">
-L_p(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^p)^{\frac 1 p}</script><p>p=1时，称为曼哈顿距离</p>
+p=1时，称为曼哈顿距离</script><p>L_1(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|)</p>
 <script type="math/tex; mode=display">
-L_1(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|)</script><p>p=2时，即为欧式距离</p>
+p=2时，即为欧式距离</script><p>L_2(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^2)^{\frac 1 2}</p>
 <script type="math/tex; mode=display">
-L_2(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^2)^{\frac 1 2}</script><p>p=∞时，为各个坐标距离的最大值</p>
+p=∞时，称为切比雪夫距离，为各个坐标距离的最大值</script><p>L_\infty(x_i, x_j) = \max_l |x_i^{(l)}-x_j^{(l)}|</p>
 <script type="math/tex; mode=display">
-L_\infty(x_i, x_j) = \max_l |x_i^{(l)}-x_j^{(l)}|</script><p>下图给出了与原点距离为1的图形</p>
-<p><img src="/.io//1.png" alt></p>
-<h3 id="分类决策规则"><a href="#分类决策规则" class="headerlink" title="分类决策规则"></a>分类决策规则</h3><p>k近邻法中的分类决策规则往往是多数表决，即由k个临近点的多数类决定输入类。</p>
-<p>如果分类的损失函数为0-1损失函数，分类函数为</p>
+下图给出了与原点距离为1的图形
+
+![](统计学习方法（三）k近邻法/1.png)
+
+### 分类决策规则
+
+k近邻法中的分类决策规则往往是多数表决，即由k个临近点的多数类决定输入类。
+
+如果分类的损失函数为0-1损失函数，分类函数为</script><p>f: \mathbf R^n \rightarrow \{c_1, c_2, …, c_K\}</p>
 <script type="math/tex; mode=display">
-f: \mathbf R^n \rightarrow \{c_1, c_2, ..., c_K\}</script><p>那么误分类的概率为</p>
-<script type="math/tex; mode=display">
-P(Y\neq f(X)) = 1- P(Y=f(X)) \\
-\Leftrightarrow \frac 1 k \sum _{x_i\in N_k(x)} I(y_i\neq c_j) = 1 - \frac 1 k \sum _{x_i\in N_k(x)} I(y_i= c_j)</script><p>要降低误分类率，</p>
+那么误分类的概率为</script><p>P(Y\neq f(X)) = 1- P(Y=f(X)) \\<br>\Leftrightarrow \frac 1 k \sum _{x_i\in N_k(x)} I(y_i\neq c_j) = 1 - \frac 1 k \sum _{x_i\in N_k(x)} I(y_i= c_j)</p>
+<p>$$</p>
 <h2 id="3-3-k近邻法的实现：kd树"><a href="#3-3-k近邻法的实现：kd树" class="headerlink" title="3.3 k近邻法的实现：kd树"></a>3.3 k近邻法的实现：kd树</h2><h3 id="构造kd树"><a href="#构造kd树" class="headerlink" title="构造kd树"></a>构造kd树</h3><p>kd树是二叉树，表示对k维空间的一个划分。</p>
 <p>构造kd树相当于不断地用超平面切分k维空间，构成一系列的k维超矩形区域，kd树的每个节点对应于一个k维超矩形区域。</p>
 <p>构造算法如下</p>
 <ol>
 <li>开始：构造根节点，对应于包含T的k维空间的超矩形区域。<ul>
-<li>选择$x^{(1)}$为坐标轴，以T中所有实例的$x^{(1)}$坐标的中位数为切分点，将根节点对应的超矩形区域切分为两个子区域。</li>
-<li>由此生成深度为一的左右子节点，左子节点对应于坐标$x^{(1)}$小于切分点的子区域。</li>
+<li>选择<script type="math/tex">x^{(1)}</script>为坐标轴，以T中所有实例的<script type="math/tex">x^{(1)}</script>坐标的中位数为切分点，将根节点对应的超矩形区域切分为两个子区域。</li>
+<li>由此生成深度为一的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(1)}</script>小于切分点的子区域。</li>
 </ul>
 </li>
-<li>重复：对深度为j的节点，选择$x^{(l)}$为切分的坐标轴，其中$l=j(mod k)+1$，以坐标的中位数为切分点。<ul>
-<li>由此生成深度为j+1的左右子节点，左子节点对应于坐标$x^{(l)}$小于切分点的子区域。</li>
+<li>重复：对深度为j的节点，选择<script type="math/tex">x^{(l)}</script>为切分的坐标轴，其中<script type="math/tex">l=j(mod k)+1</script>，以坐标的中位数为切分点。<ul>
+<li>由此生成深度为j+1的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(l)}</script>小于切分点的子区域。</li>
 </ul>
 </li>
 <li>直到两个子区域没有实例存在时停止，形成kd树的区域划分。</li>
 </ol>
-<p><img src="/.io//2.png" alt></p>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png" alt></p>
 <h3 id="搜索kd树"><a href="#搜索kd树" class="headerlink" title="搜索kd树"></a>搜索kd树</h3><p>给定一个目标点，搜索其最近邻，首先找到包含目标点的叶节点。从叶节点出发，依次回退到父节点，不断查找与目标点最邻近的节点。</p>
 <p>给定如图所示的kd树，根节点为A，子节点为B、C等，输入实例点为S，求S的最近邻。</p>
 <ul>
@@ -159,7 +162,8 @@ P(Y\neq f(X)) = 1- P(Y=f(X)) \\
 <li>继续返回上一级父节点A，在A的另一子节点C的区域内搜索。</li>
 <li>点E比点D更近，成为最近邻。</li>
 </ul>
-<p><img src="/.io//3.png" alt></p>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png" alt></p>
+<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">clf_sk = KNeighborsClassifier()</span><br><span class="line">clf_sk.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf_sk.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>统计学习方法</category>
@@ -172,16 +176,16 @@ P(Y\neq f(X)) = 1- P(Y=f(X)) \\
   <entry>
     <title>统计学习方法（二）感知机</title>
     <url>/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/</url>
-    <content><![CDATA[<p>感知机，是二分类的线性分类模型。输入为实例的特征向量，输出为±1。感知机学习属于判别模型，旨在求出将训练数据进行线性划分的分离超平面，是神经网络与SVM的基础</p>
+    <content><![CDATA[<p>感知机，是二分类的线性分类模型。输入为实例的特征向量，输出为±1，旨在求出将训练数据进行线性划分的分离超平面，是神经网络与SVM的基础。</p>
 <a id="more"></a>
 <h2 id="2-1-感知机模型"><a href="#2-1-感知机模型" class="headerlink" title="2.1 感知机模型"></a>2.1 感知机模型</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><script type="math/tex; mode=display">
 f(x) = sign(w·x + b) \\
-{\cal X} \subset R^n, {\cal Y} = \{-1, +1\}</script><p>其中w和b为感知机模型参数，w称为权值（向量），b称为偏置（bias）。</p>
+{\cal X} \subset R^n, \quad {\cal Y} = \{-1, +1\}</script><p>其中w和b为感知机模型参数，w称为权值（向量），b称为偏置（bias）。</p>
 <script type="math/tex; mode=display">
-sign(x) = \begin{cases} +1, x\geq 0 \\ -1, x < 0\end{cases}</script><h3 id="几何解释"><a href="#几何解释" class="headerlink" title="几何解释"></a>几何解释</h3><p>线性方程</p>
+sign(x) = \begin{cases} +1, \quad x\geq 0 \\ -1, \quad x < 0\end{cases}</script><h3 id="几何解释"><a href="#几何解释" class="headerlink" title="几何解释"></a>几何解释</h3><p>线性方程</p>
 <script type="math/tex; mode=display">
 w·x + b = 0</script><p>对应于特征空间中的一个超平面S，w表示超平面的法向量，b为超平面的截距。</p>
-<p><img src="/.io//perc1.png" alt></p>
+<p><img src="/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/perc1.png" alt></p>
 <h2 id="2-2-感知机学习策略"><a href="#2-2-感知机学习策略" class="headerlink" title="2.2 感知机学习策略"></a>2.2 感知机学习策略</h2><h3 id="数据集的线性可分性"><a href="#数据集的线性可分性" class="headerlink" title="数据集的线性可分性"></a>数据集的线性可分性</h3><p>给定一个数据及，如果存在超平面S，能够将数据集的正实例点和负实例点完全正确划分，则称数据及为线性可分数据集。</p>
 <h4 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h4><p>损失函数的一个自然选择是误分类点的总数，但这样不是参数的连续可导函数，不易优化。</p>
 <p>感知机选择的损失函数是误分类点到超平面S的总距离，输入空间任一点到超平面S的距离为</p>
@@ -209,11 +213,11 @@ x_i\in {\cal X} = R^n, y_i \in {\cal Y} = \{-1, +1\}</script><p>求参数w和b�
 w \leftarrow w + \eta y_ix_i \\
 b \leftarrow b + \eta y_i \\
 \eta \in (0, 1]</script><h3 id="原始形式"><a href="#原始形式" class="headerlink" title="原始形式"></a>原始形式</h3><ol>
-<li><p>选取参数初值$w_0,b_0$</p>
+<li><p>选取参数初值<script type="math/tex">w_0,b_0</script></p>
 </li>
-<li><p>在训练集中选取数据$(x_i, y_i)$</p>
+<li><p>在训练集中选取数据<script type="math/tex">(x_i, y_i)</script></p>
 </li>
-<li><p>如果$y_i(wx_i+b)\leq 0$，则更新参数</p>
+<li><p>如果<script type="math/tex">y_i(wx_i+b)\leq 0</script>，则更新参数</p>
 <script type="math/tex; mode=display">
 w \leftarrow w + \eta y_ix_i \\
 b \leftarrow b + \eta y_i</script></li>
@@ -232,7 +236,7 @@ b = \sum _{i=1} ^N \alpha_iy_i</script><p>训练过程</p>
 </li>
 <li><p>在训练集中选取数据</p>
 </li>
-<li><p>若$y_i(\sum _{j=1} ^N \alpha_jy_jx_j\cdot x_i+b)\leq 0$，则更新参数</p>
+<li><p>若<script type="math/tex">y_i(\sum _{j=1} ^N \alpha_jy_jx_j\cdot x_i+b)\leq 0</script>，则更新参数</p>
 </li>
 </ol>
 <script type="math/tex; mode=display">
@@ -243,6 +247,7 @@ b \leftarrow b + \eta y_i</script><ol>
 <blockquote>
 <p>Gram矩阵？</p>
 </blockquote>
+<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Perceptron</span><br><span class="line"></span><br><span class="line">clf = Perceptron(fit_intercept=<span class="literal">True</span>, </span><br><span class="line">                 max_iter=<span class="number">1000</span>, </span><br><span class="line">                 shuffle=<span class="literal">True</span>)</span><br><span class="line">clf.fit(X, y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Weights assigned to the features.</span></span><br><span class="line">print(clf.coef_)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Constants in decision function.</span></span><br><span class="line">print(clf.intercept_)</span><br><span class="line"></span><br><span class="line">y_ = -(clf.coef_[<span class="number">0</span>][<span class="number">0</span>]*x_ponits + clf.intercept_)/clf.coef_[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">plt.plot(x_ponits, y_)</span><br><span class="line">plt.plot(x_ponits, y_)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>统计学习方法</category>
@@ -261,7 +266,7 @@ b \leftarrow b + \eta y_i</script><ol>
 <script type="math/tex; mode=display">
 P(Y=c_k), \quad k=1,2,...K \tag{4.1}</script><p>条件概率分布</p>
 <script type="math/tex; mode=display">
-P(X=x|Y=c_k) = P(X^{(1)}=x^{(1)},...,X^{(n)}=x^{(n)}|Y=c_k) \tag{4.2}</script><p>条件独立性假设</p>
+P(X=x|Y=c_k) = P(X^{(1)}=x^{(1)},...,X^{(n)}=x^{(n)}|Y=c_k) \tag{4.2}</script><p>基本假设是条件独立性</p>
 <script type="math/tex; mode=display">
 \begin{align}
 P(X=x|Y=c_k) &= P(X^{(1)}x^{(1)},...,X^{(n)}=x^{(n)}|Y=c_k) \\
@@ -295,22 +300,19 @@ f(x) &= \arg\min_{y\in \cal Y}\sum_{k=1}^KL(c_k,y)P(c_k|X=x) \\
 <script type="math/tex; mode=display">
 P(Y=c_k) = \frac{\sum_{i=1}^NI(y_i=c_k)}{N},\quad k=1,2,..,K \tag{4.7}</script><p>条件概率的极大似然估计是</p>
 <script type="math/tex; mode=display">
-P(X^{(j)}=a_{ji}|Y=c_k) = \frac{\sum_{i=1}^NI(x_i^{(j)}=a_{ji},y_i=c_k)}{\sum_{i=1}^NI(y_i=c_k)},\quad k=1,2,..,K \tag{4.8}</script><h3 id="朴素贝叶斯算法"><a href="#朴素贝叶斯算法" class="headerlink" title="朴素贝叶斯算法"></a>朴素贝叶斯算法</h3><ol>
-<li><p>计算先验概率及条件概率</p>
-<script type="math/tex; mode=display">
+P(X^{(j)}=a_{ji}|Y=c_k) = \frac{\sum_{i=1}^NI(x_i^{(j)}=a_{ji},y_i=c_k)}{\sum_{i=1}^NI(y_i=c_k)},\quad k=1,2,..,K \tag{4.8}</script><h3 id="朴素贝叶斯算法"><a href="#朴素贝叶斯算法" class="headerlink" title="朴素贝叶斯算法"></a>朴素贝叶斯算法</h3><ul>
+<li>计算先验概率及条件概率<script type="math/tex; mode=display">
 \begin{align}
 &P(Y=c_k) = \frac{\sum_{i=1}^NI(y_i=c_k)}{N},\quad k=1,2,..,K \\
 &P(X^{(j)}=a_{ji}|Y=c_k) = \frac{\sum_{i=1}^NI(x_i^{(j)}=a_{ji},y_i=c_k)}{\sum_{i=1}^NI(y_i=c_k)},\quad k=1,2,..,K \\
 &j=1,2,...,n;\quad k=1,2,...,K
 \end{align}</script></li>
-<li><p>对于给定实例，计算</p>
-<script type="math/tex; mode=display">
+<li>对于给定实例，计算<script type="math/tex; mode=display">
 P(Y=c_k)\prod _{j=1}^nP(X^{(j)}=x^{(j)}|Y=c_k)</script></li>
-<li><p>确定实例x的类</p>
-</li>
-</ol>
-<script type="math/tex; mode=display">
-y=\arg\max_{c_k}P(Y=c_k)\prod _{j=1}^nP(X^{(j)}=x^{(j)}|Y=c_k)</script><h3 id="贝叶斯估计"><a href="#贝叶斯估计" class="headerlink" title="贝叶斯估计"></a>贝叶斯估计</h3><p>极大似然估计可能会出现所要估计的概率值为0的情况，这时会影响后验概率的计算结果，使分类产生偏差。</p>
+<li>确定实例x的类<script type="math/tex; mode=display">
+y=\arg\max_{c_k}P(Y=c_k)\prod _{j=1}^nP(X^{(j)}=x^{(j)}|Y=c_k)</script></li>
+</ul>
+<h3 id="贝叶斯估计"><a href="#贝叶斯估计" class="headerlink" title="贝叶斯估计"></a>贝叶斯估计</h3><p>极大似然估计可能会出现所要估计的概率值为0的情况，这时会影响后验概率的计算结果，使分类产生偏差。</p>
 <p>条件概率的贝叶斯估计是</p>
 <script type="math/tex; mode=display">
 P_\lambda(X^{(j)}=a_{ji}|Y=c_k) = \frac {\sum_{i=1}^NI(x_i^{(j)}=a_{ji},y_i=c_k)+\lambda}{\sum_{i=1}^NI(y_i=c_k)+S_j\lambda}, \quad \lambda\geq0 \tag{4.9}</script><p>等价于在随机变量每个取值的频数上赋予一个正数，λ=0时即为极大似然估计，常取λ=1，称为拉普拉斯平滑。</p>
@@ -319,7 +321,8 @@ P_\lambda(X^{(j)}=a_{ji}|Y=c_k) = \frac {\sum_{i=1}^NI(x_i^{(j)}=a_{ji},y_i=c_k)
 P_\lambda(X^{(j)}=a_{ji}|Y=c_k) > 0 \\
 \sum_{l=1}^{S_j}P(X^{(j)}=a_{ji}|Y=c_k) = 1</script><p>先验概率的贝叶斯估计是</p>
 <script type="math/tex; mode=display">
-P_\lambda(Y=c_k) = \frac {\sum_{i=1}^NI(y_i=c_k)+\lambda}{N+K\lambda}, \quad \lambda\geq0 \tag{4.10}</script><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>有点没怎么看懂，改天再复习一下。</p>
+P_\lambda(Y=c_k) = \frac {\sum_{i=1}^NI(y_i=c_k)+\lambda}{N+K\lambda}, \quad \lambda\geq0 \tag{4.10}</script><h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.naive_bayes <span class="keyword">import</span> GaussianNB</span><br><span class="line"><span class="comment"># from sklearn.naive_bayes import BernoulliNB, MultinomialNB</span></span><br><span class="line"></span><br><span class="line">clf = GaussianNB()</span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br><span class="line"></span><br><span class="line">clf.predict([[<span class="number">4.4</span>,  <span class="number">3.2</span>,  <span class="number">1.3</span>,  <span class="number">0.2</span>]])</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>给定先验分布，利用贝叶斯定理求出后验概率最大的类。</p>
 ]]></content>
       <categories>
         <category>统计学习方法</category>
@@ -355,23 +358,17 @@ P_\lambda(Y=c_k) = \frac {\sum_{i=1}^NI(y_i=c_k)+\lambda}{N+K\lambda}, \quad \la
 <li>利用学习的最优模型对新数据进行预测或分析</li>
 </ul>
 <h2 id="1-2-监督学习"><a href="#1-2-监督学习" class="headerlink" title="1.2 监督学习"></a>1.2 监督学习</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
-<li><p>输入空间&amp;输出空间：输入与输出所有可能取值的集合</p>
-</li>
-<li><p>特征空间：所有特征向量存在的空间</p>
-<ul>
+<li>输入空间&amp;输出空间：输入与输出所有可能取值的集合</li>
+<li>特征空间：所有特征向量存在的空间<ul>
 <li>每个具体的输入是一个实例，通常由特征向量表示。</li>
 <li>特征控件的每一维对应于每一个特征。</li>
 </ul>
 </li>
-<li><p>样本：输入与输出对</p>
-<script type="math/tex; mode=display">
+<li>样本：输入与输出对<script type="math/tex; mode=display">
 T = \{(x_1, y_1), (x_2, y_2), ..., (x_N, y_N)\}</script></li>
-<li><p>回归问题：X与Y均为连续变量</p>
-</li>
-<li><p>分类问题：Y为有限个离散变量</p>
-</li>
-<li><p>标注问题：X与Y均为变量序列</p>
-</li>
+<li>回归问题：X与Y均为连续变量</li>
+<li>分类问题：Y为有限个离散变量</li>
+<li>标注问题：X与Y均为变量序列</li>
 </ul>
 <h3 id="1-3-统计学习三要素"><a href="#1-3-统计学习三要素" class="headerlink" title="1.3 统计学习三要素"></a>1.3 统计学习三要素</h3><script type="math/tex; mode=display">
 方法 = 模型+策略+算法</script><h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><p>X和Y是定义在输入空间与输出空间上的变量，F通常是由一个参数向量决定的函数组，此时为非概率模型。</p>
@@ -381,12 +378,12 @@ T = \{(x_1, y_1), (x_2, y_2), ..., (x_N, y_N)\}</script></li>
 {\cal F} = \{P|P_\theta(Y|X), \theta\in R^n\}</script><h3 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h3><h4 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h4><p>损失函数（loss function）或代价函数（cost function），度量预测错误的程度，是f(X)和Y的非负实值函数，记作L(Y, f(X))。</p>
 <p>常用的损失函数：</p>
 <script type="math/tex; mode=display">
-\begin{array} \\
-0-1&: &L(Y, f(X)) &=& \begin{cases} 1, Y\neq f(X) \\ 0, Y= f(X) \end{cases} \\
-quadratic&: &L(Y, f(X)) &=& {(Y - f(X))}^2 \\
-absolute&: &L(Y, f(X)) &=& |Y - f(X)| \\
-logarithmic&: &L(Y, f(X)) &=& -logP(Y|X)
-\end{array} \\</script><h4 id="风险函数"><a href="#风险函数" class="headerlink" title="风险函数"></a>风险函数</h4><p>风险函数，表示理论上模型关于联合分布平均意义下的损失。</p>
+\begin{align}
+0-1: L(Y, f(X)) &=& \begin{cases} 1, Y\neq f(X) \\ 0, Y= f(X) \end{cases} \\
+quadratic: L(Y, f(X)) &=& {(Y - f(X))}^2 \\
+absolute: L(Y, f(X)) &=& |Y - f(X)| \\
+logarithmic: L(Y, f(X)) &=& -logP(Y|X) \\
+\end{align}</script><h4 id="风险函数"><a href="#风险函数" class="headerlink" title="风险函数"></a>风险函数</h4><p>风险函数，表示理论上模型关于联合分布平均意义下的损失。</p>
 <script type="math/tex; mode=display">
 R_{exp}(f) = E_p[L(Y, f(X))] = \int _{x\times y} L(y, f(x))P(x, y)dxdy</script><p>学习的目标是选择期望风险最小的模型，实际上P(X, Y)未知，所以才需要学习。</p>
 <p>经验风险（empirical risk）定义为模型关于训练数据集的平均损失。</p>
@@ -540,7 +537,7 @@ Gini(D,A) = \frac {|D_1|} {D} Gini(D_1)+\frac {|D_2|} {D} Gini(D_2)</script><p>�
 </li>
 <li><p>自下而上地对各内部节点计算<script type="math/tex">C(T_t)，|T_t|</script>以及</p>
 <script type="math/tex; mode=display">
-g(t) = \frac {C(t) - C(T_t)} {|T_t|-1} \\
+g(t) = \frac {C(t) - C(T_t)} {|T_t|-1}</script><script type="math/tex; mode=display">
 \alpha = min(\alpha, g(t))</script></li>
 <li><p>自上而下地访问内部节点，如果<script type="math/tex">g(t) = \alpha</script>，进行剪枝，并以多数表决法决定其类，得到T</p>
 </li>
@@ -551,13 +548,14 @@ g(t) = \frac {C(t) - C(T_t)} {|T_t|-1} \\
 <li><p>采用交叉验证法，在子树序列中选取最优子树</p>
 </li>
 </ul>
+<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> export_graphviz</span><br><span class="line"><span class="keyword">import</span> graphviz</span><br><span class="line"></span><br><span class="line">clf = DecisionTreeClassifier()</span><br><span class="line">clf.fit(X_train, y_train,)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br><span class="line"></span><br><span class="line">tree_pic = export_graphviz(clf, out_file=<span class="string">&quot;mytree.pdf&quot;</span>)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;mytree.pdf&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    dot_graph = f.read()</span><br><span class="line">    </span><br><span class="line">graphviz.Source(dot_graph)</span><br></pre></td></tr></table></figure>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总体思路就是构造决策树，根据损失函数进行剪枝，具体细节没怎么看懂，回头找份代码瞧瞧。</p>
 ]]></content>
       <categories>
         <category>统计学习方法</category>
       </categories>
       <tags>
-        <tag>统计学习方法</tag>
+        <tag>机器学习</tag>
         <tag>决策树</tag>
       </tags>
   </entry>

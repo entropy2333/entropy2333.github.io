@@ -28,7 +28,7 @@
 <meta property="og:description" content="开始学习李航老师的《统计学习方法》。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-08-11T15:15:46.000Z">
-<meta property="article:modified_time" content="2020-08-15T11:12:28.839Z">
+<meta property="article:modified_time" content="2020-08-16T08:57:28.617Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="机器学习">
 <meta name="twitter:card" content="summary">
@@ -225,7 +225,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-15 19:12:28" itemprop="dateModified" datetime="2020-08-15T19:12:28+08:00">2020-08-15</time>
+                <time title="修改时间：2020-08-16 16:57:28" itemprop="dateModified" datetime="2020-08-16T16:57:28+08:00">2020-08-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -299,23 +299,17 @@
 <li>利用学习的最优模型对新数据进行预测或分析</li>
 </ul>
 <h2 id="1-2-监督学习"><a href="#1-2-监督学习" class="headerlink" title="1.2 监督学习"></a>1.2 监督学习</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
-<li><p>输入空间&amp;输出空间：输入与输出所有可能取值的集合</p>
-</li>
-<li><p>特征空间：所有特征向量存在的空间</p>
-<ul>
+<li>输入空间&amp;输出空间：输入与输出所有可能取值的集合</li>
+<li>特征空间：所有特征向量存在的空间<ul>
 <li>每个具体的输入是一个实例，通常由特征向量表示。</li>
 <li>特征控件的每一维对应于每一个特征。</li>
 </ul>
 </li>
-<li><p>样本：输入与输出对</p>
-<script type="math/tex; mode=display">
+<li>样本：输入与输出对<script type="math/tex; mode=display">
 T = \{(x_1, y_1), (x_2, y_2), ..., (x_N, y_N)\}</script></li>
-<li><p>回归问题：X与Y均为连续变量</p>
-</li>
-<li><p>分类问题：Y为有限个离散变量</p>
-</li>
-<li><p>标注问题：X与Y均为变量序列</p>
-</li>
+<li>回归问题：X与Y均为连续变量</li>
+<li>分类问题：Y为有限个离散变量</li>
+<li>标注问题：X与Y均为变量序列</li>
 </ul>
 <h3 id="1-3-统计学习三要素"><a href="#1-3-统计学习三要素" class="headerlink" title="1.3 统计学习三要素"></a>1.3 统计学习三要素</h3><script type="math/tex; mode=display">
 方法 = 模型+策略+算法</script><h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><p>X和Y是定义在输入空间与输出空间上的变量，F通常是由一个参数向量决定的函数组，此时为非概率模型。</p>
@@ -325,12 +319,12 @@ T = \{(x_1, y_1), (x_2, y_2), ..., (x_N, y_N)\}</script></li>
 {\cal F} = \{P|P_\theta(Y|X), \theta\in R^n\}</script><h3 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h3><h4 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h4><p>损失函数（loss function）或代价函数（cost function），度量预测错误的程度，是f(X)和Y的非负实值函数，记作L(Y, f(X))。</p>
 <p>常用的损失函数：</p>
 <script type="math/tex; mode=display">
-\begin{array} \\
-0-1&: &L(Y, f(X)) &=& \begin{cases} 1, Y\neq f(X) \\ 0, Y= f(X) \end{cases} \\
-quadratic&: &L(Y, f(X)) &=& {(Y - f(X))}^2 \\
-absolute&: &L(Y, f(X)) &=& |Y - f(X)| \\
-logarithmic&: &L(Y, f(X)) &=& -logP(Y|X)
-\end{array} \\</script><h4 id="风险函数"><a href="#风险函数" class="headerlink" title="风险函数"></a>风险函数</h4><p>风险函数，表示理论上模型关于联合分布平均意义下的损失。</p>
+\begin{align}
+0-1: L(Y, f(X)) &=& \begin{cases} 1, Y\neq f(X) \\ 0, Y= f(X) \end{cases} \\
+quadratic: L(Y, f(X)) &=& {(Y - f(X))}^2 \\
+absolute: L(Y, f(X)) &=& |Y - f(X)| \\
+logarithmic: L(Y, f(X)) &=& -logP(Y|X) \\
+\end{align}</script><h4 id="风险函数"><a href="#风险函数" class="headerlink" title="风险函数"></a>风险函数</h4><p>风险函数，表示理论上模型关于联合分布平均意义下的损失。</p>
 <script type="math/tex; mode=display">
 R_{exp}(f) = E_p[L(Y, f(X))] = \int _{x\times y} L(y, f(x))P(x, y)dxdy</script><p>学习的目标是选择期望风险最小的模型，实际上P(X, Y)未知，所以才需要学习。</p>
 <p>经验风险（empirical risk）定义为模型关于训练数据集的平均损失。</p>
@@ -392,6 +386,9 @@ L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert</script
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2020\08\14\统计学习方法（四）朴素贝叶斯法\" rel="bookmark">统计学习方法（四）朴素贝叶斯法</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\08\15\统计学习方法（五）决策树\" rel="bookmark">统计学习方法（五）决策树</a></div>
     </li>
   </ul>
 
@@ -517,7 +514,7 @@ L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert</script
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -568,12 +565,12 @@ L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert</script
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">12k</span>
+    <span title="站点总字数">13k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">11 分钟</span>
+    <span title="站点阅读时长">12 分钟</span>
 </div>
 
         
@@ -631,6 +628,61 @@ L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert</script
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
