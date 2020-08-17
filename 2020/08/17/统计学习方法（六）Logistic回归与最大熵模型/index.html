@@ -20,20 +20,23 @@
     var CONFIG = {"hostname":"entropy2333.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="开始学习李航老师的《统计学习方法》。">
+  <meta name="description" content="Logistic回归是统计学习中的分类方法，最大熵是概率模型学习的一个准则，推广到分类问题得到最大熵模型。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="统计学习方法（一）概论">
-<meta property="og:url" content="https://entropy2333.github.io/2020/08/11/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%AE%BA/index.html">
+<meta property="og:title" content="统计学习方法（六）Logistic回归与最大熵模型">
+<meta property="og:url" content="https://entropy2333.github.io/2020/08/17/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AD%EF%BC%89Logistic%E5%9B%9E%E5%BD%92%E4%B8%8E%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B/index.html">
 <meta property="og:site_name" content="entropy2333">
-<meta property="og:description" content="开始学习李航老师的《统计学习方法》。">
+<meta property="og:description" content="Logistic回归是统计学习中的分类方法，最大熵是概率模型学习的一个准则，推广到分类问题得到最大熵模型。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-08-11T15:15:46.000Z">
-<meta property="article:modified_time" content="2020-08-16T08:57:28.617Z">
+<meta property="og:image" content="https://entropy2333.github.io/2020/08/17/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AD%EF%BC%89Logistic%E5%9B%9E%E5%BD%92%E4%B8%8E%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B/1.png">
+<meta property="article:published_time" content="2020-08-17T15:57:42.000Z">
+<meta property="article:modified_time" content="2020-08-17T16:57:45.474Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="Logistic回归">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://entropy2333.github.io/2020/08/17/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AD%EF%BC%89Logistic%E5%9B%9E%E5%BD%92%E4%B8%8E%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B/1.png">
 
-<link rel="canonical" href="https://entropy2333.github.io/2020/08/11/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%AE%BA/">
+<link rel="canonical" href="https://entropy2333.github.io/2020/08/17/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AD%EF%BC%89Logistic%E5%9B%9E%E5%BD%92%E4%B8%8E%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B/">
 
 
 <script id="page-configurations">
@@ -46,7 +49,7 @@
   };
 </script>
 
-  <title>统计学习方法（一）概论 | entropy2333</title>
+  <title>统计学习方法（六）Logistic回归与最大熵模型 | entropy2333</title>
   
 
 
@@ -195,7 +198,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2020/08/11/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%AE%BA/">
+    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2020/08/17/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AD%EF%BC%89Logistic%E5%9B%9E%E5%BD%92%E4%B8%8E%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/myavatar.jpg">
@@ -208,7 +211,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          统计学习方法（一）概论
+          统计学习方法（六）Logistic回归与最大熵模型
         </h1>
 
         <div class="post-meta">
@@ -218,7 +221,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-08-11 23:15:46" itemprop="dateCreated datePublished" datetime="2020-08-11T23:15:46+08:00">2020-08-11</time>
+              <time title="创建时间：2020-08-17 23:57:42" itemprop="dateCreated datePublished" datetime="2020-08-17T23:57:42+08:00">2020-08-17</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -246,8 +249,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/08/11/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%AE%BA/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/11/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%AE%BA/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/08/17/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AD%EF%BC%89Logistic%E5%9B%9E%E5%BD%92%E4%B8%8E%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/17/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AD%EF%BC%89Logistic%E5%9B%9E%E5%BD%92%E4%B8%8E%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -257,7 +260,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2k</span>
+              <span>2.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -276,100 +279,82 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>开始学习李航老师的《统计学习方法》。</p>
+        <p>Logistic回归是统计学习中的分类方法，最大熵是概率模型学习的一个准则，推广到分类问题得到最大熵模型。</p>
 <a id="more"></a>
-<h2 id="1-1-统计学习"><a href="#1-1-统计学习" class="headerlink" title="1.1 统计学习"></a>1.1 统计学习</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>统计学习也称为统计机器学习，计算机系统通过运用数据及统计方法提高系统性能的机器学习。</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><ul>
-<li>从给定的、有限的、用于学习的<strong>训练数据</strong>集合出发</li>
-<li>假设数据独立同分布，要学习的模型属于某个函数的集合（<strong>假设空间</strong>）</li>
-<li>应用某个<strong>评价准则</strong>，从假设空间中选取一个最优模型，使其对训练数据与<strong>测试数据</strong>有最优的预测</li>
-<li>最优模型的选取由算法实现</li>
-</ul>
-<h3 id="三要素"><a href="#三要素" class="headerlink" title="三要素"></a>三要素</h3><ul>
-<li>模型 model</li>
-<li>策略 strategy</li>
-<li>算法 algorithm</li>
-</ul>
-<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ul>
-<li>得到一个有限的训练数据集合</li>
-<li>确定所有可能模型的假设空间，即学习模型的集合</li>
-<li>确定模型选择的准则，即学习的策略</li>
-<li>实现求解最优模型的算法，即学习的算法</li>
-<li>通过学习方法选择最优模型</li>
-<li>利用学习的最优模型对新数据进行预测或分析</li>
-</ul>
-<h2 id="1-2-监督学习"><a href="#1-2-监督学习" class="headerlink" title="1.2 监督学习"></a>1.2 监督学习</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
-<li>输入空间&amp;输出空间：输入与输出所有可能取值的集合</li>
-<li>特征空间：所有特征向量存在的空间<ul>
-<li>每个具体的输入是一个实例，通常由特征向量表示。</li>
-<li>特征控件的每一维对应于每一个特征。</li>
-</ul>
-</li>
-<li>样本：输入与输出对<script type="math/tex; mode=display">
-T = \{(x_1, y_1), (x_2, y_2), ..., (x_N, y_N)\}</script></li>
-<li>回归问题：X与Y均为连续变量</li>
-<li>分类问题：Y为有限个离散变量</li>
-<li>标注问题：X与Y均为变量序列</li>
-</ul>
-<h3 id="1-3-统计学习三要素"><a href="#1-3-统计学习三要素" class="headerlink" title="1.3 统计学习三要素"></a>1.3 统计学习三要素</h3><script type="math/tex; mode=display">
-方法 = 模型+策略+算法</script><h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><p>X和Y是定义在输入空间与输出空间上的变量，F通常是由一个参数向量决定的函数组，此时为非概率模型。</p>
+<h2 id="6-1-Logistic回归模型"><a href="#6-1-Logistic回归模型" class="headerlink" title="6.1 Logistic回归模型"></a>6.1 Logistic回归模型</h2><h3 id="Logistic分布"><a href="#Logistic分布" class="headerlink" title="Logistic分布"></a>Logistic分布</h3><p>设X为连续随机变量，X服从Logistic分布是指</p>
 <script type="math/tex; mode=display">
-{\cal F} = \{f|Y = f_\theta(X), \theta\in R^n\}</script><p>假设空间也可以定义为条件概率的集合，此时表示的模型为概率模型。</p>
+F(x) = P(X\leq x) = \frac 1 {1+e^{-(x-\mu)/\gamma}} \\
+f(x) = F'(x) = \frac {e^{-(x-\mu)/\gamma}} {\gamma(1+e^{-(x-\mu)/\gamma})^2}</script><p>其中<script type="math/tex">\mu</script>为位置参数，<script type="math/tex">\gamma > 0</script>为形状参数</p>
+<p>分布函数的图形是S形曲线，关于点<script type="math/tex">(\mu, \frac 1 2)</script>中心对称</p>
 <script type="math/tex; mode=display">
-{\cal F} = \{P|P_\theta(Y|X), \theta\in R^n\}</script><h3 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h3><h4 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h4><p>损失函数（loss function）或代价函数（cost function），度量预测错误的程度，是f(X)和Y的非负实值函数，记作L(Y, f(X))。</p>
-<p>常用的损失函数：</p>
+F(\mu-x) + F(x-\mu) = 1</script><p><img src="/2020/08/17/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AD%EF%BC%89Logistic%E5%9B%9E%E5%BD%92%E4%B8%8E%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B/1.png" alt></p>
+<h3 id="二项Logistic回归模型"><a href="#二项Logistic回归模型" class="headerlink" title="二项Logistic回归模型"></a>二项Logistic回归模型</h3><p>二项Logistic回归模型是一种分类模型，由条件概率<script type="math/tex">P(Y|X)</script>表示，其中随机变量Y取值为1或0，条件概率分布如下：</p>
+<script type="math/tex; mode=display">
+P(Y=1|x) = \frac {\exp(w\cdot x+b)} {1 + \exp(w\cdot x+b)} \\
+P(Y=0|x) = \frac {1} {1 + \exp(w\cdot x+b)}</script><p>w称为权值向量，b称为偏置。</p>
+<p>有时为了方便，用如下记法</p>
+<script type="math/tex; mode=display">
+P(Y=1|x) = \frac {\exp(w\cdot x)} {1 + \exp(w\cdot x)} \\
+P(Y=0|x) = \frac {1} {1 + \exp(w\cdot x)} \\
+w = (w^{(1)}, w^{(2)},\cdots, w^{(n)}, b) ,\quad x = (x^{(1)}, x^{(2)}, \cdots, x^{(n)}, 1)</script><p>注意到</p>
+<script type="math/tex; mode=display">
+\log\frac{P(Y=1|x)}{1 - P(Y=1|x)} = w\cdot x</script><p>输出Y=1的对数几率是输入x的线性函数表示的模型，即Logistic模型。</p>
+<h3 id="模型参数估计"><a href="#模型参数估计" class="headerlink" title="模型参数估计"></a>模型参数估计</h3><p>对于给定的训练集T，可以用极大似然估计法估计模型参数。</p>
+<script type="math/tex; mode=display">
+P(Y=1|x) = \pi(x),\quad P(Y=0|x) = 1-\pi(x)</script><p>似然函数为</p>
+<script type="math/tex; mode=display">
+\prod_{i=1}^N[\pi(x_i)]^{y_i}[1-\pi(x_i)]^{1-y_i}</script><p>对数似然函数为</p>
 <script type="math/tex; mode=display">
 \begin{align}
-0-1: L(Y, f(X)) &=& \begin{cases} 1, Y\neq f(X) \\ 0, Y= f(X) \end{cases} \\
-quadratic: L(Y, f(X)) &=& {(Y - f(X))}^2 \\
-absolute: L(Y, f(X)) &=& |Y - f(X)| \\
-logarithmic: L(Y, f(X)) &=& -logP(Y|X) \\
-\end{align}</script><h4 id="风险函数"><a href="#风险函数" class="headerlink" title="风险函数"></a>风险函数</h4><p>风险函数，表示理论上模型关于联合分布平均意义下的损失。</p>
+L(w) &= \sum_{i=1}^N[y_i\log\pi(x_i)+(1-y_i)log(1-\pi(x_i))] \\
+&= \sum_{i=1}^N[y_i\log\frac{\pi(x_i)}{1-\pi(x_i)}+log(1-\pi(x_i))] \\
+&= \sum_{i=1}^N[y_i(w\cdot x_i)-log(1+\exp(w\cdot x_i))]
+\end{align}</script><p>对L(w)求极大值，得到w的估计值。</p>
+<p>这样问题就变成了以L(w)为目标函数的最优化问题，通常采用梯度下降法及拟牛顿法。</p>
+<h3 id="多项Logistic回归"><a href="#多项Logistic回归" class="headerlink" title="多项Logistic回归"></a>多项Logistic回归</h3><p>上述的模型是二分类模型，可以推广为多分类模型。</p>
+<p>假设Y的取值集合是<script type="math/tex">\{1,2,\cdots,K\}</script>，则多项Logistic模型为</p>
 <script type="math/tex; mode=display">
-R_{exp}(f) = E_p[L(Y, f(X))] = \int _{x\times y} L(y, f(x))P(x, y)dxdy</script><p>学习的目标是选择期望风险最小的模型，实际上P(X, Y)未知，所以才需要学习。</p>
-<p>经验风险（empirical risk）定义为模型关于训练数据集的平均损失。</p>
+P(Y=k|x) = \frac {\exp(w_k\cdot x+b)} {1 + \sum_k\exp(w_k\cdot x+b)} \\
+P(Y=K|x) = \frac 1 {1 + \sum_k\exp(w_k\cdot x+b)} \\
+k = 1,2, \cdots, K-1</script><h2 id="6-2-最大熵模型"><a href="#6-2-最大熵模型" class="headerlink" title="6.2 最大熵模型"></a>6.2 最大熵模型</h2><h3 id="最大熵原理"><a href="#最大熵原理" class="headerlink" title="最大熵原理"></a>最大熵原理</h3><p>假设离散随机变量X的概率分布是P(X)，则熵为</p>
 <script type="math/tex; mode=display">
-R_{emp}(f) = \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i))</script><p>现实中训练样本数目有限，用经验风险估计并不理想，所以需要制定策略。</p>
-<h4 id="风险最小化"><a href="#风险最小化" class="headerlink" title="风险最小化"></a>风险最小化</h4><ul>
-<li>经验风险最小化（ERM）<ul>
-<li>极大似然估计</li>
-<li>容易产生过拟合</li>
-</ul>
-</li>
-<li>结构风险最小化（SRM）<ul>
-<li>等价于正则化，在经验风险上加上正则化项或罚项</li>
-<li>最大后验概率估计</li>
-</ul>
-</li>
-</ul>
-<h2 id="1-4-模型评估与模型选择"><a href="#1-4-模型评估与模型选择" class="headerlink" title="1.4 模型评估与模型选择"></a>1.4 模型评估与模型选择</h2><h3 id="训练误差-amp-测试误差"><a href="#训练误差-amp-测试误差" class="headerlink" title="训练误差&amp;测试误差"></a>训练误差&amp;测试误差</h3><p>训练误差是模型关于训练集的平均损失</p>
+H(P) = -\sum_xP(x)\log P(x)</script><p>熵满足下列不等式</p>
 <script type="math/tex; mode=display">
-R_{emp}(f) = \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i))</script><p>测试误差是模型关于测试集的平均损失</p>
+0 \leq H(P) \leq \log |X|</script><p>当且仅当X服从均匀分布时，熵最大。</p>
+<h3 id="模型定义"><a href="#模型定义" class="headerlink" title="模型定义"></a>模型定义</h3><p>假设分类模型是条件概率分布，给定训练集T，学习的目标是用最大熵原理选择最好的分类模型。</p>
+<p>训练集的经验分布</p>
 <script type="math/tex; mode=display">
-R_{test}(f) = \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i))</script><h2 id="1-5-正则化与交叉验证"><a href="#1-5-正则化与交叉验证" class="headerlink" title="1.5 正则化与交叉验证"></a>1.5 正则化与交叉验证</h2><h3 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h3><p>正则化是结构风险最小化策略的实现，在经验风险上加一个正则化项或罚项。</p>
-<p>正则化项一般是模型复杂度的单调递增函数，模型越复杂，正则化值越大。</p>
+\widetilde P(X=x, Y=y) = \frac {\nu(X=x,Y=y)}{N}\\
+\widetilde P(X=x) = \frac {\nu(X=x)}{N}</script><p>其中<script type="math/tex">\nu(X=x,Y=y)</script>表示样本出现的频数。</p>
+<p>用特征函数描述输入与输出的关系</p>
 <script type="math/tex; mode=display">
-\min _{f\in {\cal F}} \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i)) + \lambda J(f)， \lambda \geq 0</script><script type="math/tex; mode=display">
-L1: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \frac \lambda 2 \Vert w\Vert ^2 \\
-L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert</script><blockquote>
-<p>奥卡姆剃刀：在所有可能选择的模型中，能够很好解释已知数据并十分简单才是最好的模型。</p>
-</blockquote>
-<h3 id="交叉验证"><a href="#交叉验证" class="headerlink" title="交叉验证"></a>交叉验证</h3><ul>
-<li>简单交叉验证<ul>
-<li>将数据分为训练集与测试集</li>
-</ul>
-</li>
-<li>S折交叉验证<ul>
-<li>首先随机切分数据，分为S个大小相同的不相交子集。</li>
-<li>用S-1个子集的数据训练模型，用余下的测试。</li>
-<li>对S种选择重复进行，选出平均测试误差最小的模型。</li>
-</ul>
-</li>
-<li>留一交叉验证</li>
-</ul>
-<h2 id="1-6-泛化能力"><a href="#1-6-泛化能力" class="headerlink" title="1.6 泛化能力"></a>1.6 泛化能力</h2><p>泛化能力，是指该方法学习到的模型对未知数据的预测能力。</p>
+f(x,y) = \begin{cases} 1, \quad x与y满足某一事实 \\ 0, \quad否则\end{cases}</script><p>经验分布</p>
 <script type="math/tex; mode=display">
-泛化误差 \ \ R_{exp}(\hat f) = E_P[L(Y, \hat f(X))] = \int _{x\times y} L(y, \hat f(x))P(x,y)dxdy</script><h2 id="1-7-生成模型与判别模型"><a href="#1-7-生成模型与判别模型" class="headerlink" title="1.7 生成模型与判别模型"></a>1.7 生成模型与判别模型</h2><h2 id="1-8-分类问题"><a href="#1-8-分类问题" class="headerlink" title="1.8 分类问题"></a>1.8 分类问题</h2><h2 id="1-9-标注问题"><a href="#1-9-标注问题" class="headerlink" title="1.9 标注问题"></a>1.9 标注问题</h2><h2 id="1-10-回归问题"><a href="#1-10-回归问题" class="headerlink" title="1.10 回归问题"></a>1.10 回归问题</h2>
+E_{\widetilde{P}}(f) = \sum_{x,y}\widetilde P(x,y)f(x,y) \\
+E_{\widetilde{P}}(f) = \sum_{x,y}\widetilde P(x)P(y|x)f(x,y)</script><p>如果模型能够获取训练集中的数据，即可认为两个期望值相等。</p>
+<p>假设满足所有约束条件的模型集合为</p>
+<script type="math/tex; mode=display">
+{\cal C} = \{P\in {\cal P}|E_P(f_i) = E_{\widetilde P}(f_i), \quad i=1,2,\cdots,n\}</script><p>定义在条件概率分布P(Y|X)熵的条件熵为</p>
+<script type="math/tex; mode=display">
+H(P) = -\sum_{x,y}\widetilde P(x)P(y|x)\log P(y|x)</script><p>则模型集合中条件熵最大的模型称为最大熵模型。</p>
+<h3 id="模型学习"><a href="#模型学习" class="headerlink" title="模型学习"></a>模型学习</h3><p>给定训练集以及特征函数，最大熵模型的学习等价于约束最优化问题</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\min_{\cal P\in C}&& &-H(P) = \sum_{x,y}\widetilde P(x)P(y|x)\log P(y|x) \\
+s.t.&& &E_P(f_i) - E_{\widetilde P}(f_i)=0,\quad i=1,2,\cdots,n \\
+&& &\sum_yP(y|x) = 1 \\
+\end{align}</script><p>将约束最优化的原始问题转化为无约束最优化的对偶问题，通过拉格朗日乘数法求解。</p>
+<p>引入拉格朗日乘子，定义拉格朗日函数</p>
+<script type="math/tex; mode=display">
+\begin{align}
+L(P,w) &= -H(P) + w_o(1-\sum_yP(y|x))+\sum_{i=1}^nw_i(E_P(f_i) - E_{\widetilde P}(f_i)) \\
+&= \sum_{x,y}\widetilde P(x)P(y|x)\log P(y|x) + w_o(1-\sum_yP(y|x))
+\\ &\quad +\sum_{i=1}^nw_i(\sum_{x,y}\widetilde P(x,y)f_i(x,y) - \sum_{x,y}\widetilde P(x)P(y|x)f_i(x,y))
+\end{align}</script><p>原始问题是</p>
+<script type="math/tex; mode=display">
+\min_{\cal P\in C}\max_wL(P,w)</script><p>对偶问题是</p>
+<script type="math/tex; mode=display">
+\max_{w}\min_{\cal P\in C}L(P,w)</script><h3 id="TO-BE-COMPLETED"><a href="#TO-BE-COMPLETED" class="headerlink" title="TO BE COMPLETED"></a>TO BE COMPLETED</h3>
     </div>
 
     
@@ -388,10 +373,10 @@ L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert</script
       <div class="popular-posts-title"><a href="\2020\08\14\统计学习方法（四）朴素贝叶斯法\" rel="bookmark">统计学习方法（四）朴素贝叶斯法</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\15\统计学习方法（五）决策树\" rel="bookmark">统计学习方法（五）决策树</a></div>
+      <div class="popular-posts-title"><a href="\2020\08\11\统计学习方法（一）概论\" rel="bookmark">统计学习方法（一）概论</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\17\统计学习方法（六）Logistic回归与最大熵模型\" rel="bookmark">统计学习方法（六）Logistic回归与最大熵模型</a></div>
+      <div class="popular-posts-title"><a href="\2020\08\15\统计学习方法（五）决策树\" rel="bookmark">统计学习方法（五）决策树</a></div>
     </li>
   </ul>
 
@@ -414,6 +399,7 @@ L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert</script
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/Logistic%E5%9B%9E%E5%BD%92/" rel="tag"># Logistic回归</a>
           </div>
 
         
@@ -422,13 +408,10 @@ L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert</script
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/08/06/%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/" rel="prev" title="搭建个人博客">
-      <i class="fa fa-chevron-left"></i> 搭建个人博客
+    <a href="/2020/08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/" rel="prev" title="统计学习方法（五）决策树">
+      <i class="fa fa-chevron-left"></i> 统计学习方法（五）决策树
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/" rel="next" title="统计学习方法（二）感知机">
-      统计学习方法（二）感知机 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -488,7 +471,7 @@ L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert</script
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.</span> <span class="nav-text">1.1 统计学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E8%A6%81%E7%B4%A0"><span class="nav-number">1.3.</span> <span class="nav-text">三要素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.4.</span> <span class="nav-text">步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="nav-number">2.</span> <span class="nav-text">1.2 监督学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E4%B8%89%E8%A6%81%E7%B4%A0"><span class="nav-number">2.2.</span> <span class="nav-text">1.3 统计学习三要素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.3.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%96%E7%95%A5"><span class="nav-number">2.4.</span> <span class="nav-text">策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">2.4.1.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A3%8E%E9%99%A9%E5%87%BD%E6%95%B0"><span class="nav-number">2.4.2.</span> <span class="nav-text">风险函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A3%8E%E9%99%A9%E6%9C%80%E5%B0%8F%E5%8C%96"><span class="nav-number">2.4.3.</span> <span class="nav-text">风险最小化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9"><span class="nav-number">3.</span> <span class="nav-text">1.4 模型评估与模型选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E8%AF%AF%E5%B7%AE-amp-%E6%B5%8B%E8%AF%95%E8%AF%AF%E5%B7%AE"><span class="nav-number">3.1.</span> <span class="nav-text">训练误差&amp;测试误差</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-%E6%AD%A3%E5%88%99%E5%8C%96%E4%B8%8E%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81"><span class="nav-number">4.</span> <span class="nav-text">1.5 正则化与交叉验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96"><span class="nav-number">4.1.</span> <span class="nav-text">正则化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81"><span class="nav-number">4.2.</span> <span class="nav-text">交叉验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-%E6%B3%9B%E5%8C%96%E8%83%BD%E5%8A%9B"><span class="nav-number">5.</span> <span class="nav-text">1.6 泛化能力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%88%A4%E5%88%AB%E6%A8%A1%E5%9E%8B"><span class="nav-number">6.</span> <span class="nav-text">1.7 生成模型与判别模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text">1.8 分类问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-9-%E6%A0%87%E6%B3%A8%E9%97%AE%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text">1.9 标注问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-10-%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98"><span class="nav-number">9.</span> <span class="nav-text">1.10 回归问题</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-Logistic%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">6.1 Logistic回归模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Logistic%E5%88%86%E5%B8%83"><span class="nav-number">1.1.</span> <span class="nav-text">Logistic分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E9%A1%B9Logistic%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">二项Logistic回归模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="nav-number">1.3.</span> <span class="nav-text">模型参数估计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E9%A1%B9Logistic%E5%9B%9E%E5%BD%92"><span class="nav-number">1.4.</span> <span class="nav-text">多项Logistic回归</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">6.2 最大熵模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E7%86%B5%E5%8E%9F%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">最大熵原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%AE%9A%E4%B9%89"><span class="nav-number">2.2.</span> <span class="nav-text">模型定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%AD%A6%E4%B9%A0"><span class="nav-number">2.3.</span> <span class="nav-text">模型学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TO-BE-COMPLETED"><span class="nav-number">2.4.</span> <span class="nav-text">TO BE COMPLETED</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
