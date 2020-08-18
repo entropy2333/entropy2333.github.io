@@ -20,23 +20,25 @@
     var CONFIG = {"hostname":"entropy2333.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="感知机，是二分类的线性分类模型。输入为实例的特征向量，输出为±1，旨在求出将训练数据进行线性划分的分离超平面，是神经网络与SVM的基础。">
+  <meta name="description" content="SVM是一种二分类模型，其基本模型是定义在特征空间上的间隔最大的线性分类器，间隔最大使其区别于感知机。 SVM包括Kernel trick，使其成为实质上的非线性分类器，SVM的学习策略是间隔最大化，学习算法是求解凸二次规划的最优化算法。 SVM包括三种模型：线性可分SVM、线性SVM、非线性SVM。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="统计学习方法（二）感知机">
-<meta property="og:url" content="https://entropy2333.github.io/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/index.html">
+<meta property="og:title" content="统计学习方法（七）支持向量机">
+<meta property="og:url" content="https://entropy2333.github.io/2020/08/19/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%83%EF%BC%89%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/index.html">
 <meta property="og:site_name" content="entropy2333">
-<meta property="og:description" content="感知机，是二分类的线性分类模型。输入为实例的特征向量，输出为±1，旨在求出将训练数据进行线性划分的分离超平面，是神经网络与SVM的基础。">
+<meta property="og:description" content="SVM是一种二分类模型，其基本模型是定义在特征空间上的间隔最大的线性分类器，间隔最大使其区别于感知机。 SVM包括Kernel trick，使其成为实质上的非线性分类器，SVM的学习策略是间隔最大化，学习算法是求解凸二次规划的最优化算法。 SVM包括三种模型：线性可分SVM、线性SVM、非线性SVM。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://entropy2333.github.io/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/perc1.png">
-<meta property="article:published_time" content="2020-08-12T15:32:47.000Z">
-<meta property="article:modified_time" content="2020-08-18T16:15:29.281Z">
+<meta property="og:image" content="https://entropy2333.github.io/2020/08/19/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%83%EF%BC%89%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/1.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/08/19/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%83%EF%BC%89%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/2.png">
+<meta property="article:published_time" content="2020-08-18T16:06:16.000Z">
+<meta property="article:modified_time" content="2020-08-18T17:08:28.353Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="机器学习">
-<meta property="article:tag" content="感知机">
+<meta property="article:tag" content="SVM">
+<meta property="article:tag" content="Kernel trick">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://entropy2333.github.io/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/perc1.png">
+<meta name="twitter:image" content="https://entropy2333.github.io/2020/08/19/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%83%EF%BC%89%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/1.png">
 
-<link rel="canonical" href="https://entropy2333.github.io/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/">
+<link rel="canonical" href="https://entropy2333.github.io/2020/08/19/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%83%EF%BC%89%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/">
 
 
 <script id="page-configurations">
@@ -49,7 +51,7 @@
   };
 </script>
 
-  <title>统计学习方法（二）感知机 | entropy2333</title>
+  <title>统计学习方法（七）支持向量机 | entropy2333</title>
   
 
 
@@ -198,7 +200,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/">
+    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2020/08/19/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%83%EF%BC%89%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/myavatar.jpg">
@@ -211,7 +213,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          统计学习方法（二）感知机
+          统计学习方法（七）支持向量机
         </h1>
 
         <div class="post-meta">
@@ -221,7 +223,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-08-12 23:32:47" itemprop="dateCreated datePublished" datetime="2020-08-12T23:32:47+08:00">2020-08-12</time>
+              <time title="创建时间：2020-08-19 00:06:16" itemprop="dateCreated datePublished" datetime="2020-08-19T00:06:16+08:00">2020-08-19</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -249,8 +251,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/08/19/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%83%EF%BC%89%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/19/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%83%EF%BC%89%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -260,14 +262,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.8k</span>
+              <span>3.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -279,78 +281,114 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>感知机，是二分类的线性分类模型。输入为实例的特征向量，输出为±1，旨在求出将训练数据进行线性划分的分离超平面，是神经网络与SVM的基础。</p>
+        <p>SVM是一种二分类模型，其基本模型是定义在特征空间上的间隔最大的线性分类器，间隔最大使其区别于感知机。</p>
+<p>SVM包括Kernel trick，使其成为实质上的非线性分类器，SVM的学习策略是间隔最大化，学习算法是求解凸二次规划的最优化算法。</p>
+<p>SVM包括三种模型：线性可分SVM、线性SVM、非线性SVM。</p>
 <a id="more"></a>
-<h2 id="2-1-感知机模型"><a href="#2-1-感知机模型" class="headerlink" title="2.1 感知机模型"></a>2.1 感知机模型</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><script type="math/tex; mode=display">
-f(x) = sign(w·x + b) \\
-{\cal X} \subset R^n, \quad {\cal Y} = \{-1, +1\}</script><p>其中w和b为感知机模型参数，w称为权值（向量），b称为偏置（bias）。</p>
+<h2 id="7-1-线性可分SVM与硬间隔最大化"><a href="#7-1-线性可分SVM与硬间隔最大化" class="headerlink" title="7.1 线性可分SVM与硬间隔最大化"></a>7.1 线性可分SVM与硬间隔最大化</h2><h3 id="线性可分SVM"><a href="#线性可分SVM" class="headerlink" title="线性可分SVM"></a>线性可分SVM</h3><p>对于二分类问题，线性可分SVM假设输入空间与特征空间的元素一一对应。</p>
+<p>给定训练集</p>
 <script type="math/tex; mode=display">
-sign(x) = \begin{cases} +1, \quad x\geq 0 \\ -1, \quad x < 0\end{cases}</script><h3 id="几何解释"><a href="#几何解释" class="headerlink" title="几何解释"></a>几何解释</h3><p>线性方程</p>
+T = \{(x_1,y_1),(x_2,y_2),\cdots,(x_N,y_N)\} \\
+x_i\in{\cal X} = \R^n,\quad y_i\in{\cal Y}=\{-1,+1\}</script><p>假设训练数据集是<strong>线性可分</strong>的（见2.2）</p>
+<p>通过间隔最大化或等价地求解相应的凸二次规划问题学习得到的分离超平面为</p>
 <script type="math/tex; mode=display">
-w·x + b = 0</script><p>对应于特征空间中的一个超平面S，w表示超平面的法向量，b为超平面的截距。</p>
-<p><img src="/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/perc1.png" alt></p>
-<h2 id="2-2-感知机学习策略"><a href="#2-2-感知机学习策略" class="headerlink" title="2.2 感知机学习策略"></a>2.2 感知机学习策略</h2><h3 id="数据集的线性可分性"><a href="#数据集的线性可分性" class="headerlink" title="数据集的线性可分性"></a>数据集的线性可分性</h3><p>给定一个数据集，如果存在超平面S，能够将数据集的正实例点和负实例点完全正确划分，则称数据及为线性可分数据集。</p>
-<h4 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h4><p>损失函数的一个自然选择是误分类点的总数，但这样不是参数的连续可导函数，不易优化。</p>
-<p>感知机选择的损失函数是误分类点到超平面S的总距离，输入空间任一点到超平面S的距离为</p>
+w^*\cdot x+b^*=0</script><p>相应的分类决策函数</p>
 <script type="math/tex; mode=display">
-\frac 1 {\|w\|} |w·x_0+b|,其中\|w\|为w的L_2范数</script><p>对于误分类的数据来说，始终有</p>
+f(x) = sign(w^*\cdot x+b^*)</script><p>称为线性可分SVM。</p>
+<p><img src="/2020/08/19/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%83%EF%BC%89%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/1.png" alt></p>
+<h3 id="函数间隔和几何间隔"><a href="#函数间隔和几何间隔" class="headerlink" title="函数间隔和几何间隔"></a>函数间隔和几何间隔</h3><p>对于给定的训练集T和超平面<script type="math/tex">(w,b)</script>，定义超平面关于样本点的函数间隔为</p>
 <script type="math/tex; mode=display">
--y_i(w·x_i+b) > 0</script><p>所以距离为</p>
+\hat\gamma_i = y_i(w\cdot x_i+b)</script><p>定义超平面关于训练集T的函数间隔为</p>
 <script type="math/tex; mode=display">
-- \frac 1 {\|w\|}y_i(w·x_i+b)</script><p>假设误分类点集合为M，求和即得</p>
+\hat\gamma = \min_{i=1,\cdots,N}\hat\gamma_i</script><p>函数间隔可以表示分类预测的正确性及确信度，但成比例地改变参数时，超平面没有改变，函数间隔却成比例地改变，因此需要定义几何间隔。</p>
+<p>某一实例点与超平面的距离为</p>
 <script type="math/tex; mode=display">
-- \frac 1 {\|w\|}\sum _{x_i\in M}y_i(w·x_i+b)</script><p>不考虑系数，损失函数即为</p>
+\gamma_i=\frac w {\|w\|}\cdot x_i+\frac b {\|w\|}</script><p>其中<script type="math/tex">\|w\|</script>为<script type="math/tex">L_2</script>范数，如果实例点在超平面负的一侧，取负值即可。</p>
+<p>因此定义几何间隔为</p>
 <script type="math/tex; mode=display">
-L(w, b) = - \sum _{x_i\in M}y_i(w·x_i+b)</script><p>误分类点越少，损失函数值越小，如果没有误分类点，损失函数值为0。</p>
-<h2 id="2-3-感知机学习算法"><a href="#2-3-感知机学习算法" class="headerlink" title="2.3 感知机学习算法"></a>2.3 感知机学习算法</h2><h3 id="形式化"><a href="#形式化" class="headerlink" title="形式化"></a>形式化</h3><p>给定训练集</p>
+\gamma_i=y_i(\frac w {\|w\|}\cdot x_i+\frac b {\|w\|}) \\
+\gamma = \min_{i=1,\cdots,N}\gamma_i</script><p>函数间隔和几何间隔满足如下关系</p>
 <script type="math/tex; mode=display">
-T = \{(x_1, y_1), (x_2, y_2), ... , (x_N, y_N)\} \\
-x_i\in {\cal X} = R^n, y_i \in {\cal Y} = \{-1, +1\}</script><p>求参数w和b，使得损失函数极小化</p>
+\gamma_i=\frac{\hat\gamma_i}{\|w\|},\quad \gamma=\frac{\hat\gamma}{\|w\|}</script><h3 id="间隔最大化"><a href="#间隔最大化" class="headerlink" title="间隔最大化"></a>间隔最大化</h3><p>SVM学习的基本想法是，求解能够划分训练集并且几何间隔最大的分离超平面。</p>
+<p>对于线性可分的训练集，线性可分分离超平面有无穷多个，但集合间隔最大的分离超平面是唯一的。</p>
+<p>下面考虑如何求解最大间隔分离超平面，表示为下面的约束最优化问题</p>
 <script type="math/tex; mode=display">
-\min_{w,b} L(w,b) = - \sum _{x_i\in M}y_i(w·x_i+b)</script><p>学习算法是误分类驱动的，具体采用随机梯度下降法，首先任意选取一个超平面，之后用梯度下降法不断极小化目标函数。</p>
-<p>损失函数的梯度为</p>
+\begin{align}
+\max_{w,b} \quad&\gamma \\
+s.t. \quad&y_i(\frac w {\|w\|}\cdot x_i+\frac b {\|w\|})\geq\gamma, \quad i=1,2,\cdots,N
+\end{align}</script><p>利用几何间隔和函数间隔的关系</p>
 <script type="math/tex; mode=display">
-\nabla_w L(w,b) = -\sum _{x_i\in M} y_ix_i \\
-\nabla_b L(w,b) = -\sum _{x_i\in M} y_i</script><p>随机选取一个误分类点，对参数进行更新</p>
+\begin{align}
+\max_{w,b} \quad&\frac{\hat\gamma}{\|w\|} \\
+s.t. \quad&y_i( w\cdot x_i+b)\geq\hat\gamma, \quad i=1,2,\cdots,N
+\end{align}</script><p>取<script type="math/tex">\hat\gamma=1</script>，注意到最大化<script type="math/tex">\frac 1{\|w\|}</script>与最小化<script type="math/tex">\frac 1 2\|w\|^2</script>是等价的，由此将问题转化为</p>
 <script type="math/tex; mode=display">
-w \leftarrow w + \eta y_ix_i \\
-b \leftarrow b + \eta y_i \\
-\eta \in (0, 1]</script><h3 id="原始形式"><a href="#原始形式" class="headerlink" title="原始形式"></a>原始形式</h3><ol>
-<li><p>选取参数初值<script type="math/tex">w_0,b_0</script></p>
-</li>
-<li><p>在训练集中选取数据<script type="math/tex">(x_i, y_i)</script></p>
-</li>
-<li><p>如果<script type="math/tex">y_i(wx_i+b)\leq 0</script>，则更新参数</p>
+\begin{align}
+\min_{w,b} \quad&\frac 1 2\|w\|^2 \\
+s.t. \quad&y_i( w\cdot x_i+b)-1\geq0, \quad i=1,2,\cdots,N
+\end{align} \tag{7.1}</script><p>这就是一个凸二次规划问题。</p>
+<h4 id="凸优化问题"><a href="#凸优化问题" class="headerlink" title="凸优化问题"></a>凸优化问题</h4><p>凸优化问题是指约束最优化问题</p>
 <script type="math/tex; mode=display">
-w \leftarrow w + \eta y_ix_i \\
-b \leftarrow b + \eta y_i</script></li>
-<li><p>转至2直至没有误分类点</p>
-</li>
-</ol>
-<h3 id="收敛性"><a href="#收敛性" class="headerlink" title="收敛性"></a>收敛性</h3><p>(<strong>Novikoff</strong>) 存在满足条件的超平面，且感知机算法的误分类次数k满足不等式</p>
-<script type="math/tex; mode=display">
-k \leq (\frac R \gamma)^2</script><h3 id="对偶形式"><a href="#对偶形式" class="headerlink" title="对偶形式"></a>对偶形式</h3><p>基本想法是，将w和b表示为实例x与标记y的线性组合，通过求解系数求得w和b。</p>
-<p>最后学习到的w和b可表示为</p>
-<script type="math/tex; mode=display">
-w = \sum _{i=1} ^N \alpha_iy_ix_i \\
-b = \sum _{i=1} ^N \alpha_iy_i</script><p>训练过程</p>
-<ol>
-<li><p>选取α和b为0,</p>
-</li>
-<li><p>在训练集中选取数据</p>
-</li>
-<li><p>若<script type="math/tex">y_i(\sum _{j=1} ^N \alpha_jy_jx_j\cdot x_i+b)\leq 0</script>，则更新参数</p>
-</li>
-</ol>
-<script type="math/tex; mode=display">
-\alpha_i \leftarrow \alpha_i + \eta \\
-b \leftarrow b + \eta y_i</script><ol>
-<li>转至2直至没有误分类数据</li>
-</ol>
+\begin{align}
+\min_w \quad& f(w) \\
+s.t. \quad& g_i(w)\leq0, \quad i=1,2,\cdots,k\\
+\quad &h_i(w)=0,\quad i=1,2,\cdots,l
+\end{align}</script><p>其中，<script type="math/tex">f(w)</script>和<script type="math/tex">g_i(w)</script>都是<script type="math/tex">\R^n</script>上连续可微的凸函数，约束函数<script type="math/tex">h_i(w)</script>是<script type="math/tex">\R^n</script>上的仿射函数。</p>
 <blockquote>
-<p>Gram矩阵？</p>
-</blockquote>
-<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Perceptron</span><br><span class="line"></span><br><span class="line">clf = Perceptron(fit_intercept=<span class="literal">True</span>, </span><br><span class="line">                 max_iter=<span class="number">1000</span>, </span><br><span class="line">                 shuffle=<span class="literal">True</span>)</span><br><span class="line">clf.fit(X, y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Weights assigned to the features.</span></span><br><span class="line">print(clf.coef_)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Constants in decision function.</span></span><br><span class="line">print(clf.intercept_)</span><br><span class="line"></span><br><span class="line">y_ = -(clf.coef_[<span class="number">0</span>][<span class="number">0</span>]*x_ponits + clf.intercept_)/clf.coef_[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">plt.plot(x_ponits, y_)</span><br><span class="line">plt.plot(x_ponits, y_)</span><br></pre></td></tr></table></figure>
+<script type="math/tex; mode=display">f(x)$$称为仿射函数，如果它满足$$f(x) = a\cdot x+b$$，其中$$a,x\in\R^n,b\in\R</script></blockquote>
+<p>当<script type="math/tex">f(w)</script>是二次函数，且约束函数<script type="math/tex">g_i(w)</script>是仿射函数时，凸优化问题称为凸二次规划问题。</p>
+<p>可以证明，最大间隔分离超平面是存在且唯一的。</p>
+<h4 id="支持向量和间隔边界"><a href="#支持向量和间隔边界" class="headerlink" title="支持向量和间隔边界"></a>支持向量和间隔边界</h4><p>在线性可分情况下，训练集中的样本点与分离超平面距离最近的，称为支持向量。</p>
+<p>支持向量满足等式</p>
+<script type="math/tex; mode=display">
+y_i(w\cdot x_i+b)-1=0</script><p>定义超平面</p>
+<script type="math/tex; mode=display">
+H_1: w\cdot x+b=1 \\
+H_2: w\cdot x+b=-1</script><p>显然，在<script type="math/tex">H_1</script>和<script type="math/tex">H_2</script>上的点就是支持向量，这两个超平面成为间隔边界。。</p>
+<p>注意到这两个超平面平行，并且没有实例点落在其中，由此形成一条长带。</p>
+<p>两个超平面之间的距离成为间隔，它依赖于分离超平面的法向量<script type="math/tex">w</script>，等于<script type="math/tex">\frac 2{\|w\|}</script>。</p>
+<p><img src="/2020/08/19/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%83%EF%BC%89%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/2.png" alt></p>
+<p>在决定分离超平面时，只有支持向量起作用。如果在间隔边界以外移动其他实例点，甚至去掉这些点，超平面是不会改变的。</p>
+<p>因为支持向量的决定性作用，所以讲这种分类模型称为支持向量机。</p>
+<p>支持向量的个数一般很少，所以SVM由很少的“重要的”训练样本确定。</p>
+<h3 id="学习的对偶算法"><a href="#学习的对偶算法" class="headerlink" title="学习的对偶算法"></a>学习的对偶算法</h3><p>利用拉格朗日对偶性，通过求解对偶问题得到原始问题的最优解。这样做的优点，一是对偶问题往往更容易求解；二是自然引入核函数，从而推广到非线性分类问题。</p>
+<p>首先构造拉格朗日函数</p>
+<script type="math/tex; mode=display">
+L(w,b,\alpha) = \frac1 2{\|w\|}^2-\sum_{i=1}^N\alpha_iy_i(w\cdot x_i+b)+\sum_{i=1}^N\alpha_i \\
+\alpha = (\alpha_1,\alpha_2,\cdots,\alpha_N)^T</script><p>根据对偶性，原始问题的对偶问题是</p>
+<script type="math/tex; mode=display">
+\max_\alpha\min_{w,b}L(w,b,\alpha)</script><p>分别求偏导数并令其等于0。</p>
+<script type="math/tex; mode=display">
+\nabla_wL(w,b,\alpha) = w-\sum_{i=1}^N\alpha_iy_ix_i = 0\\
+\nabla_bL(w,b,\alpha) = -\sum_{i=1}^N\alpha_iy_i = 0</script><p>由此得到</p>
+<script type="math/tex; mode=display">
+w = \sum_{i=1}^N\alpha_iy_ix_i \\
+\sum_{i=1}^N\alpha_iy_i=0</script><p>将其代入原函数</p>
+<script type="math/tex; mode=display">
+\begin{align}
+L(w,b,\alpha) &= \frac12\sum_{i=1}^N\sum_{j=1}^N\alpha_i\alpha_jy_iy_j(x_i\cdot x_j) - \sum_{i=1}^N\alpha_iy_i((\sum_{j=1}^N\alpha_jy_jx_j)\cdot x_i+b)+\sum_{i=1}^N\alpha_i \\
+&= -\frac12\sum_{i=1}^N\sum_{j=1}^N\alpha_i\alpha_jy_iy_j(x_i\cdot x_j)+\sum_{i=1}^N\alpha_i
+\end{align}</script><p>对其求极大值</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\max_\alpha \quad& -\frac12\sum_{i=1}^N\sum_{j=1}^N\alpha_i\alpha_jy_iy_j(x_i\cdot x_j)+\sum_{i=1}^N\alpha_i \\
+s.t. \quad& \sum_{i=1}^N\alpha_iy_i=0\\
+\quad &\alpha_i\geq0,\quad i=1,2,\cdots,N
+\end{align}</script><p>也即</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\min_\alpha \quad& \frac12\sum_{i=1}^N\sum_{j=1}^N\alpha_i\alpha_jy_iy_j(x_i\cdot x_j)-\sum_{i=1}^N\alpha_i \\
+s.t. \quad& \sum_{i=1}^N\alpha_iy_i=0\\
+\quad &\alpha_i\geq0,\quad i=1,2,\cdots,N
+\end{align} \tag{7.2}</script><p>原始问题(7.1)转化为求解对偶问题(7.2)</p>
+<p>假设<script type="math/tex">\alpha^*=(\alpha_1^*,\alpha_2^*,\cdots,\alpha_l^*)^T</script>为对偶最优化问题的解，则原始问题的解可通过如下关系求得</p>
+<script type="math/tex; mode=display">
+w^*=\sum_{i=1}^N\alpha_i^*y_ix_i \\
+b^* = y_j-\sum_{i=1}^N\alpha_i^*y_i(x_i\cdot x_j),\quad\alpha_j^*>0</script><p>由此求得分离超平面和分类决策函数</p>
+<script type="math/tex; mode=display">
+w^*\cdot x+b^*=0 \\
+f(x) = sign(w^*\cdot x+b^*)</script><p>对于线性可分问题，上述学习算法是完美的，但现实问题中，样本中会出现噪声或特异点，此时需要更一般的学习算法。</p>
+<h2 id="7-2-线性SVM与软间隔最大化"><a href="#7-2-线性SVM与软间隔最大化" class="headerlink" title="7.2 线性SVM与软间隔最大化"></a>7.2 线性SVM与软间隔最大化</h2><p>to be completed</p>
 
     </div>
 
@@ -364,6 +402,9 @@ b \leftarrow b + \eta y_i</script><ol>
       <div class="popular-posts-title"><a href="\2020\08\13\统计学习方法（三）k近邻法\" rel="bookmark">统计学习方法（三）k近邻法</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\08\12\统计学习方法（二）感知机\" rel="bookmark">统计学习方法（二）感知机</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2020\08\14\统计学习方法（四）朴素贝叶斯法\" rel="bookmark">统计学习方法（四）朴素贝叶斯法</a></div>
     </li>
     <li class="popular-posts-item">
@@ -371,9 +412,6 @@ b \leftarrow b + \eta y_i</script><ol>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2020\08\15\统计学习方法（五）决策树\" rel="bookmark">统计学习方法（五）决策树</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\17\统计学习方法（六）Logistic回归与最大熵模型\" rel="bookmark">统计学习方法（六）Logistic回归与最大熵模型</a></div>
     </li>
   </ul>
 
@@ -396,7 +434,8 @@ b \leftarrow b + \eta y_i</script><ol>
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
-              <a href="/tags/%E6%84%9F%E7%9F%A5%E6%9C%BA/" rel="tag"># 感知机</a>
+              <a href="/tags/SVM/" rel="tag"># SVM</a>
+              <a href="/tags/Kernel-trick/" rel="tag"># Kernel trick</a>
           </div>
 
         
@@ -405,13 +444,10 @@ b \leftarrow b + \eta y_i</script><ol>
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/08/11/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%AE%BA/" rel="prev" title="统计学习方法（一）概论">
-      <i class="fa fa-chevron-left"></i> 统计学习方法（一）概论
+    <a href="/2020/08/17/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AD%EF%BC%89Logistic%E5%9B%9E%E5%BD%92%E4%B8%8E%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B/" rel="prev" title="统计学习方法（六）Logistic回归与最大熵模型">
+      <i class="fa fa-chevron-left"></i> 统计学习方法（六）Logistic回归与最大熵模型
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/" rel="next" title="统计学习方法（三）k近邻法">
-      统计学习方法（三）k近邻法 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -471,7 +507,7 @@ b \leftarrow b + \eta y_i</script><ol>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%84%9F%E7%9F%A5%E6%9C%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">2.1 感知机模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E8%A7%A3%E9%87%8A"><span class="nav-number">1.2.</span> <span class="nav-text">几何解释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E6%84%9F%E7%9F%A5%E6%9C%BA%E5%AD%A6%E4%B9%A0%E7%AD%96%E7%95%A5"><span class="nav-number">2.</span> <span class="nav-text">2.2 感知机学习策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E7%BA%BF%E6%80%A7%E5%8F%AF%E5%88%86%E6%80%A7"><span class="nav-number">2.1.</span> <span class="nav-text">数据集的线性可分性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.1.</span> <span class="nav-text">损失函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%84%9F%E7%9F%A5%E6%9C%BA%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">2.3 感知机学习算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%A2%E5%BC%8F%E5%8C%96"><span class="nav-number">3.1.</span> <span class="nav-text">形式化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%A7%8B%E5%BD%A2%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">原始形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B6%E6%95%9B%E6%80%A7"><span class="nav-number">3.3.</span> <span class="nav-text">收敛性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E5%81%B6%E5%BD%A2%E5%BC%8F"><span class="nav-number">3.4.</span> <span class="nav-text">对偶形式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scikit-learn"><span class="nav-number">4.</span> <span class="nav-text">Scikit-learn</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-%E7%BA%BF%E6%80%A7%E5%8F%AF%E5%88%86SVM%E4%B8%8E%E7%A1%AC%E9%97%B4%E9%9A%94%E6%9C%80%E5%A4%A7%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">7.1 线性可分SVM与硬间隔最大化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%8F%AF%E5%88%86SVM"><span class="nav-number">1.1.</span> <span class="nav-text">线性可分SVM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E9%97%B4%E9%9A%94%E5%92%8C%E5%87%A0%E4%BD%95%E9%97%B4%E9%9A%94"><span class="nav-number">1.2.</span> <span class="nav-text">函数间隔和几何间隔</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%B4%E9%9A%94%E6%9C%80%E5%A4%A7%E5%8C%96"><span class="nav-number">1.3.</span> <span class="nav-text">间隔最大化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%B8%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.1.</span> <span class="nav-text">凸优化问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E5%92%8C%E9%97%B4%E9%9A%94%E8%BE%B9%E7%95%8C"><span class="nav-number">1.3.2.</span> <span class="nav-text">支持向量和间隔边界</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%AF%B9%E5%81%B6%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.</span> <span class="nav-text">学习的对偶算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-%E7%BA%BF%E6%80%A7SVM%E4%B8%8E%E8%BD%AF%E9%97%B4%E9%9A%94%E6%9C%80%E5%A4%A7%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">7.2 线性SVM与软间隔最大化</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -637,6 +673,61 @@ b \leftarrow b + \eta y_i</script><ol>
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
