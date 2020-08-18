@@ -637,7 +637,58 @@ L(P,w) &= -H(P) + w_o(1-\sum_yP(y|x))+\sum_{i=1}^nw_i(E_P(f_i) - E_{\widetilde P
 <script type="math/tex; mode=display">
 \min_{\cal P\in C}\max_wL(P,w)</script><p>对偶问题是</p>
 <script type="math/tex; mode=display">
-\max_{w}\min_{\cal P\in C}L(P,w)</script><h3 id="TO-BE-COMPLETED"><a href="#TO-BE-COMPLETED" class="headerlink" title="TO BE COMPLETED"></a>TO BE COMPLETED</h3>]]></content>
+\max_{w}\min_{\cal P\in C}L(P,w)</script><p>具体地</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\frac {\part L(P,w)} {\part P(y|x)} &= \sum_{x,y}\widetilde P(x)(logP(y|x)+1)-\sum_yw_0-\sum_{x,y}(\widetilde P(x)\sum_{i=1}^nw_if_i(x,y)) \\
+&= \sum_{x,y}\widetilde P(x)(logP(y|x)+1-w_0-\sum_{i=1}^nw_if_i(x,y))
+\end{align}</script><p>令<script type="math/tex">\frac {\part L(P,w)} {\part P(y|x)}=0</script>，得到</p>
+<script type="math/tex; mode=display">
+P_w(y|x) = \frac 1 {Z_w(x)}\exp(\sum_{i=1}^nw_if_i(x,y)) \\
+Z_w(x) = \sum_y\exp(\sum_{i=1}^nw_if_i(x,y))</script><script type="math/tex; mode=display">Z_w(x)$$称为规范化因子，$$f_i(x,y)$$是特征函数，由此表示的模型$$P_w$$就是最大熵模型。
+
+对偶函数的极大化，等价于最大熵模型的极大似然估计。
+
+## 6.3 模型学习的最优化算法
+
+### 改进的迭代尺度法
+
+改进的迭代尺度法（improved iterative scaling，IIS）基本想法是，找到新的参数向量$$w+\delta$$，使得模型的对数似然函数值增大，即</script><p>\begin{align}<br>L(w+\delta) - L(w) &amp;= \sum_{x,y}\widetilde P(x,y)\log P_{w+\delta}(y|x) - \widetilde P(x,y)\log P_{w}(y|x) \\<br>&amp;= \sum_{x,y}\widetilde P(x,y)\sum_{i=1}^n\delta_if_i(x,y) - \sum_x\widetilde P(x)\log \frac{Z_{w+\delta}(x)}{Z_w(x)} \geq 0<br>\end{align}</p>
+<script type="math/tex; mode=display">
+利用不等式</script><p>-\log\alpha\geq1-\alpha,\quad\alpha&gt;0</p>
+<script type="math/tex; mode=display">
+由此</script><p>\begin{align}<br>L(w+\delta) - L(w) &amp;\geq \sum_{x,y}\widetilde P(x,y)\sum_{i=1}^n\delta_if_i(x,y)+1-\sum_x\widetilde P(x)\frac{Z_{w+\delta}(x)}{Z_w(x)} \\<br>&amp;= \sum_{x,y}\widetilde P(x,y)\sum_{i=1}^n\delta_if_i(x,y)+1-\sum_x\widetilde P(x)\sum_yP_w(y|x)\exp\sum_{i=1}^n\delta_if_i(x,y) \\<br>&amp;= A(\delta|w)<br>\end{align}</p>
+<script type="math/tex; mode=display">
+即$$A(\delta|w)$$是改变量的一个下界，IIS试图每次只优化其中一个变量$$\delta_i$$，而固定其他变量。
+
+通过推算，可以得到新的（相对不紧的）下界</script><p>L(w+\delta)-L(w)\geq B(\delta|w)</p>
+<script type="math/tex; mode=display">
+通过对$$B(\delta|w)$$求偏导数，并令其为0，得到相应的等式，依次求解方程即可。
+
+#### 算法
+
+**输入**：特征函数，经验分布，模型
+
+**输出**：最优参数值，最优模型
+
+**步骤**：
+
+- $$\forall i\in\{1,2,\cdots,n\},\quad w_i=0</script><ul>
+<li><script type="math/tex; mode=display">\forall i\in\{1,2,\cdots,n\}</script><ul>
+<li><script type="math/tex; mode=display">\delta_i$$满足方程</script><p>\sum_{x,y}\widetilde P(x)P(y|x)f_i(x,y)\exp(\delta_if^#(x,y)) = E_{\widetilde P}(f_i)</p>
+<script type="math/tex; mode=display">
+其中</script><p>f^#(x,y) = \sum_{i=1}^nf_i(x,y)<br>$$</p>
+</li>
+<li><p>更新<script type="math/tex">w_i</script>：<script type="math/tex">w_i\leftarrow w_i+\delta_i</script></p>
+</li>
+</ul>
+</li>
+<li><p>重复直至所有<script type="math/tex">w_i</script>都收敛</p>
+</li>
+</ul>
+<h3 id="拟牛顿法"><a href="#拟牛顿法" class="headerlink" title="拟牛顿法"></a>拟牛顿法</h3><p>略。</p>
+<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line"></span><br><span class="line"><span class="comment"># solver: liblinear, lbfgs, newton-cg, sag</span></span><br><span class="line">clf = LogisticRegression(max_iter=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br><span class="line"></span><br><span class="line">print(clf.coef_, clf.intercept_)</span><br></pre></td></tr></table></figure>
+]]></content>
       <categories>
         <category>统计学习方法</category>
       </categories>
