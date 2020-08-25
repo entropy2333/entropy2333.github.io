@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://entropy2333.github.io/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/1.png">
 <meta property="og:image" content="https://entropy2333.github.io/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/2.png">
 <meta property="article:published_time" content="2020-08-22T03:43:25.000Z">
-<meta property="article:modified_time" content="2020-08-22T05:03:34.061Z">
+<meta property="article:modified_time" content="2020-08-22T05:23:06.001Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="CV">
 <meta property="article:tag" content="detectron2">
@@ -261,7 +261,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.9k</span>
+              <span>1.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -313,8 +313,8 @@
 <p>开始安装</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python setup.py build develop</span><br></pre></td></tr></table></figure>
 <p>安装过程无报错即可。</p>
-<h4 id="目标检测"><a href="#目标检测" class="headerlink" title="目标检测"></a>目标检测</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input input.jpg --output outputs/ --opts MODEL.WEIGHTS detectron2://COCO-Detection/faster_rcnn_R_50_FPN_1x/137257794/model_final_b275ba.pkl</span><br></pre></td></tr></table></figure>
-<h4 id="实例分割"><a href="#实例分割" class="headerlink" title="实例分割"></a>实例分割</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 demo/demo.py --config-file configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml --input input.jpg --output outputs --opts MODEL.WEIGHTS detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl</span><br></pre></td></tr></table></figure>
+<h4 id="目标检测"><a href="#目标检测" class="headerlink" title="目标检测"></a>目标检测</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_b275ba.pkl</span><br></pre></td></tr></table></figure>
+<h4 id="实例分割"><a href="#实例分割" class="headerlink" title="实例分割"></a>实例分割</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_f10217.pkl</span><br></pre></td></tr></table></figure>
 <h2 id="可能出现的问题"><a href="#可能出现的问题" class="headerlink" title="可能出现的问题"></a>可能出现的问题</h2><p><a target="_blank" rel="noopener" href="https://github.com/conansherry/detectron2/issues/2">github issue</a></p>
 <p>安装时提示缺少什么包，直接pip install即可，出问题可以查stackoverflow。</p>
 <h3 id="cl-exe出错"><a href="#cl-exe出错" class="headerlink" title="cl.exe出错"></a>cl.exe出错</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35067322/article/details/105835311">解决方法</a></p>
@@ -372,7 +372,10 @@
     <a href="/2020/08/19/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%83%EF%BC%89%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" rel="prev" title="统计学习方法（七）支持向量机">
       <i class="fa fa-chevron-left"></i> 统计学习方法（七）支持向量机
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/25/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AB%EF%BC%89%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/" rel="next" title="统计学习方法（八）提升方法">
+      统计学习方法（八）提升方法 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -448,20 +451,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -515,12 +518,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">24k</span>
+    <span title="站点总字数">27k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">22 分钟</span>
+    <span title="站点阅读时长">24 分钟</span>
 </div>
 
         

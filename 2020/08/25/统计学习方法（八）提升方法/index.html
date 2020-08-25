@@ -20,24 +20,21 @@
     var CONFIG = {"hostname":"entropy2333.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="k近邻法，是一种基本分类与回归方法。输入为特征向量，输出为类别。">
+  <meta name="description" content="提升方法，在分类问题中通过改变训练样本的权重，学习多个分类器，并将分类器线性组合，提高分类的性能。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="统计学习方法（三）k近邻法">
-<meta property="og:url" content="https://entropy2333.github.io/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/index.html">
+<meta property="og:title" content="统计学习方法（八）提升方法">
+<meta property="og:url" content="https://entropy2333.github.io/2020/08/25/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AB%EF%BC%89%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/index.html">
 <meta property="og:site_name" content="entropy2333">
-<meta property="og:description" content="k近邻法，是一种基本分类与回归方法。输入为特征向量，输出为类别。">
+<meta property="og:description" content="提升方法，在分类问题中通过改变训练样本的权重，学习多个分类器，并将分类器线性组合，提高分类的性能。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://entropy2333.github.io/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png">
-<meta property="og:image" content="https://entropy2333.github.io/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png">
-<meta property="article:published_time" content="2020-08-13T08:21:39.000Z">
-<meta property="article:modified_time" content="2020-08-16T09:39:11.763Z">
+<meta property="article:published_time" content="2020-08-25T06:56:21.000Z">
+<meta property="article:modified_time" content="2020-08-25T07:57:45.676Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="机器学习">
-<meta property="article:tag" content="KNN">
+<meta property="article:tag" content="提升方法">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://entropy2333.github.io/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png">
 
-<link rel="canonical" href="https://entropy2333.github.io/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/">
+<link rel="canonical" href="https://entropy2333.github.io/2020/08/25/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AB%EF%BC%89%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/">
 
 
 <script id="page-configurations">
@@ -50,7 +47,7 @@
   };
 </script>
 
-  <title>统计学习方法（三）k近邻法 | entropy2333</title>
+  <title>统计学习方法（八）提升方法 | entropy2333</title>
   
 
 
@@ -199,7 +196,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2020/08/25/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AB%EF%BC%89%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/myavatar.jpg">
@@ -212,7 +209,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          统计学习方法（三）k近邻法
+          统计学习方法（八）提升方法
         </h1>
 
         <div class="post-meta">
@@ -222,7 +219,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-08-13 16:21:39" itemprop="dateCreated datePublished" datetime="2020-08-13T16:21:39+08:00">2020-08-13</time>
+              <time title="创建时间：2020-08-25 14:56:21" itemprop="dateCreated datePublished" datetime="2020-08-25T14:56:21+08:00">2020-08-25</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -230,7 +227,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">统计学习方法</span></a>
+                  <a href="/categories/%E7%BB%9F%E8%AE%A1%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">统计机器学习</span></a>
                 </span>
             </span>
 
@@ -250,8 +247,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/08/25/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AB%EF%BC%89%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/25/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AB%EF%BC%89%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -261,14 +258,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.5k</span>
+              <span>2.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -280,62 +277,74 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>k近邻法，是一种基本分类与回归方法。输入为特征向量，输出为类别。</p>
+        <p>提升方法，在分类问题中通过改变训练样本的权重，学习多个分类器，并将分类器线性组合，提高分类的性能。</p>
 <a id="more"></a>
-<h2 id="3-1-k近邻算法"><a href="#3-1-k近邻算法" class="headerlink" title="3.1 k近邻算法"></a>3.1 k近邻算法</h2><p>给定一个训练集，对新的输入实例，在训练集中找到最邻近的k个实例，将输入实例分为多数类。</p>
+<h2 id="8-1-AdaBoost算法"><a href="#8-1-AdaBoost算法" class="headerlink" title="8.1 AdaBoost算法"></a>8.1 AdaBoost算法</h2><p>提升方法的思想是，对于一个复杂任务来说，综合多个专家的判断得出的判断效果更好。</p>
 <ul>
-<li>输入：训练数据集T，实例特征向量x。</li>
-<li>输出：实例x所属的类y。</li>
-<li>根据给定的距离度量，在T中找出与x最邻近的k个点。</li>
-<li>在邻域中根据分类决策规则（如多数表决）决定x的类别y。</li>
-<li>k=1时，称为最近邻算法，将与x最邻近点的类作为x的类。</li>
+<li><strong>强可学习</strong>：在概率近似正确学习（PAC）的框架中，一个概念（一个类），如果存在一个多项式的学习算法<br>能够学习它，并且正确率很高，那么就称这个概念是强可学习的-</li>
+<li><strong>弱可学习</strong>：一个概念，如果存在一个多项式的学习算法能够学习它，学习的正确率仅比随机猜测略好，那么就称这个概念是弱可学习的。</li>
 </ul>
-<h2 id="3-2-k近邻模型"><a href="#3-2-k近邻模型" class="headerlink" title="3.2 k近邻模型"></a>3.2 k近邻模型</h2><h3 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h3><script type="math/tex; mode=display">L_p$$距离定义为</script><p>L_p(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^p)^{\frac 1 p}</p>
+<p>Schapire后来证明强可学习与弱可学习是等价的，也即在PAC学习的框架下，一个概念是强可学习的充要条件是这个概念是弱可学习的。</p>
+<p>利用这个前提，如果在学习中发现了”弱学习算法“，可以将其提升为”强学习算法“。对于分类问题而言，给定训练集，从弱学习算法出发，反复学习，得到一系列弱分类器，组合这些弱分类器构成一个强分类器。</p>
+<p>给定一个二分类训练集</p>
 <script type="math/tex; mode=display">
-p=1时，称为曼哈顿距离</script><p>L_1(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|)</p>
+T = \{(x_1,y_1),(x_2,y_2),\cdots,(x_N,y_N)\} \\
+x\in{\cal X}\subset{\mathbb R}^n,\quad y_i\in{\cal Y}=\{-1.+1\}</script><p>初始化训练数据的权值分布</p>
 <script type="math/tex; mode=display">
-p=2时，即为欧式距离</script><p>L_2(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^2)^{\frac 1 2}</p>
+D_1=(w_{11},\cdots,w_{1i},\cdots,w_{1N}),\quad w_{1i}=\frac1N,\quad i=1,2,\cdots,N</script><p>使用权值分布为<script type="math/tex">D_m</script>的训练集学习，得到基本分类器</p>
 <script type="math/tex; mode=display">
-p=∞时，称为切比雪夫距离，为各个坐标距离的最大值</script><p>L_\infty(x_i, x_j) = \max_l |x_i^{(l)}-x_j^{(l)}|</p>
+G_m(x):{\cal X}\rightarrow\{-1,+1\}</script><p>计算分类器在训练集上的分类误差率</p>
 <script type="math/tex; mode=display">
-下图给出了与原点距离为1的图形
-
-![](统计学习方法（三）k近邻法/1.png)
-
-### 分类决策规则
-
-k近邻法中的分类决策规则往往是多数表决，即由k个临近点的多数类决定输入类。
-
-如果分类的损失函数为0-1损失函数，分类函数为</script><p>f: \mathbf R^n \rightarrow \{c_1, c_2, …, c_K\}</p>
+e_m=\sum_{i=1}^NP(G_m(x_i)\neq y_i)=\sum_{i=1}^Nw_{mi}I(G_m(x_i)\neq y_i)</script><p>计算分类器的系数，取自然对数</p>
 <script type="math/tex; mode=display">
-那么误分类的概率为</script><p>P(Y\neq f(X)) = 1- P(Y=f(X)) \\<br>\Leftrightarrow \frac 1 k \sum _{x_i\in N_k(x)} I(y_i\neq c_j) = 1 - \frac 1 k \sum _{x_i\in N_k(x)} I(y_i= c_j)</p>
-<p>$$</p>
-<h2 id="3-3-k近邻法的实现：kd树"><a href="#3-3-k近邻法的实现：kd树" class="headerlink" title="3.3 k近邻法的实现：kd树"></a>3.3 k近邻法的实现：kd树</h2><h3 id="构造kd树"><a href="#构造kd树" class="headerlink" title="构造kd树"></a>构造kd树</h3><p>kd树是二叉树，表示对k维空间的一个划分。</p>
-<p>构造kd树相当于不断地用超平面切分k维空间，构成一系列的k维超矩形区域，kd树的每个节点对应于一个k维超矩形区域。</p>
-<p>构造算法如下</p>
-<ol>
-<li>开始：构造根节点，对应于包含T的k维空间的超矩形区域。<ul>
-<li>选择<script type="math/tex">x^{(1)}</script>为坐标轴，以T中所有实例的<script type="math/tex">x^{(1)}</script>坐标的中位数为切分点，将根节点对应的超矩形区域切分为两个子区域。</li>
-<li>由此生成深度为一的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(1)}</script>小于切分点的子区域。</li>
-</ul>
-</li>
-<li>重复：对深度为j的节点，选择<script type="math/tex">x^{(l)}</script>为切分的坐标轴，其中<script type="math/tex">l=j(mod k)+1</script>，以坐标的中位数为切分点。<ul>
-<li>由此生成深度为j+1的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(l)}</script>小于切分点的子区域。</li>
-</ul>
-</li>
-<li>直到两个子区域没有实例存在时停止，形成kd树的区域划分。</li>
-</ol>
-<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png" alt></p>
-<h3 id="搜索kd树"><a href="#搜索kd树" class="headerlink" title="搜索kd树"></a>搜索kd树</h3><p>给定一个目标点，搜索其最近邻，首先找到包含目标点的叶节点。从叶节点出发，依次回退到父节点，不断查找与目标点最邻近的节点。</p>
-<p>给定如图所示的kd树，根节点为A，子节点为B、C等，输入实例点为S，求S的最近邻。</p>
-<ul>
-<li>首先找到包含S的叶结点D，以D作为近似最近邻。</li>
-<li>返回D的父节点B，在B的另一子节点F的区域内搜索。</li>
-<li>继续返回上一级父节点A，在A的另一子节点C的区域内搜索。</li>
-<li>点E比点D更近，成为最近邻。</li>
-</ul>
-<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png" alt></p>
-<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">clf_sk = KNeighborsClassifier()</span><br><span class="line">clf_sk.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf_sk.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+\alpha_m=\frac12\log\frac{1-e_m}{e_m}</script><p>更新训练集的权值分布</p>
+<script type="math/tex; mode=display">
+D_{m+1}=(w_{m+1.1},\cdots,w_{m+1,i},\cdots,w_{m+1,N})\\
+w_{m+1,i}=\frac{w_{mi}}{Z_m}\exp(-\alpha_my_iG_m(x_i)),\quad i=1,2,\cdots,N</script><p>其中，<script type="math/tex">Z_m</script>是规范化因子，使得<script type="math/tex">D_{m+1}</script>成为一个概率分布。</p>
+<script type="math/tex; mode=display">
+Z_m = \sum_{i=1}^N{w_{mi}}\exp(-\alpha_my_iG_m(x_i))</script><p>根据基本分类器，构造线性组合，得到最终分类器</p>
+<script type="math/tex; mode=display">
+f(x)=\sum_{m=1}^M\alpha_mG_m(x) \\
+G(x)=sign(f(x))</script><p>计算<script type="math/tex">G_m(x)</script>系数<script type="math/tex">\alpha_m</script>时，<script type="math/tex">e_m\leq\frac12</script>时，<script type="math/tex">\alpha_m\geq0</script>，并且<script type="math/tex">\alpha_m</script>关于<script type="math/tex">e_m</script>递减，所以分类误差率越小的基本分类器，在最终分类器中的作用越大。</p>
+<p>更新权值时，可以写成如下形式：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+w_{m+1,i}=\begin{cases}\frac{w_{mi}}{Z_m}e^{-\alpha_m},\quad &G_m(x_i)=y_i\\\frac{w_{mi}}{Z_m}e^{\alpha_m},\quad &G_m(x_i)\neq y_i\end{cases}
+\end{align}</script><p>所以误分类样本的权值得以扩大，在下一轮学习中起更大的作用。不改变训练数据，而不断改变训练数据权值的分布，这是AdaBoost的一个特点。</p>
+<blockquote>
+<p>注意，<script type="math/tex">\sum\alpha_m\neq1</script></p>
+</blockquote>
+<h2 id="8-2-AdaBoost算法的训练误差分析"><a href="#8-2-AdaBoost算法的训练误差分析" class="headerlink" title="8.2 AdaBoost算法的训练误差分析"></a>8.2 AdaBoost算法的训练误差分析</h2><p><strong>定理 8.1</strong>    AdaBoost算法最终分类器的训练误差界为</p>
+<script type="math/tex; mode=display">
+\frac1N\sum_{i=1}^NI(G(x_i)\neq y_i)\leq\frac1N\sum_i\exp(-y_if(x_i))\neq y_i)=\prod_mZ_m</script><p><strong>定理8.2</strong>    二分类问题中，AdaBoost的训练误差界为</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\prod_{m=1}^MZ_m&=\prod_{m=1}^M[2\sqrt{e_m(1-e_m)}]\\
+&=\prod_{m=1}^M\sqrt{(1-4\gamma_m^2)}\\
+&\leq\exp(-2\sum_{m=1}^M\gamma_m^2)
+\end{align}</script><p>其中，<script type="math/tex">\gamma_m=\frac12-e_m</script></p>
+<h2 id="8-3-AdaBoost算法的解释"><a href="#8-3-AdaBoost算法的解释" class="headerlink" title="8.3 AdaBoost算法的解释"></a>8.3 AdaBoost算法的解释</h2><h3 id="前向分步算法"><a href="#前向分步算法" class="headerlink" title="前向分步算法"></a>前向分步算法</h3><p>考虑加法模型</p>
+<script type="math/tex; mode=display">
+f(x)=\sum_{m=1}^M\beta_mb(x;\gamma_m)</script><p>其中，<script type="math/tex">b(x;\gamma_m)</script>为基函数，<script type="math/tex">\gamma_m</script>为函数的参数。</p>
+<p>给定训练集及损失函数<script type="math/tex">L(y,f(x))</script>的条件下，学习加法模型即为损失函数极小化问题</p>
+<script type="math/tex; mode=display">
+\min_{\beta_m,\gamma_m}\sum_{i=1}^NL(y_i,\sum_{m=1}^M\beta_mb(x_i;\gamma_m))</script><p>通常这是一个复杂的优化问题，前向分步算法的想法是：因为学习的是加法模型，如果能够从前向后，每步只学习一个基函数与系数，逐步逼近，就可以简化复杂度，即每步只考虑优化如下函数</p>
+<script type="math/tex; mode=display">
+\min_{\beta,\gamma}\sum_{i=1}^NL(y_i,\beta b(x_i;\gamma))</script><h3 id="前向分步与AdaBoost"><a href="#前向分步与AdaBoost" class="headerlink" title="前向分步与AdaBoost"></a>前向分步与AdaBoost</h3><p><strong>定理8.3</strong>    AdaBoost是前向分步算法的特例。这时，模型是由基本分类器组成的加法模型，损失函数是指数函数。</p>
+<h2 id="8-4-提升树"><a href="#8-4-提升树" class="headerlink" title="8.4 提升树"></a>8.4 提升树</h2><h3 id="提升树模型"><a href="#提升树模型" class="headerlink" title="提升树模型"></a>提升树模型</h3><p>提升方法实际采用加法模型与前向分步算法，以决策树为基函数的提升方法就称为提升树。</p>
+<p>提升树模型可以表示为决策树的加法模型</p>
+<script type="math/tex; mode=display">
+f_M(x)=\sum_{m=1}^MT(x;\Theta_m)</script><p>其中，<script type="math/tex">T(x;\Theta_m)</script>表示决策树，<script type="math/tex">M</script>表示树的个数。</p>
+<h3 id="提升树算法"><a href="#提升树算法" class="headerlink" title="提升树算法"></a>提升树算法</h3><p>首先初始化提升树<script type="math/tex">f_0(x)=0</script>，第m步的模型是</p>
+<script type="math/tex; mode=display">
+f_m(x)=f_{m-1}(x)+T(x;\Theta_m)</script><p>通过经验风险最小化确定下一棵决策树的参数</p>
+<script type="math/tex; mode=display">
+\hat\Theta_m=\arg\min_{\Theta_m}\sum_{i=1}^NL(y_i,f_{m-1}(x_i)+T(x_i;\Theta_m))</script><p>对于二分类问题，提升树算法只需要将AdaBoost的基本分类器限制为二类分类树即可，此时的提升树算法是AdaBoost的特殊情况。</p>
+<h3 id="梯度提升"><a href="#梯度提升" class="headerlink" title="梯度提升"></a>梯度提升</h3><p>对于提升树算法，当损失函数是平方损失和指数损失函数时，每一步优化是很简单的。</p>
+<p>对于一般损失函数，Freidman提出了梯度提升算法，利用损失函数的负梯度值</p>
+<script type="math/tex; mode=display">
+-[\frac{\part L(y,f(x_i))}{\part f(x_i)}]_{f(x)=f_{m-1}(x)}</script><p>作为回归问题中残差的近似值，拟合回归树。</p>
+<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line"></span><br><span class="line">clf = AdaBoostClassifier(n_estimators=<span class="number">100</span>, learning_rate=<span class="number">0.5</span>)</span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -345,6 +354,9 @@ k近邻法中的分类决策规则往往是多数表决，即由k个临近点的
       
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\08\13\统计学习方法（三）k近邻法\" rel="bookmark">统计学习方法（三）k近邻法</a></div>
+    </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2020\08\12\统计学习方法（二）感知机\" rel="bookmark">统计学习方法（二）感知机</a></div>
     </li>
@@ -356,9 +368,6 @@ k近邻法中的分类决策规则往往是多数表决，即由k个临近点的
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2020\08\15\统计学习方法（五）决策树\" rel="bookmark">统计学习方法（五）决策树</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\17\统计学习方法（六）Logistic回归与最大熵模型\" rel="bookmark">统计学习方法（六）Logistic回归与最大熵模型</a></div>
     </li>
   </ul>
 
@@ -381,7 +390,7 @@ k近邻法中的分类决策规则往往是多数表决，即由k个临近点的
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
-              <a href="/tags/KNN/" rel="tag"># KNN</a>
+              <a href="/tags/%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/" rel="tag"># 提升方法</a>
           </div>
 
         
@@ -390,13 +399,10 @@ k近邻法中的分类决策规则往往是多数表决，即由k个临近点的
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/" rel="prev" title="统计学习方法（二）感知机">
-      <i class="fa fa-chevron-left"></i> 统计学习方法（二）感知机
+    <a href="/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/" rel="prev" title="CV入门（一）安装detectron2">
+      <i class="fa fa-chevron-left"></i> CV入门（一）安装detectron2
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/08/14/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%9B%9B%EF%BC%89%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B3%95/" rel="next" title="统计学习方法（四）朴素贝叶斯法">
-      统计学习方法（四）朴素贝叶斯法 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -456,7 +462,7 @@ k近邻法中的分类决策规则往往是多数表决，即由k个临近点的
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-k%E8%BF%91%E9%82%BB%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">3.1 k近邻算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-k%E8%BF%91%E9%82%BB%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">3.2 k近邻模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F"><span class="nav-number">2.1.</span> <span class="nav-text">距离度量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-k%E8%BF%91%E9%82%BB%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%9Akd%E6%A0%91"><span class="nav-number">3.</span> <span class="nav-text">3.3 k近邻法的实现：kd树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0kd%E6%A0%91"><span class="nav-number">3.1.</span> <span class="nav-text">构造kd树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2kd%E6%A0%91"><span class="nav-number">3.2.</span> <span class="nav-text">搜索kd树</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scikit-learn"><span class="nav-number">4.</span> <span class="nav-text">Scikit-learn</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-1-AdaBoost%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">8.1 AdaBoost算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-2-AdaBoost%E7%AE%97%E6%B3%95%E7%9A%84%E8%AE%AD%E7%BB%83%E8%AF%AF%E5%B7%AE%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">8.2 AdaBoost算法的训练误差分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-3-AdaBoost%E7%AE%97%E6%B3%95%E7%9A%84%E8%A7%A3%E9%87%8A"><span class="nav-number">3.</span> <span class="nav-text">8.3 AdaBoost算法的解释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E5%90%91%E5%88%86%E6%AD%A5%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text">前向分步算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E5%90%91%E5%88%86%E6%AD%A5%E4%B8%8EAdaBoost"><span class="nav-number">3.2.</span> <span class="nav-text">前向分步与AdaBoost</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-4-%E6%8F%90%E5%8D%87%E6%A0%91"><span class="nav-number">4.</span> <span class="nav-text">8.4 提升树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E5%8D%87%E6%A0%91%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.1.</span> <span class="nav-text">提升树模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E5%8D%87%E6%A0%91%E7%AE%97%E6%B3%95"><span class="nav-number">4.2.</span> <span class="nav-text">提升树算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E6%8F%90%E5%8D%87"><span class="nav-number">4.3.</span> <span class="nav-text">梯度提升</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scikit-learn"><span class="nav-number">5.</span> <span class="nav-text">Scikit-learn</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -622,6 +628,61 @@ k近邻法中的分类决策规则往往是多数表决，即由k个临近点的
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
