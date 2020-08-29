@@ -1037,11 +1037,135 @@ f_m(x)=f_{m-1}(x)+T(x;\Theta_m)</script><p>通过经验风险最小化确定下�
 <h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line"></span><br><span class="line">clf = AdaBoostClassifier(n_estimators=<span class="number">100</span>, learning_rate=<span class="number">0.5</span>)</span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>统计机器学习</category>
+        <category>统计学习方法</category>
       </categories>
       <tags>
         <tag>机器学习</tag>
         <tag>提升方法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>统计学习方法（九）EM算法及其推广</title>
+    <url>/2020/08/26/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B9%9D%EF%BC%89EM%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E6%8E%A8%E5%B9%BF/</url>
+    <content><![CDATA[<p>EM算法是一种迭代算法，用于含隐变量的概率模型参数的极大似然估计，或极大后验概率估计。</p>
+<a id="more"></a>
+<h2 id="9-1-EM算法的引入"><a href="#9-1-EM算法的引入" class="headerlink" title="9.1 EM算法的引入"></a>9.1 EM算法的引入</h2><h3 id="三硬币模型"><a href="#三硬币模型" class="headerlink" title="三硬币模型"></a>三硬币模型</h3><p>假设有三枚硬币，记作A、B、C，这些硬币正面出现的概率分别为π、p、q。进行如下实验：先掷硬币A，根据结果选择硬币，正面选B，反面选C；然后掷选出的硬币，正面记作1，反面记作0；独立重复n次，得到观测结果。</p>
+<p>假设只能观测到掷硬币的结果，不能观测过程，问如何估计三硬币正面出现的概率。</p>
+<script type="math/tex; mode=display">
+\begin{align}
+P(y|\theta)=\sum_zP(y,z|\theta)&=\sum_zP(z|\theta)P(y|z,\theta) \\
+&= \pi p^y(1-p)^{1-y}+(1-\pi)q^y(1-q)^{1-y}
+\end{align}</script><p>其中，y表示观测变量，z为隐变量，表示硬币A的结果，θ为模型参数。</p>
+<p>将观测数据表示为<script type="math/tex">Y=(Y_1,Y_2,\cdots Y_n)^T</script>，未观测数据表示为<script type="math/tex">Z=(Z_1,Z_2,\cdots Z_n)^T</script>，则似然函数为</p>
+<script type="math/tex; mode=display">
+\begin{align}
+P(Y|\theta)&=\sum_ZP(Z|\theta)P(Y|Z,\theta) \\
+&= \prod_{j=1}^n[\pi p^{y_i}(1-p)^{1-y_i}+(1-\pi)q^{y_i}(1-q)^{1-y_i}]
+\end{align}</script><p>考虑<script type="math/tex">\theta=(\pi,p,q)</script>的极大似然估计</p>
+<script type="math/tex; mode=display">
+\hat\theta=\arg\max_\theta\log P(Y|\theta)</script><p>这个问题没有解析解，只能通过迭代求解，EM算法就是这样一种迭代算法。</p>
+<h3 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h3><p>输入：观测变量数据Y，隐变量数据Z，联合分布<script type="math/tex">P(Y,Z|\theta)</script>，条件分布<script type="math/tex">P(Z|Y,\theta)</script>；</p>
+<p>输出：模型参数<script type="math/tex">\theta</script>。</p>
+<ul>
+<li><p>选择参数的初值<script type="math/tex">\theta^{(0)}</script>，开始迭代；</p>
+</li>
+<li><p>E步：记<script type="math/tex">\theta^{(i)}</script>表示第i次迭代时参数的估计值，在第i+1次迭代，计算</p>
+<script type="math/tex; mode=display">
+\begin{align}
+Q(\theta,\theta^{(i)})&=E_Z[\log P(Y,Z|\theta)|Y,\theta^{(i)}]\\
+&=\sum_Z\log P(Y,Z|\theta)P(Z|Y,\theta^{(i)})
+\end{align}</script></li>
+<li><p>M步：求使得<script type="math/tex">Q(\theta,\theta^{(i)})</script>极大化的参数值，确定第i+1次迭代的参数值</p>
+<script type="math/tex; mode=display">
+\theta^{(i+1)}=\arg\max_\theta Q(\theta,\theta^{(i)})</script></li>
+<li><p>重复上述步骤，直到收敛。</p>
+</li>
+</ul>
+<p>参数的初值可以任意选择，但EM算法对初值是敏感的。</p>
+<p>停止迭代的条件一般是</p>
+<script type="math/tex; mode=display">
+\|\theta^{(i+1)}-\theta^{(i)}\|<\epsilon_1 \quad or \quad \|Q(\theta^{(i+1)},\theta^{(i)})-Q(\theta^{(i)},\theta^{(i)})\|<\epsilon_2</script><h3 id="EM算法的导出"><a href="#EM算法的导出" class="headerlink" title="EM算法的导出"></a>EM算法的导出</h3><p>面对一个含有隐变量的概率模型，我们希望极大化观测数据关于参数的对数似然函数，即</p>
+<script type="math/tex; mode=display">
+\begin{align}
+L(\theta)&=\log P(Y|\theta)=\log\sum_ZP(Y,Z|\theta) \\
+&= \log(\sum_ZP(Z|\theta)P(Y|Z,\theta))
+\end{align}</script><p>EM算法通过迭代，逐步近似最大化函数，考虑</p>
+<script type="math/tex; mode=display">
+L(\theta)-L(\theta^{(i)})=\log(\sum_ZP(Z|\theta)P(Y|Z,\theta))-\log P(Y|\theta^{(i)})</script><p>利用Jensen不等式</p>
+<script type="math/tex; mode=display">
+\begin{align}
+L(\theta)-L(\theta^{(i)})&=\log(\sum_ZP(Z|Y,\theta^{(i)})\frac{P(Z|\theta)P(Y|Z,\theta)}{P(Z|Y,\theta^{(i)})})-\log P(Y|\theta^{(i)})\\
+&\geq\sum_ZP(Z|Y,\theta^{(i)})\log\frac{P(Z|\theta)P(Y|Z,\theta)}{P(Z|Y,\theta^{(i)})}-\log P(Y|\theta^{(i)})\\
+&=\sum_ZP(Z|Y,\theta^{(i)})\log\frac{P(Z|\theta)P(Y|Z,\theta)}{P(Z|Y,\theta^{(i)})P(Y|\theta^{(i)})}
+\end{align}</script><blockquote>
+<script type="math/tex; mode=display">\log\sum_j\lambda_jy_j\geq\sum_j\lambda_j\log y_j,\quad\lambda_j\geq0,\quad\sum_j\lambda_j=1</script></blockquote>
+<p>记</p>
+<script type="math/tex; mode=display">
+B(\theta,\theta^{(i)})\hat=L(\theta^{(i)})+\sum_ZP(Z|Y,\theta^{(i)})\log\frac{P(Z|\theta)P(Y|Z,\theta)}{P(Z|Y,\theta^{(i)})P(Y|\theta^{(i)})}</script><p>则有</p>
+<script type="math/tex; mode=display">
+L(\theta)\geq B(\theta,\theta^{(i)})</script><p>即<script type="math/tex">B(\theta,\theta^{(i)})</script>是<script type="math/tex">L(\theta)</script>的一个下界，为了使<script type="math/tex">L(\theta)</script>尽可能大地增长，选择</p>
+<script type="math/tex; mode=display">
+\theta^{(i+1)}=\arg\max_\theta B(\theta,\theta^{(i)})</script><p>省去常数项，得到</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\theta^{(i+1)}&=\arg\max_\theta(L(\theta^{(i)})+\sum_ZP(Z|Y,\theta^{(i)})\log\frac{P(Z|\theta)P(Y|Z,\theta)}{P(Z|Y,\theta^{(i)})P(Y|\theta^{(i)})})\\
+&=\arg\max_\theta(\sum_ZP(Z|Y,\theta^{(i)})\log P(Z|\theta)P(Y|Z,\theta))\\
+&=\arg\max_\theta(\sum_ZP(Z|Y,\theta^{(i)})\log P(Y,Z|\theta))\\
+&=\arg\max_\theta Q(\theta,\theta^{(i)})
+\end{align}</script><p><img src="/2020/08/26/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B9%9D%EF%BC%89EM%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E6%8E%A8%E5%B9%BF/1.png" alt></p>
+<h2 id="9-2-EM算法的收敛性"><a href="#9-2-EM算法的收敛性" class="headerlink" title="9.2 EM算法的收敛性"></a>9.2 EM算法的收敛性</h2><p><strong>定理 9.1</strong>    设<script type="math/tex">P(Y|\theta)</script>为观测数据的似然函数，则<script type="math/tex">P(Y|\theta^{(i)})</script>是单调递增的。</p>
+<p><strong>定理 9.2</strong>    设<script type="math/tex">L(\theta)=\log P(Y|\theta)</script>为观测数据的对数似然函数，则有</p>
+<ul>
+<li>如果<script type="math/tex">P(Y|\theta)</script>有上界，则<script type="math/tex">L(\theta^{(i)}=\log P(Y|\theta^{(i)})</script>收敛到某一值。</li>
+<li>在<script type="math/tex">Q(\theta,\theta')</script>与<script type="math/tex">L(\theta)</script>满足一定条件下，由EM算法得到的参数估计序列的收敛值是<script type="math/tex">L(\theta)</script>的稳定点。</li>
+</ul>
+<h2 id="9-3-EM算法在高斯混合模型学习中的应用"><a href="#9-3-EM算法在高斯混合模型学习中的应用" class="headerlink" title="9.3 EM算法在高斯混合模型学习中的应用"></a>9.3 EM算法在高斯混合模型学习中的应用</h2><h3 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h3><p>高斯混合模型是指具有如下形式的概率分布模型</p>
+<script type="math/tex; mode=display">
+P(y|\theta)=\sum_{k=1}^K\alpha_k\phi(y|\theta_k),\quad\alpha_k\geq0,\quad\sum_{k=1}\alpha_k=1</script><p>其中<script type="math/tex">\phi(y|\theta_k)</script>是高斯分布密度，<script type="math/tex">\theta_k=(\mu_k,\sigma_k^2)</script>，称为第k个分模型。</p>
+<script type="math/tex; mode=display">
+\phi(y|\theta_k)=\frac1{\sqrt{2\pi}\sigma_k}\exp(-\frac{(y-\mu_k)^2}{2\sigma_k^2})</script><h3 id="高斯混合模型参数估计的EM算法"><a href="#高斯混合模型参数估计的EM算法" class="headerlink" title="高斯混合模型参数估计的EM算法"></a>高斯混合模型参数估计的EM算法</h3><p>假设观测数据由高斯混合模型生成，我们用EM算法估计高斯混合模型的参数。</p>
+<h4 id="明确隐变量，写出对数似然函数"><a href="#明确隐变量，写出对数似然函数" class="headerlink" title="明确隐变量，写出对数似然函数"></a>明确隐变量，写出对数似然函数</h4><p>明确隐变量</p>
+<script type="math/tex; mode=display">
+\gamma_{jk}=\begin{cases}1,\quad第j个观测来自第k个模型\\0,\quad否则\end{cases}\\
+j=1,2,\cdots,N;\quad k=1,2,\cdots,K</script><p>写出似然函数</p>
+<script type="math/tex; mode=display">
+\begin{align}
+P(y,\gamma|\theta)&=\prod_{j=1}^NP(y_j,\gamma_{j1},\gamma_{j2},\cdots,\gamma_{jK}|\theta)\\
+&=\prod_{k=1}^K\prod_{j=1}^N[\alpha_k\phi(y_j|\theta_k)]^{\gamma_{jk}}\\
+&=\prod_{k=1}^K\alpha_k^{n_k}\prod_{j=1}^N[\phi(y_j|\theta_k)]^{\gamma_{jk}}\\
+&=\prod_{k=1}^K\alpha_k^{n_k}\prod_{j=1}^N[\frac1{\sqrt{2\pi}\sigma_k}\exp(-\frac{(y-\mu_k)^2}{2\sigma_k^2}]^{\gamma_{jk}}
+\end{align}</script><p>其中，<script type="math/tex">n_k=\sum_{j=1}^N\gamma_{jk}</script>，<script type="math/tex">\sum_{k=1}^Kn_k=N</script></p>
+<p>那么对数似然函数为</p>
+<script type="math/tex; mode=display">
+\log P(y,\gamma|\theta)=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\gamma_{jk}[\log(\frac1{\sqrt{2\pi}})-\log\sigma_k-\frac1{2\sigma_k^2}(y-\mu_k)^2]\}</script><h4 id="EM算法的E步：确定Q函数"><a href="#EM算法的E步：确定Q函数" class="headerlink" title="EM算法的E步：确定Q函数"></a>EM算法的E步：确定Q函数</h4><script type="math/tex; mode=display">
+\begin{align}
+Q(\theta,\theta^{(i)})&=E[\log P(y,\gamma|\theta)|y,\theta^{(i)}]\\
+&=E\{\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\gamma_{jk}[\log(\frac1{\sqrt{2\pi}})-\log\sigma_k-\frac1{2\sigma_k^2}(y-\mu_k)^2]\}\}\\
+&=\sum_{k=1}^K\{\sum_{j=1}^N(E\gamma_{jk})\log\alpha_k+\sum_{j=1}^N(E\gamma_{jk})[\log(\frac1{\sqrt{2\pi}})-\log\sigma_k-\frac1{2\sigma_k^2}(y-\mu_k)^2]\}
+\end{align}</script><p>这里需要计算<script type="math/tex">E(\gamma_{jk}|y,\theta)</script></p>
+<script type="math/tex; mode=display">
+\begin{align}
+\hat\gamma_{jk}&=E(\gamma_{jk}|y,\theta)=P(\gamma_{jk}=1|y,\theta)\\
+&=\frac{P(\gamma_{jk}=1,y_j|\theta)}{\sum_{k=1}^KP(\gamma_{jk}=1,y_j|\theta)}\\
+&=\frac{P(y_j|\gamma_{jk}=1,\theta)P(\gamma_{jk}=1|\theta)}{\sum_{k=1}^KP(y_j|\gamma_{jk}=1,\theta)P(\gamma_{jk}=1|\theta)}\\
+&=\frac{\alpha_k\phi(y_j|\theta_k)}{\sum_{k=1}^K\alpha_k\phi(y_j|\theta_k)},\quad j=1,2,\cdots,N;\quad k=1,2,\cdots,N
+\end{align}</script><p>代回原式</p>
+<script type="math/tex; mode=display">
+Q(\theta,\theta^{(i)})=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\hat\gamma_{jk}[\log(\frac1{\sqrt{2\pi}})-\log\sigma_k-\frac1{2\sigma_k^2}(y-\mu_k)^2]\}</script><h4 id="确定EM算法的M步"><a href="#确定EM算法的M步" class="headerlink" title="确定EM算法的M步"></a>确定EM算法的M步</h4><script type="math/tex; mode=display">
+\theta^{(i+1)}=\arg\max_\theta Q(\theta,\theta^{(i)})</script><p>将<script type="math/tex">Q(\theta,\theta^{(i)})</script>分别对<script type="math/tex">\mu_k,\sigma_k^2</script>求偏导数，令其为0；求<script type="math/tex">\hat\alpha_k</script>是在<script type="math/tex">\sum_{k=1}^K\alpha_k=1</script>条件下求偏导数并令其为0得到的。</p>
+<script type="math/tex; mode=display">
+\hat\mu_k=\frac{\sum_{j=1}^N\hat\gamma_{jk}y_j}{\sum_{j=1}^N\hat\gamma_{jk}},\quad k=1,2,\cdots,K\\
+\hat\sigma_k^2=\frac{\sum_{j=1}^N\hat\gamma_{jk}(y_j-\mu_k)^2}{\sum_{j=1}^N\hat\gamma_{jk}},\quad k=1,2,\cdots,K\\
+\hat\alpha_k=\frac{n_k}N=\frac{\sum_{j=1}^N\hat\gamma_{jk}}{N},\quad k=1,2,\cdots,K\\</script><h2 id="9-4-EM算法的推广"><a href="#9-4-EM算法的推广" class="headerlink" title="9.4 EM算法的推广"></a>9.4 EM算法的推广</h2><p>暂略，有空再补。</p>
+<h3 id="F函数的极大-极大算法"><a href="#F函数的极大-极大算法" class="headerlink" title="F函数的极大-极大算法"></a>F函数的极大-极大算法</h3><h3 id="GEM算法"><a href="#GEM算法" class="headerlink" title="GEM算法"></a>GEM算法</h3><h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.mixture <span class="keyword">import</span> GaussianMixture</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化观测数据</span></span><br><span class="line">data = np.array([<span class="number">-67</span>, <span class="number">-48</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">14</span>, <span class="number">16</span>, <span class="number">23</span>, <span class="number">24</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">41</span>, <span class="number">49</span>, <span class="number">56</span>, <span class="number">60</span>,</span><br><span class="line">                 <span class="number">75</span>]).reshape(<span class="number">-1</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 聚类</span></span><br><span class="line">gmmModel = GaussianMixture(n_components=<span class="number">2</span>)</span><br><span class="line">gmmModel.fit(data)</span><br><span class="line">labels = gmmModel.predict(data)</span><br><span class="line">print(<span class="string">&quot;labels =&quot;</span>, labels)</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>对于含隐变量的模型，分E步和M步，分别求期望和极大值，得到参数的新的估计值，迭代以极大化函数。</p>
+]]></content>
+      <categories>
+        <category>统计学习方法</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>EM算法</tag>
       </tags>
   </entry>
 </search>
