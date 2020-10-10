@@ -28,7 +28,7 @@
 <meta property="og:description" content="提升方法，在分类问题中通过改变训练样本的权重，学习多个分类器，并将分类器线性组合，提高分类的性能。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-08-25T06:56:21.000Z">
-<meta property="article:modified_time" content="2020-08-25T08:00:35.303Z">
+<meta property="article:modified_time" content="2020-08-29T06:45:47.161Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="提升方法">
@@ -343,7 +343,7 @@ f_m(x)=f_{m-1}(x)+T(x;\Theta_m)</script><p>通过经验风险最小化确定下�
 <h3 id="梯度提升"><a href="#梯度提升" class="headerlink" title="梯度提升"></a>梯度提升</h3><p>对于提升树算法，当损失函数是平方损失和指数损失函数时，每一步优化是很简单的。</p>
 <p>对于一般损失函数，Freidman提出了梯度提升算法，利用损失函数的负梯度值</p>
 <script type="math/tex; mode=display">
--[\frac{\part L(y,f(x_i))}{\part f(x_i)}]_{f(x)=f_{m-1}(x)}</script><p>作为回归问题中残差的近似值，拟合回归树。</p>
+-[\frac{\partial L(y,f(x_i))}{\partial f(x_i)}]_{f(x)=f_{m-1}(x)}</script><p>作为回归问题中残差的近似值，拟合回归树。</p>
 <h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line"></span><br><span class="line">clf = AdaBoostClassifier(n_estimators=<span class="number">100</span>, learning_rate=<span class="number">0.5</span>)</span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
 
     </div>
@@ -481,20 +481,20 @@ f_m(x)=f_{m-1}(x)+T(x;\Theta_m)</script><p>通过经验风险最小化确定下�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -553,7 +553,7 @@ f_m(x)=f_{m-1}(x)+T(x;\Theta_m)</script><p>通过经验风险最小化确定下�
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">25 分钟</span>
+    <span title="站点阅读时长">26 分钟</span>
 </div>
 
         
