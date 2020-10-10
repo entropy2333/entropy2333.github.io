@@ -1234,6 +1234,129 @@ Q(\theta,\theta^{(i)})=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\hat\gamma_{jk}
   <entry>
     <title>Internet安全协议与分析（二）SSL</title>
     <url>/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<p>介绍SSL协议与WTLS协议 。<br><a id="more"></a></p>
+<h2 id="SSL"><a href="#SSL" class="headerlink" title="SSL"></a>SSL</h2><p>1994年，由Netscape公司提出SSL，为HTTP提供安全连接。</p>
+<h3 id="安全机制"><a href="#安全机制" class="headerlink" title="安全机制"></a>安全机制</h3><ul>
+<li>机密性：使用对称密钥算法对传输的数据进行加密。</li>
+<li>身份验证：基于证书利用数字签名对server和client进行身份验证。</li>
+<li>消息完整性验证：使用MAC算法检验消息的完整性。</li>
+</ul>
+<h3 id="SSL版本"><a href="#SSL版本" class="headerlink" title="SSL版本"></a>SSL版本</h3><ul>
+<li>SSL由Netscape公司设计，是用于web的安全传输协议。</li>
+<li>IETF将SSL标准化，称为TLS，TLS1.0与SSL3.0差别非常小。</li>
+<li>wap论坛在TLS基础上做了WTLS协议，以适应无线的特殊环境。</li>
+</ul>
+<h3 id="SSL的分层结构"><a href="#SSL的分层结构" class="headerlink" title="SSL的分层结构"></a>SSL的分层结构</h3><ul>
+<li>上层协议<ul>
+<li>SSL握手协议</li>
+<li>SSL passowrd变化协议</li>
+<li>SSL警告协议</li>
+</ul>
+</li>
+<li>下层协议为SSL记录协议</li>
+</ul>
+<h3 id="SSL基本过程"><a href="#SSL基本过程" class="headerlink" title="SSL基本过程"></a>SSL基本过程</h3><ul>
+<li>建立会话</li>
+<li>传输应用数据</li>
+</ul>
+<h3 id="连接-amp-会话"><a href="#连接-amp-会话" class="headerlink" title="连接&amp;会话"></a>连接&amp;会话</h3><ul>
+<li><p>SSL连接</p>
+<ul>
+<li>点对点</li>
+<li>连接是暂时的，每个连接和一个会话关联。</li>
+</ul>
+</li>
+<li><p>SSL会话</p>
+<ul>
+<li>会话是在server和client之间的一个关联，由握手协议建立，定义了一组密码安全参数。</li>
+<li>避免为每一个连接提供新的安全参数所需昂贵的协商代价。</li>
+</ul>
+</li>
+<li><p>在任意一对通信主体之间，可以有多个安全连接。</p>
+<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010113915965.png" alt="image-20201010113915965"></p>
+</li>
+</ul>
+<h3 id="握手协议"><a href="#握手协议" class="headerlink" title="握手协议"></a>握手协议</h3><p>握手协议的消息都含有以下三个字段</p>
+<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010114509495.png" alt="image-20201010114509495"></p>
+<h4 id="阶段1：建立安全能力"><a href="#阶段1：建立安全能力" class="headerlink" title="阶段1：建立安全能力"></a>阶段1：建立安全能力</h4><ul>
+<li>SSL握手第一阶段启动逻辑连接，建立这个连接的安全能力。</li>
+<li>client向server发送client hello消息<ul>
+<li>支持的协议版本，比如TLS 1.0。</li>
+<li>客户端生成的随机数，用于生成“对话密钥”。</li>
+<li>支持的加密方法，比如RSA。</li>
+<li>支持的压缩方法。</li>
+</ul>
+</li>
+<li>server向client发送server hello消息<ul>
+<li>确认使用的协议版本，如果版本不一致则关闭加密通信。</li>
+<li>服务器生成的随机数，用于生成“对话密钥”。</li>
+<li>确认使用的加密方法。</li>
+<li>服务器证书。</li>
+</ul>
+</li>
+<li>此阶段后，client、server知道了以下内容<ul>
+<li>SSL版本</li>
+<li>密钥交换、信息验证和加密算法</li>
+<li>压缩方法</li>
+<li>密钥生成的两个随机数</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010114955273.png" alt="image-20201010114955273"></p>
+<h4 id="阶段2：服务器鉴别与密钥交换"><a href="#阶段2：服务器鉴别与密钥交换" class="headerlink" title="阶段2：服务器鉴别与密钥交换"></a>阶段2：服务器鉴别与密钥交换</h4><ul>
+<li>server发送证书，包含一个X.509证书，或一条证书链。</li>
+<li>server发送server_key_exchange消息<ul>
+<li>可选，服务器证书没有包含必需数据时发送。</li>
+<li>包含签名，签名内容包括两个随机数以及服务器参数。</li>
+</ul>
+</li>
+<li>server发送certificate_request消息<ul>
+<li>非匿名server可以像client请求一个证书。</li>
+<li>包含证书类型和CAs。</li>
+</ul>
+</li>
+<li>服务器发送server_hello_done，等待应答。</li>
+</ul>
+<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010115349419.png" alt="image-20201010115349419"></p>
+<h4 id="阶段3：客户机鉴别与密钥交换"><a href="#阶段3：客户机鉴别与密钥交换" class="headerlink" title="阶段3：客户机鉴别与密钥交换"></a>阶段3：客户机鉴别与密钥交换</h4><ul>
+<li>client收到server_done消息后，检查server提供的证书，判断参数是否可以接收，如果没有问题就发送消息。</li>
+<li>如果server请求证书，就发送certificate，若client没有证书，则发送no_certificate警告，然后发送client_key_exchange消息。</li>
+<li>最后，client发送certificate_verify消息，包含一个签名，对第一条消息以来的所有握手消息的MAC值进行签名。</li>
+</ul>
+<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010115612373.png" alt="image-20201010115612373"></p>
+<h4 id="阶段4：完成"><a href="#阶段4：完成" class="headerlink" title="阶段4：完成"></a>阶段4：完成</h4><ul>
+<li>第四阶段建立起一个安全连接。</li>
+<li>client发送change_cipher_spec消息，将协商得到的CipherSuite拷贝到当前连接的状态之中。</li>
+<li>client用新的算法、密钥参数发送一个finished消息，检查密钥交换和鉴别过程是否已经成功。其中包括一个校验值，对所有以来的消息进行校验。</li>
+<li>服务器同样发送change_cipher_spec和finished消息。</li>
+<li>握手过程完成，client和server可以交换应用层数据。</li>
+</ul>
+<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010120038944.png" alt="image-20201010120038944"></p>
+<h3 id="记录协议"><a href="#记录协议" class="headerlink" title="记录协议"></a>记录协议</h3><p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010132038339.png" alt="image-20201010132038339"></p>
+<h3 id="警告协议"><a href="#警告协议" class="headerlink" title="警告协议"></a>警告协议</h3><p>当握手过程或者数据加密等操作出错或者发生异常情况时，向对方发出警告或中止当前连接。</p>
+<h3 id="SSL的加密和认证算法"><a href="#SSL的加密和认证算法" class="headerlink" title="SSL的加密和认证算法"></a>SSL的加密和认证算法</h3><p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010132259141.png" alt="image-20201010132259141"></p>
+<p>认证算法采用X.509电子证书标准，通过RSA算法进行数字签名来实现。</p>
+<h3 id="SSL安全性分析"><a href="#SSL安全性分析" class="headerlink" title="SSL安全性分析"></a>SSL安全性分析</h3><ul>
+<li>鉴别机制</li>
+<li>加密机制</li>
+<li>完整性机制</li>
+<li>抗重放攻击</li>
+</ul>
+<h3 id="SSL脆弱性分析"><a href="#SSL脆弱性分析" class="headerlink" title="SSL脆弱性分析"></a>SSL脆弱性分析</h3><ul>
+<li>客户端假冒</li>
+<li>无法提供基于UDP应用的安全保护</li>
+<li>不能对抗通信流量分析</li>
+<li>进程中主密钥泄露</li>
+</ul>
+<h2 id="WTLS"><a href="#WTLS" class="headerlink" title="WTLS"></a>WTLS</h2><p>TO BE COMPLETED</p>
+]]></content>
+      <categories>
+        <category>Internet安全协议与分析</category>
+      </categories>
+      <tags>
+        <tag>Internet安全协议与分析</tag>
+        <tag>SSL</tag>
+        <tag>WTLS</tag>
+      </tags>
   </entry>
 </search>
