@@ -1229,6 +1229,7 @@ Q(\theta,\theta^{(i)})=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\hat\gamma_{jk}
         <tag>Internet安全协议与分析</tag>
         <tag>IPSec</tag>
         <tag>IKE</tag>
+        <tag>not completed</tag>
       </tags>
   </entry>
   <entry>
@@ -1357,6 +1358,7 @@ Q(\theta,\theta^{(i)})=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\hat\gamma_{jk}
         <tag>Internet安全协议与分析</tag>
         <tag>SSL</tag>
         <tag>WTLS</tag>
+        <tag>not completed</tag>
       </tags>
   </entry>
   <entry>
@@ -1507,6 +1509,106 @@ Q(\theta,\theta^{(i)})=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\hat\gamma_{jk}
         <tag>Internet安全协议与分析</tag>
         <tag>SET</tag>
         <tag>not completed</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Internet安全协议与分析（四）PGP</title>
+    <url>/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/</url>
+    <content><![CDATA[<p>介绍PGP协议。</p>
+<a id="more"></a>
+<h2 id="电子邮件概述"><a href="#电子邮件概述" class="headerlink" title="电子邮件概述"></a>电子邮件概述</h2><ul>
+<li>电子邮件不是一种端到端的服务，而是一种<strong>存储转发式</strong>的服务。</li>
+<li>一个完整的电子邮件系统包括三个主要成分<ul>
+<li>客户端用户代理MUA（mail user agent）</li>
+<li>邮件传输代理MTA（mail transfer agent）</li>
+<li>邮件投递代理MDA（mail delivery agent）</li>
+</ul>
+</li>
+<li>电子邮件相关协议<ul>
+<li>SMTP、POP3、IMAP、MIME</li>
+</ul>
+</li>
+</ul>
+<h3 id="电子邮件系统安全问题"><a href="#电子邮件系统安全问题" class="headerlink" title="电子邮件系统安全问题"></a>电子邮件系统安全问题</h3><ul>
+<li>匿名转发<ul>
+<li>发件人隐瞒自己的电子邮箱地址和其他信息</li>
+<li>用户必须使用邮件加密和数字签名技术</li>
+</ul>
+</li>
+<li>电子邮件欺骗<ul>
+<li>假冒一个用户身份给其他用户发送邮件</li>
+<li>通过身份认证避免邮件欺骗</li>
+</ul>
+</li>
+<li>邮件炸弹和垃圾邮件<ul>
+<li>安装过滤器，预先检查发件人资料。</li>
+</ul>
+</li>
+<li>邮件病毒<ul>
+<li>通过预杀毒防止病毒的传播</li>
+</ul>
+</li>
+</ul>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
+<li>端到端的安全电子邮件技术<ul>
+<li>S/MIME和PGP，<strong>一般只对信体进行加密和签名，而信头必须保证原封不动</strong>。</li>
+</ul>
+</li>
+<li>要求信头在传输过程中也保密，使用传输层技术作为后盾<ul>
+<li>使用SSL SMTP和SSL POP</li>
+<li>使用VPN或其他IP通道技术</li>
+</ul>
+</li>
+<li>邮件服务器本身安全可靠</li>
+</ul>
+<h2 id="PGP"><a href="#PGP" class="headerlink" title="PGP"></a>PGP</h2><ul>
+<li>Pretty Good Privacy</li>
+</ul>
+<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152042892.png" alt="image-20201017152042892"></p>
+<h3 id="PGP数字签名与认证"><a href="#PGP数字签名与认证" class="headerlink" title="PGP数字签名与认证"></a>PGP数字签名与认证</h3><ul>
+<li>发送者<ul>
+<li>产生消息M</li>
+<li>使用SHA-1生成160位散列码H</li>
+<li>使用私钥签名，并与M连接。</li>
+</ul>
+</li>
+<li>接收方<ul>
+<li>使用公钥解密，恢复散列码H。</li>
+<li>计算M的散列码，与H比较，两者匹配则报文通过鉴别。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152232211.png" alt="image-20201017152232211"></p>
+<h3 id="保密性操作"><a href="#保密性操作" class="headerlink" title="保密性操作"></a>保密性操作</h3><ul>
+<li>发送者<ul>
+<li>生成消息M和128位随机数作为会话密钥</li>
+<li>使用CAST-128（或IDEA或3DES）加密报文</li>
+<li>用接收者的公钥加密会话密钥，并与M连接。</li>
+</ul>
+</li>
+<li>接收者<ul>
+<li>使用私钥解密报文，恢复会话密钥。</li>
+<li>用会话密钥解密恢复消息M。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152649242.png" alt="image-20201017152649242"></p>
+<h3 id="PGP加密认证处理过程"><a href="#PGP加密认证处理过程" class="headerlink" title="PGP加密认证处理过程"></a>PGP加密认证处理过程</h3><p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017153058600.png" alt="image-20201017153058600"></p>
+<h3 id="PGP密钥环"><a href="#PGP密钥环" class="headerlink" title="PGP密钥环"></a>PGP密钥环</h3><ul>
+<li>PGP在每个结点提供一对数据结构<ul>
+<li>私钥环——存储该节点拥有的公开/私有密钥对</li>
+<li>公钥环——存储该节点知道的其他所有用户的公开密钥</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017153356367.png" alt="image-20201017153356367"></p>
+]]></content>
+      <categories>
+        <category>Internet安全协议与分析</category>
+      </categories>
+      <tags>
+        <tag>not completed</tag>
+        <tag>PGP</tag>
       </tags>
   </entry>
 </search>
