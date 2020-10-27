@@ -39,11 +39,11 @@
     
       <category term="数字证书" scheme="https://entropy2333.github.io/tags/%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6/"/>
     
+      <category term="公钥体制" scheme="https://entropy2333.github.io/tags/%E5%85%AC%E9%92%A5%E4%BD%93%E5%88%B6/"/>
+    
       <category term="Hash鉴别" scheme="https://entropy2333.github.io/tags/Hash%E9%89%B4%E5%88%AB/"/>
     
       <category term="密钥分配" scheme="https://entropy2333.github.io/tags/%E5%AF%86%E9%92%A5%E5%88%86%E9%85%8D/"/>
-    
-      <category term="公钥体制" scheme="https://entropy2333.github.io/tags/%E5%85%AC%E9%92%A5%E4%BD%93%E5%88%B6/"/>
     
   </entry>
   
@@ -494,7 +494,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;Hello, world!&lt;br&gt;
+      &lt;p&gt;Hello, world!&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
