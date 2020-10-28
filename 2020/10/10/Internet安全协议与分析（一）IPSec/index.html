@@ -27,6 +27,16 @@
 <meta property="og:site_name" content="entropy2333">
 <meta property="og:description" content="介绍IPSec协议与IKE协议 。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160509665.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160857942.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160944599.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160958769.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027161058344.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162241877.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162746567.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162920657.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162952118.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027163130692.png">
 <meta property="og:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010110531559.png">
 <meta property="og:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010111251530.png">
 <meta property="og:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010111946997.png">
@@ -34,12 +44,12 @@
 <meta property="og:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010112010405.png">
 <meta property="og:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010112031723.png">
 <meta property="article:published_time" content="2020-10-10T02:57:40.000Z">
-<meta property="article:modified_time" content="2020-10-19T06:01:49.526Z">
+<meta property="article:modified_time" content="2020-10-27T10:48:53.721Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="IPSec">
 <meta property="article:tag" content="IKE">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010110531559.png">
+<meta name="twitter:image" content="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160509665.png">
 
 <link rel="canonical" href="https://entropy2333.github.io/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/">
 
@@ -265,7 +275,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>658</span>
+              <span>1.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -285,7 +295,54 @@
 
       
         <p>介绍IPSec协议与IKE协议 。<br><a id="more"></a></p>
-<h2 id="IPSec"><a href="#IPSec" class="headerlink" title="IPSec"></a>IPSec</h2><p>TO BE COMPLETED</p>
+<h2 id="IP安全问题"><a href="#IP安全问题" class="headerlink" title="IP安全问题"></a>IP安全问题</h2><p>IP协议从本质上就是不安全的，仅仅依靠IP头部的校验和字段无法保证IP包的安全。</p>
+<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160509665.png" alt="image-20201027160509665"></p>
+<h2 id="IPSec"><a href="#IPSec" class="headerlink" title="IPSec"></a>IPSec</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>IPSec旨在把安全机制引入IP协议，使用密码学方法支持机密性和认证性服务，确保公网上数据通信的可靠性和完整性。</p>
+<p>IPSec对IPV4可选，对IPV6必须，由三种机制共同保障</p>
+<ul>
+<li>认证</li>
+<li>信息机密性</li>
+<li>密钥管理</li>
+</ul>
+<h3 id="体系结构"><a href="#体系结构" class="headerlink" title="体系结构"></a>体系结构</h3><p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160857942.png" alt="image-20201027160857942"></p>
+<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160944599.png" alt="image-20201027160944599"></p>
+<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160958769.png" alt="image-20201027160958769"></p>
+<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027161058344.png" alt="image-20201027161058344"></p>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><h4 id="安全联盟（SA）"><a href="#安全联盟（SA）" class="headerlink" title="安全联盟（SA）"></a>安全联盟（SA）</h4><ul>
+<li>Secure Association</li>
+<li>是两个通信实体之间建立的一个简单单向协定</li>
+<li>由SPI（Security Parameter Index）和目标地址组成</li>
+<li>单个IPSec连接至少需要两个SA</li>
+</ul>
+<h4 id="安全关联数据库（SAD）"><a href="#安全关联数据库（SAD）" class="headerlink" title="安全关联数据库（SAD）"></a>安全关联数据库（SAD）</h4><ul>
+<li>Secure Association Database</li>
+<li>SAD包含了所有活跃的SA的所有参数信息</li>
+<li>流出数据：会有一个SPD数据项包含指向某个SAD数据项的指针，SPD决定了一个给定的数据包究竟使用哪一个SA。</li>
+<li>流入数据：由SAD决定如何对给定数据包做处理。</li>
+</ul>
+<h4 id="安全策略库（SPD）"><a href="#安全策略库（SPD）" class="headerlink" title="安全策略库（SPD）"></a>安全策略库（SPD）</h4><ul>
+<li>Secure Policy Database</li>
+<li>SPD用于为IPSec实现提供安全策略配置，指定哪些数据流必须经过IPSec的处理。</li>
+</ul>
+<h3 id="AH协议"><a href="#AH协议" class="headerlink" title="AH协议"></a>AH协议</h3><ul>
+<li>Authentication Header</li>
+<li>在每一个数据包上添加一个身份验证报头，包含一个带密钥的hash，提供了完整性保护。</li>
+<li>不提供机密性保护。</li>
+</ul>
+<h4 id="传输模式"><a href="#传输模式" class="headerlink" title="传输模式"></a>传输模式</h4><ul>
+<li>如果传送过程中经过NAT网关，源/目的IP将被改变，导致完整性验证失败。AH在传输模式下与NAT冲突。</li>
+</ul>
+<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162241877.png" alt="image-20201027162241877"></p>
+<h4 id="隧道模式"><a href="#隧道模式" class="headerlink" title="隧道模式"></a>隧道模式</h4><ul>
+<li>依旧与NAT冲突。</li>
+</ul>
+<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162746567.png" alt="image-20201027162746567"></p>
+<h3 id="ESP协议"><a href="#ESP协议" class="headerlink" title="ESP协议"></a>ESP协议</h3><ul>
+<li>将需要保护的数据加密后，封装在IP包中。</li>
+</ul>
+<h4 id="传输模式-1"><a href="#传输模式-1" class="headerlink" title="传输模式"></a>传输模式</h4><p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162920657.png" alt="image-20201027162920657"></p>
+<h4 id="隧道模式-1"><a href="#隧道模式-1" class="headerlink" title="隧道模式"></a>隧道模式</h4><p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162952118.png" alt="image-20201027162952118"></p>
+<h3 id="AH-vs-ESP"><a href="#AH-vs-ESP" class="headerlink" title="AH vs ESP"></a>AH vs ESP</h3><p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027163130692.png" alt="image-20201027163130692"></p>
 <h2 id="IKE"><a href="#IKE" class="headerlink" title="IKE"></a>IKE</h2><p>​        IKE（Internet Key Exchange）因特网密钥交换协议，是IPSec的信令协议，为IPSec提供了自动协商交换密钥、建立安全联盟的服务，能够简化IPSec的使用和管理，大大简化IPSec的配置和维护工作。</p>
 <h3 id="IKE与IPSec关系"><a href="#IKE与IPSec关系" class="headerlink" title="IKE与IPSec关系"></a>IKE与IPSec关系</h3><ul>
 <li>IKE位于UDP之上，属于应用层协议。</li>
@@ -314,7 +371,10 @@
 <ul>
 <li><p>两种协商模式</p>
 <ul>
-<li>主模式协商</li>
+<li>主模式协商<ul>
+<li>适合两设备的公网IP固定，实现设备之间点对点的环境。</li>
+</ul>
+</li>
 </ul>
 <p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010111946997.png" alt="image-20201010111946997"></p>
 <ul>
@@ -436,7 +496,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#IPSec"><span class="nav-number">1.</span> <span class="nav-text">IPSec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IKE"><span class="nav-number">2.</span> <span class="nav-text">IKE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IKE%E4%B8%8EIPSec%E5%85%B3%E7%B3%BB"><span class="nav-number">2.1.</span> <span class="nav-text">IKE与IPSec关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IKE%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text">IKE的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IKE%E7%9A%84%E5%8D%8F%E5%95%86%E8%BF%87%E7%A8%8B"><span class="nav-number">2.3.</span> <span class="nav-text">IKE的协商过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="nav-number">2.3.1.</span> <span class="nav-text">两个阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E4%BF%A1%E6%81%AF"><span class="nav-number">2.3.2.</span> <span class="nav-text">交换信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E4%B8%80%E5%8D%8F%E5%95%86%E8%BF%87%E7%A8%8B"><span class="nav-number">2.3.3.</span> <span class="nav-text">阶段一协商过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E4%BA%8C%E5%8D%8F%E5%95%86%E8%BF%87%E7%A8%8B"><span class="nav-number">2.3.4.</span> <span class="nav-text">阶段二协商过程</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#IP%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">IP安全问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPSec"><span class="nav-number">2.</span> <span class="nav-text">IPSec</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">2.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">2.2.</span> <span class="nav-text">体系结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.3.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E8%81%94%E7%9B%9F%EF%BC%88SA%EF%BC%89"><span class="nav-number">2.3.1.</span> <span class="nav-text">安全联盟（SA）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E5%85%B3%E8%81%94%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88SAD%EF%BC%89"><span class="nav-number">2.3.2.</span> <span class="nav-text">安全关联数据库（SAD）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5%E5%BA%93%EF%BC%88SPD%EF%BC%89"><span class="nav-number">2.3.3.</span> <span class="nav-text">安全策略库（SPD）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AH%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.4.</span> <span class="nav-text">AH协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.4.1.</span> <span class="nav-text">传输模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9A%A7%E9%81%93%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.4.2.</span> <span class="nav-text">隧道模式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ESP%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.5.</span> <span class="nav-text">ESP协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E6%A8%A1%E5%BC%8F-1"><span class="nav-number">2.5.1.</span> <span class="nav-text">传输模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9A%A7%E9%81%93%E6%A8%A1%E5%BC%8F-1"><span class="nav-number">2.5.2.</span> <span class="nav-text">隧道模式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AH-vs-ESP"><span class="nav-number">2.6.</span> <span class="nav-text">AH vs ESP</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IKE"><span class="nav-number">3.</span> <span class="nav-text">IKE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IKE%E4%B8%8EIPSec%E5%85%B3%E7%B3%BB"><span class="nav-number">3.1.</span> <span class="nav-text">IKE与IPSec关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IKE%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">3.2.</span> <span class="nav-text">IKE的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IKE%E7%9A%84%E5%8D%8F%E5%95%86%E8%BF%87%E7%A8%8B"><span class="nav-number">3.3.</span> <span class="nav-text">IKE的协商过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="nav-number">3.3.1.</span> <span class="nav-text">两个阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E4%BF%A1%E6%81%AF"><span class="nav-number">3.3.2.</span> <span class="nav-text">交换信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E4%B8%80%E5%8D%8F%E5%95%86%E8%BF%87%E7%A8%8B"><span class="nav-number">3.3.3.</span> <span class="nav-text">阶段一协商过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E4%BA%8C%E5%8D%8F%E5%95%86%E8%BF%87%E7%A8%8B"><span class="nav-number">3.3.4.</span> <span class="nav-text">阶段二协商过程</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -519,12 +579,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">36k</span>
+    <span title="站点总字数">39k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">33 分钟</span>
+    <span title="站点阅读时长">35 分钟</span>
 </div>
 
         
