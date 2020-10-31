@@ -20,26 +20,22 @@
     var CONFIG = {"hostname":"entropy2333.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="介绍PGP协议。">
+  <meta name="description" content="复习所学知识，应付考试orz。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Internet安全协议与分析（四）PGP">
-<meta property="og:url" content="https://entropy2333.github.io/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/index.html">
+<meta property="og:title" content="Internet安全协议与分析（八）课程复习">
+<meta property="og:url" content="https://entropy2333.github.io/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/index.html">
 <meta property="og:site_name" content="entropy2333">
-<meta property="og:description" content="介绍PGP协议。">
+<meta property="og:description" content="复习所学知识，应付考试orz。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://entropy2333.github.io/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152042892.png">
-<meta property="og:image" content="https://entropy2333.github.io/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152232211.png">
-<meta property="og:image" content="https://entropy2333.github.io/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152649242.png">
-<meta property="og:image" content="https://entropy2333.github.io/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017153058600.png">
-<meta property="og:image" content="https://entropy2333.github.io/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017153356367.png">
-<meta property="article:published_time" content="2020-10-17T07:08:41.000Z">
-<meta property="article:modified_time" content="2020-10-28T02:56:22.270Z">
+<meta property="og:image" content="https://entropy2333.github.io/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/image-20201031143043915.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/image-20201031143105550.png">
+<meta property="article:published_time" content="2020-10-31T06:19:48.000Z">
+<meta property="article:modified_time" content="2020-10-31T08:27:02.948Z">
 <meta property="article:author" content="entropy2333">
-<meta property="article:tag" content="PGP">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://entropy2333.github.io/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152042892.png">
+<meta name="twitter:image" content="https://entropy2333.github.io/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/image-20201031143043915.png">
 
-<link rel="canonical" href="https://entropy2333.github.io/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/">
+<link rel="canonical" href="https://entropy2333.github.io/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/">
 
 
 <script id="page-configurations">
@@ -52,7 +48,7 @@
   };
 </script>
 
-  <title>Internet安全协议与分析（四）PGP | entropy2333</title>
+  <title>Internet安全协议与分析（八）课程复习 | entropy2333</title>
   
 
 
@@ -204,7 +200,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/">
+    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/myavatar.jpg">
@@ -217,7 +213,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Internet安全协议与分析（四）PGP
+          Internet安全协议与分析（八）课程复习
         </h1>
 
         <div class="post-meta">
@@ -227,7 +223,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-10-17 15:08:41" itemprop="dateCreated datePublished" datetime="2020-10-17T15:08:41+08:00">2020-10-17</time>
+              <time title="创建时间：2020-10-31 14:19:48" itemprop="dateCreated datePublished" datetime="2020-10-31T14:19:48+08:00">2020-10-31</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,8 +251,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -266,7 +262,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>763</span>
+              <span>800</span>
             </span>
 
         </div>
@@ -278,98 +274,90 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>介绍PGP协议。</p>
+        <p>复习所学知识，应付考试orz。</p>
 <a id="more"></a>
-<h2 id="电子邮件概述"><a href="#电子邮件概述" class="headerlink" title="电子邮件概述"></a>电子邮件概述</h2><ul>
-<li>电子邮件不是一种端到端的服务，而是一种<strong>存储转发式</strong>的服务。</li>
-<li>一个完整的电子邮件系统包括三个主要成分<ul>
-<li>客户端用户代理MUA（mail user agent）</li>
-<li>邮件传输代理MTA（mail transfer agent）</li>
-<li>邮件投递代理MDA（mail delivery agent）</li>
+<h2 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h2><h3 id="挑战-应答"><a href="#挑战-应答" class="headerlink" title="挑战-应答"></a>挑战-应答</h3><ul>
+<li>客户端向服务器发出请求，请求身份认证。</li>
+<li>服务器查询用户是否合法，合法则进行下一步。</li>
+<li>服务器产生随机数，作为“挑战”发给客户端。</li>
+<li>客户端将ID和随机数Hash，发送给服务器。</li>
+<li>服务器比较结果，相同则通过认证，并通知客户端。</li>
 </ul>
+<h3 id="数字信封"><a href="#数字信封" class="headerlink" title="数字信封"></a>数字信封</h3><ul>
+<li>将对称密钥通过非对称加密的方式分发。</li>
+<li>发送方用对称密钥加密明文，并用接收方公钥加密对称密钥，将消息发给接收方。</li>
+<li>接收方用私钥解密获得对称密钥，随后解密得到明文。</li>
+</ul>
+<h3 id="公钥环-amp-私钥环"><a href="#公钥环-amp-私钥环" class="headerlink" title="公钥环&amp;私钥环"></a>公钥环&amp;私钥环</h3><ul>
+<li>公钥环保存该结点拥有的其他用户的公钥</li>
+<li>私钥环保存该节点拥有的公私钥对（加密）</li>
+</ul>
+<h3 id="隧道模式"><a href="#隧道模式" class="headerlink" title="隧道模式"></a>隧道模式</h3><ul>
+<li><p>AH</p>
+<p><img src="/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/image-20201031143043915.png" alt="image-20201031143043915"></p>
 </li>
-<li>电子邮件相关协议<ul>
-<li>SMTP、POP3、IMAP、MIME</li>
-</ul>
-</li>
-</ul>
-<h3 id="电子邮件系统安全问题"><a href="#电子邮件系统安全问题" class="headerlink" title="电子邮件系统安全问题"></a>电子邮件系统安全问题</h3><ul>
-<li>匿名转发<ul>
-<li>发件人隐瞒自己的电子邮箱地址和其他信息</li>
-<li>用户必须使用邮件加密和数字签名技术</li>
-</ul>
-</li>
-<li>电子邮件欺骗<ul>
-<li>假冒一个用户身份给其他用户发送邮件</li>
-<li>通过身份认证避免邮件欺骗</li>
-</ul>
-</li>
-<li>邮件炸弹和垃圾邮件<ul>
-<li>安装过滤器，预先检查发件人资料。</li>
-</ul>
-</li>
-<li>邮件病毒<ul>
-<li>通过预杀毒防止病毒的传播</li>
-</ul>
+<li><p>ESP</p>
+<p><img src="/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/image-20201031143105550.png" alt="image-20201031143105550"></p>
 </li>
 </ul>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
-<li>端到端的安全电子邮件技术<ul>
-<li>S/MIME和PGP，<strong>一般只对信体进行加密和签名，而信头必须保证原封不动</strong>。</li>
+<h2 id="简答"><a href="#简答" class="headerlink" title="简答"></a>简答</h2><h3 id="BAN分析Otway-Rees"><a href="#BAN分析Otway-Rees" class="headerlink" title="BAN分析Otway-Rees"></a>BAN分析Otway-Rees</h3><ul>
+<li>密钥有效性</li>
+</ul>
+<script type="math/tex; mode=display">
+bel(A, goodkey(S, K_{as}, S)) \\
+bel(B, goodkey(S, K_{bs}, S))</script><ul>
+<li>S的权威性</li>
+</ul>
+<script type="math/tex; mode=display">
+bel(A, cont(S, skey(A, K_{ab}, B))) \\ 
+bel(B, cont(S, skey(A, K_{ab}, B))) \\
+bel(A, cont(S, fresh(skey(A, K_{ab}, B)))</script><ul>
+<li>随机数的新鲜性</li>
+</ul>
+<script type="math/tex; mode=display">
+bel(A, fresh(N_a)) \\
+bel(B, fresh(N_b))</script><h3 id="Kerberos协议中Ticket-v和认证头的结构和作用"><a href="#Kerberos协议中Ticket-v和认证头的结构和作用" class="headerlink" title="Kerberos协议中Ticket_v和认证头的结构和作用"></a>Kerberos协议中<script type="math/tex">Ticket_v</script>和认证头的结构和作用</h3><ul>
+<li><script type="math/tex">Ticket_v</script>表示该用户已被AS认证</li>
+<li>验证头用于验证ticket有效</li>
+</ul>
+<h3 id="安全协议中Nonce和时戳的作用和区别"><a href="#安全协议中Nonce和时戳的作用和区别" class="headerlink" title="安全协议中Nonce和时戳的作用和区别"></a>安全协议中Nonce和时戳的作用和区别</h3><ul>
+<li>随机数是为了提供消息的新鲜性<ul>
+<li>可以用于挑战应答，只使用一次，防止重放攻击。</li>
 </ul>
 </li>
-<li>要求信头在传输过程中也保密，使用传输层技术作为后盾<ul>
-<li>使用SSL SMTP和SSL POP</li>
-<li>使用VPN或其他IP通道技术</li>
+<li>时戳依赖于时钟的同步。</li>
+</ul>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><h3 id="PGP"><a href="#PGP" class="headerlink" title="PGP"></a>PGP</h3><ul>
+<li>发送方<ul>
+<li>签名消息<ul>
+<li>使用用户ID作为索引获取发送者的私钥</li>
+<li>提示用户输入口令解密私钥</li>
+<li>创建签名</li>
 </ul>
 </li>
-<li>邮件服务器本身安全可靠</li>
+<li>加密消息<ul>
+<li>生成会话密钥，加密消息。</li>
+<li>使用用户ID作为索引获取接收方公钥</li>
+<li>创建会话消息</li>
 </ul>
-<h2 id="PGP"><a href="#PGP" class="headerlink" title="PGP"></a>PGP</h2><ul>
-<li>Pretty Good Privacy</li>
-</ul>
-<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152042892.png" alt="image-20201017152042892"></p>
-<h3 id="PGP数字签名与认证"><a href="#PGP数字签名与认证" class="headerlink" title="PGP数字签名与认证"></a>PGP数字签名与认证</h3><ul>
-<li>发送者<ul>
-<li>产生消息M</li>
-<li>使用SHA-1生成160位散列码H</li>
-<li>使用私钥签名，并与M连接。</li>
+</li>
 </ul>
 </li>
 <li>接收方<ul>
-<li>使用公钥解密，恢复散列码H。</li>
-<li>计算M的散列码，与H比较，两者匹配则报文通过鉴别。</li>
+<li>解密消息<ul>
+<li>使用消息内ID字段作为索引获取私钥</li>
+<li>提示用户输入密钥解密私钥</li>
+<li>恢复会话密钥，解密消息。</li>
+</ul>
+</li>
+<li>认证消息<ul>
+<li>使用签名密钥ID作为索引获取公钥</li>
+<li>恢复消息摘要</li>
+<li>计算消息摘要并和传输版本比较认证</li>
 </ul>
 </li>
 </ul>
-<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152232211.png" alt="image-20201017152232211"></p>
-<h3 id="保密性操作"><a href="#保密性操作" class="headerlink" title="保密性操作"></a>保密性操作</h3><ul>
-<li>发送者<ul>
-<li>生成消息M和128位随机数作为会话密钥</li>
-<li>使用CAST-128（或IDEA或3DES）加密报文</li>
-<li>用接收者的公钥加密会话密钥，并与M连接。</li>
-</ul>
 </li>
-<li>接收者<ul>
-<li>使用私钥解密报文，恢复会话密钥。</li>
-<li>用会话密钥解密恢复消息M。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152649242.png" alt="image-20201017152649242"></p>
-<h3 id="PGP加密认证处理过程"><a href="#PGP加密认证处理过程" class="headerlink" title="PGP加密认证处理过程"></a>PGP加密认证处理过程</h3><p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017153058600.png" alt="image-20201017153058600"></p>
-<h3 id="PGP密钥环"><a href="#PGP密钥环" class="headerlink" title="PGP密钥环"></a>PGP密钥环</h3><ul>
-<li>PGP在每个结点提供一对数据结构<ul>
-<li>私钥环——存储该节点拥有的公开/私有密钥对</li>
-<li>公钥环——存储该节点知道的其他所有用户的公开密钥</li>
-</ul>
-</li>
-</ul>
-<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017153356367.png" alt="image-20201017153356367"></p>
-<h3 id="信任网"><a href="#信任网" class="headerlink" title="信任网"></a>信任网</h3><ul>
-<li>通过自己的数字签名进行确认</li>
-<li>通过自己完全信任的人的数字签名进行确认</li>
-<li>通过自己有限信任的多个人的数字签名进行确认</li>
 </ul>
 
     </div>
@@ -396,9 +384,6 @@
 
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/PGP/" rel="tag"># PGP</a>
-          </div>
 
         
 
@@ -406,13 +391,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89SET/" rel="prev" title="Internet安全协议与分析（三）SET">
-      <i class="fa fa-chevron-left"></i> Internet安全协议与分析（三）SET
+    <a href="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/" rel="prev" title="Internet安全协议与分析（零）安全协议基础">
+      <i class="fa fa-chevron-left"></i> Internet安全协议与分析（零）安全协议基础
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/" rel="next" title="Internet安全协议与分析（五）Kerberos">
-      Internet安全协议与分析（五）Kerberos <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -472,7 +454,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">电子邮件概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">电子邮件系统安全问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">1.2.</span> <span class="nav-text">解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PGP"><span class="nav-number">2.</span> <span class="nav-text">PGP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PGP%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E4%B8%8E%E8%AE%A4%E8%AF%81"><span class="nav-number">2.1.</span> <span class="nav-text">PGP数字签名与认证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%9D%E5%AF%86%E6%80%A7%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">保密性操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PGP%E5%8A%A0%E5%AF%86%E8%AE%A4%E8%AF%81%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B"><span class="nav-number">2.3.</span> <span class="nav-text">PGP加密认证处理过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PGP%E5%AF%86%E9%92%A5%E7%8E%AF"><span class="nav-number">2.4.</span> <span class="nav-text">PGP密钥环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E4%BB%BB%E7%BD%91"><span class="nav-number">2.5.</span> <span class="nav-text">信任网</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A"><span class="nav-number">1.</span> <span class="nav-text">名词解释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%91%E6%88%98-%E5%BA%94%E7%AD%94"><span class="nav-number">1.1.</span> <span class="nav-text">挑战-应答</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E4%BF%A1%E5%B0%81"><span class="nav-number">1.2.</span> <span class="nav-text">数字信封</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E9%92%A5%E7%8E%AF-amp-%E7%A7%81%E9%92%A5%E7%8E%AF"><span class="nav-number">1.3.</span> <span class="nav-text">公钥环&amp;私钥环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%A7%E9%81%93%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.4.</span> <span class="nav-text">隧道模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E7%AD%94"><span class="nav-number">2.</span> <span class="nav-text">简答</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BAN%E5%88%86%E6%9E%90Otway-Rees"><span class="nav-number">2.1.</span> <span class="nav-text">BAN分析Otway-Rees</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kerberos%E5%8D%8F%E8%AE%AE%E4%B8%ADTicket-v%E5%92%8C%E8%AE%A4%E8%AF%81%E5%A4%B4%E7%9A%84%E7%BB%93%E6%9E%84%E5%92%8C%E4%BD%9C%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text">Kerberos协议中Ticket_v和认证头的结构和作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%ADNonce%E5%92%8C%E6%97%B6%E6%88%B3%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E5%8C%BA%E5%88%AB"><span class="nav-number">2.3.</span> <span class="nav-text">安全协议中Nonce和时戳的作用和区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PGP"><span class="nav-number">3.1.</span> <span class="nav-text">PGP</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
