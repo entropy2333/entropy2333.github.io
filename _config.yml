@@ -131,5 +131,5 @@ symbols_count_time:
 backup:
   type: git
   repository:
-    origin: git@github.com:entropy2333/entropy2333.github.io.git,backup
+    github: git@github.com:entropy2333/entropy2333.github.io.git,backup
     gitee: git@gitee.com:entropy2333/entropy2333.git,backup
