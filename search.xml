@@ -2812,23 +2812,18 @@ IP = \begin{pmatrix} 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\ 2 & 6 & 3 & 1 & 4 & 8 & 5 
 IP^{-1} = \begin{pmatrix} 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\ 4 & 1 & 3 & 5 & 7 & 2 & 8 & 6 \end{pmatrix}</script><p>S-DES的加密过程如下</p>
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227195605766.png" style="zoom:67%;"></p>
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227195620844.png" style="zoom:67%;"></p>
-<script type="math/tex; mode=display">f_k$$是加密方案中最重要的部分</script><p>f_k(L, R) = (L\oplus F(R, SK), R)</p>
+<p>对于S-DES，<script type="math/tex">f_k</script>是加密方案中最重要的部分</p>
 <script type="math/tex; mode=display">
-其中对于映射F，输入为4bit，第一步进行扩张/置换（E/P）运算</script><p>(n_1, n_2, n_3, n_4) \xrightarrow{E/P} \begin{pmatrix} n_4 &amp; n_1 &amp; n_2 &amp; n_3 \\ n_2 &amp; n_3 &amp; n_4 &amp; n_1 \end{pmatrix}</p>
+f_k(L, R) = (L\oplus F(R, SK), R)</script><p>其中对于映射F，输入为4bit，第一步进行扩张/置换（E/P）运算</p>
 <script type="math/tex; mode=display">
-之后将密钥与E/P的结果作异或</script><p>\begin{pmatrix} n_4+k_{11} &amp; n_1+k_{12} &amp; n_2+k_{13} &amp; n_3+k_{14} \\ n_2+k_{15} &amp; n_3+j_{16} &amp; n_4+k_{17} &amp; n_1+k_{18} \end{pmatrix} = \begin{pmatrix} P_{0,0} &amp; P_{0,1} &amp; P_{0,2} &amp; P_{0,3} \\ P_{1,0} &amp; P_{1,1} &amp; P_{1,2} &amp; P_{1,3} \end{pmatrix}</p>
+(n_1, n_2, n_3, n_4) \xrightarrow{E/P} \begin{pmatrix} n_4 & n_1 & n_2 & n_3 \\ n_2 & n_3 & n_4 & n_1 \end{pmatrix}</script><p>之后将密钥与E/P的结果作异或</p>
 <script type="math/tex; mode=display">
-将第一行和第二行分别输入两个S盒，得到两个2bit的输出。
-
-S盒接收4bit输入，将第1和第4比特组成的数作为行，第2和第3比特组成的数作为列。
-
-<img src="现代密码学（三）分组密码/image-20201227201918812.png" alt="image-20201227201918812" style="zoom:67%;" />
-
-### 安全分析
-
-对10bit密钥的强行攻击是可行的，可以利用已知明文攻击。
-
-密钥空间：$$2^{10}=1024</script><p>已知明文<script type="math/tex">(p_1, p_2,\dots,p_8)</script>和密文<script type="math/tex">(c_1, c_2,\dots,c_8)</script>，密钥<script type="math/tex">(k_1, k_2,\dots,k_{10})</script>作为未知数。</p>
+\begin{pmatrix} n_4+k_{11} & n_1+k_{12} & n_2+k_{13} & n_3+k_{14} \\ n_2+k_{15} & n_3+j_{16} & n_4+k_{17} & n_1+k_{18} \end{pmatrix} = \begin{pmatrix} P_{0,0} & P_{0,1} & P_{0,2} & P_{0,3} \\ P_{1,0} & P_{1,1} & P_{1,2} & P_{1,3} \end{pmatrix}</script><p>将第一行和第二行分别输入两个S盒，得到两个2bit的输出。</p>
+<p>S盒接收4bit输入，将第1和第4比特组成的数作为行，第2和第3比特组成的数作为列。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227201918812.png" alt="image-20201227201918812" style="zoom:67%;"></p>
+<h3 id="安全分析"><a href="#安全分析" class="headerlink" title="安全分析"></a>安全分析</h3><p>对10bit密钥的强行攻击是可行的，可以利用已知明文攻击。</p>
+<p>密钥空间：<script type="math/tex">2^{10}=1024</script></p>
+<p>已知明文<script type="math/tex">(p_1, p_2,\dots,p_8)</script>和密文<script type="math/tex">(c_1, c_2,\dots,c_8)</script>，密钥<script type="math/tex">(k_1, k_2,\dots,k_{10})</script>作为未知数。</p>
 <p>S-DES可以表示为8个含10个变量的非线性方程，非线性是S盒作用的结果。</p>
 <h2 id="DES"><a href="#DES" class="headerlink" title="DES"></a>DES</h2><p>分组长度64bit，密文64bit。密钥为64bit，只有56bit参与运算，8bit作为奇偶校验位。</p>
 <p>算法有以下三个阶段</p>
