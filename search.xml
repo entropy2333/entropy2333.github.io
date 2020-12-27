@@ -2639,4 +2639,261 @@ P_\lambda(Y=c_k) = \frac {\sum_{i=1}^NI(y_i=c_k)+\lambda}{N+K\lambda}, \quad \la
         <tag>C++</tag>
       </tags>
   </entry>
+  <entry>
+    <title>现代密码学（一）绪论</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%80%EF%BC%89%E7%BB%AA%E8%AE%BA/</url>
+    <content><![CDATA[<p>介绍密码学的基本概念。</p>
+<a id="more"></a>
+<h2 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h2><p>密码学是一门研究秘密信息隐写技术的学科。</p>
+<ul>
+<li>可以使消息的内容对所有人（除了发送者和接收者）保密</li>
+<li>可以使接收者验证消息的正确性</li>
+</ul>
+<p>常用的术语如下</p>
+<ul>
+<li>明文 plaintext</li>
+<li>密文 ciphertext</li>
+<li>密码算法 cipher</li>
+<li>密钥 key</li>
+<li>编码 encipher/encode</li>
+<li>译码 decipher/decode</li>
+<li>密码分析 cryptanalysis/codebreaking</li>
+<li>密码学 cryptology</li>
+</ul>
+<h3 id="符号记法"><a href="#符号记法" class="headerlink" title="符号记法"></a>符号记法</h3><p>加密 Encryption</p>
+<script type="math/tex; mode=display">
+C = EK(P)</script><p>解密 Decryption</p>
+<script type="math/tex; mode=display">
+P = EK_{-1}(C)</script><p>可以把密码系统理解为明文空间到密文空间的变换，其中密钥取自密钥空间。</p>
+<script type="math/tex; mode=display">
+P\xrightarrow{EK}C \\
+C\xrightarrow{EK_{-1}}P</script><h2 id="算法分类"><a href="#算法分类" class="headerlink" title="算法分类"></a>算法分类</h2><ul>
+<li>私钥加密算法<ul>
+<li>分组密码</li>
+<li>流密码（序列密码）</li>
+</ul>
+</li>
+<li>公钥加密算法</li>
+<li>数字签名算法</li>
+<li>哈希函数</li>
+</ul>
+<h2 id="密码分析"><a href="#密码分析" class="headerlink" title="密码分析"></a>密码分析</h2><p>密码分析学是指在没有加密密钥的情况下，攻击密文的过程。</p>
+<ul>
+<li>唯密文攻击<ul>
+<li>只知道算法与一些密文</li>
+<li>利用统计方法</li>
+<li>需要能够识别明文</li>
+</ul>
+</li>
+<li>已知明文攻击<ul>
+<li>知道一些明文/密文对</li>
+<li>利用已知的明文/密文对进行攻击</li>
+</ul>
+</li>
+<li>选择明文攻击<ul>
+<li>能够选择明文并得到相应的密文</li>
+<li>利用算法的结构进行攻击</li>
+</ul>
+</li>
+<li>选择密文攻击<ul>
+<li>能够选择密文并得到相应的明文</li>
+<li>利用对算法结构的知识进行攻击</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>现代密码学</category>
+      </categories>
+      <tags>
+        <tag>密码学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>现代密码学（七）数字签名算法</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%83%EF%BC%89%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>现代密码学（三）分组密码</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/</url>
+    <content><![CDATA[<p>介绍分组密码，包括Feistel Cipher、DES和IDEA等。</p>
+<a id="more"></a>
+<h2 id="分组密码"><a href="#分组密码" class="headerlink" title="分组密码"></a>分组密码</h2><p>分组密码（Block Cipher），是指将明文分成许多块，利用加密算法对每一块进行加密，形式如下。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227181933426.png" alt="image-20201227181933426" style="zoom:67%;"></p>
+<p>分组密码希望使用对每一块使用尽可能大的替换模块，但并不现实。</p>
+<p>当分组长度为64bit时，即需要<script type="math/tex">2^{64}</script>个实体的替换表，因此使用乘积密码的思想，用一些小的模块替代。</p>
+<h2 id="替换-置换密码"><a href="#替换-置换密码" class="headerlink" title="替换-置换密码"></a>替换-置换密码</h2><p>Shannon在那篇著名的文章中，介绍了替换-置换（S-P）网络的概念。</p>
+<ul>
+<li>替换 Substitution</li>
+<li>置换 Permutation</li>
+</ul>
+<p>其实和古典密码的思想类似，替换运算用另一个二进制字代替原来的字。</p>
+<p>替换函数就构成密钥，可以看成一个大的查表运算，替换函数也被称为S-box。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227182545313.png" alt="image-20201227182545313" style="zoom:67%;"></p>
+<p>置换运算则打乱一个二进制字的次序，重新排列的方法构成密钥，称为P-box。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227182648209.png" alt="image-20201227182648209" style="zoom: 67%;"></p>
+<p>S-P网络就是将这两种运算组合在一起，称为混合变换。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227182900185.png" alt="image-20201227182900185" style="zoom:67%;"></p>
+<h2 id="Feistel-Cipher"><a href="#Feistel-Cipher" class="headerlink" title="Feistel Cipher"></a>Feistel Cipher</h2><p>Feitel密码将输入块分为左右两部分L(i-1)和R(i-1)，在密码变换的第i轮只使用R(i-1)。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227183335455.png" alt="image-20201227183335455" style="zoom:67%;"></p>
+<p>变换过程可以表示为</p>
+<script type="math/tex; mode=display">
+\begin{align}
+L(i) &= R(i-1) \\
+R(i) &= L(i-1) \oplus g(K(i), R(i-1))
+\end{align}</script><p>S盒提供输入bits混合作用（confusion）。</p>
+<ul>
+<li>使密钥和密文之间关系复杂化</li>
+<li>极小化统计特性，使统计分析攻击不能奏效。</li>
+</ul>
+<p>P盒提供扩散作用（diffusion）</p>
+<ul>
+<li>将明文和密钥的影响尽可能散步到较多个输出的密文中（将明文冗余度分散到密文中）。</li>
+</ul>
+<h3 id="雪崩效应"><a href="#雪崩效应" class="headerlink" title="雪崩效应"></a>雪崩效应</h3><ul>
+<li>输入改变1bit，导致近半的bit发生变化。</li>
+<li>对于一个函数<script type="math/tex">f</script>来说，较好的雪崩特性是指<ul>
+<li>对于<script type="math/tex">2^m</script>个明文向量，分为<script type="math/tex">2^{m-1}</script>个向量对<script type="math/tex">(x_i, x_i')</script>，每对向量只有一个bit不同。</li>
+<li>定义<script type="math/tex">v_i = f(x) \oplus f(x_i)</script>，则近半的<script type="math/tex">v_i</script>为1。</li>
+</ul>
+</li>
+</ul>
+<h3 id="完备性效应"><a href="#完备性效应" class="headerlink" title="完备性效应"></a>完备性效应</h3><ul>
+<li>每个输出比特是所有输入比特的复杂函数的输出。</li>
+<li>对于一个函数<script type="math/tex">f</script>来说，较好的完备性是指<ul>
+<li>对密文输出向量的每一个比特j，至少存在一个明文对<script type="math/tex">(x_i, x_i')</script>。</li>
+<li>此明文对只在第i比特不同，且<script type="math/tex">f(x_i)</script>与<script type="math/tex">f(x_i')</script>的第j比特不同。</li>
+</ul>
+</li>
+</ul>
+<h3 id="Feistel-Cipher设计"><a href="#Feistel-Cipher设计" class="headerlink" title="Feistel Cipher设计"></a>Feistel Cipher设计</h3><p>雪崩特性保证了小的输入变化会导致大的输出变化，完备性保证了每个输出比特依赖于所有的输入比特。</p>
+<p>设计密码时需要以下参数</p>
+<ul>
+<li>分组大小</li>
+<li>密钥大小</li>
+<li>轮数</li>
+<li>子密钥生成</li>
+<li>轮函数</li>
+</ul>
+<p>设计一个快速/安全的算法是困难的。</p>
+<h2 id="Lucifer"><a href="#Lucifer" class="headerlink" title="Lucifer"></a>Lucifer</h2><p>第一个可用的替换-置换密码。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227190818450.png" alt="image-20201227190818450" style="zoom:67%;"></p>
+<p>分组长度128bit，密钥长度128bit，每一轮的子密钥是密钥的左半部分。</p>
+<p>密钥每次向左旋转56bit，密钥的每部分都参与运算。</p>
+<script type="math/tex; mode=display">
+\begin{align}
+L_i &= R_{i-1} \\
+R_i &= L_{i-1} \oplus P(K_{i-1}\oplus S(K_{i-1})) \\
+K_i &= ROL(K_{i-1})
+\end{align}</script><p>Lucifer共有16轮数据计算，使用8对4bitS盒实现替换，用几个8-bit置换组成64bit的简单置换。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227191928132.png" alt="image-20201227191928132" style="zoom:67%;"></p>
+<h2 id="S-DES"><a href="#S-DES" class="headerlink" title="S-DES"></a>S-DES</h2><p>S-DES即Simplified DES，供教学使用，有着和DES相似的特性和结构，但参数小。</p>
+<p>S-DES主要有以下几个函数</p>
+<ul>
+<li>初始置换IP（initial permutation）</li>
+<li>复合函数<script type="math/tex">f_k</script><ul>
+<li>由密钥K确定，具有转换和替换的运算。</li>
+</ul>
+</li>
+<li>转换函数SW</li>
+</ul>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227193325791.png" alt="image-20201227193325791" style="zoom:67%;"></p>
+<p>加密算法可以表示为</p>
+<script type="math/tex; mode=display">
+cipher = IP_{-1}(f_{k2}(SW(f_{k1}(IP(plain)))))</script><p>其中</p>
+<script type="math/tex; mode=display">
+K_1 = P_8(移位(P_{10}(K))) \\
+K_2 = P_8(移位(移位(P_{10}(K))）)</script><p>密钥生成可以用下图表示，LS代表循环左移</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227193303826.png" alt="image-20201227193303826" style="zoom:67%;"></p>
+<p>初始置换</p>
+<script type="math/tex; mode=display">
+IP = \begin{pmatrix} 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\ 2 & 6 & 3 & 1 & 4 & 8 & 5 & 7 \end{pmatrix}</script><script type="math/tex; mode=display">
+IP_{-1} = \begin{pmatrix} 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\ 4 & 1 & 3 & 5 & 7 & 2 & 8 & 6 \end{pmatrix}</script><h2 id="DES"><a href="#DES" class="headerlink" title="DES"></a>DES</h2><h2 id="IDEA"><a href="#IDEA" class="headerlink" title="IDEA"></a>IDEA</h2>]]></content>
+      <categories>
+        <category>现代密码学</category>
+      </categories>
+      <tags>
+        <tag>分组密码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>现代密码学（五）公钥密码</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%94%EF%BC%89%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>现代密码学（二）古典密码</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/</url>
+    <content><![CDATA[<p>介绍古典代换密码和古典置换密码。</p>
+<a id="more"></a>
+<h2 id="古典密码"><a href="#古典密码" class="headerlink" title="古典密码"></a>古典密码</h2><p>古典密码只要有两种加密方式，替换和置换（substitution and transposition）。</p>
+<p>替换是用新的字符代替原字符，置换是不改变原文字母集，打乱字符顺序。</p>
+<h2 id="古典代换密码"><a href="#古典代换密码" class="headerlink" title="古典代换密码"></a>古典代换密码</h2><h3 id="Caesar-Cipher-恺撒密码"><a href="#Caesar-Cipher-恺撒密码" class="headerlink" title="Caesar Cipher-恺撒密码"></a>Caesar Cipher-恺撒密码</h3><p>恺撒密码的替换方法是，每个字母用其后的第三个字母替换。</p>
+<script type="math/tex; mode=display">
+\alpha\leftarrow\alpha+3</script><p>恺撒密码可以表示为</p>
+<ul>
+<li>Plain: ABCDEFGHIJKLMNOPQRSTUVWXYZ</li>
+<li>Cipher: DEFGHIJKLMNOPQRSTUVWXYZABC</li>
+</ul>
+<p>如密文L FDPH L VDZ L FRQTXHUHG，对应的明文即为移位三位，I CAME I SAW CONQUERED。</p>
+<p>当然，恺撒密码也可以将移位的长度改成1-25的任一个，换言之，共有25种可能的密码算法（移位0不可用）。</p>
+<h3 id="混合单表替换密码"><a href="#混合单表替换密码" class="headerlink" title="混合单表替换密码"></a>混合单表替换密码</h3><p>单字母替换密码用一个字母代替另外一个字母，相当于构造了字母表到字母表的双射，密钥长度是26个字母。</p>
+<h3 id="Vigenere-Cipher"><a href="#Vigenere-Cipher" class="headerlink" title="Vigenère Cipher"></a>Vigenère Cipher</h3><p>发明了多字母替换密码，一个字母可以被多个字母替换，通过密钥选择对每个字母使用哪个字母表。</p>
+<p>密钥的第i个字母表示使用第i个字母表。</p>
+<p>如下例，密钥为CIPHER，分别定义了六张字母表（六个双射）。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227175332395.png" alt="image-20201227175332395"></p>
+<p>对于明文，用密钥选择字母用哪个字母表，这里的效果相当于明文与密钥相加减一。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227175322132.png" alt="image-20201227175322132"></p>
+<h3 id="Ciphers-Machines"><a href="#Ciphers-Machines" class="headerlink" title="Ciphers Machines"></a>Ciphers Machines</h3><ul>
+<li>Jefferson Cylinder</li>
+<li>Wheatstone disc</li>
+<li>the German Enigma</li>
+<li>the Swedish Hagelin</li>
+<li>the Janpanese Purple</li>
+</ul>
+<h2 id="古典置换密码"><a href="#古典置换密码" class="headerlink" title="古典置换密码"></a>古典置换密码</h2><p>置换密码的核心思想是，按一定规则写出明文，按另一规则读出密文。</p>
+<p>密钥就是用于读密文和写明文的方法。</p>
+<h3 id="Scytale密码"><a href="#Scytale密码" class="headerlink" title="Scytale密码"></a>Scytale密码</h3><p>消息沿着圆柱横写，密钥是纸条和圆柱的宽度。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180058573.png" alt="image-20201227180058573"></p>
+<h3 id="Rail-Fence-Cipher-轨道栅栏密码"><a href="#Rail-Fence-Cipher-轨道栅栏密码" class="headerlink" title="Rail Fence Cipher-轨道栅栏密码"></a>Rail Fence Cipher-轨道栅栏密码</h3><p>在不同行写下消息字母，按行读取消息。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180208972.png" alt="image-20201227180208972"></p>
+<h3 id="几何图形密码"><a href="#几何图形密码" class="headerlink" title="几何图形密码"></a>几何图形密码</h3><p>以一种形式写，用另一种形式读。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180223935.png" alt="image-20201227180223935"></p>
+<h3 id="行变换密码"><a href="#行变换密码" class="headerlink" title="行变换密码"></a>行变换密码</h3><p>按行写出字母，以密钥给出的顺序按行读出密文。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180454135.png" alt="image-20201227180454135"></p>
+<p>对上图的解释：</p>
+<ul>
+<li>给定明文，分组长度为5，按25413的顺序对字母重新编排，如THESI变成STIEH。</li>
+<li>给定密文，分组长度为5，按41532的顺序读取信息，如STIEH变成THESI。</li>
+</ul>
+<p>其实相当于定义了置换</p>
+<script type="math/tex; mode=display">
+\sigma = \begin{pmatrix} 1 & 2 & 3 & 4 & 5 \\ 2 & 5 & 4 & 1 & 3 \end{pmatrix}</script><p>对应的逆置换即为</p>
+<script type="math/tex; mode=display">
+\sigma^{-1} = \begin{pmatrix} 2 & 5 & 4 & 1 & 3 \\ 1 & 2 & 3 & 4 & 5 \end{pmatrix} = \begin{pmatrix} 1 & 2 & 3 & 4 & 5 \\ 4 & 1 & 5 & 3 & 2 \end{pmatrix}</script><h4 id="密码分析"><a href="#密码分析" class="headerlink" title="密码分析"></a>密码分析</h4><p>我们希望猜测密钥周期，再对可能的行列变换进行猜测。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227181407687.png" alt="image-20201227181407687"></p>
+]]></content>
+      <categories>
+        <category>现代密码学</category>
+      </categories>
+      <tags>
+        <tag>古典密码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>现代密码学（八）信息隐藏与隐写分析</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>现代密码学（六）认证与哈希函数</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>现代密码学（四）序列密码</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/</url>
+    <content><![CDATA[]]></content>
+  </entry>
 </search>
