@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://entropy2333.github.io/"/>
-  <updated>2020-12-27T09:09:54.172Z</updated>
+  <updated>2020-12-28T13:59:06.345Z</updated>
   <id>https://entropy2333.github.io/</id>
   
   <author>
@@ -21,13 +21,23 @@
     <link href="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/"/>
     <id>https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/</id>
     <published>2020-12-27T09:09:54.000Z</published>
-    <updated>2020-12-27T09:09:54.172Z</updated>
+    <updated>2020-12-28T13:59:06.345Z</updated>
+    
+    <content type="html"><![CDATA[<p>介绍信息隐藏与隐写分析。</p><a id="more"></a><h2 id="信息隐藏"><a href="#信息隐藏" class="headerlink" title="信息隐藏"></a>信息隐藏</h2><p>信息隐藏可以分为</p><ul><li>空域，如LSB。</li><li>变换域，如DCT。</li></ul><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228213531671.png" alt="image-20201228213531671" style="zoom:67%;"></p><h2 id="数字水印的嵌入"><a href="#数字水印的嵌入" class="headerlink" title="数字水印的嵌入"></a>数字水印的嵌入</h2><ul><li>加法嵌入</li><li>乘法嵌入</li></ul><p>图像质量可以用峰值信噪比PSNR评价</p><h2 id="信息隐藏算法"><a href="#信息隐藏算法" class="headerlink" title="信息隐藏算法"></a>信息隐藏算法</h2><p>空域算法，通过直接修改像素值实现隐藏信息嵌入。</p><ul><li>简单、快速、容量大。</li><li>鲁棒性差。</li></ul><p>灰度256的图像有8个位平面。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214154609.png" alt="image-20201228214154609" style="zoom:67%;"></p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214300127.png" alt="image-20201228214300127" style="zoom:67%;"></p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214310415.png" alt="image-20201228214310415" style="zoom:67%;"></p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214318464.png" alt="image-20201228214318464" style="zoom:67%;"></p><h2 id="频域水印算法"><a href="#频域水印算法" class="headerlink" title="频域水印算法"></a>频域水印算法</h2><p>在频域，通过修改频域空间的系数实现水印嵌入。</p><ul><li>鲁棒性好</li><li>复杂度高</li></ul><p>JPEG只改中频系数，不会被消除掉。</p><ul><li>修改低频部分，容易看出变化，隐蔽性差。</li><li>修改高频部分，容易被图像压缩算法破坏，鲁棒性差。</li></ul><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214606301.png" alt="image-20201228214606301" style="zoom:67%;"></p><h2 id="隐写分析"><a href="#隐写分析" class="headerlink" title="隐写分析"></a>隐写分析</h2><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228215318459.png" alt="image-20201228215318459" style="zoom:67%;"></p>]]></content>
     
     <summary type="html">
+    
+      &lt;p&gt;介绍信息隐藏与隐写分析。&lt;/p&gt;
     
     </summary>
     
     
+      <category term="现代密码学" scheme="https://entropy2333.github.io/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+    
+    
+      <category term="信息隐藏" scheme="https://entropy2333.github.io/tags/%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F/"/>
+    
+      <category term="隐写分析" scheme="https://entropy2333.github.io/tags/%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/"/>
     
   </entry>
   
@@ -36,13 +46,27 @@
     <link href="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%83%EF%BC%89%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95/"/>
     <id>https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%83%EF%BC%89%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95/</id>
     <published>2020-12-27T09:09:31.000Z</published>
-    <updated>2020-12-27T09:09:31.067Z</updated>
+    <updated>2020-12-28T13:32:02.145Z</updated>
+    
+    <content type="html"><![CDATA[<p>介绍数字签名。</p><h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><script type="math/tex; mode=display">h = H(M) \\S = h^d\bmod N \\S^e = (h^e)^d = h\bmod N</script><h2 id="El-Gamal"><a href="#El-Gamal" class="headerlink" title="El Gamal"></a>El Gamal</h2><p>选择随机数k，满足<script type="math/tex">gck(k,\ p-1)=1</script>，计算密钥</p><script type="math/tex; mode=display">K = a^k\bmod p</script><p>用Euclidean扩展算法求解S</p><script type="math/tex; mode=display">M = x\cdot K + k\cdot S\bmod(p-1)</script><p>也即</p><script type="math/tex; mode=display">S = k^{-1}(M-x\cdot K)\bmod(p-1)</script><p>签名就是<script type="math/tex">(M,K,S)</script></p><script type="math/tex; mode=display">y^K\cdot K^S = (a^x)^K\cdot (a^k)^{k^{-1}(M-x\cdot K)} = a^M \bmod p</script><h2 id="DSA"><a href="#DSA" class="headerlink" title="DSA"></a>DSA</h2><p>基于离散对数，生成320bit签名。</p><h2 id="HMAC"><a href="#HMAC" class="headerlink" title="HMAC"></a>HMAC</h2><p>带密钥的HASH。</p>]]></content>
     
     <summary type="html">
+    
+      
+      
+        &lt;p&gt;介绍数字签名。&lt;/p&gt;
+&lt;h2 id=&quot;RSA&quot;&gt;&lt;a href=&quot;#RSA&quot; class=&quot;headerlink&quot; title=&quot;RSA&quot;&gt;&lt;/a&gt;RSA&lt;/h2&gt;&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+h = H(M) \\
+S =
+      
     
     </summary>
     
     
+      <category term="现代密码学" scheme="https://entropy2333.github.io/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+    
+    
+      <category term="数字签名" scheme="https://entropy2333.github.io/tags/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D/"/>
     
   </entry>
   
@@ -51,13 +75,25 @@
     <link href="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/"/>
     <id>https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/</id>
     <published>2020-12-27T09:09:11.000Z</published>
-    <updated>2020-12-27T09:09:11.705Z</updated>
+    <updated>2020-12-28T13:17:49.640Z</updated>
+    
+    <content type="html"><![CDATA[<p>介绍认证方法与哈希函数。</p><a id="more"></a><h2 id="认证"><a href="#认证" class="headerlink" title="认证"></a>认证</h2><p>认证是为了防止主动攻击。</p><ul><li>实体认证（确认发送者的身份）</li><li>消息认证（验证消息的完整性）</li></ul><p>保密和认证是两个概念，纯认证的系统模型如下。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228193828037.png" alt="image-20201228193828037" style="zoom:67%;"></p><p>有三种方式产生认证符</p><ul><li>消息加密</li><li>消息认证码MAC<ul><li>需要密钥</li></ul></li><li>哈希函数</li></ul><p>基于公钥体制，可以实现加密与认证。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228195806099.png" alt="image-20201228195806099" style="zoom:67%;"></p><h2 id="消息认证码-MAC"><a href="#消息认证码-MAC" class="headerlink" title="消息认证码 MAC"></a>消息认证码 MAC</h2><p>MAC对给定消息，使用一个密钥，产生一个短小的定长数据分组。</p><p>可以提供认证，因为只有通信双方共享密钥。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228200208994.png" alt="image-20201228200208994" style="zoom: 67%;"></p><p>也可以实现认证与保密。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228200259938.png" alt="image-20201228200259938" style="zoom:67%;"></p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228202104394.png" alt="image-20201228202104394" style="zoom:67%;"></p><p>消息认证相较于常规加密</p><ul><li>适用于消息广播</li><li>认证的代价低</li><li>某些应用只关心消息的真实性</li><li>认证与保密的分离能提供结构上的灵活性</li><li>认证码可以延长消息的保护期限，同时能处理消息内容</li></ul><p>认证函数应抗选择明文攻击，且生成同样的认证码在计算上不可行。</p><p>可以基于DES实现MAC</p><ul><li>将消息分为连续的64bit分组</li></ul><script type="math/tex; mode=display">\begin{align}C_1 &= E_K(M_1) \\C_2 &= E_K(M_2\oplus C_1) \\&\dots \\C_n &= E_K(M_n\oplus C_{n-1})\end{align}</script><h2 id="哈希函数"><a href="#哈希函数" class="headerlink" title="哈希函数"></a>哈希函数</h2><p>哈希函数将任意长度的消息映射为较短的定长消息。</p><ul><li><script type="math/tex; mode=display">E_K(M||H(M))</script><ul><li>提供保密与鉴别</li></ul></li><li><script type="math/tex; mode=display">M||E_K(H(M))</script><ul><li>提供鉴别</li></ul></li><li><script type="math/tex; mode=display">M||E_{K_{R_a}}(H(M))</script><ul><li>提供鉴别与数字签名</li></ul></li></ul><p>简单的哈希函数，对每个分组按bit异或（奇偶校验）。</p><script type="math/tex; mode=display">C_i = b_{i1}\oplus b_{i2}\oplus\cdots\oplus b_{im}</script><h3 id="Merkle-Damgard结构"><a href="#Merkle-Damgard结构" class="headerlink" title="Merkle-Damgard结构"></a>Merkle-Damgard结构</h3><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228204306226.png" alt="image-20201228204306226" style="zoom:67%;"></p><script type="math/tex; mode=display">CV_i = f(CV_{i-1}, Y_{i-1}) \\H(M) = CV_L</script><h2 id="MD5"><a href="#MD5" class="headerlink" title="MD5"></a>MD5</h2><p>符合Merkle-Damgard结构，输入分组长度512bit，输出128bit。</p><ul><li>添加填充位，满足<script type="math/tex">length\equiv448\bmod512</script>。</li><li>添加长度，用64bit表示，若超过只取低64位。</li><li>使用一个128bit缓存存放结果，表示为<script type="math/tex">(A,B,C,D)</script>。</li><li>处理512bit的报文分组，核心是包含4个循环的压缩函数f，每个循环包括16步。</li><li>所有L个51bit的分组处理后，第L个阶段的输出作为128bit摘要输出。</li></ul><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228205401841.png" alt="image-20201228205401841" style="zoom:67%;"></p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228205300355.png" alt="image-20201228205336335" style="zoom:67%;"></p><p>MD4有3轮，每轮16步。</p><p>MD5每轮加上前一步的结果，有雪崩效应。</p><h2 id="SHA-1"><a href="#SHA-1" class="headerlink" title="SHA-1"></a>SHA-1</h2><p>输入最大长度为<script type="math/tex">2^{64}</script>，输出160bit，分组大小512bit。</p><p>SHA-1的函数有四轮，每轮20步。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228210321190.png" alt="image-20201228210321190" style="zoom:67%;"></p><h2 id="安全性分析"><a href="#安全性分析" class="headerlink" title="安全性分析"></a>安全性分析</h2><ul><li>SHA = MD4 + 扩展变换 + 外加一轮 + 更好的雪崩</li><li>MD5 = MD4 + 改进的比特杂凑 + 外加一轮 + 更好的雪崩</li></ul><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228210617475.png" alt="image-20201228210617475" style="zoom:67%;"></p><p>哈希函数可以受到野蛮攻击和生日攻击</p><p>k个人中，至少存在两人生日相同的概率为</p><script type="math/tex; mode=display">P(365, k) = 1 - \frac {365!} {(365-k)365^k}</script>]]></content>
     
     <summary type="html">
+    
+      &lt;p&gt;介绍认证方法与哈希函数。&lt;/p&gt;
     
     </summary>
     
     
+      <category term="现代密码学" scheme="https://entropy2333.github.io/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+    
+    
+      <category term="MD5" scheme="https://entropy2333.github.io/tags/MD5/"/>
+    
+      <category term="MAC" scheme="https://entropy2333.github.io/tags/MAC/"/>
+    
+      <category term="SHA-1" scheme="https://entropy2333.github.io/tags/SHA-1/"/>
     
   </entry>
   
@@ -66,13 +102,25 @@
     <link href="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%94%EF%BC%89%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/"/>
     <id>https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%94%EF%BC%89%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/</id>
     <published>2020-12-27T09:08:56.000Z</published>
-    <updated>2020-12-27T09:08:56.172Z</updated>
+    <updated>2020-12-28T11:31:10.068Z</updated>
+    
+    <content type="html"><![CDATA[<p>介绍公钥密码学。</p><a id="more"></a><h2 id="公钥密码理论"><a href="#公钥密码理论" class="headerlink" title="公钥密码理论"></a>公钥密码理论</h2><p>公钥算法主要有三类</p><ul><li>密钥分配</li><li>公钥加密</li><li>签名算法</li></ul><h2 id="DH密钥交换"><a href="#DH密钥交换" class="headerlink" title="DH密钥交换"></a>DH密钥交换</h2><ul><li>选定素数p和本原元a</li><li>A选定<script type="math/tex">x_A</script>，计算<script type="math/tex">y_A=a^{x_A}\bmod p</script></li><li>B选定<script type="math/tex">x_B</script>，计算<script type="math/tex">y_B=a^{x_B}\bmod p</script></li><li>公开<script type="math/tex">y_A</script>和<script type="math/tex">y_B</script></li><li>A计算<script type="math/tex">K=y_B^{x_A}\bmod p</script></li><li>B计算<script type="math/tex">K=y_A^{x_B}\bmod p</script></li></ul><h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><p>算法流程</p><ul><li>选择两个大素数p和q</li><li>计算<script type="math/tex">N=p·q</script></li><li>随机选择加密密钥e，满足<script type="math/tex">gcd(e, \phi(N)) = 1,\ e < N</script></li><li>求解解密密钥d，满足<script type="math/tex">e·d\equiv1\bmod \phi(N)</script></li><li>公开<script type="math/tex">(N, e)</script>，保存<script type="math/tex">(p,q,d)</script></li></ul><p>原理如下</p><script type="math/tex; mode=display">C = M^e\bmod N \\D = C^d= (M^e)^d\bmod N \\D = M^{(1+k\phi(N))}= M\bmod N</script><p>RSA实际上是一种单表代换</p><script type="math/tex; mode=display">RSA: \mathbb{Z/nZ} \rightarrow \mathbb{Z/nZ},\ n=pq</script><p>RSA的安全性取决于计算<script type="math/tex">\phi(N)</script>的困难性，但分解模未必是攻击RSA的最佳方法。</p><p>RSA需要计算大指数模幂，可以用中国剩余定理CRT来加速。</p><script type="math/tex; mode=display">M_1 = M\bmod p = (C\bmod p)^{d\bmod(p-1)} \\M_2 = M\bmod q = (C\bmod q)^{d\bmod(q-1)}</script><p>对于方程组</p><script type="math/tex; mode=display">\begin{cases}M = M_1\bmod p \\M = M_2\bmod q\end{cases}</script><p>有唯一解</p><script type="math/tex; mode=display">M = (q·u·M_1 + p·u'·M_2)\bmod N \\p·u\equiv1\bmod q,\ q·u'\equiv1\bmod p</script><h2 id="Rabin公钥密码体制"><a href="#Rabin公钥密码体制" class="headerlink" title="Rabin公钥密码体制"></a>Rabin公钥密码体制</h2><p>有两个困难数学问题</p><ul><li>二次剩余问题：给定奇合数n和整数a，难以判断a是n的二次剩余。</li><li>模n的平方根问题：在n的分解未知情况下，难以求解n的平方根。</li></ul><p>Rabin体制利用求解平方根的困难性构造了一种安全公钥体制。</p><p>首先选定两个形如4k+3的素数p和q，以n=pq作为公钥。</p><p>加密过程</p><script type="math/tex; mode=display">C = M^2 \bmod n,\ 0 \leq M < n</script><p>解密首先计算</p><script type="math/tex; mode=display">\begin{align}M_1 &= C^{\frac{(p+1)}{4}} \bmod p \\M_2 &= p - C^{\frac{(p+1)}{4}} \bmod p \\M_3 &= C^{\frac{(q+1)}{4}} \bmod q \\M_4 &= q - C^{\frac{(p+1)}{4}} \bmod q\end{align}</script><p>利用中国剩余定理，可以得到四个解，必有一个与M相同。</p><p>Rabin体制的安全性等价于大整数分解，但是对选择密文攻击不安全。</p><script type="math/tex; mode=display">x_1^2\equiv x_2^2\equiv0\bmod n \\\iff (x_1-x_2)(x_1+x_2)\equiv0\bmod n</script><p>与RSA相比，Rabin只需要一次乘法运算，但解密时更困难。</p><h2 id="El-Gamal"><a href="#El-Gamal" class="headerlink" title="El Gamal"></a>El Gamal</h2><p>基于离散对数，但增加了消息长度（2倍）。</p><p>首先选定大素数p和本原元g，计算</p><script type="math/tex; mode=display">y_B = g^{x_B}\bmod p</script><p>发送者选择随机数k，计算消息密钥</p><script type="math/tex; mode=display">K = y_B^k\bmod p,\ 0\leq k\leq p-1</script><p>之后计算密文对</p><script type="math/tex; mode=display">\begin{align}C_1 &= g^k\bmod p \\C_2 &= M\cdot K\bmod p\end{align}</script><p>解密时先计算密钥再计算明文</p><script type="math/tex; mode=display">\begin{align}K &= C_1^{x_B}\bmod p = (g^k)^{x_B}\bmod p \\M &= C_2\cdot K^{-1}\bmod p\end{align}</script><h2 id="对于公钥密码的攻击"><a href="#对于公钥密码的攻击" class="headerlink" title="对于公钥密码的攻击"></a>对于公钥密码的攻击</h2><p>可以对RSA发动弱参数攻击</p><ul><li>共模攻击</li><li>低加密指数攻击</li></ul><p>可以对Rabin发动选择密文攻击</p>]]></content>
     
     <summary type="html">
+    
+      &lt;p&gt;介绍公钥密码学。&lt;/p&gt;
     
     </summary>
     
     
+      <category term="现代密码学" scheme="https://entropy2333.github.io/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+    
+    
+      <category term="RSA" scheme="https://entropy2333.github.io/tags/RSA/"/>
+    
+      <category term="Rabin" scheme="https://entropy2333.github.io/tags/Rabin/"/>
+    
+      <category term="El Gamal" scheme="https://entropy2333.github.io/tags/El-Gamal/"/>
     
   </entry>
   
@@ -81,13 +129,21 @@
     <link href="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/"/>
     <id>https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/</id>
     <published>2020-12-27T09:08:45.000Z</published>
-    <updated>2020-12-27T09:08:45.658Z</updated>
+    <updated>2020-12-28T09:25:41.429Z</updated>
+    
+    <content type="html"><![CDATA[<p>介绍序列密码（流密码）。</p><a id="more"></a><h2 id="流密码"><a href="#流密码" class="headerlink" title="流密码"></a>流密码</h2><p>流密码的简单结构如下。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165456897.png" alt="image-20201228165456897" style="zoom:67%;"></p><p>对于流密码来说，需要生成一个作为密钥流的“随机”比特序列。</p><p>流密码的安全性取决于密钥的安全等级。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165551857.png" alt="image-20201228165551857" style="zoom:67%;"></p><p>流密码可以分为两种</p><ul><li>同步流密码<ul><li>密钥流的产生与明文消息相互独立</li></ul></li><li>自同步流密码<ul><li>密钥流的产生与之间产生的若干密文有关</li></ul></li></ul><h2 id="线性反馈移位寄存器-LFSR"><a href="#线性反馈移位寄存器-LFSR" class="headerlink" title="线性反馈移位寄存器 LFSR"></a>线性反馈移位寄存器 LFSR</h2><p>LFSR可以产生同步密钥流。</p><script type="math/tex; mode=display">a_i(t+1) = a_{i+1}(t),\ i=1,2,\dots,n-1 \\a_n(t+1) = c_na_1(t) \oplus c_{n-1}a_2(t) \oplus\dots\oplus c_1a_n(t)</script><p>联结多项式为</p><script type="math/tex; mode=display">c_nx^n + c_{n-1}x^{n-1} +\dots+ c_1x+1</script><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228170207505.png" alt="image-20201228170207505" style="zoom:67%;"></p><p>例如对于联接多项式<script type="math/tex">x^3+x^2+1</script>，对应的反馈函数为</p><script type="math/tex; mode=display">a_3 = a_1 \oplus a_2</script><p>对于LFSR来说，一个n级LFSR序列的周期最大为<script type="math/tex">2^n-1</script>。</p><p>如果产生了最大周期，则称为m序列，LFSR的状态转移图只有两个圈。</p><h2 id="伪随机序列"><a href="#伪随机序列" class="headerlink" title="伪随机序列"></a>伪随机序列</h2><h3 id="Golomb随机性假设"><a href="#Golomb随机性假设" class="headerlink" title="Golomb随机性假设"></a>Golomb随机性假设</h3><ul><li>在每一周期内，0和1的个数近似相等。</li><li>在每一周期内，长度为i的游程占游程总数的<script type="math/tex">\frac{1}{2^i}</script>。</li><li>定义自相关函数<script type="math/tex">C(\tau)=\sum_{i=1}^n(-1)^{a_i+a_{i+\tau}}</script>。<ul><li>那么<script type="math/tex">C(\tau)=\begin{cases}n,\quad\tau\equiv0\mod n\\c,\quad others\end{cases}</script></li></ul></li></ul><h3 id="m序列的伪随机性"><a href="#m序列的伪随机性" class="headerlink" title="m序列的伪随机性"></a>m序列的伪随机性</h3><h3 id="线性复杂度"><a href="#线性复杂度" class="headerlink" title="线性复杂度"></a>线性复杂度</h3><p>能够输出该序列的最短LFSR的级数。</p><p>一个好的流密码，应该具有大周期、大的线性复杂度，同时满足Golomb随机性假设。</p><h2 id="基于LFSR的伪随机序列生成器"><a href="#基于LFSR的伪随机序列生成器" class="headerlink" title="基于LFSR的伪随机序列生成器"></a>基于LFSR的伪随机序列生成器</h2><h3 id="滤波生成器"><a href="#滤波生成器" class="headerlink" title="滤波生成器"></a>滤波生成器</h3><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171735794.png" alt="image-20201228171735794" style="zoom:67%;"></p><h3 id="组合生成器"><a href="#组合生成器" class="headerlink" title="组合生成器"></a>组合生成器</h3><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171742568.png" alt="image-20201228171742568" style="zoom:67%;"></p><h3 id="钟控生成器"><a href="#钟控生成器" class="headerlink" title="钟控生成器"></a>钟控生成器</h3><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171755691.png" alt="image-20201228171755691" style="zoom:67%;"></p>]]></content>
     
     <summary type="html">
+    
+      &lt;p&gt;介绍序列密码（流密码）。&lt;/p&gt;
     
     </summary>
     
     
+      <category term="现代密码学" scheme="https://entropy2333.github.io/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+    
+    
+      <category term="流密码" scheme="https://entropy2333.github.io/tags/%E6%B5%81%E5%AF%86%E7%A0%81/"/>
     
   </entry>
   
