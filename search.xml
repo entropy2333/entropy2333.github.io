@@ -2713,6 +2713,7 @@ C\xrightarrow{EK_{-1}}P</script><h2 id="算法分类"><a href="#算法分类" cl
     <title>现代密码学（七）数字签名算法</title>
     <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%83%EF%BC%89%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95/</url>
     <content><![CDATA[<p>介绍数字签名。</p>
+<a id="more"></a>
 <h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><script type="math/tex; mode=display">
 h = H(M) \\
 S = h^d\bmod N \\
@@ -2885,7 +2886,7 @@ P = D_{K_1}[E_{K_2}[D_{K_1}[C]]]</script><p>三种DES的密钥长度为<script t
 <ul>
 <li>逐位异或</li>
 <li>整数模<script type="math/tex">2^{16}</script>加<script type="math/tex">\boxplus</script></li>
-<li>整数模<script type="math/tex">2^{16}</script>乘<script type="math/tex">\boxdot</script>（IDEA的S盒）</li>
+<li>整数模<script type="math/tex">2^{16}+1</script>乘<script type="math/tex">\boxdot</script>（IDEA的S盒）</li>
 </ul>
 <p>IDEA的扩散来自于MA结构，它接收两个16bit的明文消息和两个子密钥作为输入，产生两个16bit的输出。</p>
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201228100105211.png" alt="image-20201228100105211"></p>
@@ -3350,6 +3351,40 @@ a_3 = a_1 \oplus a_2</script><p>对于LFSR来说，一个n级LFSR序列的周期
       </categories>
       <tags>
         <tag>流密码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>K-BERT: Enabling Language Representation with Knowledge Graph</title>
+    <url>/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/</url>
+    <content><![CDATA[<p>介绍K-BERT模型。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>开源代码：<a href="https://github.com/autoliuweijie/K-BERT">https://github.com/autoliuweijie/K-BERT</a></p>
+<p>arxiv：<a href="https://arxiv.org/abs/1909.07606v1">https://arxiv.org/abs/1909.07606v1</a></p>
+<h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003741712.png" alt="image-20210225003741712" style="zoom:67%;"></p>
+<p>具体来说，算法分为以下几步。</p>
+<ul>
+<li>预先准备KG，建立查找表（关键词表）。</li>
+<li>对于给定的输入文本，利用工具分词（pkuseg）。</li>
+<li>将分词得到的结果去表中查询，得到对应的实体。</li>
+<li>计算实体位置，得到位置编码，也即论文中的soft-position index。</li>
+<li>计算可见矩阵，控制每个词受哪些词影响（如Cook不会被Beijing关联的China影响）。</li>
+</ul>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"></p>
+<p>K-BERT并不算预训练模型，嵌入层依旧是使用的BERT模型，应该算基于BERT的fine-tuning网络，可以用于分类和序列标注。同时，K-BERT也可以加载其他BERT类模型，如ERNIE、RoBERTa等。</p>
+<p>创新点在于使用可见矩阵控制了Self-Attention的计算（如下图）。</p>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225005229317.png" alt="image-20210225005229317" style="zoom: 67%;"></p>
+<h2 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h2><ul>
+<li>模型的鲁棒性受限于知识图谱的质量，取自于开放领域图谱中的信息，其实BERT通过大语料学习也能获得，可以考虑特定领域的知识。</li>
+<li>关联的三元组没有筛选，一词多义会引入错误的实体关联。</li>
+<li>对于非知识驱动的任务，引入知识反而会效果下降。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>KG</tag>
       </tags>
   </entry>
 </search>

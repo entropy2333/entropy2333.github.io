@@ -194,6 +194,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="entropy2333">
+      <meta itemprop="description" content="Cyber Security, SJTU">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="entropy2333">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/" class="post-title-link" itemprop="url">K-BERT: Enabling Language Representation with Knowledge Graph</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-25 00:32:01" itemprop="dateCreated datePublished" datetime="2021-02-25T00:32:01+08:00">2021-02-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Paper/" itemprop="url" rel="index"><span itemprop="name">Paper</span></a>
+                </span>
+            </span>
+
+          
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>561</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>介绍K-BERT模型。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>开源代码：<a target="_blank" rel="noopener" href="https://github.com/autoliuweijie/K-BERT">https://github.com/autoliuweijie/K-BERT</a></p>
+<p>arxiv：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1909.07606v1">https://arxiv.org/abs/1909.07606v1</a></p>
+<h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003741712.png" alt="image-20210225003741712" style="zoom:67%;"></p>
+<p>具体来说，算法分为以下几步。</p>
+<ul>
+<li>预先准备KG，建立查找表（关键词表）。</li>
+<li>对于给定的输入文本，利用工具分词（pkuseg）。</li>
+<li>将分词得到的结果去表中查询，得到对应的实体。</li>
+<li>计算实体位置，得到位置编码，也即论文中的soft-position index。</li>
+<li>计算可见矩阵，控制每个词受哪些词影响（如Cook不会被Beijing关联的China影响）。</li>
+</ul>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"></p>
+<p>K-BERT并不算预训练模型，嵌入层依旧是使用的BERT模型，应该算基于BERT的fine-tuning网络，可以用于分类和序列标注。同时，K-BERT也可以加载其他BERT类模型，如ERNIE、RoBERTa等。</p>
+<p>创新点在于使用可见矩阵控制了Self-Attention的计算（如下图）。</p>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225005229317.png" alt="image-20210225005229317" style="zoom: 67%;"></p>
+<h2 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h2><ul>
+<li>模型的鲁棒性受限于知识图谱的质量，取自于开放领域图谱中的信息，其实BERT通过大语料学习也能获得，可以考虑特定领域的知识。</li>
+<li>关联的三元组没有筛选，一词多义会引入错误的实体关联。</li>
+<li>对于非知识驱动的任务，引入知识反而会效果下降。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -334,20 +431,14 @@
 
       
           <p>介绍数字签名。</p>
-<h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><script type="math/tex; mode=display">
-h = H(M) \\
-S = h^d\bmod N \\
-S^e = (h^e)^d = h\bmod N</script><h2 id="El-Gamal"><a href="#El-Gamal" class="headerlink" title="El Gamal"></a>El Gamal</h2><p>选择随机数k，满足<script type="math/tex">gck(k,\ p-1)=1</script>，计算密钥</p>
-<script type="math/tex; mode=display">
-K = a^k\bmod p</script><p>用Euclidean扩展算法求解S</p>
-<script type="math/tex; mode=display">
-M = x\cdot K + k\cdot S\bmod(p-1)</script><p>也即</p>
-<script type="math/tex; mode=display">
-S = k^{-1}(M-x\cdot K)\bmod(p-1)</script><p>签名就是<script type="math/tex">(M,K,S)</script></p>
-<script type="math/tex; mode=display">
-y^K\cdot K^S = (a^x)^K\cdot (a^k)^{k^{-1}(M-x\cdot K)} = a^M \bmod p</script><h2 id="DSA"><a href="#DSA" class="headerlink" title="DSA"></a>DSA</h2><p>基于离散对数，生成320bit签名。</p>
-<h2 id="HMAC"><a href="#HMAC" class="headerlink" title="HMAC"></a>HMAC</h2><p>带密钥的HASH。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%83%EF%BC%89%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -943,89 +1034,6 @@ y^K\cdot K^S = (a^x)^K\cdot (a^k)^{k^{-1}(M-x\cdot K)} = a^M \bmod p</script><h2
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%202%20%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/myavatar.jpg">
-      <meta itemprop="name" content="entropy2333">
-      <meta itemprop="description" content="Cyber Security, SJTU">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="entropy2333">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%202%20%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/" class="post-title-link" itemprop="url">《C++ Primer》 Chapter 2 变量和基本类型</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-11-23 15:01:27" itemprop="dateCreated datePublished" datetime="2020-11-23T15:01:27+08:00">2020-11-23</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E3%80%8AC-Primer%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《C++ Primer》</span></a>
-                </span>
-            </span>
-
-          
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.9k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>介绍C++的基本内置类型和复合类型，包括引用和指针的声明，以及const限定符的使用方法。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%202%20%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1097,20 +1105,20 @@ y^K\cdot K^S = (a^x)^K\cdot (a^k)^{k^{-1}(M-x\cdot K)} = a^M \bmod p</script><h2
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1164,7 +1172,7 @@ y^K\cdot K^S = (a^x)^K\cdot (a^k)^{k^{-1}(M-x\cdot K)} = a^M \bmod p</script><h2
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -1173,7 +1181,7 @@ y^K\cdot K^S = (a^x)^K\cdot (a^k)^{k^{-1}(M-x\cdot K)} = a^M \bmod p</script><h2
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">59k</span>
+    <span title="站点总字数">60k</span>
 </div>
 
         
