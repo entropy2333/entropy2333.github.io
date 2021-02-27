@@ -3356,9 +3356,12 @@ a_3 = a_1 \oplus a_2</script><p>对于LFSR来说，一个n级LFSR序列的周期
   <entry>
     <title>K-BERT: Enabling Language Representation with Knowledge Graph</title>
     <url>/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/</url>
-    <content><![CDATA[<p>介绍K-BERT模型。</p>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>开源代码：<a href="https://github.com/autoliuweijie/K-BERT">https://github.com/autoliuweijie/K-BERT</a></p>
-<p>arxiv：<a href="https://arxiv.org/abs/1909.07606v1">https://arxiv.org/abs/1909.07606v1</a></p>
+    <content><![CDATA[<p>介绍K-BERT模型（AAAI 2020）</p>
+<a id="more"></a>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li>arxiv：<a href="https://arxiv.org/abs/1909.07606v1">https://arxiv.org/abs/1909.07606v1</a></li>
+<li>code：<a href="https://github.com/autoliuweijie/K-BERT">https://github.com/autoliuweijie/K-BERT</a></li>
+</ul>
 <h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
 <p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003741712.png" alt="image-20210225003741712" style="zoom:67%;"></p>
 <p>具体来说，算法分为以下几步。</p>
@@ -3385,6 +3388,67 @@ a_3 = a_1 \oplus a_2</script><p>对于LFSR来说，一个n级LFSR序列的周期
       <tags>
         <tag>NLP</tag>
         <tag>KG</tag>
+        <tag>AAAI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Simplify the Usage of Lexicon in Chinese NER</title>
+    <url>/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/</url>
+    <content><![CDATA[<p>介绍如何在中文NER模型中更好地结合词典信息（ACL 2020）</p>
+<a id="more"></a>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
+<li><p>arxiv: <a href="https://arxiv.org/pdf/1908.05969v2.pdf">https://arxiv.org/pdf/1908.05969v2.pdf</a></p>
+</li>
+<li><p>code: <a href="https://github.com/v-mipeng/LexiconAugmentedNER">https://github.com/v-mipeng/LexiconAugmentedNER</a></p>
+</li>
+</ul>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>ref：<a href="https://zhuanlan.zhihu.com/p/142615620">https://zhuanlan.zhihu.com/p/142615620</a></p>
+<p>近几年，在中文NER模型中融合词典信息的工作有许多，这主要得益于Lattice-LSTM的工作。但是Lattice-LSTM有几个缺点：</p>
+<ul>
+<li>计算性能低下，采用RNN结构，不能batch并行化。</li>
+<li>存在信息损失，每个字符只能获取以它为结尾的词汇信息。</li>
+<li>可迁移性差，只适用于LSTM。</li>
+</ul>
+<p>本篇论文提出了一种简单的方法，在embedding层利用词典信息，避免了复杂的模型结构，易于迁移。</p>
+<h2 id="Approach"><a href="#Approach" class="headerlink" title="Approach"></a>Approach</h2><p>本文比较了三种不同的融合方式</p>
+<h3 id="Softword"><a href="#Softword" class="headerlink" title="Softword"></a>Softword</h3><p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/v2-8924bacd6f5e4b98a1aea8ad51c01bfa_720w.jpg" alt="img" style="zoom:80%;"></p>
+<p>Softword先对句子分词，然后对每个字符嵌入BMESO的embedding。这种方法存在分词造成的误差传播，也无法引入词汇对应的信息。</p>
+<h3 id="ExSoftword"><a href="#ExSoftword" class="headerlink" title="ExSoftword"></a>ExSoftword</h3><p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/image-20210227130546383.png" alt="image-20210227130546383" style="zoom:80%;"></p>
+<p>ExSoftword在Softword的基础上，将所有匹配的词汇对字符进行编码，按照BMESO编码构建5维向量。比如山表示为[1, 1, 1, 0, 0]</p>
+<script type="math/tex; mode=display">
+x_j^c \leftarrow [x_j^c; e^{seg}(segs(c_j))]</script><p>ExSoftword虽然引入了标注信息，但仍然没有引入词汇的embedding信息。并且这种方法无法恢复词汇匹配结果，从而导致信息损失。</p>
+<h3 id="SoftLexicon"><a href="#SoftLexicon" class="headerlink" title="SoftLexicon"></a>SoftLexicon</h3><p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/image-20210227130555211.png" alt="image-20210227130555211" style="zoom:80%;"></p>
+<p>为了解决上述问题，SoftLexicon对每个字符依次获取BMES对应所有的词汇集合，然后再编码表示。</p>
+<p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/image-20210227131612177.png" alt="image-20210227131612177" style="zoom:80%;"></p>
+<p>之后将词汇的embedding与词向量拼接作为输入</p>
+<script type="math/tex; mode=display">
+e^s(B,M,E,S) = [v^s(B)\oplus v^s(M)\oplus v^s(E)\oplus v^s(S)]</script><script type="math/tex; mode=display">
+x^c \leftarrow [x^c;e^s(B,M,E,S)]</script><p>对于词汇集合编码，采取词频加权进行计算</p>
+<script type="math/tex; mode=display">
+v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)</script><h2 id="Detail"><a href="#Detail" class="headerlink" title="Detail"></a>Detail</h2><p>模型主要基于Lattice-LSTM，所以后续的模型结构依旧是BiLSTM-CRF，但因为只在embedding层修改，所以可以迁移到其他模型（CNN、BERT等）。</p>
+<p>与Lattice-LSTM类似，采用了预训练的char+bichar embedding，还有一个word embedding文件（词典）。代码中中的预处理也主要分为三类：word、biword和gaz。</p>
+<p>首先根据预训练embedding建立alphabet，存储字符到id的映射以及对应的embedding向量。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">data_initialization</span>(<span class="params">data, gaz_file, train_file, dev_file, test_file</span>):</span></span><br><span class="line">    data.build_alphabet(train_file)</span><br><span class="line">    data.build_alphabet(dev_file)</span><br><span class="line">    data.build_alphabet(test_file)</span><br><span class="line">    data.build_gaz_file(gaz_file)</span><br><span class="line">    data.build_gaz_alphabet(train_file,count=<span class="literal">True</span>)</span><br><span class="line">    data.build_gaz_alphabet(dev_file,count=<span class="literal">True</span>)</span><br><span class="line">    data.build_gaz_alphabet(test_file,count=<span class="literal">True</span>)</span><br><span class="line">    data.fix_alphabet()</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line">data = data_initialization(data, gaz_file, train_file, dev_file, test_file)</span><br></pre></td></tr></table></figure>
+<p>代码中也提供了相应的接口查看数据信息</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">data.show_data_summary()</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">显示部分信息</span></span><br><span class="line"><span class="string">DATA SUMMARY START:</span></span><br><span class="line"><span class="string">     Tag          scheme: BMES</span></span><br><span class="line"><span class="string">     MAX SENTENCE LENGTH: 250</span></span><br><span class="line"><span class="string">     Use          bigram: False</span></span><br><span class="line"><span class="string">     Word  alphabet size: 1895</span></span><br><span class="line"><span class="string">     Biword alphabet size: 21408</span></span><br><span class="line"><span class="string">     Char  alphabet size: 1895</span></span><br><span class="line"><span class="string">     Gaz   alphabet size: 12583</span></span><br><span class="line"><span class="string">     Label alphabet size: 29</span></span><br><span class="line"><span class="string">     Word embedding size: 50</span></span><br><span class="line"><span class="string">     Biword embedding size: 50</span></span><br><span class="line"><span class="string">     Char embedding size: 30</span></span><br><span class="line"><span class="string">     Gaz embedding size: 50</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># print(data.gaz_alphabet.get_index(&#x27;国籍&#x27;))</span></span><br></pre></td></tr></table></figure>
+<p>随后预处理训练集和测试集，根据现有的词典产生对应格式的数据。</p>
+<p>具体来说，对于给定的一句话，依次遍历每个字符，如果遇到B，则开始匹配词典</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">words = []</span><br><span class="line">biwords = []</span><br><span class="line">chars = []</span><br><span class="line">labels = []</span><br><span class="line">word, label = lines[idx]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> len(label) &gt; <span class="number">2</span>:</span><br><span class="line">    <span class="comment"># label != O</span></span><br><span class="line">    <span class="keyword">if</span> idx &lt; len(lines) - <span class="number">1</span> <span class="keyword">and</span> len(lines[idx + <span class="number">1</span>][<span class="number">1</span>]) &gt; <span class="number">2</span>:</span><br><span class="line">        biword = word + lines[idx + <span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            biword = word + <span class="string">&quot;-null-&quot;</span></span><br><span class="line">            words.append(word)</span><br><span class="line">            biwords.append(biword)</span><br><span class="line">            labels.append(label)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># label == O</span></span><br><span class="line">    <span class="keyword">if</span> (len(words) &gt; <span class="number">0</span>):</span><br><span class="line">        w_length = len(words)</span><br><span class="line">        gazs = [ [[] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(w_length)]</span><br><span class="line">        <span class="comment"># gazs: [c1,c2,...,cn]  ci:[B,M,E,S]  B/M/E/S :[w_id1,w_id2,...]  None:0</span></span><br><span class="line">        gazs_count = [ [[] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(w_length)]</span><br><span class="line"></span><br><span class="line">        gaz_char_Id = [ [[] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(w_length)]</span><br><span class="line">        <span class="comment">## gaz_char_Id: [c1,c2,...,cn]  ci:[B,M,E,S]  B/M/E/S :[[w1c1,w1c2,...],[],...]</span></span><br></pre></td></tr></table></figure>
+<p>词典在内存中以Trie树的形式存在，所以对于实体中的每个字符都判断是否有到达叶子节点的路径，从而匹配词典中的词汇。</p>
+<p>以下面这句话为例，高勇的标签不为O，词典会匹配到“高勇”和“高”两个词，那么结果就是长度为2的向量。其中的元素又是一个四维向量[B, M, E, S]，分为存储单词对应的Id，这样就可以存储词汇的信息。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">text = [<span class="string">&#x27;高&#x27;</span>, <span class="string">&#x27;勇&#x27;</span>, <span class="string">&#x27;：&#x27;</span>, <span class="string">&#x27;男&#x27;</span>, <span class="string">&#x27;，&#x27;</span>, <span class="string">&#x27;中&#x27;</span>, <span class="string">&#x27;国&#x27;</span>, <span class="string">&#x27;国&#x27;</span>, <span class="string">&#x27;籍&#x27;</span>, <span class="string">&#x27;，&#x27;</span>, <span class="string">&#x27;无&#x27;</span>, <span class="string">&#x27;境&#x27;</span>, <span class="string">&#x27;外&#x27;</span>, <span class="string">&#x27;居&#x27;</span>, <span class="string">&#x27;留&#x27;</span>, <span class="string">&#x27;权&#x27;</span>, <span class="string">&#x27;，&#x27;</span>]</span><br><span class="line">labels = [<span class="string">&#x27;B-NAME&#x27;</span>, <span class="string">&#x27;E-NAME&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;B-CONT&#x27;</span>, <span class="string">&#x27;M-CONT&#x27;</span>, <span class="string">&#x27;M-CONT&#x27;</span>, <span class="string">&#x27;E-CONT&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>]</span><br><span class="line">print(<span class="string">&quot;&quot;</span>.join(text))</span><br><span class="line"><span class="comment"># input: 高勇：男，中国国籍，无境外居留权，</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># gazs: [[[2], [0], [0], [3]], [[0], [0], [2], [4]]]</span></span><br><span class="line"><span class="comment"># gaz_char_Id: [[[[2, 3]], [0], [0], [0]], [[0], [0], [[2, 3]], [0]]]</span></span><br><span class="line">result = [[[<span class="string">&#x27;&#x27;</span>.join([word_alphabet.get_instance(idx) <span class="keyword">if</span> word_alphabet.get_instance(idx) <span class="keyword">else</span> <span class="string">&#x27;&#x27;</span> <span class="keyword">for</span> idx <span class="keyword">in</span> ___ ]) <span class="keyword">for</span> ___ <span class="keyword">in</span> __ ]<span class="keyword">for</span> __ <span class="keyword">in</span> _] <span class="keyword">for</span> _ <span class="keyword">in</span> gaz_char_Id]</span><br><span class="line"><span class="comment"># result: [[[&#x27;高勇&#x27;], [], [], [&#x27;高&#x27;]], [[], [], [&#x27;高勇&#x27;], []]]</span></span><br></pre></td></tr></table></figure>
+<p>在得到了词汇信息后，还要引入mask，以标出哪些是有效信息</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># gazchar_masks: [[[[0, 0]], [[0, 1]], [[0, 1]], [[0, 1]]], [[[0, 1]], [[0, 1]], [[0, 0]], [[0, 1]]]]</span></span><br></pre></td></tr></table></figure>
+<p>最后，读取词典获取对应的embedding送入模型</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model = SeqModel(data)</span><br><span class="line">print(model)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">build batched crf...</span></span><br><span class="line"><span class="string">GazLSTM(</span></span><br><span class="line"><span class="string">  (gaz_embedding): Embedding(12583, 50)</span></span><br><span class="line"><span class="string">  (word_embedding): Embedding(1895, 50)</span></span><br><span class="line"><span class="string">  (NERmodel): NERmodel(</span></span><br><span class="line"><span class="string">    (lstm): LSTM(250, 300, batch_first=True, bidirectional=True)</span></span><br><span class="line"><span class="string">    (drop): Dropout(p=0.5)</span></span><br><span class="line"><span class="string">  )</span></span><br><span class="line"><span class="string">  (drop): Dropout(p=0.5)</span></span><br><span class="line"><span class="string">  (hidden2tag): Linear(in_features=600, out_features=31, bias=True)</span></span><br><span class="line"><span class="string">  (crf): CRF()</span></span><br><span class="line"><span class="string">)</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>LSTM</tag>
+        <tag>ACL</tag>
       </tags>
   </entry>
 </search>
