@@ -3456,7 +3456,7 @@ v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)</script><h2 id="Detail"><a href="#De
     <url>/2021/04/16/Lattice-BERT/</url>
     <content><![CDATA[<p>将词汇信息融入BERT（NAACL 2021）</p>
 <a id="more"></a>
-<h2 id="OverView"><a href="#OverView" class="headerlink" title="OverView"></a>OverView</h2><ul>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
 <li>arxiv: <a href="https://arxiv.org/pdf/2104.07204v1.pdf">https://arxiv.org/pdf/2104.07204v1.pdf</a></li>
 <li>code: 暂无</li>
 </ul>
@@ -3473,11 +3473,10 @@ v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)</script><h2 id="Detail"><a href="#De
 <p>Lattice就是一个有向无环图，和Lattice-LSTM的思想类似。难点在于如何在编码层保持lattice的结构，以及如何避免冗余信息带来的潜在影响。</p>
 <h3 id="Lattice-Position-Attention"><a href="#Lattice-Position-Attention" class="headerlink" title="Lattice Position Attention"></a>Lattice Position Attention</h3><p>在BERT的attention基础上，加了三个位置相关项。</p>
 <script type="math/tex; mode=display">
-\tilde{\alpha}_{ij} = \alpha_{ij} + \rm{att}_{ij} + b_{ij} + r_{ij}</script><p>其中，<script type="math/tex">\alpha_{ij}</script>表示原来的attention，<script type="math/tex">\rm{att}_{ij}</script>计算了绝对位置的attention权重。</p>
+\tilde{\alpha}_{ij} = \alpha_{ij} + \rm{att}_{ij} + b_{ij} + r_{ij}</script><p>其中，<script type="math/tex">\alpha_{ij}</script>表示原来的attention，<script type="math/tex">\rm{att}_{ij}</script>计算了绝对位置的attention权重，<script type="math/tex">b_{ij}</script>则是对相对距离的计算，<script type="math/tex">r_{ij}</script>是对相对位置的缩放项。</p>
 <script type="math/tex; mode=display">
-\rm{att}_{ij} = \frac {1} {\sqrt{2d_k}}([P_{s_i}^S;P_{e_i}^E]W^q)([P_{s_i}^S;P_{e_i}^E]W^k)^T</script><script type="math/tex; mode=display">b_{ij}$$则是对相对距离的计算，$$r_{ij}$$是对相对位置的缩放项。</script><p>b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{ee}</p>
-<p>$$</p>
-<blockquote>
+\rm{att}_{ij} = \frac {1} {\sqrt{2d_k}}([P_{s_i}^S;P_{e_i}^E]W^q)([P_{s_i}^S;P_{e_i}^E]W^k)^T</script><script type="math/tex; mode=display">
+b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{ee}</script><blockquote>
 <p>感觉和FLAT类似，也是计算四个距离。</p>
 </blockquote>
 <h3 id="Masked-Segment-Prediction"><a href="#Masked-Segment-Prediction" class="headerlink" title="Masked Segment Prediction"></a>Masked Segment Prediction</h3><p>BERT对单字掩码，Lattice-BERT则是对Segment掩码。</p>
@@ -3488,6 +3487,56 @@ v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)</script><h2 id="Detail"><a href="#De
 ]]></content>
       <categories>
         <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>BERT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Rethinking Positional Encoding In Language Pre-Training</title>
+    <url>/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/</url>
+    <content><![CDATA[<p><img src="/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417211502265.png" alt="image-20210417211502265" style="zoom:67%;"></p>
+<p>重新思考预训练语言模型中的位置编码（ICLR2021）</p>
+<a id="more"></a>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
+<li>arxiv: <a href="https://arxiv.org/pdf/2006.15595v4.pdf">https://arxiv.org/pdf/2006.15595v4.pdf</a></li>
+<li>code: <a href="https://github.com/guolinke/TUPE">https://github.com/guolinke/TUPE</a></li>
+</ul>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>Transformer自提出以来，在语言表示学习领域大行其道。在Transformer中，位置编码是模型的关键部分，原始的Transformer使用绝对位置编码，将位置编码与词向量以相加的方式处理。后来还有其他研究者提出相对位置编码，在self-attention模块中加入一些精心设计的偏移项，以编码两个位置之间的距离信息。</p>
+<p>本文主要针对两个问题进行研究</p>
+<ul>
+<li>绝对位置编码与词向量采用相加的方式是否合理，两者是明显异质（heterogenous）的，相加运算可能带来一些冗余的关联信息。</li>
+<li>BERT中采用[CLS]这样一个特殊的token来编码句子的语义信息，但是它的位置却和其他token采用一样的位置编码，这种方式是否合理且有效？</li>
+</ul>
+<p>为了解决这两个问题，本文提出了采用结构位置编码的Transformer（TUPE）。</p>
+<ul>
+<li>将position embedding和word embedding分开计算</li>
+<li>使用一个不同的函数计算[CLS]的语义</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="解耦word和position的计算"><a href="#解耦word和position的计算" class="headerlink" title="解耦word和position的计算"></a>解耦word和position的计算</h3><p><img src="/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417212824320.png" alt="image-20210417212824320" style="zoom: 67%;"></p>
+<p>如上图，改进之处在于分别计算attention后再相加，而不是先相加再计算attention。</p>
+<p>绝对位置编码：</p>
+<script type="math/tex; mode=display">
+\alpha^{Abs}_{ij} = \frac1{\sqrt d}((w_i+p_i)W^{Q})((w_i+p_i)W^{K})^T</script><p>改进之后，对word和position计算不同的投影矩阵</p>
+<script type="math/tex; mode=display">
+\alpha_{ij} = \frac1{\sqrt{2d}}(x_i^lW^{Q})(x_j^lW^{K})^T + \frac1{\sqrt{2d}}(p_iU^{Q})(p_jU^{K})^T</script><p>针对相对位置，只需要添加一个距离项</p>
+<script type="math/tex; mode=display">
+\alpha_{ij} = \frac1{\sqrt{2d}}(x_i^lW^{Q})(x_j^lW^{K})^T + \frac1{\sqrt{2d}}(p_iU^{Q})(p_jU^{K})^T + b_{j-i}</script><h2 id="计算-CLS"><a href="#计算-CLS" class="headerlink" title="计算[CLS]"></a>计算[CLS]</h2><p>BERT中[CLS]作为输入语句的第一个字符，以捕获整个语句的全局信息。将这样一个特殊token和其他字符相提并论可能并不是一种好的选择，有一些可视化工作表明attention可能会出现只专注局部字符的现象（local concentration）。</p>
+<p>为此，本文作了如下修改</p>
+<p><img src="/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417214551502.png" alt="image-20210417214551502" style="zoom:67%;"></p>
+<p>其中，<script type="math/tex">\theta_1</script>和<script type="math/tex">\theta_2</script>是可学习的参数，计算方式的变化如下图。</p>
+<p><img src="/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417212900647.png" alt="image-20210417212900647" style="zoom:80%;"></p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>TUPE针对绝对和相对位置编码都做了实验，与BERT进行了比较，采用了GLUE数据集。</p>
+<p><img src="/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417215306237.png" alt="image-20210417215306237" style="zoom: 67%;"></p>
+<p><img src="/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417215048814.png" alt="image-20210417215048814" style="zoom:67%;"></p>
+<blockquote>
+<p>-A表示绝对位置编码，-R表示相对位置编码。</p>
+</blockquote>
+<p>总体来看，在GLUE上取得了更好的成绩，不过计算量相比之下多了30%（因为多算了一次attention）。</p>
+]]></content>
+      <categories>
+        <category>paper</category>
       </categories>
       <tags>
         <tag>NLP</tag>
