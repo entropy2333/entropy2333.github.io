@@ -3835,7 +3835,7 @@ b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{e
 <p><img src="/2021/04/21/CSAPP-Chap3-%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA/image-20210421204419067.png" alt="image-20210421204419067" style="zoom: 67%;"></p>
 <h3 id="跳转指令"><a href="#跳转指令" class="headerlink" title="跳转指令"></a>跳转指令</h3><p><strong>跳转</strong>指令会导致执行切换到程序中的一个全新的位置，这些跳转的目的地通常用一个<strong>标号</strong>指明。</p>
 <p><img src="/2021/04/21/CSAPP-Chap3-%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA/image-20210421204839498.png" alt="image-20210421204839498" style="zoom:67%;"></p>
-<p>mp是无条件跳转。它可以是<strong>直接跳转</strong>，即跳转目标是作为指令的一部分编码的（标号）；也可以是<strong>间接跳转</strong>，即跳转目标是从寄存器或内存位置中读出的（“*”后跟一个操作数提示符）。</p>
+<p>jump是无条件跳转。它可以是<strong>直接跳转</strong>，即跳转目标是作为指令的一部分编码的（标号）；也可以是<strong>间接跳转</strong>，即跳转目标是从寄存器或内存位置中读出的（“*”后跟一个操作数提示符）。</p>
 <p>条件跳转指令根据条件码的某种组合，或跳转，或继续执行代码序列中下一条指令。条件跳转只能是直接跳转。</p>
 <p>跳转指令有几种不同的编码，最常用的都是<strong>PC相对的</strong>，会将目标指令的地址与<strong>紧跟在跳转指令后面那条指令的地址</strong>之间的差作为编码。</p>
 <p>第二种编码是给出“绝对”地址，用4个字节直接指定目标。</p>
@@ -3843,7 +3843,15 @@ b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{e
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (test-expr)</span><br><span class="line">  then-statement</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="keyword">else</span>-statement</span><br></pre></td></tr></table></figure>
 <p>对于这种通用形式，汇编实现通常会使用下面这种形式：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">  t = test-expr;</span><br><span class="line">  <span class="keyword">if</span> (!t)</span><br><span class="line">    <span class="keyword">goto</span> <span class="literal">false</span>;</span><br><span class="line">  then-statement</span><br><span class="line">  <span class="keyword">goto</span> done;</span><br><span class="line"><span class="literal">false</span>:</span><br><span class="line">  <span class="keyword">else</span>-statement</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
-]]></content>
+<h3 id="用条件传送实现条件分支"><a href="#用条件传送实现条件分支" class="headerlink" title="用条件传送实现条件分支"></a>用条件传送实现条件分支</h3><p>现代处理器使用流水线执行指令，遇到条件需要跳转时，只有知道跳转结果才能确定指令顺序，才能使用流水线。现在处理器采用<strong>分支预测</strong>的方法来预测跳转的结果，即处理器会预测当前跳转的结果。</p>
+<p>用<strong>条件传送</strong>来实现条件分支，不会先判断跳转，而是先将两个分支的结果进行计算，将结果分别保存在两个寄存器中，然后再通过<strong>条件传送指令<code>CMOV</code></strong>将正确结果传送到输出的寄存器中。</p>
+<p><img src="/2021/04/21/CSAPP-Chap3-%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA/image-20210422173827193.png" alt="image-20210422173827193" style="zoom: 67%;"></p>
+<p>条件传送同样也存在局限性</p>
+<ol>
+<li>如果条件判断是里面执行语句的可行性判断时，使用条件传送实现条件分支就会出现错误。比如对于指针<code>xp</code>，有个条件分支为<code>xp?*xp:0</code>，如果使用条件传送来实现，就会先运行<code>*xp</code>，如果该指针不存在，就会报错。</li>
+<li>如果执行语句需要大量计算时，由于条件传送会先全部计算后再进行选择，则会浪费一些时间。</li>
+</ol>
+<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3>]]></content>
       <categories>
         <category>CSAPP</category>
       </categories>
