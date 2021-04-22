@@ -3522,7 +3522,7 @@ b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{e
 <script type="math/tex; mode=display">
 \alpha_{ij} = \frac1{\sqrt{2d}}(x_i^lW^{Q})(x_j^lW^{K})^T + \frac1{\sqrt{2d}}(p_iU^{Q})(p_jU^{K})^T</script><p>针对相对位置，只需要添加一个距离项</p>
 <script type="math/tex; mode=display">
-\alpha_{ij} = \frac1{\sqrt{2d}}(x_i^lW^{Q})(x_j^lW^{K})^T + \frac1{\sqrt{2d}}(p_iU^{Q})(p_jU^{K})^T + b_{j-i}</script><h2 id="计算-CLS"><a href="#计算-CLS" class="headerlink" title="计算[CLS]"></a>计算[CLS]</h2><p>BERT中[CLS]作为输入语句的第一个字符，以捕获整个语句的全局信息。将这样一个特殊token和其他字符相提并论可能并不是一种好的选择，有一些可视化工作表明attention可能会出现只专注局部字符的现象（local concentration）。</p>
+\alpha_{ij} = \frac1{\sqrt{2d}}(x_i^lW^{Q})(x_j^lW^{K})^T + \frac1{\sqrt{2d}}(p_iU^{Q})(p_jU^{K})^T + b_{j-i}</script><h3 id="计算-CLS"><a href="#计算-CLS" class="headerlink" title="计算[CLS]"></a>计算[CLS]</h3><p>BERT中[CLS]作为输入语句的第一个字符，以捕获整个语句的全局信息。将这样一个特殊token和其他字符相提并论可能并不是一种好的选择，有一些可视化工作表明attention可能会出现只专注局部字符的现象（local concentration）。</p>
 <p>为此，本文作了如下修改</p>
 <p><img src="/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417214551502.png" alt="image-20210417214551502" style="zoom:67%;"></p>
 <p>其中，<script type="math/tex">\theta_1</script>和<script type="math/tex">\theta_2</script>是可学习的参数，计算方式的变化如下图。</p>
@@ -3536,7 +3536,7 @@ b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{e
 <p>总体来看，在GLUE上取得了更好的成绩，不过计算量相比之下多了30%（因为多算了一次attention）。</p>
 ]]></content>
       <categories>
-        <category>paper</category>
+        <category>Paper</category>
       </categories>
       <tags>
         <tag>NLP</tag>
@@ -3851,12 +3851,78 @@ b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{e
 <li>如果条件判断是里面执行语句的可行性判断时，使用条件传送实现条件分支就会出现错误。比如对于指针<code>xp</code>，有个条件分支为<code>xp?*xp:0</code>，如果使用条件传送来实现，就会先运行<code>*xp</code>，如果该指针不存在，就会报错。</li>
 <li>如果执行语句需要大量计算时，由于条件传送会先全部计算后再进行选择，则会浪费一些时间。</li>
 </ol>
-<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3>]]></content>
+<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><p>do-while</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    body-statement</span><br><span class="line">&#125; <span class="keyword">while</span>(test-expr);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">loop:</span><br><span class="line">    body-statement</span><br><span class="line">    t &#x3D; test-expr;</span><br><span class="line">    if (t)</span><br><span class="line">        goto loop;</span><br></pre></td></tr></table></figure>
+<p>while有两种翻译方法</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(test-expr)</span><br><span class="line">    body-statement</span><br></pre></td></tr></table></figure>
+<p>第一种方法称为跳转到中间（jump to middle）。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    goto test;</span><br><span class="line">loop:</span><br><span class="line">    body-statement</span><br><span class="line">test:</span><br><span class="line">    t &#x3D; test-expr;</span><br><span class="line">    if (t)</span><br><span class="line">        goto loop;</span><br></pre></td></tr></table></figure>
+<p>当使用较高优化等级时，比如<code>-O1</code>时，GCC会使用guarded-do策略。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">t = test-expr;</span><br><span class="line"><span class="keyword">if</span> (!t)</span><br><span class="line">    <span class="keyword">goto</span> done;</span><br><span class="line">loop:</span><br><span class="line">    body-statement</span><br><span class="line">    t = test-expr;</span><br><span class="line">    <span class="keyword">if</span> (t)</span><br><span class="line">        <span class="keyword">goto</span> loop;</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<p>for循环可以转化为while循环，GCC会为其产生的代码是while循环的两种方法之一，这取决于根据优化等级。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (init-expr; test-expr; update-expr)</span><br><span class="line">    body-statement</span><br><span class="line">    </span><br><span class="line"><span class="comment">// 等价于</span></span><br><span class="line">init-expr;</span><br><span class="line"><span class="keyword">while</span> (test-expr) &#123;</span><br><span class="line">    body-statement</span><br><span class="line">    update-expr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h3><p>switch语句可以根据一个整数索引数值进行多重分支，通过使用<strong>跳转表（Jump Table）</strong>使得实现更加高效。跳转表是一个数组，表项i是一个代码段的地址。</p>
+<p><img src="/2021/04/21/CSAPP-Chap3-%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA/image-20210422183451074.png" alt="image-20210422183451074" style="zoom:67%;"></p>
+<p>数组jt包含7个表项，每个都是一个代码块的地址。GCC用&amp;&amp;创建一个指向代码位置的指针。</p>
+<p><img src="/2021/04/21/CSAPP-Chap3-%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA/image-20210422184158829.png" alt="image-20210422184158829" style="zoom:67%;"></p>
+<blockquote>
+<p>通过第2行可以知道<code>switch</code>的最小值，第3行可以知道<code>switch</code>的最大值，第4行可以知道<code>default</code>的标号。</p>
+</blockquote>
+<p>跳转表的内容由编译器自动生成填写，其声明如下所示.</p>
+<p><img src="/2021/04/21/CSAPP-Chap3-%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA/image-20210422184548224.png" alt="image-20210422184548224" style="zoom: 80%;"></p>
+]]></content>
       <categories>
         <category>CSAPP</category>
       </categories>
       <tags>
         <tag>CSAPP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Entity Enhanced BERT Pre-training for Chinese NER</title>
+    <url>/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/</url>
+    <content><![CDATA[<p>张岳老师的文章，关注如何更充分利用实体信息以增强预训练语言模型在中文NER上的表现（EMNLP 2020）。</p>
+<p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422192212061.png" alt="image-20210422192212061" style="zoom:80%;"></p>
+<a id="more"></a>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
+<li>arxiv: <a href="https://www.aclweb.org/anthology/2020.emnlp-main.518.pdf">https://www.aclweb.org/anthology/2020.emnlp-main.518.pdf</a></li>
+<li>code: 暂无</li>
+</ul>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>在中文NER中引入词典已经被证明是一个有效的方法，但是将实体信息融入BERT这类预训练模型的研究还很少。</p>
+<p>论文首先基于互信息的计算，用新词发现策略来识别文档中的entity；然后设计了char-entity自注意力机制来捕捉中文字与实体之间的关系，将字符隐层状态和实体向量组合。</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="New-Word-Discovery"><a href="#New-Word-Discovery" class="headerlink" title="New-Word Discovery"></a>New-Word Discovery</h3><p>采用了<a href="https://svn.spraakdata.gu.se/repos/gerlof/pub/www/Docs/npmi-pfd.pdf">Bouma（2009）</a>提出的方法，用互信息计算，不予赘述。</p>
+<h3 id="Char-Entity-Transformer"><a href="#Char-Entity-Transformer" class="headerlink" title="Char-Entity-Transformer"></a>Char-Entity-Transformer</h3><p>经典的Transformer计算Q、K、V三个矩阵</p>
+<script type="math/tex; mode=display">
+\{Q^l,K^l,V^l\} = \{h^{l-1}W_q^l,h^{l-1}W_k^l,h^{l-1}W_v^l\} \\
+Atten(Q^l,K^l,V^l) = {\rm softmax}(\frac{Q^l {K^l}^T}{\sqrt{d_k}})</script><p>本文也是先对给定的字符序列<script type="math/tex">{\mathcal C} = \{c_1,\dots,c_T\}</script>，给定词典<script type="math/tex">\mathcal E_{end}</script>，匹配得到对应的实体序列<script type="math/tex">\mathcal E = \{e_1,\dots,e_T\}</script>。</p>
+<p>给定<script type="math/tex">(l-1)</script>层的隐层状态<script type="math/tex">\{h_1^{l-1},\dots,h_T^{l-1}\}</script>，QKV的计算如下</p>
+<script type="math/tex; mode=display">
+\begin{align}
+q_t^l &= h_t^{l-1}W_{h,q}^l; \\
+k_t^l &= \begin{cases}{
+            {h_t^{l-1}}^T W_{h,k}^l}\quad &{\rm if}\space e_t = 0,\\
+            \frac12({h_t^{l-1}}^T W_{h,k}^l + E_{ent}^T[e_t]W_{e,k}^l)\quad &else;
+         \end{cases} \\
+v_t^l &= \begin{cases}
+            {h_t^{l-1}}^T W_{h,v}^l\quad &{\rm if}\space e_t = 0,\\
+            \frac12({h_t^{l-1}}^T W_{h,v}^l + E_{ent}^T[e_t]W_{e,v}^l)\quad &else;
+         \end{cases}
+\end{align}</script><p>其中<script type="math/tex">E_{ent}</script>表示实体embedding，<script type="math/tex">W</script>表示可学习的参数。</p>
+<p>如果字符没有匹配到实体，那么计算退化为原始的self-attention。</p>
+<h3 id="NER任务"><a href="#NER任务" class="headerlink" title="NER任务"></a>NER任务</h3><p>针对NER任务，模型使用softmax解码，采用BIO标注方式。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>论文的实验使用了一个公开数据集CLUENER-2020，和两个自己标注的数据集。</p>
+<p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422200804396.png" alt="image-20210422200804396" style="zoom:67%;"></p>
+<p>本文还和ERNIE（百度）、Lattice进行了比较，采用的词典和ERNIE一样。</p>
+<p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422200849220.png" alt="image-20210422200849220" style="zoom: 67%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>BERT</tag>
+        <tag>NER</tag>
       </tags>
   </entry>
 </search>
