@@ -1,10 +1,10 @@
 ---
-title: 《C++ Primer》 Chapter 2 变量和基本类型
+title: C++ Primer Chapter 2 变量和基本类型
 date: 2020-11-23 15:01:27
 tags:
 - C++
 category:
-- 《C++ Primer》
+- C++ Primer
 ---
 
 介绍C++的基本内置类型和复合类型，包括引用和指针的声明，以及const限定符的使用方法。
@@ -15,7 +15,7 @@ category:
 
 下表列出了各内置类型的最小尺寸。
 
-![image-20201123150453260](《C++ Primer》 Chapter 2 变量和基本类型/image-20201123150453260.png)
+<img src="C++ Primer Chapter 2 变量和基本类型/image-20201123150453260.png" alt="image-20201123150453260" style="zoom: 50%;" />
 
 > 2^31 - 1= 2147483647是个常见的数字。
 
@@ -45,13 +45,13 @@ for (unsigned i = 10; i >= 0; i--)
 
 C++规定的转义序列如下
 
-![image-20201123153641722](《C++ Primer》 Chapter 2 变量和基本类型/image-20201123153641722.png)
+<img src="C++ Primer Chapter 2 变量和基本类型/image-20201123153641722.png" alt="image-20201123153641722" style="zoom:50%;" />
 
 C++还可以对常量添加前缀和后缀，改变默认类型。
 
 - 比如L'a'定义了宽字符型字面值，类型是wchar_t。
 
-![image-20201123153731472](《C++ Primer》 Chapter 2 变量和基本类型/image-20201123153731472.png)
+<img src="C++ Primer Chapter 2 变量和基本类型/image-20201123153731472.png" alt="image-20201123153731472" style="zoom:50%;" />
 
 ## 变量
 

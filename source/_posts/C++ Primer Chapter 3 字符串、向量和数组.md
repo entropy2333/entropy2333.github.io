@@ -1,10 +1,10 @@
 ---
-title: 《C++ Primer》 Chapter 3 字符串、向量和数组
+title: C++ Primer Chapter 3 字符串、向量和数组
 date: 2020-11-23 16:48:44
 tags:
 - C++
 category:
-- 《C++ Primer》
+- C++ Primer
 
 ---
 
@@ -33,11 +33,11 @@ using namespace std::string;
 
 如果使用等号，实际上执行的是拷贝初始化。反之，执行的是直接初始化。
 
-![image-20201130133107639](《C++ Primer》 Chapter 3 字符串、向量和数组/image-20201130133107639.png)
+<img src="C++ Primer Chapter 3 字符串、向量和数组/image-20201130133107639.png" alt="image-20201130133107639" style="zoom: 50%;" />
 
 ### string对象上的操作
 
-![image-20201130125844111](《C++ Primer》 Chapter 3 字符串、向量和数组/image-20201130125844111.png)
+<img src="C++ Primer Chapter 3 字符串、向量和数组/image-20201130125844111.png" alt="image-20201130125844111" style="zoom:50%;" />
 
 #### 读写
 
@@ -115,7 +115,7 @@ string s5 = "hello" + " " + s2; // error
 
 下表给出了一些关于字符属性的函数。
 
-![image-20201130125720977](《C++ Primer》 Chapter 3 字符串、向量和数组/image-20201130125720977.png)
+<img src="C++ Primer Chapter 3 字符串、向量和数组/image-20201130125720977.png" alt="image-20201130125720977" style="zoom:50%;" />
 
 > C++标准库为了兼容C，将C的头文件如name.h，命名为cname。
 >
@@ -179,7 +179,7 @@ vector作为类模板，不是类型。
 
 ### 定义和初始化vector对象
 
-![image-20201130133133358](《C++ Primer》 Chapter 3 字符串、向量和数组/image-20201130133133358.png)
+<img src="C++ Primer Chapter 3 字符串、向量和数组/image-20201130133133358.png" alt="image-20201130133133358" style="zoom:50%;" />
 
 注意区分列表初始化和元素数量。
 
@@ -205,7 +205,7 @@ for (int i = 0; i != 10; ++i)
 
 ### 其他vector操作
 
-![image-20201130133935086](《C++ Primer》 Chapter 3 字符串、向量和数组/image-20201130133935086.png)
+<img src="C++ Primer Chapter 3 字符串、向量和数组/image-20201130133935086.png" alt="image-20201130133935086" style="zoom:50%;" />
 
 vector同样支持范围for语句。
 
@@ -244,7 +244,7 @@ begin成员返回指向第一个元素的迭代器，end成员返回指向容器
 
 如果容器为空，begin和end返回的是同一个迭代器，都是尾后迭代器。
 
-![image-20201130135012221](《C++ Primer》 Chapter 3 字符串、向量和数组/image-20201130135012221.png)
+<img src="C++ Primer Chapter 3 字符串、向量和数组/image-20201130135012221.png" alt="image-20201130135012221" style="zoom:50%;" />
 
 ```c++
 string s = "hello world";
@@ -277,7 +277,7 @@ it->empty;
 
 ### 迭代器运算
 
-![image-20201130135031052](《C++ Primer》 Chapter 3 字符串、向量和数组/image-20201130135031052.png)
+<img src="C++ Primer Chapter 3 字符串、向量和数组/image-20201130135031052.png" alt="image-20201130135031052" style="zoom:50%;" />
 
 ```c++
 // 得到最接近中间元素的迭代器
@@ -387,7 +387,7 @@ int *last = end(ia);
 
 > 尽管C++支持，但最好不好使用。
 
-![image-20201130144349734](《C++ Primer》 Chapter 3 字符串、向量和数组/image-20201130144349734.png)
+<img src="C++ Primer Chapter 3 字符串、向量和数组/image-20201130144349734.png" alt="image-20201130144349734" style="zoom:50%;" />
 
 #### 与旧代码的接口
 

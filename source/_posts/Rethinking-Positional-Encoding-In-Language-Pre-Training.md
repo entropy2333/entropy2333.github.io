@@ -5,7 +5,7 @@ tags:
 - NLP
 - BERT
 category:
-- paper
+- Paper
 ---
 
 <img src="Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417211502265.png" alt="image-20210417211502265" style="zoom:67%;" />
@@ -54,7 +54,7 @@ $$
 \alpha_{ij} = \frac1{\sqrt{2d}}(x_i^lW^{Q})(x_j^lW^{K})^T + \frac1{\sqrt{2d}}(p_iU^{Q})(p_jU^{K})^T + b_{j-i}
 $$
 
-## 计算[CLS]
+### 计算[CLS]
 
 BERT中[CLS]作为输入语句的第一个字符，以捕获整个语句的全局信息。将这样一个特殊token和其他字符相提并论可能并不是一种好的选择，有一些可视化工作表明attention可能会出现只专注局部字符的现象（local concentration）。
 

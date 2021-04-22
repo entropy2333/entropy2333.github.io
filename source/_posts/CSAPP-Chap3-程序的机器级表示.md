@@ -202,7 +202,7 @@ SET指令根据条件码的某种组合，将一个字节设置为0或者1。
 
 <img src="CSAPP-Chap3-程序的机器级表示/image-20210421204839498.png" alt="image-20210421204839498" style="zoom:67%;" />
 
-mp是无条件跳转。它可以是**直接跳转**，即跳转目标是作为指令的一部分编码的（标号）；也可以是**间接跳转**，即跳转目标是从寄存器或内存位置中读出的（“*”后跟一个操作数提示符）。
+jump是无条件跳转。它可以是**直接跳转**，即跳转目标是作为指令的一部分编码的（标号）；也可以是**间接跳转**，即跳转目标是从寄存器或内存位置中读出的（“*”后跟一个操作数提示符）。
 
 条件跳转指令根据条件码的某种组合，或跳转，或继续执行代码序列中下一条指令。条件跳转只能是直接跳转。
 
@@ -234,3 +234,96 @@ false:
 done:
 ```
 
+### 用条件传送实现条件分支
+
+现代处理器使用流水线执行指令，遇到条件需要跳转时，只有知道跳转结果才能确定指令顺序，才能使用流水线。现在处理器采用**分支预测**的方法来预测跳转的结果，即处理器会预测当前跳转的结果。
+
+用**条件传送**来实现条件分支，不会先判断跳转，而是先将两个分支的结果进行计算，将结果分别保存在两个寄存器中，然后再通过**条件传送指令`CMOV`**将正确结果传送到输出的寄存器中。
+
+<img src="CSAPP-Chap3-程序的机器级表示/image-20210422173827193.png" alt="image-20210422173827193" style="zoom: 67%;" />
+
+条件传送同样也存在局限性
+
+1. 如果条件判断是里面执行语句的可行性判断时，使用条件传送实现条件分支就会出现错误。比如对于指针`xp`，有个条件分支为`xp?*xp:0`，如果使用条件传送来实现，就会先运行`*xp`，如果该指针不存在，就会报错。
+2. 如果执行语句需要大量计算时，由于条件传送会先全部计算后再进行选择，则会浪费一些时间。
+
+### 循环
+
+do-while
+
+```c
+do {
+    body-statement
+} while(test-expr);
+```
+
+```assembly
+loop:
+	body-statement
+	t = test-expr;
+	if (t)
+		goto loop;
+```
+
+while有两种翻译方法
+
+```c
+while(test-expr)
+    body-statement
+```
+
+第一种方法称为跳转到中间（jump to middle）。
+
+```assembly
+	goto test;
+loop:
+	body-statement
+test:
+	t = test-expr;
+	if (t)
+		goto loop;
+```
+
+当使用较高优化等级时，比如`-O1`时，GCC会使用guarded-do策略。
+
+```c
+t = test-expr;
+if (!t)
+    goto done;
+loop:
+	body-statement
+	t = test-expr;
+	if (t)
+        goto loop;
+done:
+```
+
+for循环可以转化为while循环，GCC会为其产生的代码是while循环的两种方法之一，这取决于根据优化等级。
+
+```c
+for (init-expr; test-expr; update-expr)
+    body-statement
+    
+// 等价于
+init-expr;
+while (test-expr) {
+	body-statement
+    update-expr;
+}
+```
+
+### Switch
+
+switch语句可以根据一个整数索引数值进行多重分支，通过使用**跳转表（Jump Table）**使得实现更加高效。跳转表是一个数组，表项i是一个代码段的地址。
+
+<img src="CSAPP-Chap3-程序的机器级表示/image-20210422183451074.png" alt="image-20210422183451074" style="zoom:67%;" />
+
+数组jt包含7个表项，每个都是一个代码块的地址。GCC用&&创建一个指向代码位置的指针。
+
+<img src="CSAPP-Chap3-程序的机器级表示/image-20210422184158829.png" alt="image-20210422184158829" style="zoom:67%;" />
+
+> 通过第2行可以知道`switch`的最小值，第3行可以知道`switch`的最大值，第4行可以知道`default`的标号。
+
+跳转表的内容由编译器自动生成填写，其声明如下所示.
+
+<img src="CSAPP-Chap3-程序的机器级表示/image-20210422184548224.png" alt="image-20210422184548224" style="zoom: 80%;" />

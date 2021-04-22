@@ -1,11 +1,10 @@
 ---
-title: 《C++ Primer》 Chapter 1 开始 
+title: C++ Primer Chapter 1 开始 
 date: 2020-11-23 14:29:28
 tags:
 - C++
 category:
-- 《C++ Primer》
-
+- C++ Primer
 ---
 
 初识C++。
