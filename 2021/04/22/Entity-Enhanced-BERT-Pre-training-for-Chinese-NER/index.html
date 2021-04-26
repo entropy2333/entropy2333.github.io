@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://entropy2333.github.io/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422200804396.png">
 <meta property="og:image" content="https://entropy2333.github.io/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422200849220.png">
 <meta property="article:published_time" content="2021-04-22T11:16:55.000Z">
-<meta property="article:modified_time" content="2021-04-22T12:36:18.153Z">
+<meta property="article:modified_time" content="2021-04-22T12:55:51.358Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="NLP">
 <meta property="article:tag" content="BERT">
@@ -291,7 +291,7 @@
 <h3 id="Char-Entity-Transformer"><a href="#Char-Entity-Transformer" class="headerlink" title="Char-Entity-Transformer"></a>Char-Entity-Transformer</h3><p>经典的Transformer计算Q、K、V三个矩阵</p>
 <script type="math/tex; mode=display">
 \{Q^l,K^l,V^l\} = \{h^{l-1}W_q^l,h^{l-1}W_k^l,h^{l-1}W_v^l\} \\
-Atten(Q^l,K^l,V^l) = {\rm softmax}(\frac{Q^l {K^l}^T}{\sqrt{d_k}})</script><p>本文也是先对给定的字符序列<script type="math/tex">{\mathcal C} = \{c_1,\dots,c_T\}</script>，给定词典<script type="math/tex">\mathcal E_{end}</script>，匹配得到对应的实体序列<script type="math/tex">\mathcal E = \{e_1,\dots,e_T\}</script>。</p>
+Atten(Q^l,K^l,V^l) = {\rm softmax}(\frac{Q^l {K^l}^T}{\sqrt{d_k}})</script><p>本文也是先对给定的字符序列<script type="math/tex">{\mathcal C} = \{c_1,\dots,c_T\}</script>，给定词典<script type="math/tex">\mathcal E_{ent}</script>，匹配得到对应的实体序列<script type="math/tex">\mathcal E = \{e_1,\dots,e_T\}</script>。</p>
 <p>给定<script type="math/tex">(l-1)</script>层的隐层状态<script type="math/tex">\{h_1^{l-1},\dots,h_T^{l-1}\}</script>，QKV的计算如下</p>
 <script type="math/tex; mode=display">
 \begin{align}
@@ -366,7 +366,10 @@ v_t^l &= \begin{cases}
     <a href="/2021/04/21/CSAPP-Chap3-%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA/" rel="prev" title="CSAPP Chap3: 程序的机器级表示">
       <i class="fa fa-chevron-left"></i> CSAPP Chap3: 程序的机器级表示
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/" rel="next" title="CSAPP Chap5: 优化程序性能">
+      CSAPP Chap5: 优化程序性能 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -442,7 +445,7 @@ v_t^l &= \begin{cases}
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -22,27 +22,27 @@
 
   <meta name="description" content="介绍标准库string和vector，以及迭代器和数组的使用。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《C++ Primer》 Chapter 3 字符串、向量和数组">
-<meta property="og:url" content="https://entropy2333.github.io/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/index.html">
+<meta property="og:title" content="C++ Primer Chapter 3 字符串、向量和数组">
+<meta property="og:url" content="https://entropy2333.github.io/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/index.html">
 <meta property="og:site_name" content="entropy2333">
 <meta property="og:description" content="介绍标准库string和vector，以及迭代器和数组的使用。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133107639.png">
-<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125844111.png">
-<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125720977.png">
-<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133133358.png">
-<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133935086.png">
-<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135012221.png">
-<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135031052.png">
-<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130144349734.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133107639.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125844111.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125720977.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133133358.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133935086.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135012221.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135031052.png">
+<meta property="og:image" content="https://entropy2333.github.io/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130144349734.png">
 <meta property="article:published_time" content="2020-11-23T08:48:44.000Z">
-<meta property="article:modified_time" content="2020-11-30T07:03:57.402Z">
+<meta property="article:modified_time" content="2021-04-22T12:54:59.316Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://entropy2333.github.io/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133107639.png">
+<meta name="twitter:image" content="https://entropy2333.github.io/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133107639.png">
 
-<link rel="canonical" href="https://entropy2333.github.io/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/">
+<link rel="canonical" href="https://entropy2333.github.io/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/">
 
 
 <script id="page-configurations">
@@ -55,7 +55,7 @@
   };
 </script>
 
-  <title>《C++ Primer》 Chapter 3 字符串、向量和数组 | entropy2333</title>
+  <title>C++ Primer Chapter 3 字符串、向量和数组 | entropy2333</title>
   
 
 
@@ -207,7 +207,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/">
+    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/myavatar.jpg">
@@ -220,7 +220,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          《C++ Primer》 Chapter 3 字符串、向量和数组
+          C++ Primer Chapter 3 字符串、向量和数组
         </h1>
 
         <div class="post-meta">
@@ -238,7 +238,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E3%80%8AC-Primer%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《C++ Primer》</span></a>
+                  <a href="/categories/C-Primer/" itemprop="url" rel="index"><span itemprop="name">C++ Primer</span></a>
                 </span>
             </span>
 
@@ -258,8 +258,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -288,8 +288,8 @@
 <h2 id="标准库类型string"><a href="#标准库类型string" class="headerlink" title="标准库类型string"></a>标准库类型string</h2><p>string定义在命名空间std中。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;string&gt;</span><br><span class="line">using namespace std::string;</span><br></pre></td></tr></table></figure>
 <h3 id="定义和初始化"><a href="#定义和初始化" class="headerlink" title="定义和初始化"></a>定义和初始化</h3><p>如果使用等号，实际上执行的是拷贝初始化。反之，执行的是直接初始化。</p>
-<p><img src="/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133107639.png" alt="image-20201130133107639"></p>
-<h3 id="string对象上的操作"><a href="#string对象上的操作" class="headerlink" title="string对象上的操作"></a>string对象上的操作</h3><p><img src="/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125844111.png" alt="image-20201130125844111"></p>
+<p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133107639.png" alt="image-20201130133107639" style="zoom: 50%;"></p>
+<h3 id="string对象上的操作"><a href="#string对象上的操作" class="headerlink" title="string对象上的操作"></a>string对象上的操作</h3><p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125844111.png" alt="image-20201130125844111" style="zoom:50%;"></p>
 <h4 id="读写"><a href="#读写" class="headerlink" title="读写"></a>读写</h4><p>执行读取操作时，会自动忽略开头的空白字符，直至遇到下一处空白。</p>
 <p>输入”    Hello World!    “，输出则为”Hello”。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> s;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; s;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -311,7 +311,7 @@
 <p>运算时，应保证+两侧的运算对象至少有一个是string。</p>
 </blockquote>
 <h3 id="处理string中的字符"><a href="#处理string中的字符" class="headerlink" title="处理string中的字符"></a>处理string中的字符</h3><p>下表给出了一些关于字符属性的函数。</p>
-<p><img src="/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125720977.png" alt="image-20201130125720977"></p>
+<p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125720977.png" alt="image-20201130125720977" style="zoom:50%;"></p>
 <blockquote>
 <p>C++标准库为了兼容C，将C的头文件如name.h，命名为cname。</p>
 <p>C++程序应该使用cname形式的头文件，以区分从C继承的头文件。</p>
@@ -331,7 +331,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;                <span class="comment">// 元素是int</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; file;    <span class="comment">// 元素是存放string的vector</span></span><br></pre></td></tr></table></figure>
 <p>vector作为类模板，不是类型。</p>
 <p>引用不是对象，不存在包含引用的vector。</p>
-<h3 id="定义和初始化vector对象"><a href="#定义和初始化vector对象" class="headerlink" title="定义和初始化vector对象"></a>定义和初始化vector对象</h3><p><img src="/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133133358.png" alt="image-20201130133133358"></p>
+<h3 id="定义和初始化vector对象"><a href="#定义和初始化vector对象" class="headerlink" title="定义和初始化vector对象"></a>定义和初始化vector对象</h3><p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133133358.png" alt="image-20201130133133358" style="zoom:50%;"></p>
 <p>注意区分列表初始化和元素数量。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v1&#123;<span class="number">10</span>&#125;; <span class="comment">// 列表初始化，v1有1个元素，值为10。</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v2</span><span class="params">(<span class="number">10</span>)</span></span>; <span class="comment">// v2有10个元素，值为0。</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v3&#123;<span class="number">10</span>, <span class="number">1</span>&#125;; <span class="comment">// 列表初始化，v3有2个元素，值为10和1。</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v4</span><span class="params">(<span class="number">10</span>, <span class="number">1</span>)</span></span>; <span class="comment">// v4有10个元素，值为1。</span></span><br></pre></td></tr></table></figure>
 <h3 id="向vector对象添加元素"><a href="#向vector对象添加元素" class="headerlink" title="向vector对象添加元素"></a>向vector对象添加元素</h3><p>可以用vector的成员函数push_back添加元素。</p>
@@ -339,7 +339,7 @@
 <blockquote>
 <p>与C不同，C++推荐先定义一个空的vector对象，运行时向其中添加具体值。</p>
 </blockquote>
-<h3 id="其他vector操作"><a href="#其他vector操作" class="headerlink" title="其他vector操作"></a>其他vector操作</h3><p><img src="/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133935086.png" alt="image-20201130133935086"></p>
+<h3 id="其他vector操作"><a href="#其他vector操作" class="headerlink" title="其他vector操作"></a>其他vector操作</h3><p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133935086.png" alt="image-20201130133935086" style="zoom:50%;"></p>
 <p>vector同样支持范围for语句。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : v)    <span class="comment">// 使用引用对vector的元素赋值</span></span><br><span class="line">    i *= <span class="number">2</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> i : v)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br></pre></td></tr></table></figure>
 <p>与string类似，vector的size函数返回类型为vector<T>::size_type。</T></p>
@@ -347,7 +347,7 @@
 <h2 id="迭代器介绍"><a href="#迭代器介绍" class="headerlink" title="迭代器介绍"></a>迭代器介绍</h2><h3 id="使用迭代器"><a href="#使用迭代器" class="headerlink" title="使用迭代器"></a>使用迭代器</h3><p>有迭代器的类型拥有名为begin和end的成员。</p>
 <p>begin成员返回指向第一个元素的迭代器，end成员返回指向容器“尾后”元素的迭代器，通常被称作尾后迭代器。</p>
 <p>如果容器为空，begin和end返回的是同一个迭代器，都是尾后迭代器。</p>
-<p><img src="/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135012221.png" alt="image-20201130135012221"></p>
+<p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135012221.png" alt="image-20201130135012221" style="zoom:50%;"></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> it = s.<span class="built_in">begin</span>(); it != s.<span class="built_in">end</span>(); ++it)</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">isalpha</span>(*it))</span><br><span class="line">        *it = <span class="built_in">toupper</span>(*it);</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>C++习惯在for循环中使用!=进行判断，因为大多数迭代器都没有定义&lt;运算符。</p>
@@ -357,7 +357,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v1;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v2;</span><br><span class="line"><span class="keyword">auto</span> it1 = v1.<span class="built_in">begin</span>();    <span class="comment">// type: vector&lt;int&gt;::iterator</span></span><br><span class="line"><span class="keyword">auto</span> it2 = v2.<span class="built_in">begin</span>();  <span class="comment">// type: vector&lt;int&gt;::const_iterator</span></span><br><span class="line"><span class="keyword">auto</span> it3 = v1.cbegin(); <span class="comment">// type: vector&lt;int&gt;::const_iterator</span></span><br></pre></td></tr></table></figure>
 <p>为了简化解引用和成员访问操作一起使用，C++定义了箭头运算符。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*it.empty;   <span class="comment">// error</span></span><br><span class="line">(*it).empty;</span><br><span class="line">it-&gt;empty;</span><br></pre></td></tr></table></figure>
-<h3 id="迭代器运算"><a href="#迭代器运算" class="headerlink" title="迭代器运算"></a>迭代器运算</h3><p><img src="/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135031052.png" alt="image-20201130135031052"></p>
+<h3 id="迭代器运算"><a href="#迭代器运算" class="headerlink" title="迭代器运算"></a>迭代器运算</h3><p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135031052.png" alt="image-20201130135031052" style="zoom:50%;"></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 得到最接近中间元素的迭代器</span></span><br><span class="line"><span class="keyword">auto</span> mid = v.<span class="built_in">begin</span>() + v.<span class="built_in">size</span>() / <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
 <p>C++定义了迭代器的差值，类型为difference_type。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 二分搜索</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="built_in">text</span>;</span><br><span class="line"><span class="built_in">string</span> sought;</span><br><span class="line"><span class="keyword">auto</span> beg = <span class="built_in">text</span>.<span class="built_in">begin</span>(), <span class="built_in">end</span> = <span class="built_in">text</span>.<span class="built_in">end</span>();</span><br><span class="line"><span class="keyword">auto</span> mid = <span class="built_in">text</span>.<span class="built_in">begin</span>() + (<span class="built_in">end</span> - beg) / <span class="number">2</span>;</span><br><span class="line"><span class="keyword">while</span> (mid != <span class="built_in">end</span> &amp;&amp; *mid != sought) &#123;</span><br><span class="line">    <span class="keyword">if</span> (sought &lt; *mid) <span class="comment">// 在前半部分则忽略后半部分</span></span><br><span class="line">        <span class="built_in">end</span> = mid;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        beg = mid + <span class="number">1</span>; <span class="comment">// 否则忽略前半部分</span></span><br><span class="line">    mid = beg + (<span class="built_in">end</span> - beg) /<span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -384,7 +384,7 @@
 <h4 id="C风格字符串"><a href="#C风格字符串" class="headerlink" title="C风格字符串"></a>C风格字符串</h4><blockquote>
 <p>尽管C++支持，但最好不好使用。</p>
 </blockquote>
-<p><img src="/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130144349734.png" alt="image-20201130144349734"></p>
+<p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130144349734.png" alt="image-20201130144349734" style="zoom:50%;"></p>
 <h4 id="与旧代码的接口"><a href="#与旧代码的接口" class="headerlink" title="与旧代码的接口"></a>与旧代码的接口</h4><p>允许使用字符串字面值初始化string对象，反过来则不行，需要使用c_str函数。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">&quot;hello world&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">char</span> *str = s; <span class="comment">// error</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *str = s.c_str();</span><br></pre></td></tr></table></figure>
 <p>可以使用数组初始化vector对象</p>
@@ -412,10 +412,10 @@
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\11\23\《C++ Primer》 Chapter 1 开始 \" rel="bookmark">《C++ Primer》 Chapter 1 开始</a></div>
+      <div class="popular-posts-title"><a href="\2020\11\23\C++ Primer Chapter 1 开始 \" rel="bookmark">C++ Primer Chapter 1 开始</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\11\23\《C++ Primer》 Chapter 2 变量和基本类型\" rel="bookmark">《C++ Primer》 Chapter 2 变量和基本类型</a></div>
+      <div class="popular-posts-title"><a href="\2020\11\23\C++ Primer Chapter 2 变量和基本类型\" rel="bookmark">C++ Primer Chapter 2 变量和基本类型</a></div>
     </li>
   </ul>
 
@@ -446,8 +446,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/11/23/%E3%80%8AC++%20Primer%E3%80%8B%20Chapter%202%20%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/" rel="prev" title="《C++ Primer》 Chapter 2 变量和基本类型">
-      <i class="fa fa-chevron-left"></i> 《C++ Primer》 Chapter 2 变量和基本类型
+    <a href="/2020/11/23/C++%20Primer%20Chapter%202%20%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/" rel="prev" title="C++ Primer Chapter 2 变量和基本类型">
+      <i class="fa fa-chevron-left"></i> C++ Primer Chapter 2 变量和基本类型
     </a></div>
       <div class="post-nav-item">
     <a href="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%80%EF%BC%89%E7%BB%AA%E8%AE%BA/" rel="next" title="现代密码学（一）绪论">
@@ -528,7 +528,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
