@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>C++ Primer Chapter 1 开始</title>
-    <url>/2020/11/23/C++%20Primer%20Chapter%201%20%E5%BC%80%E5%A7%8B%20/</url>
+    <url>/2020/11/23/C++-Primer-Chapter1-%E5%BC%80%E5%A7%8B%20/</url>
     <content><![CDATA[<p>初识C++。</p>
 <a id="more"></a>
 <h2 id="编写一个简单的C-程序"><a href="#编写一个简单的C-程序" class="headerlink" title="编写一个简单的C++程序"></a>编写一个简单的C++程序</h2><p>每个C++程序都包含若干个函数，其中一个必须命名为main，操作系统通过调用main运行C++程序。</p>
@@ -58,11 +58,11 @@
   </entry>
   <entry>
     <title>C++ Primer Chapter 2 变量和基本类型</title>
-    <url>/2020/11/23/C++%20Primer%20Chapter%202%20%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/</url>
+    <url>/2020/11/23/C++-Primer-Chapter2-%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/</url>
     <content><![CDATA[<p>介绍C++的基本内置类型和复合类型，包括引用和指针的声明，以及const限定符的使用方法。</p>
 <a id="more"></a>
 <h2 id="基本内置类型"><a href="#基本内置类型" class="headerlink" title="基本内置类型"></a>基本内置类型</h2><p>下表列出了各内置类型的最小尺寸。</p>
-<p><img src="/2020/11/23/C++%20Primer%20Chapter%202%20%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/image-20201123150453260.png" alt="image-20201123150453260" style="zoom: 50%;"></p>
+<p><img src="/2020/11/23/C++-Primer-Chapter2-%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/image-20201123150453260.png" alt="image-20201123150453260" style="zoom: 50%;"></p>
 <blockquote>
 <p>2^31 - 1= 2147483647是个常见的数字。</p>
 </blockquote>
@@ -83,12 +83,12 @@
 </ul>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">unsigned</span> i = <span class="number">10</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
 <h3 id="字面值常量"><a href="#字面值常量" class="headerlink" title="字面值常量"></a>字面值常量</h3><p>C++规定的转义序列如下</p>
-<p><img src="/2020/11/23/C++%20Primer%20Chapter%202%20%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/image-20201123153641722.png" alt="image-20201123153641722" style="zoom:50%;"></p>
+<p><img src="/2020/11/23/C++-Primer-Chapter2-%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/image-20201123153641722.png" alt="image-20201123153641722" style="zoom:50%;"></p>
 <p>C++还可以对常量添加前缀和后缀，改变默认类型。</p>
 <ul>
 <li>比如L’a’定义了宽字符型字面值，类型是wchar_t。</li>
 </ul>
-<p><img src="/2020/11/23/C++%20Primer%20Chapter%202%20%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/image-20201123153731472.png" alt="image-20201123153731472" style="zoom:50%;"></p>
+<p><img src="/2020/11/23/C++-Primer-Chapter2-%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/image-20201123153731472.png" alt="image-20201123153731472" style="zoom:50%;"></p>
 <h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><h3 id="变量定义"><a href="#变量定义" class="headerlink" title="变量定义"></a>变量定义</h3><p>以下四条语句都可以定义一个int变量并初始化为0。</p>
 <p>在C++11，可以用花括号来初始化变量，称为列表初始化。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> cnt = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cnt</span><span class="params">(<span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="keyword">int</span> cnt&#123;<span class="number">0</span>&#125;;</span><br></pre></td></tr></table></figure>
@@ -167,7 +167,7 @@
   </entry>
   <entry>
     <title>C++ Primer Chapter 3 字符串、向量和数组</title>
-    <url>/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/</url>
+    <url>/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/</url>
     <content><![CDATA[<p>介绍标准库string和vector，以及迭代器和数组的使用。</p>
 <a id="more"></a>
 <h3 id="命名空间的using声明"><a href="#命名空间的using声明" class="headerlink" title="命名空间的using声明"></a>命名空间的using声明</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span>::name;</span><br></pre></td></tr></table></figure>
@@ -175,8 +175,8 @@
 <h2 id="标准库类型string"><a href="#标准库类型string" class="headerlink" title="标准库类型string"></a>标准库类型string</h2><p>string定义在命名空间std中。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;string&gt;</span><br><span class="line">using namespace std::string;</span><br></pre></td></tr></table></figure>
 <h3 id="定义和初始化"><a href="#定义和初始化" class="headerlink" title="定义和初始化"></a>定义和初始化</h3><p>如果使用等号，实际上执行的是拷贝初始化。反之，执行的是直接初始化。</p>
-<p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133107639.png" alt="image-20201130133107639" style="zoom: 50%;"></p>
-<h3 id="string对象上的操作"><a href="#string对象上的操作" class="headerlink" title="string对象上的操作"></a>string对象上的操作</h3><p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125844111.png" alt="image-20201130125844111" style="zoom:50%;"></p>
+<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133107639.png" alt="image-20201130133107639" style="zoom: 50%;"></p>
+<h3 id="string对象上的操作"><a href="#string对象上的操作" class="headerlink" title="string对象上的操作"></a>string对象上的操作</h3><p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125844111.png" alt="image-20201130125844111" style="zoom:50%;"></p>
 <h4 id="读写"><a href="#读写" class="headerlink" title="读写"></a>读写</h4><p>执行读取操作时，会自动忽略开头的空白字符，直至遇到下一处空白。</p>
 <p>输入”    Hello World!    “，输出则为”Hello”。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> s;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; s;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -198,7 +198,7 @@
 <p>运算时，应保证+两侧的运算对象至少有一个是string。</p>
 </blockquote>
 <h3 id="处理string中的字符"><a href="#处理string中的字符" class="headerlink" title="处理string中的字符"></a>处理string中的字符</h3><p>下表给出了一些关于字符属性的函数。</p>
-<p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125720977.png" alt="image-20201130125720977" style="zoom:50%;"></p>
+<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125720977.png" alt="image-20201130125720977" style="zoom:50%;"></p>
 <blockquote>
 <p>C++标准库为了兼容C，将C的头文件如name.h，命名为cname。</p>
 <p>C++程序应该使用cname形式的头文件，以区分从C继承的头文件。</p>
@@ -218,7 +218,7 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;                <span class="comment">// 元素是int</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; file;    <span class="comment">// 元素是存放string的vector</span></span><br></pre></td></tr></table></figure>
 <p>vector作为类模板，不是类型。</p>
 <p>引用不是对象，不存在包含引用的vector。</p>
-<h3 id="定义和初始化vector对象"><a href="#定义和初始化vector对象" class="headerlink" title="定义和初始化vector对象"></a>定义和初始化vector对象</h3><p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133133358.png" alt="image-20201130133133358" style="zoom:50%;"></p>
+<h3 id="定义和初始化vector对象"><a href="#定义和初始化vector对象" class="headerlink" title="定义和初始化vector对象"></a>定义和初始化vector对象</h3><p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133133358.png" alt="image-20201130133133358" style="zoom:50%;"></p>
 <p>注意区分列表初始化和元素数量。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v1&#123;<span class="number">10</span>&#125;; <span class="comment">// 列表初始化，v1有1个元素，值为10。</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v2</span><span class="params">(<span class="number">10</span>)</span></span>; <span class="comment">// v2有10个元素，值为0。</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v3&#123;<span class="number">10</span>, <span class="number">1</span>&#125;; <span class="comment">// 列表初始化，v3有2个元素，值为10和1。</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v4</span><span class="params">(<span class="number">10</span>, <span class="number">1</span>)</span></span>; <span class="comment">// v4有10个元素，值为1。</span></span><br></pre></td></tr></table></figure>
 <h3 id="向vector对象添加元素"><a href="#向vector对象添加元素" class="headerlink" title="向vector对象添加元素"></a>向vector对象添加元素</h3><p>可以用vector的成员函数push_back添加元素。</p>
@@ -226,7 +226,7 @@
 <blockquote>
 <p>与C不同，C++推荐先定义一个空的vector对象，运行时向其中添加具体值。</p>
 </blockquote>
-<h3 id="其他vector操作"><a href="#其他vector操作" class="headerlink" title="其他vector操作"></a>其他vector操作</h3><p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133935086.png" alt="image-20201130133935086" style="zoom:50%;"></p>
+<h3 id="其他vector操作"><a href="#其他vector操作" class="headerlink" title="其他vector操作"></a>其他vector操作</h3><p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133935086.png" alt="image-20201130133935086" style="zoom:50%;"></p>
 <p>vector同样支持范围for语句。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : v)    <span class="comment">// 使用引用对vector的元素赋值</span></span><br><span class="line">    i *= <span class="number">2</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> i : v)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br></pre></td></tr></table></figure>
 <p>与string类似，vector的size函数返回类型为vector<T>::size_type。</T></p>
@@ -234,7 +234,7 @@
 <h2 id="迭代器介绍"><a href="#迭代器介绍" class="headerlink" title="迭代器介绍"></a>迭代器介绍</h2><h3 id="使用迭代器"><a href="#使用迭代器" class="headerlink" title="使用迭代器"></a>使用迭代器</h3><p>有迭代器的类型拥有名为begin和end的成员。</p>
 <p>begin成员返回指向第一个元素的迭代器，end成员返回指向容器“尾后”元素的迭代器，通常被称作尾后迭代器。</p>
 <p>如果容器为空，begin和end返回的是同一个迭代器，都是尾后迭代器。</p>
-<p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135012221.png" alt="image-20201130135012221" style="zoom:50%;"></p>
+<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135012221.png" alt="image-20201130135012221" style="zoom:50%;"></p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> it = s.<span class="built_in">begin</span>(); it != s.<span class="built_in">end</span>(); ++it)</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">isalpha</span>(*it))</span><br><span class="line">        *it = <span class="built_in">toupper</span>(*it);</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>C++习惯在for循环中使用!=进行判断，因为大多数迭代器都没有定义&lt;运算符。</p>
@@ -244,7 +244,7 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v1;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v2;</span><br><span class="line"><span class="keyword">auto</span> it1 = v1.<span class="built_in">begin</span>();    <span class="comment">// type: vector&lt;int&gt;::iterator</span></span><br><span class="line"><span class="keyword">auto</span> it2 = v2.<span class="built_in">begin</span>();  <span class="comment">// type: vector&lt;int&gt;::const_iterator</span></span><br><span class="line"><span class="keyword">auto</span> it3 = v1.cbegin(); <span class="comment">// type: vector&lt;int&gt;::const_iterator</span></span><br></pre></td></tr></table></figure>
 <p>为了简化解引用和成员访问操作一起使用，C++定义了箭头运算符。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">*it.empty;   <span class="comment">// error</span></span><br><span class="line">(*it).empty;</span><br><span class="line">it-&gt;empty;</span><br></pre></td></tr></table></figure>
-<h3 id="迭代器运算"><a href="#迭代器运算" class="headerlink" title="迭代器运算"></a>迭代器运算</h3><p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135031052.png" alt="image-20201130135031052" style="zoom:50%;"></p>
+<h3 id="迭代器运算"><a href="#迭代器运算" class="headerlink" title="迭代器运算"></a>迭代器运算</h3><p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135031052.png" alt="image-20201130135031052" style="zoom:50%;"></p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 得到最接近中间元素的迭代器</span></span><br><span class="line"><span class="keyword">auto</span> mid = v.<span class="built_in">begin</span>() + v.<span class="built_in">size</span>() / <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
 <p>C++定义了迭代器的差值，类型为difference_type。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 二分搜索</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="built_in">text</span>;</span><br><span class="line"><span class="built_in">string</span> sought;</span><br><span class="line"><span class="keyword">auto</span> beg = <span class="built_in">text</span>.<span class="built_in">begin</span>(), <span class="built_in">end</span> = <span class="built_in">text</span>.<span class="built_in">end</span>();</span><br><span class="line"><span class="keyword">auto</span> mid = <span class="built_in">text</span>.<span class="built_in">begin</span>() + (<span class="built_in">end</span> - beg) / <span class="number">2</span>;</span><br><span class="line"><span class="keyword">while</span> (mid != <span class="built_in">end</span> &amp;&amp; *mid != sought) &#123;</span><br><span class="line">    <span class="keyword">if</span> (sought &lt; *mid) <span class="comment">// 在前半部分则忽略后半部分</span></span><br><span class="line">        <span class="built_in">end</span> = mid;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        beg = mid + <span class="number">1</span>; <span class="comment">// 否则忽略前半部分</span></span><br><span class="line">    mid = beg + (<span class="built_in">end</span> - beg) /<span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -271,7 +271,7 @@
 <h4 id="C风格字符串"><a href="#C风格字符串" class="headerlink" title="C风格字符串"></a>C风格字符串</h4><blockquote>
 <p>尽管C++支持，但最好不好使用。</p>
 </blockquote>
-<p><img src="/2020/11/23/C++%20Primer%20Chapter%203%20%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130144349734.png" alt="image-20201130144349734" style="zoom:50%;"></p>
+<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130144349734.png" alt="image-20201130144349734" style="zoom:50%;"></p>
 <h4 id="与旧代码的接口"><a href="#与旧代码的接口" class="headerlink" title="与旧代码的接口"></a>与旧代码的接口</h4><p>允许使用字符串字面值初始化string对象，反过来则不行，需要使用c_str函数。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">&quot;hello world&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">char</span> *str = s; <span class="comment">// error</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *str = s.c_str();</span><br></pre></td></tr></table></figure>
 <p>可以使用数组初始化vector对象</p>
@@ -3105,74 +3105,6 @@ L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert</script
       </tags>
   </entry>
   <entry>
-    <title>统计学习方法（三）k近邻法</title>
-    <url>/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/</url>
-    <content><![CDATA[<p>k近邻法，是一种基本分类与回归方法。输入为特征向量，输出为类别。</p>
-<a id="more"></a>
-<h2 id="3-1-k近邻算法"><a href="#3-1-k近邻算法" class="headerlink" title="3.1 k近邻算法"></a>3.1 k近邻算法</h2><p>给定一个训练集，对新的输入实例，在训练集中找到最邻近的k个实例，将输入实例分为多数类。</p>
-<ul>
-<li>输入：训练数据集T，实例特征向量x。</li>
-<li>输出：实例x所属的类y。</li>
-<li>根据给定的距离度量，在T中找出与x最邻近的k个点。</li>
-<li>在邻域中根据分类决策规则（如多数表决）决定x的类别y。</li>
-<li>k=1时，称为最近邻算法，将与x最邻近点的类作为x的类。</li>
-</ul>
-<h2 id="3-2-k近邻模型"><a href="#3-2-k近邻模型" class="headerlink" title="3.2 k近邻模型"></a>3.2 k近邻模型</h2><h3 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h3><script type="math/tex; mode=display">L_p$$距离定义为</script><p>L_p(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^p)^{\frac 1 p}</p>
-<script type="math/tex; mode=display">
-p=1时，称为曼哈顿距离</script><p>L_1(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|)</p>
-<script type="math/tex; mode=display">
-p=2时，即为欧式距离</script><p>L_2(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^2)^{\frac 1 2}</p>
-<script type="math/tex; mode=display">
-p=∞时，称为切比雪夫距离，为各个坐标距离的最大值</script><p>L_\infty(x_i, x_j) = \max_l |x_i^{(l)}-x_j^{(l)}|</p>
-<script type="math/tex; mode=display">
-下图给出了与原点距离为1的图形
-
-![](统计学习方法（三）k近邻法/1.png)
-
-### 分类决策规则
-
-k近邻法中的分类决策规则往往是多数表决，即由k个临近点的多数类决定输入类。
-
-如果分类的损失函数为0-1损失函数，分类函数为</script><p>f: \mathbf R^n \rightarrow \{c_1, c_2, …, c_K\}</p>
-<script type="math/tex; mode=display">
-那么误分类的概率为</script><p>P(Y\neq f(X)) = 1- P(Y=f(X)) \\<br>\Leftrightarrow \frac 1 k \sum _{x_i\in N_k(x)} I(y_i\neq c_j) = 1 - \frac 1 k \sum _{x_i\in N_k(x)} I(y_i= c_j)</p>
-<p>$$</p>
-<h2 id="3-3-k近邻法的实现：kd树"><a href="#3-3-k近邻法的实现：kd树" class="headerlink" title="3.3 k近邻法的实现：kd树"></a>3.3 k近邻法的实现：kd树</h2><h3 id="构造kd树"><a href="#构造kd树" class="headerlink" title="构造kd树"></a>构造kd树</h3><p>kd树是二叉树，表示对k维空间的一个划分。</p>
-<p>构造kd树相当于不断地用超平面切分k维空间，构成一系列的k维超矩形区域，kd树的每个节点对应于一个k维超矩形区域。</p>
-<p>构造算法如下</p>
-<ol>
-<li>开始：构造根节点，对应于包含T的k维空间的超矩形区域。<ul>
-<li>选择<script type="math/tex">x^{(1)}</script>为坐标轴，以T中所有实例的<script type="math/tex">x^{(1)}</script>坐标的中位数为切分点，将根节点对应的超矩形区域切分为两个子区域。</li>
-<li>由此生成深度为一的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(1)}</script>小于切分点的子区域。</li>
-</ul>
-</li>
-<li>重复：对深度为j的节点，选择<script type="math/tex">x^{(l)}</script>为切分的坐标轴，其中<script type="math/tex">l=j(mod k)+1</script>，以坐标的中位数为切分点。<ul>
-<li>由此生成深度为j+1的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(l)}</script>小于切分点的子区域。</li>
-</ul>
-</li>
-<li>直到两个子区域没有实例存在时停止，形成kd树的区域划分。</li>
-</ol>
-<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png" alt></p>
-<h3 id="搜索kd树"><a href="#搜索kd树" class="headerlink" title="搜索kd树"></a>搜索kd树</h3><p>给定一个目标点，搜索其最近邻，首先找到包含目标点的叶节点。从叶节点出发，依次回退到父节点，不断查找与目标点最邻近的节点。</p>
-<p>给定如图所示的kd树，根节点为A，子节点为B、C等，输入实例点为S，求S的最近邻。</p>
-<ul>
-<li>首先找到包含S的叶结点D，以D作为近似最近邻。</li>
-<li>返回D的父节点B，在B的另一子节点F的区域内搜索。</li>
-<li>继续返回上一级父节点A，在A的另一子节点C的区域内搜索。</li>
-<li>点E比点D更近，成为最近邻。</li>
-</ul>
-<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png" alt></p>
-<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">clf_sk = KNeighborsClassifier()</span><br><span class="line">clf_sk.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf_sk.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>统计学习方法</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-        <tag>KNN</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>统计学习方法（七）支持向量机</title>
     <url>/2020/08/19/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%83%EF%BC%89%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/</url>
     <content><![CDATA[<p>SVM是一种二分类模型，其基本模型是定义在特征空间上的间隔最大的线性分类器，间隔最大使其区别于感知机。</p>
@@ -3372,6 +3304,74 @@ s.t. \quad& \sum_{i=1}^N\alpha_iy_i=0\\
         <tag>机器学习</tag>
         <tag>SVM</tag>
         <tag>Kernel trick</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>统计学习方法（三）k近邻法</title>
+    <url>/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/</url>
+    <content><![CDATA[<p>k近邻法，是一种基本分类与回归方法。输入为特征向量，输出为类别。</p>
+<a id="more"></a>
+<h2 id="3-1-k近邻算法"><a href="#3-1-k近邻算法" class="headerlink" title="3.1 k近邻算法"></a>3.1 k近邻算法</h2><p>给定一个训练集，对新的输入实例，在训练集中找到最邻近的k个实例，将输入实例分为多数类。</p>
+<ul>
+<li>输入：训练数据集T，实例特征向量x。</li>
+<li>输出：实例x所属的类y。</li>
+<li>根据给定的距离度量，在T中找出与x最邻近的k个点。</li>
+<li>在邻域中根据分类决策规则（如多数表决）决定x的类别y。</li>
+<li>k=1时，称为最近邻算法，将与x最邻近点的类作为x的类。</li>
+</ul>
+<h2 id="3-2-k近邻模型"><a href="#3-2-k近邻模型" class="headerlink" title="3.2 k近邻模型"></a>3.2 k近邻模型</h2><h3 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h3><script type="math/tex; mode=display">L_p$$距离定义为</script><p>L_p(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^p)^{\frac 1 p}</p>
+<script type="math/tex; mode=display">
+p=1时，称为曼哈顿距离</script><p>L_1(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|)</p>
+<script type="math/tex; mode=display">
+p=2时，即为欧式距离</script><p>L_2(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^2)^{\frac 1 2}</p>
+<script type="math/tex; mode=display">
+p=∞时，称为切比雪夫距离，为各个坐标距离的最大值</script><p>L_\infty(x_i, x_j) = \max_l |x_i^{(l)}-x_j^{(l)}|</p>
+<script type="math/tex; mode=display">
+下图给出了与原点距离为1的图形
+
+![](统计学习方法（三）k近邻法/1.png)
+
+### 分类决策规则
+
+k近邻法中的分类决策规则往往是多数表决，即由k个临近点的多数类决定输入类。
+
+如果分类的损失函数为0-1损失函数，分类函数为</script><p>f: \mathbf R^n \rightarrow \{c_1, c_2, …, c_K\}</p>
+<script type="math/tex; mode=display">
+那么误分类的概率为</script><p>P(Y\neq f(X)) = 1- P(Y=f(X)) \\<br>\Leftrightarrow \frac 1 k \sum _{x_i\in N_k(x)} I(y_i\neq c_j) = 1 - \frac 1 k \sum _{x_i\in N_k(x)} I(y_i= c_j)</p>
+<p>$$</p>
+<h2 id="3-3-k近邻法的实现：kd树"><a href="#3-3-k近邻法的实现：kd树" class="headerlink" title="3.3 k近邻法的实现：kd树"></a>3.3 k近邻法的实现：kd树</h2><h3 id="构造kd树"><a href="#构造kd树" class="headerlink" title="构造kd树"></a>构造kd树</h3><p>kd树是二叉树，表示对k维空间的一个划分。</p>
+<p>构造kd树相当于不断地用超平面切分k维空间，构成一系列的k维超矩形区域，kd树的每个节点对应于一个k维超矩形区域。</p>
+<p>构造算法如下</p>
+<ol>
+<li>开始：构造根节点，对应于包含T的k维空间的超矩形区域。<ul>
+<li>选择<script type="math/tex">x^{(1)}</script>为坐标轴，以T中所有实例的<script type="math/tex">x^{(1)}</script>坐标的中位数为切分点，将根节点对应的超矩形区域切分为两个子区域。</li>
+<li>由此生成深度为一的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(1)}</script>小于切分点的子区域。</li>
+</ul>
+</li>
+<li>重复：对深度为j的节点，选择<script type="math/tex">x^{(l)}</script>为切分的坐标轴，其中<script type="math/tex">l=j(mod k)+1</script>，以坐标的中位数为切分点。<ul>
+<li>由此生成深度为j+1的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(l)}</script>小于切分点的子区域。</li>
+</ul>
+</li>
+<li>直到两个子区域没有实例存在时停止，形成kd树的区域划分。</li>
+</ol>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png" alt></p>
+<h3 id="搜索kd树"><a href="#搜索kd树" class="headerlink" title="搜索kd树"></a>搜索kd树</h3><p>给定一个目标点，搜索其最近邻，首先找到包含目标点的叶节点。从叶节点出发，依次回退到父节点，不断查找与目标点最邻近的节点。</p>
+<p>给定如图所示的kd树，根节点为A，子节点为B、C等，输入实例点为S，求S的最近邻。</p>
+<ul>
+<li>首先找到包含S的叶结点D，以D作为近似最近邻。</li>
+<li>返回D的父节点B，在B的另一子节点F的区域内搜索。</li>
+<li>继续返回上一级父节点A，在A的另一子节点C的区域内搜索。</li>
+<li>点E比点D更近，成为最近邻。</li>
+</ul>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png" alt></p>
+<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">clf_sk = KNeighborsClassifier()</span><br><span class="line">clf_sk.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf_sk.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>统计学习方法</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>KNN</tag>
       </tags>
   </entry>
   <entry>
