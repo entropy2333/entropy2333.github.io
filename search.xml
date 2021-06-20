@@ -634,6 +634,21 @@
       </tags>
   </entry>
   <entry>
+    <title>CSAPP Chap5: 优化程序性能</title>
+    <url>/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>CSAPP Chap6: 存储器层次结构</title>
+    <url>/2021/04/26/CSAPP-Chap6-%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>CSAPP Chap7: 链接</title>
+    <url>/2021/04/26/CSAPP-Chap7-%E9%93%BE%E6%8E%A5/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>CV入门（一）安装detectron2</title>
     <url>/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/</url>
     <content><![CDATA[<p>在windows 10系统上安装detectron2。</p>
@@ -696,6 +711,64 @@
       <tags>
         <tag>CV</tag>
         <tag>detectron2</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Do Transformers Really Perform Bad for Graph Representation?</title>
+    <url>/2021/06/20/Do-Transformers-Really-Perform-Bad-for-Graph-Representation/</url>
+    <content><![CDATA[<p>Graphormer：KDD Cup2021 OGB-LSC赛道的冠军方案</p>
+<p><img src="/2021/06/20/Do-Transformers-Really-Perform-Bad-for-Graph-Representation/image-20210620141421029.png" alt="image-20210620141421029" style="zoom: 67%;"></p>
+<a id="more"></a>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
+<li>KDD Cup2021: <a href="https://ogb.stanford.edu/kddcup2021">https://ogb.stanford.edu/kddcup2021</a></li>
+<li>Technical report: <a href="https://arxiv.org/pdf/2106.08279.pdf">https://arxiv.org/pdf/2106.08279.pdf</a></li>
+<li>Arxiv: <a href="https://arxiv.org/pdf/2106.05234v3.pdf">https://arxiv.org/pdf/2106.05234v3.pdf</a></li>
+<li>Code: <a href="https://github.com/microsoft/Graphormer/tree/ogb-lsc">https://github.com/microsoft/Graphormer/tree/ogb-lsc</a></li>
+</ul>
+<p>来自大连理工和MSRA的一篇文章，值得一提的是Guolin Ke(<a href="https://github.com/guolinke">https://github.com/guolinke</a>)是TUPE的一作，也是尝试修改Transformer的工作。</p>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>Transformer在NLP和CV都取得了成功，但在图表示学习任务上的表现还不尽如人意，不能匹敌GNN等图神经网络。本文提出了Graphormer，在原生Transformer的基础上改进，在许多图预测任务上取得了SOTA结果，包括OGB-LSC等。</p>
+<p>原生Transformer适合序列建模，为了在图数据中发挥作用，需要在模型中融入图结构信息。本文的贡献如下：</p>
+<ul>
+<li>提出了<strong>Centrality Encoding</strong>，以捕获图中节点的重要性。</li>
+<li>提出了新颖的<strong>Spatial Encoding</strong>，捕获节点之间的结构关系。</li>
+<li>在数学上证明了Graphormer有强大的表示能力，且GNN等变体可以看作Graphormer的特例。</li>
+</ul>
+<h2 id="Preliminary"><a href="#Preliminary" class="headerlink" title="Preliminary"></a>Preliminary</h2><h3 id="GNN"><a href="#GNN" class="headerlink" title="GNN"></a>GNN</h3><p>对于图<script type="math/tex">G=(V,E)</script>来说，GNN旨在学习节点<script type="math/tex">v_i</script>的表示向量<script type="math/tex">x_i</script>，采用聚合一阶或高阶邻居的表示迭代更新参数。</p>
+<p>假设<script type="math/tex">h_i^{(l)}</script>为节点<script type="math/tex">v_i</script>在第<script type="math/tex">l</script>层的隐层表示，GNN的迭代过程主要有两步AGGREGATE和COMBINE：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+a_i^{(l)} &= \mathrm{AGGREGATE}^{(l)}(\{h_j^{(l-1)}:j\in\cal{N}(v_i)\}) \\
+h_i^{(l)} &= \mathrm{COMBINE}^{(l)}(\{h_j^{(l-1)}, a_i^{(l)})
+\end{align}</script><p>AGGREGATE聚合了邻居的信息，常用方法有MEAN、MAX、SUM等；COMBINE将聚合的信息融入节点表示。</p>
+<p>此外，对于图表示任务，还需要设计READOUT函数，以用最后一层的节点特征<script type="math/tex">h_i^{(L)}</script>表示全图特征<script type="math/tex">h_G</script>。</p>
+<script type="math/tex; mode=display">
+h_G = \mathrm{READOUT}(\{h_i^{(L)}|v_i\in G\})</script><h3 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h3><p>老生常谈，主要分为前馈网络和自注意力两个部分，自注意力采用缩放点积和多头注意力。</p>
+<h2 id="Graphormer"><a href="#Graphormer" class="headerlink" title="Graphormer"></a>Graphormer</h2><h3 id="Centrality-Encoding"><a href="#Centrality-Encoding" class="headerlink" title="Centrality Encoding"></a>Centrality Encoding</h3><p>centrality意为中心地位，文章认为GNN中的聚合方式没有考虑节点在图中的重要性，比如名人在社交网络中具有更重要的影响因子。</p>
+<p>在Graphormer中，根据入度和出度为每个节点赋予两个嵌入向量，在原来的节点特征上相加。</p>
+<script type="math/tex; mode=display">
+h_i^{(0)} = x_i + z_{\mathrm{deg}^-}^- + z_{\mathrm{deg}^+}^+</script><h3 id="Spatial-Encoding"><a href="#Spatial-Encoding" class="headerlink" title="Spatial Encoding"></a>Spatial Encoding</h3><p>Transformer可以捕获全局信息，但副作用是需要显示指定位置编码，比如序列数据中的绝对位置或相对位置编码。在图中，节点没有这种时序关系，为此设计了空间编码以捕获图结构信息。</p>
+<p>具体来说，映射<script type="math/tex">\phi(v_i,v_j):V\times V\rightarrow \mathbb{R}</script>可以描述节点间的关系。如果节点相连，采用最短路径SPD，否则为给定值如-1。本文采用可学习的标量，并作为自注意力模块中的偏置项。</p>
+<script type="math/tex; mode=display">
+A_{ij} = \frac{(h_iW_Q)(h_jW_K)^T}{\sqrt{d}}+b_{\phi(v_i,v_j)}</script><p>其中，<script type="math/tex">A_{ij}</script>为注意力的权重矩阵。</p>
+<h3 id="Edge-Encoding-in-the-Attention"><a href="#Edge-Encoding-in-the-Attention" class="headerlink" title="Edge Encoding in the Attention"></a>Edge Encoding in the Attention</h3><p>除此之外，本文还考虑了边的结构信息。一种方式是直接将边特征与节点特征相加，另一种方式则是在聚合的时候考虑边的特征。但这些方法只向相关节点传播信息，不能有效利用全局信息。</p>
+<p>对于有序节点对<script type="math/tex">(v_i, v_j)</script>，寻找最短路径<script type="math/tex">SP_{ij}=(e_1,e_2,\dots,e_N)</script>，对于均值计算点积作为编码：</p>
+<script type="math/tex; mode=display">
+c_{ij} = \frac1N\sum_{n=1}^{N}x_{e_n}(w_n^E)^T</script><p>将编码结合在自注意力中</p>
+<script type="math/tex; mode=display">
+A_{ij} = \frac{(h_iW_Q)(h_jW_K)^T}{\sqrt{d}}+b_{\phi(v_i,v_j)} + c_{ij}</script><h2 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h2><h2 id="Special-Node"><a href="#Special-Node" class="headerlink" title="Special Node"></a>Special Node</h2><p>BERT中设计了[CLS]用于代表序列的全局信息，本文也设计了类似的节点[VNode]，将最后一层的节点特征作为全局表示<script type="math/tex">h_G</script>。不同于[CLS]放在句首，[VNode]与所有节点相连，但要区分空间编码<script type="math/tex">b_{\phi([VNode],v_i)}</script>和<script type="math/tex">b_{\phi(v_i, [VNode])}</script>。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>首先在OGB-LSC上，进行了实验结果的比较，数据集为量子化学回归PCQM4M-LSC，总共包含3.8M的图。</p>
+<p>参数方面，提供了两个版本，分别采用12层768维和6层512维。</p>
+<p><img src="/2021/06/20/Do-Transformers-Really-Perform-Bad-for-Graph-Representation/image-20210620150651428.png" alt="image-20210620150651428" style="zoom: 67%;"></p>
+<p>本文还在MoIPCBA、MoIHIV和ZINC上做了实验，都取得了较好的结果，数据集详情如下。</p>
+<p><img src="/2021/06/20/Do-Transformers-Really-Perform-Bad-for-Graph-Representation/image-20210620151433362.png" alt="image-20210620151433362" style="zoom:67%;"></p>
+<p>本文也做了消融实验，验证各个模块的有效性。</p>
+<p><img src="/2021/06/20/Do-Transformers-Really-Perform-Bad-for-Graph-Representation/image-20210620151217795.png" alt="image-20210620151217795" style="zoom: 67%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
       </tags>
   </entry>
   <entry>
@@ -1761,6 +1834,164 @@ bel(B, fresh(N_b))</script><h3 id="Kerberos协议中Ticket-v和认证头的结�
       </tags>
   </entry>
   <entry>
+    <title>Internet安全协议与分析（零）安全协议基础</title>
+    <url>/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<p>介绍密码学的基础知识，包括公钥体制、数字签名、密钥分配等。</p>
+<a id="more"></a>
+<h2 id="信息安全"><a href="#信息安全" class="headerlink" title="信息安全"></a>信息安全</h2><h3 id="信息安全的范围"><a href="#信息安全的范围" class="headerlink" title="信息安全的范围"></a>信息安全的范围</h3><ul>
+<li>物理安全</li>
+<li>计算机安全</li>
+<li>网络安全</li>
+</ul>
+<h3 id="信息安全的目标"><a href="#信息安全的目标" class="headerlink" title="信息安全的目标"></a>信息安全的目标</h3><ul>
+<li>保密性</li>
+<li>完整性</li>
+<li>可用性</li>
+</ul>
+<h3 id="计算机网络面临的安全性威胁"><a href="#计算机网络面临的安全性威胁" class="headerlink" title="计算机网络面临的安全性威胁"></a>计算机网络面临的安全性威胁</h3><p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027143622649.png" alt="image-20201027143622649"></p>
+<h2 id="密码学回顾"><a href="#密码学回顾" class="headerlink" title="密码学回顾"></a>密码学回顾</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>明文、密文、加密（算法）、解密（算法）</p>
+<p>加密系统可以用五元组描述（P, C, K, E, D）</p>
+<ul>
+<li>P表示明文空间</li>
+<li>C表示密文空间</li>
+<li>K表示密钥空间</li>
+<li>E表示加密算法</li>
+<li>D表示解密算法</li>
+</ul>
+<p>数据加密系统可以用下图表示</p>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027143901553.png" alt="image-20201027143901553"></p>
+<h3 id="密码体制"><a href="#密码体制" class="headerlink" title="密码体制"></a>密码体制</h3><h4 id="对称密钥"><a href="#对称密钥" class="headerlink" title="对称密钥"></a>对称密钥</h4><ul>
+<li>加密密钥和解密密钥相同</li>
+<li>DES是一种分组密码<ul>
+<li>加密前对明文分组，组长64位。</li>
+<li>密钥为64位（8位用于奇偶校验）</li>
+</ul>
+</li>
+</ul>
+<h4 id="公钥体制"><a href="#公钥体制" class="headerlink" title="公钥体制"></a>公钥体制</h4><ul>
+<li><p>使用不同的加密密钥和解密密钥</p>
+</li>
+<li><p>可以解决密钥分配问题，也用于数字签名。</p>
+</li>
+<li><p>公钥不能用于解密</p>
+<script type="math/tex; mode=display">
+D_{PK_B}(E_{PK_B}(X))\neq X</script></li>
+<li><p>加密和解密可以对调</p>
+<script type="math/tex; mode=display">
+D_{PK_B}(E_{SK_B}(X)) = D_{SK_B}(E_{PK_B}(X)) = X</script></li>
+</ul>
+<h3 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h3><ul>
+<li>签名者事后不能否认自己的签名。</li>
+<li>接收者可以验证签名，但其他人不能伪造签名。</li>
+<li>双方关于签名真伪发生争执时，第三方可以解决争执。</li>
+</ul>
+<h4 id="鉴别"><a href="#鉴别" class="headerlink" title="鉴别"></a>鉴别</h4><ul>
+<li>发送方用自己的私钥加密摘要，附到明文之后。</li>
+<li>提供完整性鉴别，但不提供保密性。</li>
+<li>为了满足保密性，需要结合加密。</li>
+</ul>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027144539975.png" alt="image-20201027144539975"></p>
+<h4 id="数字信封"><a href="#数字信封" class="headerlink" title="数字信封"></a>数字信封</h4><ul>
+<li>发送方用对称密钥加密明文，并用接收方的公钥加密对称密钥，附到密文之后。</li>
+</ul>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027144803675.png" alt="image-20201027144803675"></p>
+<h4 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h4><ul>
+<li>用户提交公钥等信息P，CA机构用私钥签名摘要产生S，P和S一起被称为数字证书。</li>
+<li>用户可以用CA的公钥解密获取证书里的公钥，结合数字签名，验证证书的完整性。</li>
+<li>下图的解释<ul>
+<li>发送方首先产生摘要，用自己的私钥加密形成数字签名，附到消息之后。</li>
+<li>因为有数字签名，所以接收方需要获得发送方的公钥，发送方需要发送自己的数字证书。</li>
+<li>因为需要传递对称密钥，所以需要数字信封，用接收方的公钥加密对称密钥。</li>
+<li>接收方收到消息后，首先用私钥解密获得对称密钥，随后解密获得明文。用CA公钥验证证书的完整性，由此获得发送方的公钥，用其解密数字签名，确保消息没有被篡改。</li>
+<li>满足了保密性和完整性。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027145220754.png" alt="image-20201027145220754"></p>
+<h2 id="基于Hash的鉴别"><a href="#基于Hash的鉴别" class="headerlink" title="基于Hash的鉴别"></a>基于Hash的鉴别</h2><h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><ul>
+<li>直接Hash</li>
+</ul>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027151324589.png" alt="image-20201027151324589"></p>
+<ul>
+<li>与加密结合</li>
+</ul>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027151338394.png" alt="image-20201027151338394"></p>
+<ul>
+<li>结合公钥体制（数字签名）</li>
+</ul>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027151349653.png" alt="image-20201027151349653"></p>
+<ul>
+<li>结合对称密钥体制</li>
+</ul>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027151400579.png" alt="image-20201027151400579"></p>
+<ul>
+<li>加盐</li>
+</ul>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027151416972.png" alt="image-20201027151416972"></p>
+<ul>
+<li>大杂烩</li>
+</ul>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027151432750.png" alt="image-20201027151432750"></p>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><ul>
+<li>根据安全水平<ul>
+<li>弱无碰撞</li>
+<li>强无碰撞</li>
+</ul>
+</li>
+<li>根据是否使用密钥<ul>
+<li>带私密密钥，此时称作MAC。</li>
+<li>不带私密密钥，此时称为MDC。</li>
+</ul>
+</li>
+</ul>
+<h2 id="密钥管理与分配"><a href="#密钥管理与分配" class="headerlink" title="密钥管理与分配"></a>密钥管理与分配</h2><h3 id="密钥生命周期"><a href="#密钥生命周期" class="headerlink" title="密钥生命周期"></a>密钥生命周期</h3><ul>
+<li>产生、存储、使用、更新、删除</li>
+</ul>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027152018368.png" alt="image-20201027152018368"></p>
+<h3 id="对称密钥的分配"><a href="#对称密钥的分配" class="headerlink" title="对称密钥的分配"></a>对称密钥的分配</h3><ul>
+<li>设立密钥分配中心KDC。</li>
+<li>KDC给需要进行秘密通信的用户临时分配一个会话密钥。</li>
+<li>KDC的登记用户在KDC的服务器上安装了自己与KDC进行通信的主密钥，可简称为密钥。</li>
+</ul>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027152326907.png" alt="image-20201027152326907"></p>
+<h4 id="基于公钥体制的对称密钥分配"><a href="#基于公钥体制的对称密钥分配" class="headerlink" title="基于公钥体制的对称密钥分配"></a>基于公钥体制的对称密钥分配</h4><ul>
+<li>公钥密码体制未必在通讯中直接使用，但却很适合用于对称密钥分配。</li>
+</ul>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027152457757.png" alt="image-20201027152457757"></p>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027152509596.png" alt="image-20201027152509596"></p>
+<h3 id="公钥体制的密钥分配"><a href="#公钥体制的密钥分配" class="headerlink" title="公钥体制的密钥分配"></a>公钥体制的密钥分配</h3><h4 id="公开发布"><a href="#公开发布" class="headerlink" title="公开发布"></a>公开发布</h4><p>用户将自己的公钥发给其他用户，一般将公钥附在消息上（PGP）。</p>
+<ul>
+<li>实现简单</li>
+<li>容易假冒</li>
+</ul>
+<h4 id="公用目录表"><a href="#公用目录表" class="headerlink" title="公用目录表"></a>公用目录表</h4><p>建立一个公用的公钥动态目录表，由可信的实体建立、维护和发布。</p>
+<ul>
+<li>有一定的安全性</li>
+<li>目录表容易受到攻击</li>
+</ul>
+<h4 id="公钥授权"><a href="#公钥授权" class="headerlink" title="公钥授权"></a>公钥授权</h4><p>在公钥目录表的基础上，由公钥管理机构为用户建立、维护和发布公钥目录表。</p>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027155129036.png" alt="image-20201027155129036"></p>
+<h4 id="公钥证书"><a href="#公钥证书" class="headerlink" title="公钥证书"></a>公钥证书</h4><p>用户通过公钥证书相互交换公钥，公钥证书由CA为用户建立。</p>
+<p>公钥证书的数据项包括</p>
+<ul>
+<li>用户的公钥、用户身份标识和时间戳等。</li>
+<li>所有数据项经CA的私钥签名后形成证书。</li>
+</ul>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027155335650.png" alt="image-20201027155335650"></p>
+<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027155414152.png" alt="image-20201027155414152"></p>
+]]></content>
+      <categories>
+        <category>Internet安全协议与分析</category>
+      </categories>
+      <tags>
+        <tag>数字签名</tag>
+        <tag>数字证书</tag>
+        <tag>公钥体制</tag>
+        <tag>Hash鉴别</tag>
+        <tag>密钥分配</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>K-BERT: Enabling Language Representation with Knowledge Graph</title>
     <url>/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/</url>
     <content><![CDATA[<p>介绍K-BERT模型（AAAI 2020）</p>
@@ -2473,53 +2704,6 @@ C_{-1} = IV</script><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%8
       </tags>
   </entry>
   <entry>
-    <title>现代密码学（八）信息隐藏与隐写分析</title>
-    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<p>介绍信息隐藏与隐写分析。</p>
-<a id="more"></a>
-<h2 id="信息隐藏"><a href="#信息隐藏" class="headerlink" title="信息隐藏"></a>信息隐藏</h2><p>信息隐藏可以分为</p>
-<ul>
-<li>空域，如LSB。</li>
-<li>变换域，如DCT。</li>
-</ul>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228213531671.png" alt="image-20201228213531671" style="zoom:67%;"></p>
-<h2 id="数字水印的嵌入"><a href="#数字水印的嵌入" class="headerlink" title="数字水印的嵌入"></a>数字水印的嵌入</h2><ul>
-<li>加法嵌入</li>
-<li>乘法嵌入</li>
-</ul>
-<p>图像质量可以用峰值信噪比PSNR评价</p>
-<h2 id="信息隐藏算法"><a href="#信息隐藏算法" class="headerlink" title="信息隐藏算法"></a>信息隐藏算法</h2><p>空域算法，通过直接修改像素值实现隐藏信息嵌入。</p>
-<ul>
-<li>简单、快速、容量大。</li>
-<li>鲁棒性差。</li>
-</ul>
-<p>灰度256的图像有8个位平面。</p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214154609.png" alt="image-20201228214154609" style="zoom:67%;"></p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214300127.png" alt="image-20201228214300127" style="zoom:67%;"></p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214310415.png" alt="image-20201228214310415" style="zoom:67%;"></p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214318464.png" alt="image-20201228214318464" style="zoom:67%;"></p>
-<h2 id="频域水印算法"><a href="#频域水印算法" class="headerlink" title="频域水印算法"></a>频域水印算法</h2><p>在频域，通过修改频域空间的系数实现水印嵌入。</p>
-<ul>
-<li>鲁棒性好</li>
-<li>复杂度高</li>
-</ul>
-<p>JPEG只改中频系数，不会被消除掉。</p>
-<ul>
-<li>修改低频部分，容易看出变化，隐蔽性差。</li>
-<li>修改高频部分，容易被图像压缩算法破坏，鲁棒性差。</li>
-</ul>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214606301.png" alt="image-20201228214606301" style="zoom:67%;"></p>
-<h2 id="隐写分析"><a href="#隐写分析" class="headerlink" title="隐写分析"></a>隐写分析</h2><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228215318459.png" alt="image-20201228215318459" style="zoom:67%;"></p>
-]]></content>
-      <categories>
-        <category>现代密码学</category>
-      </categories>
-      <tags>
-        <tag>信息隐藏</tag>
-        <tag>隐写分析</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>现代密码学（五）公钥密码</title>
     <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%94%EF%BC%89%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/</url>
     <content><![CDATA[<p>介绍公钥密码学。</p>
@@ -2614,6 +2798,53 @@ M &= C_2\cdot K^{-1}\bmod p
         <tag>RSA</tag>
         <tag>Rabin</tag>
         <tag>El Gamal</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>现代密码学（八）信息隐藏与隐写分析</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<p>介绍信息隐藏与隐写分析。</p>
+<a id="more"></a>
+<h2 id="信息隐藏"><a href="#信息隐藏" class="headerlink" title="信息隐藏"></a>信息隐藏</h2><p>信息隐藏可以分为</p>
+<ul>
+<li>空域，如LSB。</li>
+<li>变换域，如DCT。</li>
+</ul>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228213531671.png" alt="image-20201228213531671" style="zoom:67%;"></p>
+<h2 id="数字水印的嵌入"><a href="#数字水印的嵌入" class="headerlink" title="数字水印的嵌入"></a>数字水印的嵌入</h2><ul>
+<li>加法嵌入</li>
+<li>乘法嵌入</li>
+</ul>
+<p>图像质量可以用峰值信噪比PSNR评价</p>
+<h2 id="信息隐藏算法"><a href="#信息隐藏算法" class="headerlink" title="信息隐藏算法"></a>信息隐藏算法</h2><p>空域算法，通过直接修改像素值实现隐藏信息嵌入。</p>
+<ul>
+<li>简单、快速、容量大。</li>
+<li>鲁棒性差。</li>
+</ul>
+<p>灰度256的图像有8个位平面。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214154609.png" alt="image-20201228214154609" style="zoom:67%;"></p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214300127.png" alt="image-20201228214300127" style="zoom:67%;"></p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214310415.png" alt="image-20201228214310415" style="zoom:67%;"></p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214318464.png" alt="image-20201228214318464" style="zoom:67%;"></p>
+<h2 id="频域水印算法"><a href="#频域水印算法" class="headerlink" title="频域水印算法"></a>频域水印算法</h2><p>在频域，通过修改频域空间的系数实现水印嵌入。</p>
+<ul>
+<li>鲁棒性好</li>
+<li>复杂度高</li>
+</ul>
+<p>JPEG只改中频系数，不会被消除掉。</p>
+<ul>
+<li>修改低频部分，容易看出变化，隐蔽性差。</li>
+<li>修改高频部分，容易被图像压缩算法破坏，鲁棒性差。</li>
+</ul>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214606301.png" alt="image-20201228214606301" style="zoom:67%;"></p>
+<h2 id="隐写分析"><a href="#隐写分析" class="headerlink" title="隐写分析"></a>隐写分析</h2><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228215318459.png" alt="image-20201228215318459" style="zoom:67%;"></p>
+]]></content>
+      <categories>
+        <category>现代密码学</category>
+      </categories>
+      <tags>
+        <tag>信息隐藏</tag>
+        <tag>隐写分析</tag>
       </tags>
   </entry>
   <entry>
@@ -2874,6 +3105,74 @@ L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert</script
       </tags>
   </entry>
   <entry>
+    <title>统计学习方法（三）k近邻法</title>
+    <url>/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/</url>
+    <content><![CDATA[<p>k近邻法，是一种基本分类与回归方法。输入为特征向量，输出为类别。</p>
+<a id="more"></a>
+<h2 id="3-1-k近邻算法"><a href="#3-1-k近邻算法" class="headerlink" title="3.1 k近邻算法"></a>3.1 k近邻算法</h2><p>给定一个训练集，对新的输入实例，在训练集中找到最邻近的k个实例，将输入实例分为多数类。</p>
+<ul>
+<li>输入：训练数据集T，实例特征向量x。</li>
+<li>输出：实例x所属的类y。</li>
+<li>根据给定的距离度量，在T中找出与x最邻近的k个点。</li>
+<li>在邻域中根据分类决策规则（如多数表决）决定x的类别y。</li>
+<li>k=1时，称为最近邻算法，将与x最邻近点的类作为x的类。</li>
+</ul>
+<h2 id="3-2-k近邻模型"><a href="#3-2-k近邻模型" class="headerlink" title="3.2 k近邻模型"></a>3.2 k近邻模型</h2><h3 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h3><script type="math/tex; mode=display">L_p$$距离定义为</script><p>L_p(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^p)^{\frac 1 p}</p>
+<script type="math/tex; mode=display">
+p=1时，称为曼哈顿距离</script><p>L_1(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|)</p>
+<script type="math/tex; mode=display">
+p=2时，即为欧式距离</script><p>L_2(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^2)^{\frac 1 2}</p>
+<script type="math/tex; mode=display">
+p=∞时，称为切比雪夫距离，为各个坐标距离的最大值</script><p>L_\infty(x_i, x_j) = \max_l |x_i^{(l)}-x_j^{(l)}|</p>
+<script type="math/tex; mode=display">
+下图给出了与原点距离为1的图形
+
+![](统计学习方法（三）k近邻法/1.png)
+
+### 分类决策规则
+
+k近邻法中的分类决策规则往往是多数表决，即由k个临近点的多数类决定输入类。
+
+如果分类的损失函数为0-1损失函数，分类函数为</script><p>f: \mathbf R^n \rightarrow \{c_1, c_2, …, c_K\}</p>
+<script type="math/tex; mode=display">
+那么误分类的概率为</script><p>P(Y\neq f(X)) = 1- P(Y=f(X)) \\<br>\Leftrightarrow \frac 1 k \sum _{x_i\in N_k(x)} I(y_i\neq c_j) = 1 - \frac 1 k \sum _{x_i\in N_k(x)} I(y_i= c_j)</p>
+<p>$$</p>
+<h2 id="3-3-k近邻法的实现：kd树"><a href="#3-3-k近邻法的实现：kd树" class="headerlink" title="3.3 k近邻法的实现：kd树"></a>3.3 k近邻法的实现：kd树</h2><h3 id="构造kd树"><a href="#构造kd树" class="headerlink" title="构造kd树"></a>构造kd树</h3><p>kd树是二叉树，表示对k维空间的一个划分。</p>
+<p>构造kd树相当于不断地用超平面切分k维空间，构成一系列的k维超矩形区域，kd树的每个节点对应于一个k维超矩形区域。</p>
+<p>构造算法如下</p>
+<ol>
+<li>开始：构造根节点，对应于包含T的k维空间的超矩形区域。<ul>
+<li>选择<script type="math/tex">x^{(1)}</script>为坐标轴，以T中所有实例的<script type="math/tex">x^{(1)}</script>坐标的中位数为切分点，将根节点对应的超矩形区域切分为两个子区域。</li>
+<li>由此生成深度为一的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(1)}</script>小于切分点的子区域。</li>
+</ul>
+</li>
+<li>重复：对深度为j的节点，选择<script type="math/tex">x^{(l)}</script>为切分的坐标轴，其中<script type="math/tex">l=j(mod k)+1</script>，以坐标的中位数为切分点。<ul>
+<li>由此生成深度为j+1的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(l)}</script>小于切分点的子区域。</li>
+</ul>
+</li>
+<li>直到两个子区域没有实例存在时停止，形成kd树的区域划分。</li>
+</ol>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png" alt></p>
+<h3 id="搜索kd树"><a href="#搜索kd树" class="headerlink" title="搜索kd树"></a>搜索kd树</h3><p>给定一个目标点，搜索其最近邻，首先找到包含目标点的叶节点。从叶节点出发，依次回退到父节点，不断查找与目标点最邻近的节点。</p>
+<p>给定如图所示的kd树，根节点为A，子节点为B、C等，输入实例点为S，求S的最近邻。</p>
+<ul>
+<li>首先找到包含S的叶结点D，以D作为近似最近邻。</li>
+<li>返回D的父节点B，在B的另一子节点F的区域内搜索。</li>
+<li>继续返回上一级父节点A，在A的另一子节点C的区域内搜索。</li>
+<li>点E比点D更近，成为最近邻。</li>
+</ul>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png" alt></p>
+<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">clf_sk = KNeighborsClassifier()</span><br><span class="line">clf_sk.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf_sk.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>统计学习方法</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>KNN</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>统计学习方法（七）支持向量机</title>
     <url>/2020/08/19/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%83%EF%BC%89%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/</url>
     <content><![CDATA[<p>SVM是一种二分类模型，其基本模型是定义在特征空间上的间隔最大的线性分类器，间隔最大使其区别于感知机。</p>
@@ -3073,74 +3372,6 @@ s.t. \quad& \sum_{i=1}^N\alpha_iy_i=0\\
         <tag>机器学习</tag>
         <tag>SVM</tag>
         <tag>Kernel trick</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>统计学习方法（三）k近邻法</title>
-    <url>/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/</url>
-    <content><![CDATA[<p>k近邻法，是一种基本分类与回归方法。输入为特征向量，输出为类别。</p>
-<a id="more"></a>
-<h2 id="3-1-k近邻算法"><a href="#3-1-k近邻算法" class="headerlink" title="3.1 k近邻算法"></a>3.1 k近邻算法</h2><p>给定一个训练集，对新的输入实例，在训练集中找到最邻近的k个实例，将输入实例分为多数类。</p>
-<ul>
-<li>输入：训练数据集T，实例特征向量x。</li>
-<li>输出：实例x所属的类y。</li>
-<li>根据给定的距离度量，在T中找出与x最邻近的k个点。</li>
-<li>在邻域中根据分类决策规则（如多数表决）决定x的类别y。</li>
-<li>k=1时，称为最近邻算法，将与x最邻近点的类作为x的类。</li>
-</ul>
-<h2 id="3-2-k近邻模型"><a href="#3-2-k近邻模型" class="headerlink" title="3.2 k近邻模型"></a>3.2 k近邻模型</h2><h3 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h3><script type="math/tex; mode=display">L_p$$距离定义为</script><p>L_p(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^p)^{\frac 1 p}</p>
-<script type="math/tex; mode=display">
-p=1时，称为曼哈顿距离</script><p>L_1(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|)</p>
-<script type="math/tex; mode=display">
-p=2时，即为欧式距离</script><p>L_2(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^2)^{\frac 1 2}</p>
-<script type="math/tex; mode=display">
-p=∞时，称为切比雪夫距离，为各个坐标距离的最大值</script><p>L_\infty(x_i, x_j) = \max_l |x_i^{(l)}-x_j^{(l)}|</p>
-<script type="math/tex; mode=display">
-下图给出了与原点距离为1的图形
-
-![](统计学习方法（三）k近邻法/1.png)
-
-### 分类决策规则
-
-k近邻法中的分类决策规则往往是多数表决，即由k个临近点的多数类决定输入类。
-
-如果分类的损失函数为0-1损失函数，分类函数为</script><p>f: \mathbf R^n \rightarrow \{c_1, c_2, …, c_K\}</p>
-<script type="math/tex; mode=display">
-那么误分类的概率为</script><p>P(Y\neq f(X)) = 1- P(Y=f(X)) \\<br>\Leftrightarrow \frac 1 k \sum _{x_i\in N_k(x)} I(y_i\neq c_j) = 1 - \frac 1 k \sum _{x_i\in N_k(x)} I(y_i= c_j)</p>
-<p>$$</p>
-<h2 id="3-3-k近邻法的实现：kd树"><a href="#3-3-k近邻法的实现：kd树" class="headerlink" title="3.3 k近邻法的实现：kd树"></a>3.3 k近邻法的实现：kd树</h2><h3 id="构造kd树"><a href="#构造kd树" class="headerlink" title="构造kd树"></a>构造kd树</h3><p>kd树是二叉树，表示对k维空间的一个划分。</p>
-<p>构造kd树相当于不断地用超平面切分k维空间，构成一系列的k维超矩形区域，kd树的每个节点对应于一个k维超矩形区域。</p>
-<p>构造算法如下</p>
-<ol>
-<li>开始：构造根节点，对应于包含T的k维空间的超矩形区域。<ul>
-<li>选择<script type="math/tex">x^{(1)}</script>为坐标轴，以T中所有实例的<script type="math/tex">x^{(1)}</script>坐标的中位数为切分点，将根节点对应的超矩形区域切分为两个子区域。</li>
-<li>由此生成深度为一的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(1)}</script>小于切分点的子区域。</li>
-</ul>
-</li>
-<li>重复：对深度为j的节点，选择<script type="math/tex">x^{(l)}</script>为切分的坐标轴，其中<script type="math/tex">l=j(mod k)+1</script>，以坐标的中位数为切分点。<ul>
-<li>由此生成深度为j+1的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(l)}</script>小于切分点的子区域。</li>
-</ul>
-</li>
-<li>直到两个子区域没有实例存在时停止，形成kd树的区域划分。</li>
-</ol>
-<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png" alt></p>
-<h3 id="搜索kd树"><a href="#搜索kd树" class="headerlink" title="搜索kd树"></a>搜索kd树</h3><p>给定一个目标点，搜索其最近邻，首先找到包含目标点的叶节点。从叶节点出发，依次回退到父节点，不断查找与目标点最邻近的节点。</p>
-<p>给定如图所示的kd树，根节点为A，子节点为B、C等，输入实例点为S，求S的最近邻。</p>
-<ul>
-<li>首先找到包含S的叶结点D，以D作为近似最近邻。</li>
-<li>返回D的父节点B，在B的另一子节点F的区域内搜索。</li>
-<li>继续返回上一级父节点A，在A的另一子节点C的区域内搜索。</li>
-<li>点E比点D更近，成为最近邻。</li>
-</ul>
-<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png" alt></p>
-<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">clf_sk = KNeighborsClassifier()</span><br><span class="line">clf_sk.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf_sk.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>统计学习方法</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-        <tag>KNN</tag>
       </tags>
   </entry>
   <entry>
@@ -3766,178 +3997,5 @@ P_\lambda(Y=c_k) = \frac {\sum_{i=1}^NI(y_i=c_k)+\lambda}{N+K\lambda}, \quad \la
         <tag>机器学习</tag>
         <tag>贝叶斯</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Internet安全协议与分析（零）安全协议基础</title>
-    <url>/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<p>介绍密码学的基础知识，包括公钥体制、数字签名、密钥分配等。</p>
-<a id="more"></a>
-<h2 id="信息安全"><a href="#信息安全" class="headerlink" title="信息安全"></a>信息安全</h2><h3 id="信息安全的范围"><a href="#信息安全的范围" class="headerlink" title="信息安全的范围"></a>信息安全的范围</h3><ul>
-<li>物理安全</li>
-<li>计算机安全</li>
-<li>网络安全</li>
-</ul>
-<h3 id="信息安全的目标"><a href="#信息安全的目标" class="headerlink" title="信息安全的目标"></a>信息安全的目标</h3><ul>
-<li>保密性</li>
-<li>完整性</li>
-<li>可用性</li>
-</ul>
-<h3 id="计算机网络面临的安全性威胁"><a href="#计算机网络面临的安全性威胁" class="headerlink" title="计算机网络面临的安全性威胁"></a>计算机网络面临的安全性威胁</h3><p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027143622649.png" alt="image-20201027143622649"></p>
-<h2 id="密码学回顾"><a href="#密码学回顾" class="headerlink" title="密码学回顾"></a>密码学回顾</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>明文、密文、加密（算法）、解密（算法）</p>
-<p>加密系统可以用五元组描述（P, C, K, E, D）</p>
-<ul>
-<li>P表示明文空间</li>
-<li>C表示密文空间</li>
-<li>K表示密钥空间</li>
-<li>E表示加密算法</li>
-<li>D表示解密算法</li>
-</ul>
-<p>数据加密系统可以用下图表示</p>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027143901553.png" alt="image-20201027143901553"></p>
-<h3 id="密码体制"><a href="#密码体制" class="headerlink" title="密码体制"></a>密码体制</h3><h4 id="对称密钥"><a href="#对称密钥" class="headerlink" title="对称密钥"></a>对称密钥</h4><ul>
-<li>加密密钥和解密密钥相同</li>
-<li>DES是一种分组密码<ul>
-<li>加密前对明文分组，组长64位。</li>
-<li>密钥为64位（8位用于奇偶校验）</li>
-</ul>
-</li>
-</ul>
-<h4 id="公钥体制"><a href="#公钥体制" class="headerlink" title="公钥体制"></a>公钥体制</h4><ul>
-<li><p>使用不同的加密密钥和解密密钥</p>
-</li>
-<li><p>可以解决密钥分配问题，也用于数字签名。</p>
-</li>
-<li><p>公钥不能用于解密</p>
-<script type="math/tex; mode=display">
-D_{PK_B}(E_{PK_B}(X))\neq X</script></li>
-<li><p>加密和解密可以对调</p>
-<script type="math/tex; mode=display">
-D_{PK_B}(E_{SK_B}(X)) = D_{SK_B}(E_{PK_B}(X)) = X</script></li>
-</ul>
-<h3 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h3><ul>
-<li>签名者事后不能否认自己的签名。</li>
-<li>接收者可以验证签名，但其他人不能伪造签名。</li>
-<li>双方关于签名真伪发生争执时，第三方可以解决争执。</li>
-</ul>
-<h4 id="鉴别"><a href="#鉴别" class="headerlink" title="鉴别"></a>鉴别</h4><ul>
-<li>发送方用自己的私钥加密摘要，附到明文之后。</li>
-<li>提供完整性鉴别，但不提供保密性。</li>
-<li>为了满足保密性，需要结合加密。</li>
-</ul>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027144539975.png" alt="image-20201027144539975"></p>
-<h4 id="数字信封"><a href="#数字信封" class="headerlink" title="数字信封"></a>数字信封</h4><ul>
-<li>发送方用对称密钥加密明文，并用接收方的公钥加密对称密钥，附到密文之后。</li>
-</ul>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027144803675.png" alt="image-20201027144803675"></p>
-<h4 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h4><ul>
-<li>用户提交公钥等信息P，CA机构用私钥签名摘要产生S，P和S一起被称为数字证书。</li>
-<li>用户可以用CA的公钥解密获取证书里的公钥，结合数字签名，验证证书的完整性。</li>
-<li>下图的解释<ul>
-<li>发送方首先产生摘要，用自己的私钥加密形成数字签名，附到消息之后。</li>
-<li>因为有数字签名，所以接收方需要获得发送方的公钥，发送方需要发送自己的数字证书。</li>
-<li>因为需要传递对称密钥，所以需要数字信封，用接收方的公钥加密对称密钥。</li>
-<li>接收方收到消息后，首先用私钥解密获得对称密钥，随后解密获得明文。用CA公钥验证证书的完整性，由此获得发送方的公钥，用其解密数字签名，确保消息没有被篡改。</li>
-<li>满足了保密性和完整性。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027145220754.png" alt="image-20201027145220754"></p>
-<h2 id="基于Hash的鉴别"><a href="#基于Hash的鉴别" class="headerlink" title="基于Hash的鉴别"></a>基于Hash的鉴别</h2><h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><ul>
-<li>直接Hash</li>
-</ul>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027151324589.png" alt="image-20201027151324589"></p>
-<ul>
-<li>与加密结合</li>
-</ul>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027151338394.png" alt="image-20201027151338394"></p>
-<ul>
-<li>结合公钥体制（数字签名）</li>
-</ul>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027151349653.png" alt="image-20201027151349653"></p>
-<ul>
-<li>结合对称密钥体制</li>
-</ul>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027151400579.png" alt="image-20201027151400579"></p>
-<ul>
-<li>加盐</li>
-</ul>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027151416972.png" alt="image-20201027151416972"></p>
-<ul>
-<li>大杂烩</li>
-</ul>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027151432750.png" alt="image-20201027151432750"></p>
-<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><ul>
-<li>根据安全水平<ul>
-<li>弱无碰撞</li>
-<li>强无碰撞</li>
-</ul>
-</li>
-<li>根据是否使用密钥<ul>
-<li>带私密密钥，此时称作MAC。</li>
-<li>不带私密密钥，此时称为MDC。</li>
-</ul>
-</li>
-</ul>
-<h2 id="密钥管理与分配"><a href="#密钥管理与分配" class="headerlink" title="密钥管理与分配"></a>密钥管理与分配</h2><h3 id="密钥生命周期"><a href="#密钥生命周期" class="headerlink" title="密钥生命周期"></a>密钥生命周期</h3><ul>
-<li>产生、存储、使用、更新、删除</li>
-</ul>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027152018368.png" alt="image-20201027152018368"></p>
-<h3 id="对称密钥的分配"><a href="#对称密钥的分配" class="headerlink" title="对称密钥的分配"></a>对称密钥的分配</h3><ul>
-<li>设立密钥分配中心KDC。</li>
-<li>KDC给需要进行秘密通信的用户临时分配一个会话密钥。</li>
-<li>KDC的登记用户在KDC的服务器上安装了自己与KDC进行通信的主密钥，可简称为密钥。</li>
-</ul>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027152326907.png" alt="image-20201027152326907"></p>
-<h4 id="基于公钥体制的对称密钥分配"><a href="#基于公钥体制的对称密钥分配" class="headerlink" title="基于公钥体制的对称密钥分配"></a>基于公钥体制的对称密钥分配</h4><ul>
-<li>公钥密码体制未必在通讯中直接使用，但却很适合用于对称密钥分配。</li>
-</ul>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027152457757.png" alt="image-20201027152457757"></p>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027152509596.png" alt="image-20201027152509596"></p>
-<h3 id="公钥体制的密钥分配"><a href="#公钥体制的密钥分配" class="headerlink" title="公钥体制的密钥分配"></a>公钥体制的密钥分配</h3><h4 id="公开发布"><a href="#公开发布" class="headerlink" title="公开发布"></a>公开发布</h4><p>用户将自己的公钥发给其他用户，一般将公钥附在消息上（PGP）。</p>
-<ul>
-<li>实现简单</li>
-<li>容易假冒</li>
-</ul>
-<h4 id="公用目录表"><a href="#公用目录表" class="headerlink" title="公用目录表"></a>公用目录表</h4><p>建立一个公用的公钥动态目录表，由可信的实体建立、维护和发布。</p>
-<ul>
-<li>有一定的安全性</li>
-<li>目录表容易受到攻击</li>
-</ul>
-<h4 id="公钥授权"><a href="#公钥授权" class="headerlink" title="公钥授权"></a>公钥授权</h4><p>在公钥目录表的基础上，由公钥管理机构为用户建立、维护和发布公钥目录表。</p>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027155129036.png" alt="image-20201027155129036"></p>
-<h4 id="公钥证书"><a href="#公钥证书" class="headerlink" title="公钥证书"></a>公钥证书</h4><p>用户通过公钥证书相互交换公钥，公钥证书由CA为用户建立。</p>
-<p>公钥证书的数据项包括</p>
-<ul>
-<li>用户的公钥、用户身份标识和时间戳等。</li>
-<li>所有数据项经CA的私钥签名后形成证书。</li>
-</ul>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027155335650.png" alt="image-20201027155335650"></p>
-<p><img src="/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/image-20201027155414152.png" alt="image-20201027155414152"></p>
-]]></content>
-      <categories>
-        <category>Internet安全协议与分析</category>
-      </categories>
-      <tags>
-        <tag>数字签名</tag>
-        <tag>数字证书</tag>
-        <tag>公钥体制</tag>
-        <tag>Hash鉴别</tag>
-        <tag>密钥分配</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CSAPP Chap5: 优化程序性能</title>
-    <url>/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>CSAPP Chap6: 存储器层次结构</title>
-    <url>/2021/04/26/CSAPP-Chap6-%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>CSAPP Chap7: 链接</title>
-    <url>/2021/04/26/CSAPP-Chap7-%E9%93%BE%E6%8E%A5/</url>
-    <content><![CDATA[]]></content>
   </entry>
 </search>
