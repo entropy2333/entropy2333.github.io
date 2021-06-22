@@ -818,69 +818,6 @@ v_t^l &= \begin{cases}
       </tags>
   </entry>
   <entry>
-    <title>Internet安全协议与分析（七）CSP</title>
-    <url>/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/</url>
-    <content><![CDATA[<p>介绍攻击结构性方法。</p>
-<a id="more"></a>
-<h2 id="攻击结构性方法"><a href="#攻击结构性方法" class="headerlink" title="攻击结构性方法"></a>攻击结构性方法</h2><p>从反面寻找协议的漏洞，如果能找到合适的攻击步骤，则说明协议有缺陷。</p>
-<p>如果找不到攻击，不能说明协议是安全的，但安全性可以得到一定程度的保证。</p>
-<ul>
-<li>主体数据的有限性：通常只分析有限个主体实例</li>
-<li>无法解决状态空间爆炸问题</li>
-<li>无法揭示安全协议的内部机理</li>
-</ul>
-<h2 id="CSP"><a href="#CSP" class="headerlink" title="CSP"></a>CSP</h2><p>通信顺序进程（Communicating Sequential Processes）</p>
-<ul>
-<li>描述并发系统的消息交互</li>
-<li>将协议的安全问题描述为CSP进行是否满足其CSP规约的问题，并用FDR对协议的性质进行分析与验证。</li>
-</ul>
-<h3 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h3><ul>
-<li><p>事件</p>
-<ul>
-<li>一个典型的CSP事件形式为：c.i.j.m，包括信道c、消息源i、目的地j和消息m。</li>
-</ul>
-</li>
-<li><p>信道</p>
-<ul>
-<li>不同事件类型看成不同信道，并规定它所传递的数据类型。</li>
-</ul>
-</li>
-<li><p>进程</p>
-<ul>
-<li>包括执行状态中的一个动作（事件）以及动作结束后的状态。</li>
-</ul>
-<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141246384.png" alt="image-20201025141246384"></p>
-</li>
-<li><p>进程间选择 P▢Q</p>
-<ul>
-<li>表示在两个进程事件间的外部选择</li>
-</ul>
-<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141612756.png" alt="image-20201025141612756"></p>
-</li>
-<li><p>并行进程</p>
-<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141658434.png" alt="image-20201025141658434"></p>
-</li>
-<li><p>重命名</p>
-<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141716208.png" alt="image-20201025141716208"></p>
-</li>
-<li><p>条件结构</p>
-<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141742620.png" alt="image-20201025141742620"></p>
-</li>
-<li><p>迹与精炼</p>
-<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141807851.png" alt="image-20201025141807851"></p>
-</li>
-</ul>
-<h3 id="协议目标的CSP描述"><a href="#协议目标的CSP描述" class="headerlink" title="协议目标的CSP描述"></a>协议目标的CSP描述</h3><p>看得头大，啥也记不住</p>
-<p>TO BE COMPLETED</p>
-]]></content>
-      <categories>
-        <category>Internet安全协议与分析</category>
-      </categories>
-      <tags>
-        <tag>CSP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Internet安全协议与分析（一）IPSec</title>
     <url>/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/</url>
     <content><![CDATA[<p>介绍IPSec协议与IKE协议 。<br><a id="more"></a></p>
@@ -990,6 +927,69 @@ v_t^l &= \begin{cases}
       <tags>
         <tag>IPSec</tag>
         <tag>IKE</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Internet安全协议与分析（七）CSP</title>
+    <url>/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/</url>
+    <content><![CDATA[<p>介绍攻击结构性方法。</p>
+<a id="more"></a>
+<h2 id="攻击结构性方法"><a href="#攻击结构性方法" class="headerlink" title="攻击结构性方法"></a>攻击结构性方法</h2><p>从反面寻找协议的漏洞，如果能找到合适的攻击步骤，则说明协议有缺陷。</p>
+<p>如果找不到攻击，不能说明协议是安全的，但安全性可以得到一定程度的保证。</p>
+<ul>
+<li>主体数据的有限性：通常只分析有限个主体实例</li>
+<li>无法解决状态空间爆炸问题</li>
+<li>无法揭示安全协议的内部机理</li>
+</ul>
+<h2 id="CSP"><a href="#CSP" class="headerlink" title="CSP"></a>CSP</h2><p>通信顺序进程（Communicating Sequential Processes）</p>
+<ul>
+<li>描述并发系统的消息交互</li>
+<li>将协议的安全问题描述为CSP进行是否满足其CSP规约的问题，并用FDR对协议的性质进行分析与验证。</li>
+</ul>
+<h3 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h3><ul>
+<li><p>事件</p>
+<ul>
+<li>一个典型的CSP事件形式为：c.i.j.m，包括信道c、消息源i、目的地j和消息m。</li>
+</ul>
+</li>
+<li><p>信道</p>
+<ul>
+<li>不同事件类型看成不同信道，并规定它所传递的数据类型。</li>
+</ul>
+</li>
+<li><p>进程</p>
+<ul>
+<li>包括执行状态中的一个动作（事件）以及动作结束后的状态。</li>
+</ul>
+<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141246384.png" alt="image-20201025141246384"></p>
+</li>
+<li><p>进程间选择 P▢Q</p>
+<ul>
+<li>表示在两个进程事件间的外部选择</li>
+</ul>
+<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141612756.png" alt="image-20201025141612756"></p>
+</li>
+<li><p>并行进程</p>
+<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141658434.png" alt="image-20201025141658434"></p>
+</li>
+<li><p>重命名</p>
+<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141716208.png" alt="image-20201025141716208"></p>
+</li>
+<li><p>条件结构</p>
+<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141742620.png" alt="image-20201025141742620"></p>
+</li>
+<li><p>迹与精炼</p>
+<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141807851.png" alt="image-20201025141807851"></p>
+</li>
+</ul>
+<h3 id="协议目标的CSP描述"><a href="#协议目标的CSP描述" class="headerlink" title="协议目标的CSP描述"></a>协议目标的CSP描述</h3><p>看得头大，啥也记不住</p>
+<p>TO BE COMPLETED</p>
+]]></content>
+      <categories>
+        <category>Internet安全协议与分析</category>
+      </categories>
+      <tags>
+        <tag>CSP</tag>
       </tags>
   </entry>
   <entry>
@@ -1834,6 +1834,44 @@ bel(B, fresh(N_b))</script><h3 id="Kerberos协议中Ticket-v和认证头的结�
       </tags>
   </entry>
   <entry>
+    <title>K-BERT: Enabling Language Representation with Knowledge Graph</title>
+    <url>/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/</url>
+    <content><![CDATA[<p>介绍K-BERT模型（AAAI 2020）</p>
+<a id="more"></a>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li>arxiv：<a href="https://arxiv.org/abs/1909.07606v1">https://arxiv.org/abs/1909.07606v1</a></li>
+<li>code：<a href="https://github.com/autoliuweijie/K-BERT">https://github.com/autoliuweijie/K-BERT</a></li>
+</ul>
+<h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003741712.png" alt="image-20210225003741712" style="zoom:67%;"></p>
+<p>具体来说，算法分为以下几步。</p>
+<ul>
+<li>预先准备KG，建立查找表（关键词表）。</li>
+<li>对于给定的输入文本，利用工具分词（pkuseg）。</li>
+<li>将分词得到的结果去表中查询，得到对应的实体。</li>
+<li>计算实体位置，得到位置编码，也即论文中的soft-position index。</li>
+<li>计算可见矩阵，控制每个词受哪些词影响（如Cook不会被Beijing关联的China影响）。</li>
+</ul>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"></p>
+<p>K-BERT并不算预训练模型，嵌入层依旧是使用的BERT模型，应该算基于BERT的fine-tuning网络，可以用于分类和序列标注。同时，K-BERT也可以加载其他BERT类模型，如ERNIE、RoBERTa等。</p>
+<p>创新点在于使用可见矩阵控制了Self-Attention的计算（如下图）。</p>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225005229317.png" alt="image-20210225005229317" style="zoom: 67%;"></p>
+<h2 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h2><ul>
+<li>模型的鲁棒性受限于知识图谱的质量，取自于开放领域图谱中的信息，其实BERT通过大语料学习也能获得，可以考虑特定领域的知识。</li>
+<li>关联的三元组没有筛选，一词多义会引入错误的实体关联。</li>
+<li>对于非知识驱动的任务，引入知识反而会效果下降。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>KG</tag>
+        <tag>AAAI</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Internet安全协议与分析（零）安全协议基础</title>
     <url>/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<p>介绍密码学的基础知识，包括公钥体制、数字签名、密钥分配等。</p>
@@ -1992,44 +2030,6 @@ D_{PK_B}(E_{SK_B}(X)) = D_{SK_B}(E_{PK_B}(X)) = X</script></li>
       </tags>
   </entry>
   <entry>
-    <title>K-BERT: Enabling Language Representation with Knowledge Graph</title>
-    <url>/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/</url>
-    <content><![CDATA[<p>介绍K-BERT模型（AAAI 2020）</p>
-<a id="more"></a>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
-<li>arxiv：<a href="https://arxiv.org/abs/1909.07606v1">https://arxiv.org/abs/1909.07606v1</a></li>
-<li>code：<a href="https://github.com/autoliuweijie/K-BERT">https://github.com/autoliuweijie/K-BERT</a></li>
-</ul>
-<h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
-<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003741712.png" alt="image-20210225003741712" style="zoom:67%;"></p>
-<p>具体来说，算法分为以下几步。</p>
-<ul>
-<li>预先准备KG，建立查找表（关键词表）。</li>
-<li>对于给定的输入文本，利用工具分词（pkuseg）。</li>
-<li>将分词得到的结果去表中查询，得到对应的实体。</li>
-<li>计算实体位置，得到位置编码，也即论文中的soft-position index。</li>
-<li>计算可见矩阵，控制每个词受哪些词影响（如Cook不会被Beijing关联的China影响）。</li>
-</ul>
-<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"></p>
-<p>K-BERT并不算预训练模型，嵌入层依旧是使用的BERT模型，应该算基于BERT的fine-tuning网络，可以用于分类和序列标注。同时，K-BERT也可以加载其他BERT类模型，如ERNIE、RoBERTa等。</p>
-<p>创新点在于使用可见矩阵控制了Self-Attention的计算（如下图）。</p>
-<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225005229317.png" alt="image-20210225005229317" style="zoom: 67%;"></p>
-<h2 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h2><ul>
-<li>模型的鲁棒性受限于知识图谱的质量，取自于开放领域图谱中的信息，其实BERT通过大语料学习也能获得，可以考虑特定领域的知识。</li>
-<li>关联的三元组没有筛选，一词多义会引入错误的实体关联。</li>
-<li>对于非知识驱动的任务，引入知识反而会效果下降。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>KG</tag>
-        <tag>AAAI</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Lattice-BERT</title>
     <url>/2021/04/16/Lattice-BERT/</url>
     <content><![CDATA[<p>将词汇信息融入BERT（NAACL 2021）</p>
@@ -2122,21 +2122,6 @@ b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{e
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2020/08/06/hello-world/</url>
-    <content><![CDATA[<p>Hello, world!<br><a id="more"></a></p>
-<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>Simplify the Usage of Lexicon in Chinese NER</title>
     <url>/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/</url>
     <content><![CDATA[<p>介绍如何在中文NER模型中更好地结合词典信息（ACL 2020）</p>
@@ -2195,6 +2180,21 @@ v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)</script><h2 id="Detail"><a href="#De
         <tag>LSTM</tag>
         <tag>ACL</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/08/06/hello-world/</url>
+    <content><![CDATA[<p>Hello, world!<br><a id="more"></a></p>
+<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>搭建个人博客</title>
