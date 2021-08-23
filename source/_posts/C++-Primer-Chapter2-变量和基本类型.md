@@ -15,7 +15,7 @@ category:
 
 下表列出了各内置类型的最小尺寸。
 
-<img src="C++ Primer Chapter 2 变量和基本类型/image-20201123150453260.png" alt="image-20201123150453260" style="zoom: 50%;" />
+<img src="C++-Primer-Chapter2-变量和基本类型/image-20201123150453260.png" alt="image-20201123150453260" style="zoom: 50%;" />
 
 > 2^31 - 1= 2147483647是个常见的数字。
 
@@ -45,13 +45,13 @@ for (unsigned i = 10; i >= 0; i--)
 
 C++规定的转义序列如下
 
-<img src="C++ Primer Chapter 2 变量和基本类型/image-20201123153641722.png" alt="image-20201123153641722" style="zoom:50%;" />
+<img src="C++-Primer-Chapter2-变量和基本类型/image-20201123153641722.png" alt="image-20201123153641722" style="zoom:50%;" />
 
 C++还可以对常量添加前缀和后缀，改变默认类型。
 
 - 比如L'a'定义了宽字符型字面值，类型是wchar_t。
 
-<img src="C++ Primer Chapter 2 变量和基本类型/image-20201123153731472.png" alt="image-20201123153731472" style="zoom:50%;" />
+<img src="C++-Primer-Chapter2-变量和基本类型/image-20201123153731472.png" alt="image-20201123153731472" style="zoom:50%;" />
 
 ## 变量
 
