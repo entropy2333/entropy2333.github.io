@@ -298,6 +298,11 @@
       </tags>
   </entry>
   <entry>
+    <title>CSAPP Chap5: 优化程序性能</title>
+    <url>/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>CSAPP Chap3: 程序的机器级表示</title>
     <url>/2021/04/21/CSAPP-Chap3-%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA/</url>
     <content><![CDATA[<p>CSAPP第三章</p>
@@ -632,11 +637,6 @@
       <tags>
         <tag>CSAPP</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>CSAPP Chap5: 优化程序性能</title>
-    <url>/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/</url>
-    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>CSAPP Chap6: 存储器层次结构</title>
@@ -1730,148 +1730,6 @@ bel(B, fresh(N_b))</script><h3 id="Kerberos协议中Ticket-v和认证头的结�
       </tags>
   </entry>
   <entry>
-    <title>Internet安全协议与分析（四）PGP</title>
-    <url>/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/</url>
-    <content><![CDATA[<p>介绍PGP协议。</p>
-<a id="more"></a>
-<h2 id="电子邮件概述"><a href="#电子邮件概述" class="headerlink" title="电子邮件概述"></a>电子邮件概述</h2><ul>
-<li>电子邮件不是一种端到端的服务，而是一种<strong>存储转发式</strong>的服务。</li>
-<li>一个完整的电子邮件系统包括三个主要成分<ul>
-<li>客户端用户代理MUA（mail user agent）</li>
-<li>邮件传输代理MTA（mail transfer agent）</li>
-<li>邮件投递代理MDA（mail delivery agent）</li>
-</ul>
-</li>
-<li>电子邮件相关协议<ul>
-<li>SMTP、POP3、IMAP、MIME</li>
-</ul>
-</li>
-</ul>
-<h3 id="电子邮件系统安全问题"><a href="#电子邮件系统安全问题" class="headerlink" title="电子邮件系统安全问题"></a>电子邮件系统安全问题</h3><ul>
-<li>匿名转发<ul>
-<li>发件人隐瞒自己的电子邮箱地址和其他信息</li>
-<li>用户必须使用邮件加密和数字签名技术</li>
-</ul>
-</li>
-<li>电子邮件欺骗<ul>
-<li>假冒一个用户身份给其他用户发送邮件</li>
-<li>通过身份认证避免邮件欺骗</li>
-</ul>
-</li>
-<li>邮件炸弹和垃圾邮件<ul>
-<li>安装过滤器，预先检查发件人资料。</li>
-</ul>
-</li>
-<li>邮件病毒<ul>
-<li>通过预杀毒防止病毒的传播</li>
-</ul>
-</li>
-</ul>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
-<li>端到端的安全电子邮件技术<ul>
-<li>S/MIME和PGP，<strong>一般只对信体进行加密和签名，而信头必须保证原封不动</strong>。</li>
-</ul>
-</li>
-<li>要求信头在传输过程中也保密，使用传输层技术作为后盾<ul>
-<li>使用SSL SMTP和SSL POP</li>
-<li>使用VPN或其他IP通道技术</li>
-</ul>
-</li>
-<li>邮件服务器本身安全可靠</li>
-</ul>
-<h2 id="PGP"><a href="#PGP" class="headerlink" title="PGP"></a>PGP</h2><ul>
-<li>Pretty Good Privacy</li>
-</ul>
-<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152042892.png" alt="image-20201017152042892"></p>
-<h3 id="PGP数字签名与认证"><a href="#PGP数字签名与认证" class="headerlink" title="PGP数字签名与认证"></a>PGP数字签名与认证</h3><ul>
-<li>发送者<ul>
-<li>产生消息M</li>
-<li>使用SHA-1生成160位散列码H</li>
-<li>使用私钥签名，并与M连接。</li>
-</ul>
-</li>
-<li>接收方<ul>
-<li>使用公钥解密，恢复散列码H。</li>
-<li>计算M的散列码，与H比较，两者匹配则报文通过鉴别。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152232211.png" alt="image-20201017152232211"></p>
-<h3 id="保密性操作"><a href="#保密性操作" class="headerlink" title="保密性操作"></a>保密性操作</h3><ul>
-<li>发送者<ul>
-<li>生成消息M和128位随机数作为会话密钥</li>
-<li>使用CAST-128（或IDEA或3DES）加密报文</li>
-<li>用接收者的公钥加密会话密钥，并与M连接。</li>
-</ul>
-</li>
-<li>接收者<ul>
-<li>使用私钥解密报文，恢复会话密钥。</li>
-<li>用会话密钥解密恢复消息M。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152649242.png" alt="image-20201017152649242"></p>
-<h3 id="PGP加密认证处理过程"><a href="#PGP加密认证处理过程" class="headerlink" title="PGP加密认证处理过程"></a>PGP加密认证处理过程</h3><p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017153058600.png" alt="image-20201017153058600"></p>
-<h3 id="PGP密钥环"><a href="#PGP密钥环" class="headerlink" title="PGP密钥环"></a>PGP密钥环</h3><ul>
-<li>PGP在每个结点提供一对数据结构<ul>
-<li>私钥环——存储该节点拥有的公开/私有密钥对</li>
-<li>公钥环——存储该节点知道的其他所有用户的公开密钥</li>
-</ul>
-</li>
-</ul>
-<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017153356367.png" alt="image-20201017153356367"></p>
-<h3 id="信任网"><a href="#信任网" class="headerlink" title="信任网"></a>信任网</h3><ul>
-<li>通过自己的数字签名进行确认</li>
-<li>通过自己完全信任的人的数字签名进行确认</li>
-<li>通过自己有限信任的多个人的数字签名进行确认</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Internet安全协议与分析</category>
-      </categories>
-      <tags>
-        <tag>PGP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>K-BERT: Enabling Language Representation with Knowledge Graph</title>
-    <url>/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/</url>
-    <content><![CDATA[<p>介绍K-BERT模型（AAAI 2020）</p>
-<a id="more"></a>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
-<li>arxiv：<a href="https://arxiv.org/abs/1909.07606v1">https://arxiv.org/abs/1909.07606v1</a></li>
-<li>code：<a href="https://github.com/autoliuweijie/K-BERT">https://github.com/autoliuweijie/K-BERT</a></li>
-</ul>
-<h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
-<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003741712.png" alt="image-20210225003741712" style="zoom:67%;"></p>
-<p>具体来说，算法分为以下几步。</p>
-<ul>
-<li>预先准备KG，建立查找表（关键词表）。</li>
-<li>对于给定的输入文本，利用工具分词（pkuseg）。</li>
-<li>将分词得到的结果去表中查询，得到对应的实体。</li>
-<li>计算实体位置，得到位置编码，也即论文中的soft-position index。</li>
-<li>计算可见矩阵，控制每个词受哪些词影响（如Cook不会被Beijing关联的China影响）。</li>
-</ul>
-<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"></p>
-<p>K-BERT并不算预训练模型，嵌入层依旧是使用的BERT模型，应该算基于BERT的fine-tuning网络，可以用于分类和序列标注。同时，K-BERT也可以加载其他BERT类模型，如ERNIE、RoBERTa等。</p>
-<p>创新点在于使用可见矩阵控制了Self-Attention的计算（如下图）。</p>
-<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225005229317.png" alt="image-20210225005229317" style="zoom: 67%;"></p>
-<h2 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h2><ul>
-<li>模型的鲁棒性受限于知识图谱的质量，取自于开放领域图谱中的信息，其实BERT通过大语料学习也能获得，可以考虑特定领域的知识。</li>
-<li>关联的三元组没有筛选，一词多义会引入错误的实体关联。</li>
-<li>对于非知识驱动的任务，引入知识反而会效果下降。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>KG</tag>
-        <tag>AAAI</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Internet安全协议与分析（零）安全协议基础</title>
     <url>/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<p>介绍密码学的基础知识，包括公钥体制、数字签名、密钥分配等。</p>
@@ -2030,45 +1888,145 @@ D_{PK_B}(E_{SK_B}(X)) = D_{SK_B}(E_{PK_B}(X)) = X</script></li>
       </tags>
   </entry>
   <entry>
-    <title>Lattice-BERT</title>
-    <url>/2021/04/16/Lattice-BERT/</url>
-    <content><![CDATA[<p>将词汇信息融入BERT（NAACL 2021）</p>
+    <title>Internet安全协议与分析（四）PGP</title>
+    <url>/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/</url>
+    <content><![CDATA[<p>介绍PGP协议。</p>
 <a id="more"></a>
-<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
-<li>arxiv: <a href="https://arxiv.org/pdf/2104.07204v1.pdf">https://arxiv.org/pdf/2104.07204v1.pdf</a></li>
-<li>code: 暂无</li>
+<h2 id="电子邮件概述"><a href="#电子邮件概述" class="headerlink" title="电子邮件概述"></a>电子邮件概述</h2><ul>
+<li>电子邮件不是一种端到端的服务，而是一种<strong>存储转发式</strong>的服务。</li>
+<li>一个完整的电子邮件系统包括三个主要成分<ul>
+<li>客户端用户代理MUA（mail user agent）</li>
+<li>邮件传输代理MTA（mail transfer agent）</li>
+<li>邮件投递代理MDA（mail delivery agent）</li>
 </ul>
-<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>中文预训练模型将文本作为字符序列处理，忽略了粗粒度的语义特征。对于中文来说，词义并不完全是字义的组合，如”老板“并不等于“老的板”。将词级别的特征加入模型，可以有效补充字级别的不足。</p>
-<p>本文设计了word lattice的结构来利用多粒度的输入，让预训练模型在下游任务中学会利用这些特征。</p>
-<p>让Bert学会单词主要有两个难点：</p>
+</li>
+<li>电子邮件相关协议<ul>
+<li>SMTP、POP3、IMAP、MIME</li>
+</ul>
+</li>
+</ul>
+<h3 id="电子邮件系统安全问题"><a href="#电子邮件系统安全问题" class="headerlink" title="电子邮件系统安全问题"></a>电子邮件系统安全问题</h3><ul>
+<li>匿名转发<ul>
+<li>发件人隐瞒自己的电子邮箱地址和其他信息</li>
+<li>用户必须使用邮件加密和数字签名技术</li>
+</ul>
+</li>
+<li>电子邮件欺骗<ul>
+<li>假冒一个用户身份给其他用户发送邮件</li>
+<li>通过身份认证避免邮件欺骗</li>
+</ul>
+</li>
+<li>邮件炸弹和垃圾邮件<ul>
+<li>安装过滤器，预先检查发件人资料。</li>
+</ul>
+</li>
+<li>邮件病毒<ul>
+<li>通过预杀毒防止病毒的传播</li>
+</ul>
+</li>
+</ul>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
+<li>端到端的安全电子邮件技术<ul>
+<li>S/MIME和PGP，<strong>一般只对信体进行加密和签名，而信头必须保证原封不动</strong>。</li>
+</ul>
+</li>
+<li>要求信头在传输过程中也保密，使用传输层技术作为后盾<ul>
+<li>使用SSL SMTP和SSL POP</li>
+<li>使用VPN或其他IP通道技术</li>
+</ul>
+</li>
+<li>邮件服务器本身安全可靠</li>
+</ul>
+<h2 id="PGP"><a href="#PGP" class="headerlink" title="PGP"></a>PGP</h2><ul>
+<li>Pretty Good Privacy</li>
+</ul>
+<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152042892.png" alt="image-20201017152042892"></p>
+<h3 id="PGP数字签名与认证"><a href="#PGP数字签名与认证" class="headerlink" title="PGP数字签名与认证"></a>PGP数字签名与认证</h3><ul>
+<li>发送者<ul>
+<li>产生消息M</li>
+<li>使用SHA-1生成160位散列码H</li>
+<li>使用私钥签名，并与M连接。</li>
+</ul>
+</li>
+<li>接收方<ul>
+<li>使用公钥解密，恢复散列码H。</li>
+<li>计算M的散列码，与H比较，两者匹配则报文通过鉴别。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152232211.png" alt="image-20201017152232211"></p>
+<h3 id="保密性操作"><a href="#保密性操作" class="headerlink" title="保密性操作"></a>保密性操作</h3><ul>
+<li>发送者<ul>
+<li>生成消息M和128位随机数作为会话密钥</li>
+<li>使用CAST-128（或IDEA或3DES）加密报文</li>
+<li>用接收者的公钥加密会话密钥，并与M连接。</li>
+</ul>
+</li>
+<li>接收者<ul>
+<li>使用私钥解密报文，恢复会话密钥。</li>
+<li>用会话密钥解密恢复消息M。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017152649242.png" alt="image-20201017152649242"></p>
+<h3 id="PGP加密认证处理过程"><a href="#PGP加密认证处理过程" class="headerlink" title="PGP加密认证处理过程"></a>PGP加密认证处理过程</h3><p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017153058600.png" alt="image-20201017153058600"></p>
+<h3 id="PGP密钥环"><a href="#PGP密钥环" class="headerlink" title="PGP密钥环"></a>PGP密钥环</h3><ul>
+<li>PGP在每个结点提供一对数据结构<ul>
+<li>私钥环——存储该节点拥有的公开/私有密钥对</li>
+<li>公钥环——存储该节点知道的其他所有用户的公开密钥</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89PGP/image-20201017153356367.png" alt="image-20201017153356367"></p>
+<h3 id="信任网"><a href="#信任网" class="headerlink" title="信任网"></a>信任网</h3><ul>
+<li>通过自己的数字签名进行确认</li>
+<li>通过自己完全信任的人的数字签名进行确认</li>
+<li>通过自己有限信任的多个人的数字签名进行确认</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Internet安全协议与分析</category>
+      </categories>
+      <tags>
+        <tag>PGP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>K-BERT: Enabling Language Representation with Knowledge Graph</title>
+    <url>/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/</url>
+    <content><![CDATA[<p>介绍K-BERT模型（AAAI 2020）</p>
+<a id="more"></a>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li>arxiv：<a href="https://arxiv.org/abs/1909.07606v1">https://arxiv.org/abs/1909.07606v1</a></li>
+<li>code：<a href="https://github.com/autoliuweijie/K-BERT">https://github.com/autoliuweijie/K-BERT</a></li>
+</ul>
+<h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003741712.png" alt="image-20210225003741712" style="zoom:67%;"></p>
+<p>具体来说，算法分为以下几步。</p>
 <ul>
-<li>Bert原本的输入是字符序列，加入lattice后怎样描述位置信息。</li>
-<li>对于Masked Languaged Model，怎样针对lattice结构设计mask任务。</li>
+<li>预先准备KG，建立查找表（关键词表）。</li>
+<li>对于给定的输入文本，利用工具分词（pkuseg）。</li>
+<li>将分词得到的结果去表中查询，得到对应的实体。</li>
+<li>计算实体位置，得到位置编码，也即论文中的soft-position index。</li>
+<li>计算可见矩阵，控制每个词受哪些词影响（如Cook不会被Beijing关联的China影响）。</li>
 </ul>
-<p>本文设计了lattice position attention（LPA），以帮助transformer利用lattice中文本单元的位置和距离信息。此外，还提出了masked segment prediction（MSP）任务。</p>
-<script type="math/tex; mode=display">
-\rm{Lattice-BERT} = \rm{BERT} + \rm{word\ lattice} + LPA + MSP</script><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Word-Lattice"><a href="#Word-Lattice" class="headerlink" title="Word Lattice"></a>Word Lattice</h3><p><img src="/2021/04/16/Lattice-BERT/image-20210416194914983.png" alt="image-20210416194914983" style="zoom: 80%;"></p>
-<p>Lattice就是一个有向无环图，和Lattice-LSTM的思想类似。难点在于如何在编码层保持lattice的结构，以及如何避免冗余信息带来的潜在影响。</p>
-<h3 id="Lattice-Position-Attention"><a href="#Lattice-Position-Attention" class="headerlink" title="Lattice Position Attention"></a>Lattice Position Attention</h3><p>在BERT的attention基础上，加了三个位置相关项。</p>
-<script type="math/tex; mode=display">
-\tilde{\alpha}_{ij} = \alpha_{ij} + \rm{att}_{ij} + b_{ij} + r_{ij}</script><p>其中，<script type="math/tex">\alpha_{ij}</script>表示原来的attention，<script type="math/tex">\rm{att}_{ij}</script>计算了绝对位置的attention权重，<script type="math/tex">b_{ij}</script>则是对相对距离的计算，<script type="math/tex">r_{ij}</script>是对相对位置的缩放项。</p>
-<script type="math/tex; mode=display">
-\rm{att}_{ij} = \frac {1} {\sqrt{2d_k}}([P_{s_i}^S;P_{e_i}^E]W^q)([P_{s_i}^S;P_{e_i}^E]W^k)^T</script><script type="math/tex; mode=display">
-b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{ee}</script><blockquote>
-<p>感觉和FLAT类似，也是计算四个距离。</p>
-</blockquote>
-<h3 id="Masked-Segment-Prediction"><a href="#Masked-Segment-Prediction" class="headerlink" title="Masked Segment Prediction"></a>Masked Segment Prediction</h3><p>BERT对单字掩码，Lattice-BERT则是对Segment掩码。</p>
-<p>Segment定义为：lattice的一个连通子图，且Segment之间彼此token不重叠，如下图。具体来说，为了句子分段，需要逐字遍历，判断当前的字是否是之前所有单词的结尾（真拗口）。</p>
-<p><img src="/2021/04/16/Lattice-BERT/image-20210416195015009.png" alt="image-20210416195015009" style="zoom:80%;"></p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>本文在11个中文NLU任务上进行实验，包括文本分类、阅读理解、序列标注等，在MSRA-NER和CLUE数据集上进行了实验，并与RoBERTa等预训练模型进行了比较。</p>
-<p><img src="/2021/04/16/Lattice-BERT/image-20210416201801843.png" alt="image-20210416201801843" style="zoom:80%;"></p>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"></p>
+<p>K-BERT并不算预训练模型，嵌入层依旧是使用的BERT模型，应该算基于BERT的fine-tuning网络，可以用于分类和序列标注。同时，K-BERT也可以加载其他BERT类模型，如ERNIE、RoBERTa等。</p>
+<p>创新点在于使用可见矩阵控制了Self-Attention的计算（如下图）。</p>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225005229317.png" alt="image-20210225005229317" style="zoom: 67%;"></p>
+<h2 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h2><ul>
+<li>模型的鲁棒性受限于知识图谱的质量，取自于开放领域图谱中的信息，其实BERT通过大语料学习也能获得，可以考虑特定领域的知识。</li>
+<li>关联的三元组没有筛选，一词多义会引入错误的实体关联。</li>
+<li>对于非知识驱动的任务，引入知识反而会效果下降。</li>
+</ul>
 ]]></content>
       <categories>
         <category>Paper</category>
       </categories>
       <tags>
         <tag>NLP</tag>
-        <tag>BERT</tag>
+        <tag>KG</tag>
+        <tag>AAAI</tag>
       </tags>
   </entry>
   <entry>
@@ -2120,6 +2078,101 @@ b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{e
         <tag>NLP</tag>
         <tag>BERT</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Lattice-BERT</title>
+    <url>/2021/04/16/Lattice-BERT/</url>
+    <content><![CDATA[<p>将词汇信息融入BERT（NAACL 2021）</p>
+<a id="more"></a>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
+<li>arxiv: <a href="https://arxiv.org/pdf/2104.07204v1.pdf">https://arxiv.org/pdf/2104.07204v1.pdf</a></li>
+<li>code: 暂无</li>
+</ul>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>中文预训练模型将文本作为字符序列处理，忽略了粗粒度的语义特征。对于中文来说，词义并不完全是字义的组合，如”老板“并不等于“老的板”。将词级别的特征加入模型，可以有效补充字级别的不足。</p>
+<p>本文设计了word lattice的结构来利用多粒度的输入，让预训练模型在下游任务中学会利用这些特征。</p>
+<p>让Bert学会单词主要有两个难点：</p>
+<ul>
+<li>Bert原本的输入是字符序列，加入lattice后怎样描述位置信息。</li>
+<li>对于Masked Languaged Model，怎样针对lattice结构设计mask任务。</li>
+</ul>
+<p>本文设计了lattice position attention（LPA），以帮助transformer利用lattice中文本单元的位置和距离信息。此外，还提出了masked segment prediction（MSP）任务。</p>
+<script type="math/tex; mode=display">
+\rm{Lattice-BERT} = \rm{BERT} + \rm{word\ lattice} + LPA + MSP</script><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Word-Lattice"><a href="#Word-Lattice" class="headerlink" title="Word Lattice"></a>Word Lattice</h3><p><img src="/2021/04/16/Lattice-BERT/image-20210416194914983.png" alt="image-20210416194914983" style="zoom: 80%;"></p>
+<p>Lattice就是一个有向无环图，和Lattice-LSTM的思想类似。难点在于如何在编码层保持lattice的结构，以及如何避免冗余信息带来的潜在影响。</p>
+<h3 id="Lattice-Position-Attention"><a href="#Lattice-Position-Attention" class="headerlink" title="Lattice Position Attention"></a>Lattice Position Attention</h3><p>在BERT的attention基础上，加了三个位置相关项。</p>
+<script type="math/tex; mode=display">
+\tilde{\alpha}_{ij} = \alpha_{ij} + \rm{att}_{ij} + b_{ij} + r_{ij}</script><p>其中，<script type="math/tex">\alpha_{ij}</script>表示原来的attention，<script type="math/tex">\rm{att}_{ij}</script>计算了绝对位置的attention权重，<script type="math/tex">b_{ij}</script>则是对相对距离的计算，<script type="math/tex">r_{ij}</script>是对相对位置的缩放项。</p>
+<script type="math/tex; mode=display">
+\rm{att}_{ij} = \frac {1} {\sqrt{2d_k}}([P_{s_i}^S;P_{e_i}^E]W^q)([P_{s_i}^S;P_{e_i}^E]W^k)^T</script><script type="math/tex; mode=display">
+b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{ee}</script><blockquote>
+<p>感觉和FLAT类似，也是计算四个距离。</p>
+</blockquote>
+<h3 id="Masked-Segment-Prediction"><a href="#Masked-Segment-Prediction" class="headerlink" title="Masked Segment Prediction"></a>Masked Segment Prediction</h3><p>BERT对单字掩码，Lattice-BERT则是对Segment掩码。</p>
+<p>Segment定义为：lattice的一个连通子图，且Segment之间彼此token不重叠，如下图。具体来说，为了句子分段，需要逐字遍历，判断当前的字是否是之前所有单词的结尾（真拗口）。</p>
+<p><img src="/2021/04/16/Lattice-BERT/image-20210416195015009.png" alt="image-20210416195015009" style="zoom:80%;"></p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>本文在11个中文NLU任务上进行实验，包括文本分类、阅读理解、序列标注等，在MSRA-NER和CLUE数据集上进行了实验，并与RoBERTa等预训练模型进行了比较。</p>
+<p><img src="/2021/04/16/Lattice-BERT/image-20210416201801843.png" alt="image-20210416201801843" style="zoom:80%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>BERT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SimCSE: Simple Contrastive Learning of Sentence Embeddings</title>
+    <url>/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/</url>
+    <content><![CDATA[<p>来自陈丹琦（<a href="https://github.com/danqi">https://github.com/danqi</a>）组的文章，利用Dropout作为数据增强，进行对比学习得到句子向量表示，在无监督和有监督的语义表示上刷新SOTA。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210706175923388.png" alt="image-20210706175923388" style="zoom: 80%;"></p>
+<a id="more"></a>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
+<li>Arxiv: <a href="https://arxiv.org/pdf/2104.08821v1.pdf">https://arxiv.org/pdf/2104.08821v1.pdf</a></li>
+<li>Code: <a href="https://github.com/princeton-nlp/SimCSE">https://github.com/princeton-nlp/SimCSE</a></li>
+</ul>
+<h2 id="Background-Contrastive-Learning"><a href="#Background-Contrastive-Learning" class="headerlink" title="Background: Contrastive Learning"></a>Background: Contrastive Learning</h2><p>对比学习希望通过拉近语义相关的样本，拉远不相关的样本学习有效的向量表示。</p>
+<p>对于样本对集合<script type="math/tex">D=\{(x_i,x_i^+)\}_{i=1}^m</script>，假设<script type="math/tex">({\bf h_i},{\bf h_i^+})</script>为样本的向量表示，则训练的目标为：</p>
+<script type="math/tex; mode=display">
+l_i = \log \frac {e^{ {\rm sim} ({\bf h_i},{\bf h_i^+})}/\tau} {\sum_{j=1}^N e^{ {\rm sim}( {\bf h_i},{\bf h_j})/\tau}}</script><p>其中，<script type="math/tex">\tau</script>是一个温度超参数，<script type="math/tex">{\rm sim}({\bf h_i},{\bf h_i^+})</script>为余弦相似度<script type="math/tex">\rm\bf\frac{h_1^Th_2}{\|h_1\|·\|h2\|}</script>，本文选择的backbone是BERT或RoBERTa。</p>
+<p>其实上述的训练目标就是交叉熵：</p>
+<script type="math/tex; mode=display">
+{\rm let}\ z_{i,j} = {\rm sim} ({\bf h_i},{\bf h_j}) \\
+{\rm then}\ loss_i = -\sum_{j=1}^N y_{j}\log z_{i, j}</script><h3 id="Positive-instances"><a href="#Positive-instances" class="headerlink" title="Positive instances"></a>Positive instances</h3><p>对比学习的关键问题是如何构造样本对<script type="math/tex">(x_i,x_i^+)</script>，在CV中可以用裁剪、旋转等方法对图像进行数据增强，NLP中也有删词、替换、重排等方法。但对于NLP的离散结构来说，这些增强手段作用有限。本文采用了dropout作为数据增强手段，取得了更好的结果。</p>
+<p>本文采用了两个度量align和uniform用于衡量表示的质量。</p>
+<p>align描述了样本对之间的距离</p>
+<script type="math/tex; mode=display">
+l_{\rm align} \triangleq \mathop{\mathbb{E}}_{(x,x^+)\sim p_{pos}}\|f(x)-f(x^+)\|^2</script><p>uniform描述了样本是否分布均匀</p>
+<script type="math/tex; mode=display">
+l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(x)-f(y)\|^2}</script><p>从实验结果上看，采用dropout的SimCSE效果更好。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111255916.png" alt="image-20210823111255916" style="zoom:67%;"></p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>在语义相似度任务上大幅度刷新SOTA，无监督就可以超越之前的有监督方法。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111528036.png" alt="image-20210823111528036" style="zoom: 67%;"></p>
+<p>在迁移任务上表现一般，说明sentence embedding并不一定有益于下游训练。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111700869.png" alt="image-20210823111700869" style="zoom: 80%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>Contrastive Learning</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/08/06/hello-world/</url>
+    <content><![CDATA[<p>Hello, world!<br><a id="more"></a></p>
+<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>Simplify the Usage of Lexicon in Chinese NER</title>
@@ -2180,21 +2233,6 @@ v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)</script><h2 id="Detail"><a href="#De
         <tag>LSTM</tag>
         <tag>ACL</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/08/06/hello-world/</url>
-    <content><![CDATA[<p>Hello, world!<br><a id="more"></a></p>
-<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>搭建个人博客</title>
@@ -3499,90 +3537,6 @@ Q(\theta,\theta^{(i)})=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\hat\gamma_{jk}
       </tags>
   </entry>
   <entry>
-    <title>统计学习方法（二）感知机</title>
-    <url>/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/</url>
-    <content><![CDATA[<p>感知机，是二分类的线性分类模型。输入为实例的特征向量，输出为±1，旨在求出将训练数据进行线性划分的分离超平面，是神经网络与SVM的基础。</p>
-<a id="more"></a>
-<h2 id="2-1-感知机模型"><a href="#2-1-感知机模型" class="headerlink" title="2.1 感知机模型"></a>2.1 感知机模型</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><script type="math/tex; mode=display">
-f(x) = sign(w·x + b) \\
-{\cal X} \subset R^n, \quad {\cal Y} = \{-1, +1\}</script><p>其中w和b为感知机模型参数，w称为权值（向量），b称为偏置（bias）。</p>
-<script type="math/tex; mode=display">
-sign(x) = \begin{cases} +1, \quad x\geq 0 \\ -1, \quad x < 0\end{cases}</script><h3 id="几何解释"><a href="#几何解释" class="headerlink" title="几何解释"></a>几何解释</h3><p>线性方程</p>
-<script type="math/tex; mode=display">
-w·x + b = 0</script><p>对应于特征空间中的一个超平面S，w表示超平面的法向量，b为超平面的截距。</p>
-<p><img src="/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/perc1.png" alt></p>
-<h2 id="2-2-感知机学习策略"><a href="#2-2-感知机学习策略" class="headerlink" title="2.2 感知机学习策略"></a>2.2 感知机学习策略</h2><h3 id="数据集的线性可分性"><a href="#数据集的线性可分性" class="headerlink" title="数据集的线性可分性"></a>数据集的线性可分性</h3><p>给定一个数据集，如果存在超平面S，能够将数据集的正实例点和负实例点完全正确划分，则称数据及为线性可分数据集。</p>
-<h4 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h4><p>损失函数的一个自然选择是误分类点的总数，但这样不是参数的连续可导函数，不易优化。</p>
-<p>感知机选择的损失函数是误分类点到超平面S的总距离，输入空间任一点到超平面S的距离为</p>
-<script type="math/tex; mode=display">
-\frac 1 {\|w\|} |w·x_0+b|,其中\|w\|为w的L_2范数</script><p>对于误分类的数据来说，始终有</p>
-<script type="math/tex; mode=display">
--y_i(w·x_i+b) > 0</script><p>所以距离为</p>
-<script type="math/tex; mode=display">
-- \frac 1 {\|w\|}y_i(w·x_i+b)</script><p>假设误分类点集合为M，求和即得</p>
-<script type="math/tex; mode=display">
-- \frac 1 {\|w\|}\sum _{x_i\in M}y_i(w·x_i+b)</script><p>不考虑系数，损失函数即为</p>
-<script type="math/tex; mode=display">
-L(w, b) = - \sum _{x_i\in M}y_i(w·x_i+b)</script><p>误分类点越少，损失函数值越小，如果没有误分类点，损失函数值为0。</p>
-<h2 id="2-3-感知机学习算法"><a href="#2-3-感知机学习算法" class="headerlink" title="2.3 感知机学习算法"></a>2.3 感知机学习算法</h2><h3 id="形式化"><a href="#形式化" class="headerlink" title="形式化"></a>形式化</h3><p>给定训练集</p>
-<script type="math/tex; mode=display">
-T = \{(x_1, y_1), (x_2, y_2), ... , (x_N, y_N)\} \\
-x_i\in {\cal X} = R^n, y_i \in {\cal Y} = \{-1, +1\}</script><p>求参数w和b，使得损失函数极小化</p>
-<script type="math/tex; mode=display">
-\min_{w,b} L(w,b) = - \sum _{x_i\in M}y_i(w·x_i+b)</script><p>学习算法是误分类驱动的，具体采用随机梯度下降法，首先任意选取一个超平面，之后用梯度下降法不断极小化目标函数。</p>
-<p>损失函数的梯度为</p>
-<script type="math/tex; mode=display">
-\nabla_w L(w,b) = -\sum _{x_i\in M} y_ix_i \\
-\nabla_b L(w,b) = -\sum _{x_i\in M} y_i</script><p>随机选取一个误分类点，对参数进行更新</p>
-<script type="math/tex; mode=display">
-w \leftarrow w + \eta y_ix_i \\
-b \leftarrow b + \eta y_i \\
-\eta \in (0, 1]</script><h3 id="原始形式"><a href="#原始形式" class="headerlink" title="原始形式"></a>原始形式</h3><ol>
-<li><p>选取参数初值<script type="math/tex">w_0,b_0</script></p>
-</li>
-<li><p>在训练集中选取数据<script type="math/tex">(x_i, y_i)</script></p>
-</li>
-<li><p>如果<script type="math/tex">y_i(wx_i+b)\leq 0</script>，则更新参数</p>
-<script type="math/tex; mode=display">
-w \leftarrow w + \eta y_ix_i \\
-b \leftarrow b + \eta y_i</script></li>
-<li><p>转至2直至没有误分类点</p>
-</li>
-</ol>
-<h3 id="收敛性"><a href="#收敛性" class="headerlink" title="收敛性"></a>收敛性</h3><p>(<strong>Novikoff</strong>) 存在满足条件的超平面，且感知机算法的误分类次数k满足不等式</p>
-<script type="math/tex; mode=display">
-k \leq (\frac R \gamma)^2</script><h3 id="对偶形式"><a href="#对偶形式" class="headerlink" title="对偶形式"></a>对偶形式</h3><p>基本想法是，将w和b表示为实例x与标记y的线性组合，通过求解系数求得w和b。</p>
-<p>最后学习到的w和b可表示为</p>
-<script type="math/tex; mode=display">
-w = \sum _{i=1} ^N \alpha_iy_ix_i \\
-b = \sum _{i=1} ^N \alpha_iy_i</script><p>训练过程</p>
-<ol>
-<li><p>选取α和b为0,</p>
-</li>
-<li><p>在训练集中选取数据</p>
-</li>
-<li><p>若<script type="math/tex">y_i(\sum _{j=1} ^N \alpha_jy_jx_j\cdot x_i+b)\leq 0</script>，则更新参数</p>
-</li>
-</ol>
-<script type="math/tex; mode=display">
-\alpha_i \leftarrow \alpha_i + \eta \\
-b \leftarrow b + \eta y_i</script><ol>
-<li>转至2直至没有误分类数据</li>
-</ol>
-<blockquote>
-<p>Gram矩阵？</p>
-</blockquote>
-<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Perceptron</span><br><span class="line"></span><br><span class="line">clf = Perceptron(fit_intercept=<span class="literal">True</span>, </span><br><span class="line">                 max_iter=<span class="number">1000</span>, </span><br><span class="line">                 shuffle=<span class="literal">True</span>)</span><br><span class="line">clf.fit(X, y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Weights assigned to the features.</span></span><br><span class="line">print(clf.coef_)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Constants in decision function.</span></span><br><span class="line">print(clf.intercept_)</span><br><span class="line"></span><br><span class="line">y_ = -(clf.coef_[<span class="number">0</span>][<span class="number">0</span>]*x_ponits + clf.intercept_)/clf.coef_[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">plt.plot(x_ponits, y_)</span><br><span class="line">plt.plot(x_ponits, y_)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>统计学习方法</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-        <tag>感知机</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>统计学习方法（五）决策树</title>
     <url>/2020/08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/</url>
     <content><![CDATA[<p>决策树是一种基本的分类与回归方法，在分类问题中，用树形结构表示基于特征对实例进行分类的过程。</p>
@@ -3996,6 +3950,135 @@ P_\lambda(Y=c_k) = \frac {\sum_{i=1}^NI(y_i=c_k)+\lambda}{N+K\lambda}, \quad \la
       <tags>
         <tag>机器学习</tag>
         <tag>贝叶斯</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>统计学习方法（二）感知机</title>
+    <url>/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/</url>
+    <content><![CDATA[<p>感知机，是二分类的线性分类模型。输入为实例的特征向量，输出为±1，旨在求出将训练数据进行线性划分的分离超平面，是神经网络与SVM的基础。</p>
+<a id="more"></a>
+<h2 id="2-1-感知机模型"><a href="#2-1-感知机模型" class="headerlink" title="2.1 感知机模型"></a>2.1 感知机模型</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><script type="math/tex; mode=display">
+f(x) = sign(w·x + b) \\
+{\cal X} \subset R^n, \quad {\cal Y} = \{-1, +1\}</script><p>其中w和b为感知机模型参数，w称为权值（向量），b称为偏置（bias）。</p>
+<script type="math/tex; mode=display">
+sign(x) = \begin{cases} +1, \quad x\geq 0 \\ -1, \quad x < 0\end{cases}</script><h3 id="几何解释"><a href="#几何解释" class="headerlink" title="几何解释"></a>几何解释</h3><p>线性方程</p>
+<script type="math/tex; mode=display">
+w·x + b = 0</script><p>对应于特征空间中的一个超平面S，w表示超平面的法向量，b为超平面的截距。</p>
+<p><img src="/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/perc1.png" alt></p>
+<h2 id="2-2-感知机学习策略"><a href="#2-2-感知机学习策略" class="headerlink" title="2.2 感知机学习策略"></a>2.2 感知机学习策略</h2><h3 id="数据集的线性可分性"><a href="#数据集的线性可分性" class="headerlink" title="数据集的线性可分性"></a>数据集的线性可分性</h3><p>给定一个数据集，如果存在超平面S，能够将数据集的正实例点和负实例点完全正确划分，则称数据及为线性可分数据集。</p>
+<h4 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h4><p>损失函数的一个自然选择是误分类点的总数，但这样不是参数的连续可导函数，不易优化。</p>
+<p>感知机选择的损失函数是误分类点到超平面S的总距离，输入空间任一点到超平面S的距离为</p>
+<script type="math/tex; mode=display">
+\frac 1 {\|w\|} |w·x_0+b|,其中\|w\|为w的L_2范数</script><p>对于误分类的数据来说，始终有</p>
+<script type="math/tex; mode=display">
+-y_i(w·x_i+b) > 0</script><p>所以距离为</p>
+<script type="math/tex; mode=display">
+- \frac 1 {\|w\|}y_i(w·x_i+b)</script><p>假设误分类点集合为M，求和即得</p>
+<script type="math/tex; mode=display">
+- \frac 1 {\|w\|}\sum _{x_i\in M}y_i(w·x_i+b)</script><p>不考虑系数，损失函数即为</p>
+<script type="math/tex; mode=display">
+L(w, b) = - \sum _{x_i\in M}y_i(w·x_i+b)</script><p>误分类点越少，损失函数值越小，如果没有误分类点，损失函数值为0。</p>
+<h2 id="2-3-感知机学习算法"><a href="#2-3-感知机学习算法" class="headerlink" title="2.3 感知机学习算法"></a>2.3 感知机学习算法</h2><h3 id="形式化"><a href="#形式化" class="headerlink" title="形式化"></a>形式化</h3><p>给定训练集</p>
+<script type="math/tex; mode=display">
+T = \{(x_1, y_1), (x_2, y_2), ... , (x_N, y_N)\} \\
+x_i\in {\cal X} = R^n, y_i \in {\cal Y} = \{-1, +1\}</script><p>求参数w和b，使得损失函数极小化</p>
+<script type="math/tex; mode=display">
+\min_{w,b} L(w,b) = - \sum _{x_i\in M}y_i(w·x_i+b)</script><p>学习算法是误分类驱动的，具体采用随机梯度下降法，首先任意选取一个超平面，之后用梯度下降法不断极小化目标函数。</p>
+<p>损失函数的梯度为</p>
+<script type="math/tex; mode=display">
+\nabla_w L(w,b) = -\sum _{x_i\in M} y_ix_i \\
+\nabla_b L(w,b) = -\sum _{x_i\in M} y_i</script><p>随机选取一个误分类点，对参数进行更新</p>
+<script type="math/tex; mode=display">
+w \leftarrow w + \eta y_ix_i \\
+b \leftarrow b + \eta y_i \\
+\eta \in (0, 1]</script><h3 id="原始形式"><a href="#原始形式" class="headerlink" title="原始形式"></a>原始形式</h3><ol>
+<li><p>选取参数初值<script type="math/tex">w_0,b_0</script></p>
+</li>
+<li><p>在训练集中选取数据<script type="math/tex">(x_i, y_i)</script></p>
+</li>
+<li><p>如果<script type="math/tex">y_i(wx_i+b)\leq 0</script>，则更新参数</p>
+<script type="math/tex; mode=display">
+w \leftarrow w + \eta y_ix_i \\
+b \leftarrow b + \eta y_i</script></li>
+<li><p>转至2直至没有误分类点</p>
+</li>
+</ol>
+<h3 id="收敛性"><a href="#收敛性" class="headerlink" title="收敛性"></a>收敛性</h3><p>(<strong>Novikoff</strong>) 存在满足条件的超平面，且感知机算法的误分类次数k满足不等式</p>
+<script type="math/tex; mode=display">
+k \leq (\frac R \gamma)^2</script><h3 id="对偶形式"><a href="#对偶形式" class="headerlink" title="对偶形式"></a>对偶形式</h3><p>基本想法是，将w和b表示为实例x与标记y的线性组合，通过求解系数求得w和b。</p>
+<p>最后学习到的w和b可表示为</p>
+<script type="math/tex; mode=display">
+w = \sum _{i=1} ^N \alpha_iy_ix_i \\
+b = \sum _{i=1} ^N \alpha_iy_i</script><p>训练过程</p>
+<ol>
+<li><p>选取α和b为0,</p>
+</li>
+<li><p>在训练集中选取数据</p>
+</li>
+<li><p>若<script type="math/tex">y_i(\sum _{j=1} ^N \alpha_jy_jx_j\cdot x_i+b)\leq 0</script>，则更新参数</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+\alpha_i \leftarrow \alpha_i + \eta \\
+b \leftarrow b + \eta y_i</script><ol>
+<li>转至2直至没有误分类数据</li>
+</ol>
+<blockquote>
+<p>Gram矩阵？</p>
+</blockquote>
+<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Perceptron</span><br><span class="line"></span><br><span class="line">clf = Perceptron(fit_intercept=<span class="literal">True</span>, </span><br><span class="line">                 max_iter=<span class="number">1000</span>, </span><br><span class="line">                 shuffle=<span class="literal">True</span>)</span><br><span class="line">clf.fit(X, y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Weights assigned to the features.</span></span><br><span class="line">print(clf.coef_)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Constants in decision function.</span></span><br><span class="line">print(clf.intercept_)</span><br><span class="line"></span><br><span class="line">y_ = -(clf.coef_[<span class="number">0</span>][<span class="number">0</span>]*x_ponits + clf.intercept_)/clf.coef_[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">plt.plot(x_ponits, y_)</span><br><span class="line">plt.plot(x_ponits, y_)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>统计学习方法</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>感知机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Label-Specific Dual Graph Neural Network for Multi-Label Text Classification</title>
+    <url>/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/</url>
+    <content><![CDATA[<p>ACL2021，来自中国科学院大学。提出LDGN，融入类别信息，基于label occurrence和dynamic reconstruction使用GCN建模。</p>
+<p><img src="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823103052567.png" alt="image-20210823103052567" style="zoom:67%;"></p>
+<a id="more"></a>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
+<li>pdf: <a href="https://aclanthology.org/2021.acl-long.298.pdf">https://aclanthology.org/2021.acl-long.298.pdf</a></li>
+</ul>
+<p>多标签文本分类（MLTC）有许多应用，如情感分析、网页标注等，但如何处理标签之间的复杂关系是一个困难的问题。</p>
+<p>现有方法主要关注建模增强的文本表示和标签依赖关系，这些模型考虑了标签的结构和语义信息，但不能很好地处理相似标签。作者提出他们忽略了标签和文本的关联，使得从不同标签学得的文本表示是相同的。</p>
+<p>最近有一些工作使用attention机制探索标签的语义联系，学习label-specific文本表示。在此基础上，可以进一步探索label-specific components之间的语义交互，这可以利用一些统计信息，比如使用类别间的统计互信息建立标签共现图，但统计信息也有不足之处。</p>
+<ul>
+<li>训练数据中的共现特征是不完整并且带有噪声的</li>
+<li>对于少样本的标签可能会有bias</li>
+<li>形成长尾分布，导致过拟合</li>
+</ul>
+<h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><p>模型可以分为两部分：label-specific文本表示和用于语义交互学习的dual graph neural network。</p>
+<h3 id="Label-specific-Document-Representation"><a href="#Label-specific-Document-Representation" class="headerlink" title="Label-specific Document Representation"></a>Label-specific Document Representation</h3><p>文章使用BiLSTM作为编码器，得到文本表示，采用随机初始化的label表示计算attention score。</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\alpha_{i,j} &= \frac{\exp(\mathbf{h_jc_i^T})}{\sum_{j}\exp(\mathbf{h_jc_i^T})} \\
+\mathbf{u_i} &= \sum_j{\alpha_{i, j}\mathbf{h_j}}
+\end{align}</script><h3 id="Dual-Graph-Neural-Network"><a href="#Dual-Graph-Neural-Network" class="headerlink" title="Dual Graph Neural Network"></a>Dual Graph Neural Network</h3><p>基于label co-occurrence的先验，建立label graph，随后采用一个两层的GCN进行学习。</p>
+<p>具体而言，对训练集中的所有标签对计算概率，得到转移矩阵<script type="math/tex">\mathbf{A}^s\in R^{|C|\times|C|}</script>，其中<script type="math/tex">\mathbf{A}^s_{ij}</script>表示样本属于第j类时，属于第i类的概率。</p>
+<p>GCN以<script type="math/tex">\mathbf{U}\in R^{|C|\times D}</script>作为输入，输出<script type="math/tex">\mathbf{H}^2\in R^{|C|\times D'}</script>。</p>
+<p>label graph基于训练集建立，可能带有噪声并形成长尾分布，本文采用了re-learning的方法处理这个问题。</p>
+<p>采用1×1卷积和点积，得到动态重建之后的图。</p>
+<script type="math/tex; mode=display">
+\mathbf{A}^D=f((\mathbf{W}_a*\mathbf{H}^2)^{\mathbf{T}}(\mathbf{W}_a*\mathbf{H}^2))</script><p>其中激活函数采用sigmoid，随后归一化得到最终的邻接矩阵<script type="math/tex">\hat{\mathbf{A}}^D</script>，再用一个两层的GCN学习，得到<script type="math/tex">\mathbf{H}^4\in R^{|C|\times D'}</script>。</p>
+<h3 id="Multi-label-Text-Classification"><a href="#Multi-label-Text-Classification" class="headerlink" title="Multi-label Text Classification"></a>Multi-label Text Classification</h3><p>将两次GCN学习的节点表示拼接，作为最终的节点表示，送入全连接层中分类，采用BCE Loss。</p>
+<script type="math/tex; mode=display">
+\mathbf{H^O = [H^2,H^4]} \\
+\hat{y} = \sigma(\mathbf{W_1H^O})</script><h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>刷新SOTA。</p>
+<p><img src="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823110708702.png" alt="image-20210823110708702" style="zoom: 50%;"></p>
+<p><img src="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823110727630.png" alt="image-20210823110727630" style="zoom: 50%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>MLTC</tag>
       </tags>
   </entry>
 </search>
