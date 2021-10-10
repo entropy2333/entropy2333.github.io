@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://entropy2333.github.io/"/>
-  <updated>2021-08-23T03:10:12.504Z</updated>
+  <updated>2021-10-10T05:36:34.509Z</updated>
   <id>https://entropy2333.github.io/</id>
   
   <author>
@@ -17,13 +17,67 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Query2Label: A Simple Transformer Way to Multi-Label Classification</title>
+    <link href="https://entropy2333.github.io/2021/10/10/Query2Label-A-Simple-Transformer-Way-to-Multi-Label-Classification/"/>
+    <id>https://entropy2333.github.io/2021/10/10/Query2Label-A-Simple-Transformer-Way-to-Multi-Label-Classification/</id>
+    <published>2021-10-10T03:25:22.000Z</published>
+    <updated>2021-10-10T05:36:34.509Z</updated>
+    
+    <content type="html"><![CDATA[<p>来自清华-博世机器学习研究中心，将Transformer解码器用于多标签分类，将label embedding作为query，计算与feature map的cross-attention。在MS-COCO、PASCAL VOC、NUS-WIDE和Visual Genome上进行了实验，取得了SOTA结果。</p><p><img src="/2021/10/10/Query2Label-A-Simple-Transformer-Way-to-Multi-Label-Classification/image-20211010113901822.png" alt="image-20211010113901822" style="zoom:67%;"></p><a id="more"></a><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul><li>arxiv: <a href="https://arxiv.org/pdf/2107.10834.pdf">https://arxiv.org/pdf/2107.10834.pdf</a></li><li>code: <a href="https://github.com/SlongLiu/query2labels">https://github.com/SlongLiu/query2labels</a></li></ul><h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>多标签分类主要有两个问题</p><ul><li>如何解决标签不平衡问题</li><li>如何提取有效的local特征</li></ul><p>前者是因为one-vs-all策略采用多个独立的二分类器，后者则是因为全局的池化特征稀释了其他标签，使得难以识别细小物体。</p><p>目前的研究方向主要有三类</p><ul><li>针对正负例的不平衡问题，改进loss函数，包括focal loss、distribution-balanced loss和今年阿里提出的<a href="https://paperswithcode.com/paper/asymmetric-loss-for-multi-label">asymmetric loss</a>。</li><li>建模label correlations，比如使用label co-occurrence和GCN。</li><li>定位感兴趣的区域，比如使用spatial transformer。</li></ul><p><a href="https://paperswithcode.com/paper/cross-modality-attention-with-semantic-graph">[AAAI 2019]《Cross-modality attention with semantic graph embedding for multi-label classification》</a>这篇文章，在裁剪负值后，计算label embedding和feature map的cosine相似度作为attention map。但是这种分法可能会导致attention过于平滑，从而作用有限，难以提取有效的desired feature。</p><p><img src="/2021/10/10/Query2Label-A-Simple-Transformer-Way-to-Multi-Label-Classification/image-20211010122647527.png" alt="image-20211010122647527" style="zoom:67%;"></p><center>Cross-modality attention</center><p>基于上述，本文利用Transformer内置的cross-attention作为特征选择器，提取有效的desired feature。受<a href="https://paperswithcode.com/paper/end-to-end-object-detection-with-transformers">DETR</a>启发，采用可学习的label embedding作为query，也避免了采用label corrleation等方法带来的噪声。</p><h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><p>本文是一个two-stage的方法，第一步采用backbone（如ViT）提取图片的时序特征，第二步将特征和label embedding送入transformer中训练。</p><p><img src="/2021/10/10/Query2Label-A-Simple-Transformer-Way-to-Multi-Label-Classification/image-20211010124725252.png" alt="image-20211010124725252" style="zoom: 67%;"></p><center>Query2Label的总体框架</center><p>给定图片<script type="math/tex">x\in\mathbb{R}^{H_0\times W_0 \times 3}</script>，提取特征<script type="math/tex">\mathcal{F}_0 \in \mathbb{R}^{H \times W \times d_0}</script>，后接全连接层并reshape得到特征<script type="math/tex">\mathcal{F} \in \mathbb{R}^{HW \times d}</script>。</p><p>构造label embedding<script type="math/tex">\mathcal{Q}_0 \in \mathbb{R}^{K\times d}</script>，其中<script type="math/tex">K</script>为类别数，Transformer的每一层解码层都在更新参数。</p><script type="math/tex; mode=display">\begin{aligned}&{\rm{self-attn}}:    &&\mathcal{Q}_i^{(1)} = {\rm{MultiHead}}(\tilde{\mathcal{Q}}_{i-1}, \tilde{\mathcal{Q}}_{i-1}, \mathcal{Q}_{i-1})\\&{\rm{cross-attn}}:    &&\mathcal{Q}_i^{(2)} = {\rm{MultiHead}}(\tilde{\mathcal{Q}}_{i-1}, \tilde{\mathcal{F}}, \mathcal{F})\\&{\rm{FFN}}:    &&\mathcal{Q}_i = {\rm{FFN}}(\mathcal{Q}_{i}^{(2)})\end{aligned}</script><p>在self-attention中，query、key和value都来自label embedding；而在cross-attention中，key和value变成了时序特征。</p><p>在经过L层Transformer后，得到最后一层的query向量<script type="math/tex">\mathcal{Q}_L \in \mathbb{R}^{K\times d}</script>，使用全连接层+sigmoid进行分类。</p><script type="math/tex; mode=display">p_k = \mathrm{Sigmoid}(W_k^T\mathcal{Q}_{L,k}+b_k)</script><p>本文采用了一种简化的非对称损失以解决类别不平衡问题</p><script type="math/tex; mode=display">\begin{align}\mathcal{L} = \frac 1 K\sum_{k=1}^K    \begin{cases}        (1-p_k)^{\gamma+}\log(p_k),& y_k=1 \\        (p_k)^{\gamma-}\log(1-p_k), & y_k = 0    \end{cases}\end{align}</script><p>在实验中选取<script type="math/tex">\gamma+=0</script>和<script type="math/tex">\gamma-=1</script>。</p><h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>使用了一层Transformer encoder和两层Transformer decoder，encoder只是为了更好地学习特征表示，但即使不用encoder只用一层decoder也可以表现很好。</p><p>采用Adam优化器，weight decay为1e-2，学习率设为1e-4，训练80epochs。</p><p>在四个数据集上刷新SOTA，并做了消融实验。</p><p><img src="/2021/10/10/Query2Label-A-Simple-Transformer-Way-to-Multi-Label-Classification/image-20211010133339563.png" alt="image-20211010133339563" style="zoom:67%;"></p><center>消融实验</center>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;来自清华-博世机器学习研究中心，将Transformer解码器用于多标签分类，将label embedding作为query，计算与feature map的cross-attention。在MS-COCO、PASCAL VOC、NUS-WIDE和Visual Genome上进行了实验，取得了SOTA结果。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2021/10/10/Query2Label-A-Simple-Transformer-Way-to-Multi-Label-Classification/image-20211010113901822.png&quot; alt=&quot;image-20211010113901822&quot; style=&quot;zoom:67%;&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
+    
+    
+      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
+    
+      <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
+    
+      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Lawformer: A Pre-trained Language Model for Chinese Legal Long Documents</title>
+    <link href="https://entropy2333.github.io/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/"/>
+    <id>https://entropy2333.github.io/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/</id>
+    <published>2021-08-25T07:02:46.000Z</published>
+    <updated>2021-10-10T03:22:35.947Z</updated>
+    
+    <content type="html"><![CDATA[<p>来自清华刘知远老师组，release了针对法律长文件的预训练语言模型。</p><p><img src="/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/image-20210825160718281.png" alt="image-20210825160718281" style="zoom: 67%;"></p><a id="more"></a><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul><li>code: <a href="https://github.com/thunlp/LegalPLMs">https://github.com/thunlp/LegalPLMs</a></li><li>arxiv: <a href="https://arxiv.org/pdf/2105.03887v1.pdf">https://arxiv.org/pdf/2105.03887v1.pdf</a></li></ul><h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>法律领域有许多长文件，刑事案件的平均长度为1260.2，远远超过了主流预训练模型的最大长度（BERT、RoBerta等）。如果对于这样长的序列采用注意力机制，会带来很大的计算复杂度，也很容易爆显存。</p><p>本文提出了Lawformer模型，在大规模的中文法律长文本上预训练得到。Lawformer基于Longformer，可以处理上千个token。并且Lawformer并没有采用标准的self-attention，而是结合局部滑窗和全局attention机制来捕获长程依赖。</p><h3 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h3><ul><li>发布了第一个中文法律预训练模型Lawformer，可以处理上千个字符的法律长文本。</li><li>在典型的LegalAI任务上评估了Lawformer，并为刑事和民事案件提出了一个新的法律诉讼判决数据集。</li><li>大量实验结果表明，Lawformer在长文本任务上能取得很好的表现。对于短文本，在法律领域也可以媲美RoBerta。</li></ul><h2 id="Approach"><a href="#Approach" class="headerlink" title="Approach"></a>Approach</h2><p>采用Longformer作为编码器，其结合了三种注意力机制来编码长序列：</p><ul><li>Sliding Window attention<ul><li>每个token只计算周围w/2的的attention，随着层数增加，全局信息也可以被整合进隐层表示。</li></ul></li><li>Dilated Sliding Window Attention<ul><li>类似于dilated CNN，窗口增大但之间有间隔。在多头注意力中，间隔可以不同，可以促进模型性能。</li></ul></li><li>Global Attention<ul><li>对于选定的token，关注整个序列产生隐层表示。</li></ul></li></ul><h3 id="Data-Processing"><a href="#Data-Processing" class="headerlink" title="Data Processing"></a>Data Processing</h3><p>从中国裁判文书网上搜集了千万份的法律文书，只保留了刑事和民事案件。将每份文书分为四个部分：当事人信息、事实描述、法院意见和判决结果，只保留了事实描述长于50的文书。</p><p><img src="/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/image-20210825161233449.png" alt="image-20210825161233449" style="zoom: 80%;"></p><h3 id="Pre-training-Details"><a href="#Pre-training-Details" class="headerlink" title="Pre-training Details"></a>Pre-training Details</h3><p>基于RoBERTa-wwm-ext的checkpoint训练，以MLM为任务。学习率为5e-5，序列长度4096，batch_size为32。为充分利用长序列，将一些短文书拼接。优化器为Adam，模型采用8块32G V100训练。</p><h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>选了BERT、RoBERTa和Legal-RoBERTa作为基线，在多个法律任务上进行比较，包括判决预测、案例检索、阅读理解和问答。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;来自清华刘知远老师组，release了针对法律长文件的预训练语言模型。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/image-20210825160718281.png&quot; alt=&quot;image-20210825160718281&quot; style=&quot;zoom: 67%;&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
+    
+    
+      <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
+    
+      <category term="PLM" scheme="https://entropy2333.github.io/tags/PLM/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Label-Specific Dual Graph Neural Network for Multi-Label Text Classification</title>
     <link href="https://entropy2333.github.io/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/"/>
     <id>https://entropy2333.github.io/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/</id>
     <published>2021-08-23T02:10:01.000Z</published>
-    <updated>2021-08-23T03:10:12.504Z</updated>
+    <updated>2021-08-23T06:05:30.962Z</updated>
     
-    <content type="html"><![CDATA[<p>ACL2021，来自中国科学院大学。提出LDGN，融入类别信息，基于label occurrence和dynamic reconstruction使用GCN建模。</p><p><img src="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823103052567.png" alt="image-20210823103052567" style="zoom:67%;"></p><a id="more"></a><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul><li>pdf: <a href="https://aclanthology.org/2021.acl-long.298.pdf">https://aclanthology.org/2021.acl-long.298.pdf</a></li></ul><p>多标签文本分类（MLTC）有许多应用，如情感分析、网页标注等，但如何处理标签之间的复杂关系是一个困难的问题。</p><p>现有方法主要关注建模增强的文本表示和标签依赖关系，这些模型考虑了标签的结构和语义信息，但不能很好地处理相似标签。作者提出他们忽略了标签和文本的关联，使得从不同标签学得的文本表示是相同的。</p><p>最近有一些工作使用attention机制探索标签的语义联系，学习label-specific文本表示。在此基础上，可以进一步探索label-specific components之间的语义交互，这可以利用一些统计信息，比如使用类别间的统计互信息建立标签共现图，但统计信息也有不足之处。</p><ul><li>训练数据中的共现特征是不完整并且带有噪声的</li><li>对于少样本的标签可能会有bias</li><li>形成长尾分布，导致过拟合</li></ul><h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><p>模型可以分为两部分：label-specific文本表示和用于语义交互学习的dual graph neural network。</p><h3 id="Label-specific-Document-Representation"><a href="#Label-specific-Document-Representation" class="headerlink" title="Label-specific Document Representation"></a>Label-specific Document Representation</h3><p>文章使用BiLSTM作为编码器，得到文本表示，采用随机初始化的label表示计算attention score。</p><script type="math/tex; mode=display">\begin{align}\alpha_{i,j} &= \frac{\exp(\mathbf{h_jc_i^T})}{\sum_{j}\exp(\mathbf{h_jc_i^T})} \\\mathbf{u_i} &= \sum_j{\alpha_{i, j}\mathbf{h_j}}\end{align}</script><h3 id="Dual-Graph-Neural-Network"><a href="#Dual-Graph-Neural-Network" class="headerlink" title="Dual Graph Neural Network"></a>Dual Graph Neural Network</h3><p>基于label co-occurrence的先验，建立label graph，随后采用一个两层的GCN进行学习。</p><p>具体而言，对训练集中的所有标签对计算概率，得到转移矩阵<script type="math/tex">\mathbf{A}^s\in R^{|C|\times|C|}</script>，其中<script type="math/tex">\mathbf{A}^s_{ij}</script>表示样本属于第j类时，属于第i类的概率。</p><p>GCN以<script type="math/tex">\mathbf{U}\in R^{|C|\times D}</script>作为输入，输出<script type="math/tex">\mathbf{H}^2\in R^{|C|\times D'}</script>。</p><p>label graph基于训练集建立，可能带有噪声并形成长尾分布，本文采用了re-learning的方法处理这个问题。</p><p>采用1×1卷积和点积，得到动态重建之后的图。</p><script type="math/tex; mode=display">\mathbf{A}^D=f((\mathbf{W}_a*\mathbf{H}^2)^{\mathbf{T}}(\mathbf{W}_a*\mathbf{H}^2))</script><p>其中激活函数采用sigmoid，随后归一化得到最终的邻接矩阵<script type="math/tex">\hat{\mathbf{A}}^D</script>，再用一个两层的GCN学习，得到<script type="math/tex">\mathbf{H}^4\in R^{|C|\times D'}</script>。</p><h3 id="Multi-label-Text-Classification"><a href="#Multi-label-Text-Classification" class="headerlink" title="Multi-label Text Classification"></a>Multi-label Text Classification</h3><p>将两次GCN学习的节点表示拼接，作为最终的节点表示，送入全连接层中分类，采用BCE Loss。</p><script type="math/tex; mode=display">\mathbf{H^O = [H^2,H^4]} \\\hat{y} = \sigma(\mathbf{W_1H^O})</script><h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>刷新SOTA。</p><p><img src="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823110708702.png" alt="image-20210823110708702" style="zoom: 50%;"></p><p><img src="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823110727630.png" alt="image-20210823110727630" style="zoom: 50%;"></p>]]></content>
+    <content type="html"><![CDATA[<p>ACL2021，来自中国科学院大学。提出LDGN，融入类别信息，基于label occurrence和dynamic reconstruction使用GCN建模。</p><p><img src="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823103052567.png" alt="image-20210823103052567" style="zoom:67%;"></p><a id="more"></a><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul><li>pdf: <a href="https://aclanthology.org/2021.acl-long.298.pdf">https://aclanthology.org/2021.acl-long.298.pdf</a></li></ul><p>多标签文本分类（MLTC）有许多应用，如情感分析、网页标注等，但如何处理标签之间的复杂关系是一个困难的问题。</p><p>现有方法主要关注建模增强的文本表示和标签依赖关系，这些模型考虑了标签的结构和语义信息，但不能很好地处理相似标签。作者提出他们忽略了标签和文本的关联，使得从不同标签学得的文本表示是相同的。</p><p>最近有一些工作使用attention机制探索标签的语义联系，学习label-specific文本表示。在此基础上，可以进一步探索label-specific components之间的语义交互，这可以利用一些统计信息，比如使用类别间的统计互信息建立标签共现图，但统计信息也有不足之处。</p><ul><li>训练数据中的共现特征是不完整并且带有噪声的</li><li>对于少样本的标签可能会有bias</li><li>形成长尾分布，导致过拟合</li></ul><h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><p>模型可以分为两部分：label-specific文本表示和用于语义交互学习的dual graph neural network。</p><h3 id="Label-specific-Document-Representation"><a href="#Label-specific-Document-Representation" class="headerlink" title="Label-specific Document Representation"></a>Label-specific Document Representation</h3><p>文章使用BiLSTM作为编码器，得到文本表示，采用随机初始化的label表示计算attention score。</p><script type="math/tex; mode=display">\begin{align}\alpha_{i,j} &= \frac{\exp(\mathbf{h_jc_i^T})}{\sum_{j}\exp(\mathbf{h_jc_i^T})} \\\mathbf{u_i} &= \sum_j{\alpha_{i, j}\mathbf{h_j}}\end{align}</script><h3 id="Dual-Graph-Neural-Network"><a href="#Dual-Graph-Neural-Network" class="headerlink" title="Dual Graph Neural Network"></a>Dual Graph Neural Network</h3><p>基于label co-occurrence的先验，建立label graph，随后采用一个两层的GCN进行学习。</p><p>具体而言，对训练集中的所有标签对计算概率，得到转移矩阵<script type="math/tex">\mathbf{A}^s\in R^{|C|\times|C|}</script>，其中<script type="math/tex">\mathbf{A}^s_{ij}</script>表示样本属于第j类时，属于第i类的概率。</p><p>GCN以<script type="math/tex">\mathbf{U}\in R^{|C|\times D}</script>作为输入，输出<script type="math/tex">\mathbf{H}^2\in R^{|C|\times D'}</script>。</p><p>label graph基于训练集建立，可能带有噪声并形成长尾分布，本文采用了re-learning的方法处理这个问题。</p><p>采用1×1卷积和点积，得到动态重建之后的图。</p><script type="math/tex; mode=display">\mathbf{A}^D=f((\mathbf{W}_a*\mathbf{H}^2)^{\mathbf{T}}(\mathbf{W}_b*\mathbf{H}^2))</script><p>其中激活函数采用sigmoid，随后归一化得到最终的邻接矩阵<script type="math/tex">\hat{\mathbf{A}}^D</script>，再用一个两层的GCN学习，得到<script type="math/tex">\mathbf{H}^4\in R^{|C|\times D'}</script>。</p><h3 id="Multi-label-Text-Classification"><a href="#Multi-label-Text-Classification" class="headerlink" title="Multi-label Text Classification"></a>Multi-label Text Classification</h3><p>将两次GCN学习的节点表示拼接，作为最终的节点表示，送入全连接层中分类，采用BCE Loss。</p><script type="math/tex; mode=display">\mathbf{H^O = [H^2,H^4]} \\\hat{y} = \sigma(\mathbf{W_1H^O})</script><h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>刷新SOTA。</p><p><img src="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823110708702.png" alt="image-20210823110708702" style="zoom: 50%;"></p><p><img src="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823110727630.png" alt="image-20210823110727630" style="zoom: 50%;"></p>]]></content>
     
     <summary type="html">
     
@@ -438,52 +492,6 @@
     
     
       <category term="分组密码" scheme="https://entropy2333.github.io/tags/%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>现代密码学（二）古典密码</title>
-    <link href="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/"/>
-    <id>https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/</id>
-    <published>2020-12-27T09:08:17.000Z</published>
-    <updated>2020-12-27T10:15:18.993Z</updated>
-    
-    <content type="html"><![CDATA[<p>介绍古典代换密码和古典置换密码。</p><a id="more"></a><h2 id="古典密码"><a href="#古典密码" class="headerlink" title="古典密码"></a>古典密码</h2><p>古典密码只要有两种加密方式，替换和置换（substitution and transposition）。</p><p>替换是用新的字符代替原字符，置换是不改变原文字母集，打乱字符顺序。</p><h2 id="古典代换密码"><a href="#古典代换密码" class="headerlink" title="古典代换密码"></a>古典代换密码</h2><h3 id="Caesar-Cipher-恺撒密码"><a href="#Caesar-Cipher-恺撒密码" class="headerlink" title="Caesar Cipher-恺撒密码"></a>Caesar Cipher-恺撒密码</h3><p>恺撒密码的替换方法是，每个字母用其后的第三个字母替换。</p><script type="math/tex; mode=display">\alpha\leftarrow\alpha+3</script><p>恺撒密码可以表示为</p><ul><li>Plain: ABCDEFGHIJKLMNOPQRSTUVWXYZ</li><li>Cipher: DEFGHIJKLMNOPQRSTUVWXYZABC</li></ul><p>如密文L FDPH L VDZ L FRQTXHUHG，对应的明文即为移位三位，I CAME I SAW CONQUERED。</p><p>当然，恺撒密码也可以将移位的长度改成1-25的任一个，换言之，共有25种可能的密码算法（移位0不可用）。</p><h3 id="混合单表替换密码"><a href="#混合单表替换密码" class="headerlink" title="混合单表替换密码"></a>混合单表替换密码</h3><p>单字母替换密码用一个字母代替另外一个字母，相当于构造了字母表到字母表的双射，密钥长度是26个字母。</p><h3 id="Vigenere-Cipher"><a href="#Vigenere-Cipher" class="headerlink" title="Vigenère Cipher"></a>Vigenère Cipher</h3><p>发明了多字母替换密码，一个字母可以被多个字母替换，通过密钥选择对每个字母使用哪个字母表。</p><p>密钥的第i个字母表示使用第i个字母表。</p><p>如下例，密钥为CIPHER，分别定义了六张字母表（六个双射）。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227175332395.png" alt="image-20201227175332395"></p><p>对于明文，用密钥选择字母用哪个字母表，这里的效果相当于明文与密钥相加减一。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227175322132.png" alt="image-20201227175322132"></p><h3 id="Ciphers-Machines"><a href="#Ciphers-Machines" class="headerlink" title="Ciphers Machines"></a>Ciphers Machines</h3><ul><li>Jefferson Cylinder</li><li>Wheatstone disc</li><li>the German Enigma</li><li>the Swedish Hagelin</li><li>the Janpanese Purple</li></ul><h2 id="古典置换密码"><a href="#古典置换密码" class="headerlink" title="古典置换密码"></a>古典置换密码</h2><p>置换密码的核心思想是，按一定规则写出明文，按另一规则读出密文。</p><p>密钥就是用于读密文和写明文的方法。</p><h3 id="Scytale密码"><a href="#Scytale密码" class="headerlink" title="Scytale密码"></a>Scytale密码</h3><p>消息沿着圆柱横写，密钥是纸条和圆柱的宽度。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180058573.png" alt="image-20201227180058573"></p><h3 id="Rail-Fence-Cipher-轨道栅栏密码"><a href="#Rail-Fence-Cipher-轨道栅栏密码" class="headerlink" title="Rail Fence Cipher-轨道栅栏密码"></a>Rail Fence Cipher-轨道栅栏密码</h3><p>在不同行写下消息字母，按行读取消息。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180208972.png" alt="image-20201227180208972"></p><h3 id="几何图形密码"><a href="#几何图形密码" class="headerlink" title="几何图形密码"></a>几何图形密码</h3><p>以一种形式写，用另一种形式读。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180223935.png" alt="image-20201227180223935"></p><h3 id="行变换密码"><a href="#行变换密码" class="headerlink" title="行变换密码"></a>行变换密码</h3><p>按行写出字母，以密钥给出的顺序按行读出密文。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180454135.png" alt="image-20201227180454135"></p><p>对上图的解释：</p><ul><li>给定明文，分组长度为5，按25413的顺序对字母重新编排，如THESI变成STIEH。</li><li>给定密文，分组长度为5，按41532的顺序读取信息，如STIEH变成THESI。</li></ul><p>其实相当于定义了置换</p><script type="math/tex; mode=display">\sigma = \begin{pmatrix} 1 & 2 & 3 & 4 & 5 \\ 2 & 5 & 4 & 1 & 3 \end{pmatrix}</script><p>对应的逆置换即为</p><script type="math/tex; mode=display">\sigma^{-1} = \begin{pmatrix} 2 & 5 & 4 & 1 & 3 \\ 1 & 2 & 3 & 4 & 5 \end{pmatrix} = \begin{pmatrix} 1 & 2 & 3 & 4 & 5 \\ 4 & 1 & 5 & 3 & 2 \end{pmatrix}</script><h4 id="密码分析"><a href="#密码分析" class="headerlink" title="密码分析"></a>密码分析</h4><p>我们希望猜测密钥周期，再对可能的行列变换进行猜测。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227181407687.png" alt="image-20201227181407687"></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;介绍古典代换密码和古典置换密码。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="现代密码学" scheme="https://entropy2333.github.io/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
-    
-    
-      <category term="古典密码" scheme="https://entropy2333.github.io/tags/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>现代密码学（一）绪论</title>
-    <link href="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%80%EF%BC%89%E7%BB%AA%E8%AE%BA/"/>
-    <id>https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%80%EF%BC%89%E7%BB%AA%E8%AE%BA/</id>
-    <published>2020-12-27T09:07:53.000Z</published>
-    <updated>2020-12-27T09:27:40.070Z</updated>
-    
-    <content type="html"><![CDATA[<p>介绍密码学的基本概念。</p><a id="more"></a><h2 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h2><p>密码学是一门研究秘密信息隐写技术的学科。</p><ul><li>可以使消息的内容对所有人（除了发送者和接收者）保密</li><li>可以使接收者验证消息的正确性</li></ul><p>常用的术语如下</p><ul><li>明文 plaintext</li><li>密文 ciphertext</li><li>密码算法 cipher</li><li>密钥 key</li><li>编码 encipher/encode</li><li>译码 decipher/decode</li><li>密码分析 cryptanalysis/codebreaking</li><li>密码学 cryptology</li></ul><h3 id="符号记法"><a href="#符号记法" class="headerlink" title="符号记法"></a>符号记法</h3><p>加密 Encryption</p><script type="math/tex; mode=display">C = EK(P)</script><p>解密 Decryption</p><script type="math/tex; mode=display">P = EK_{-1}(C)</script><p>可以把密码系统理解为明文空间到密文空间的变换，其中密钥取自密钥空间。</p><script type="math/tex; mode=display">P\xrightarrow{EK}C \\C\xrightarrow{EK_{-1}}P</script><h2 id="算法分类"><a href="#算法分类" class="headerlink" title="算法分类"></a>算法分类</h2><ul><li>私钥加密算法<ul><li>分组密码</li><li>流密码（序列密码）</li></ul></li><li>公钥加密算法</li><li>数字签名算法</li><li>哈希函数</li></ul><h2 id="密码分析"><a href="#密码分析" class="headerlink" title="密码分析"></a>密码分析</h2><p>密码分析学是指在没有加密密钥的情况下，攻击密文的过程。</p><ul><li>唯密文攻击<ul><li>只知道算法与一些密文</li><li>利用统计方法</li><li>需要能够识别明文</li></ul></li><li>已知明文攻击<ul><li>知道一些明文/密文对</li><li>利用已知的明文/密文对进行攻击</li></ul></li><li>选择明文攻击<ul><li>能够选择明文并得到相应的密文</li><li>利用算法的结构进行攻击</li></ul></li><li>选择密文攻击<ul><li>能够选择密文并得到相应的明文</li><li>利用对算法结构的知识进行攻击</li></ul></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;介绍密码学的基本概念。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="现代密码学" scheme="https://entropy2333.github.io/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
-    
-    
-      <category term="密码学" scheme="https://entropy2333.github.io/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
     
   </entry>
   
