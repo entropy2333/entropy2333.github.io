@@ -54,7 +54,7 @@ label graph基于训练集建立，可能带有噪声并形成长尾分布，本
 
 采用1×1卷积和点积，得到动态重建之后的图。
 $$
-\mathbf{A}^D=f((\mathbf{W}_a*\mathbf{H}^2)^{\mathbf{T}}(\mathbf{W}_a*\mathbf{H}^2))
+\mathbf{A}^D=f((\mathbf{W}_a*\mathbf{H}^2)^{\mathbf{T}}(\mathbf{W}_b*\mathbf{H}^2))
 $$
 其中激活函数采用sigmoid，随后归一化得到最终的邻接矩阵$$\hat{\mathbf{A}}^D$$，再用一个两层的GCN学习，得到$$\mathbf{H}^4\in R^{|C|\times D'}$$。
 

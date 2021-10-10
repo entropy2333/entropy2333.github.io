@@ -620,18 +620,18 @@ changyan:
 # For more information: https://valine.js.org, https://github.com/xCss/Valine
 valine:
   enable: true
-  appid: 9Rkoyb7YvqIO2CwPpoUhgzAv-gzGzoHsz # Your leancloud application appid
-  appkey: 7QBp13mLn70CK2sKfjsd9GJD # Your leancloud application appkey
+  appid: 4YzFtMjP3CbBoiDRnfdk5CFw-9Nh9j0Va # Your leancloud application appid
+  appkey: FQ4wwfmyNaTgMjKnNjtgCAXA # Your leancloud application appkey
   notify: false # Mail notifier
   verify: false # Verification code
-  placeholder: Just go go # Comment box placeholder
+  placeholder: "Too young, too simple" # Comment box placeholder
   avatar: mm # Gravatar style
   guest_info: nick,mail
   # guest_info: nick,mail,link # Custom comment header
   pageSize: 10 # Pagination size
-  language: # Language, available values: en, zh-cn
-  visitor: false # Article reading statistic
-  comment_count: false # If false, comment count will only be displayed in post page, not in home page
+  language: zh-cn # Language, available values: en, zh-cn
+  visitor: true # Article reading statistic
+  comment_count: true # If false, comment count will only be displayed in post page, not in home page
   recordIP: false # Whether to record the commenter IP
   serverURLs: # When the custom domain name is enabled, fill it in here (it will be detected automatically by default, no need to fill in)
   #post_meta_order: 0
@@ -902,8 +902,8 @@ vendors:
   fontawesome:
 
   # MathJax
-  # mathjax: //cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
-  mathjax:
+  mathjax: //cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  # mathjax:
 
   # KaTeX
   # katex: //cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css
