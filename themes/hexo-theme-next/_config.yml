@@ -902,7 +902,8 @@ vendors:
   fontawesome:
 
   # MathJax
-  mathjax: //cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  # mathjax: //cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  mathjax: //cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js
   # mathjax:
 
   # KaTeX
@@ -1008,5 +1009,5 @@ js: js
 images: images
 
 # add canvas-nest effect
-canvas_nest: 
+canvas_nest:
   enable: true
