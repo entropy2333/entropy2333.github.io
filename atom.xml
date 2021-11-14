@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://entropy2333.github.io/"/>
-  <updated>2021-11-02T14:22:40.328Z</updated>
+  <updated>2021-11-14T14:45:19.979Z</updated>
   <id>https://entropy2333.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>NLP From Scratch Without Large-Scale Pretraining: A Simple and Efficient Framework</title>
+    <link href="https://entropy2333.github.io/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/"/>
+    <id>https://entropy2333.github.io/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/</id>
+    <published>2021-11-14T11:51:01.000Z</published>
+    <updated>2021-11-14T14:45:19.979Z</updated>
+    
+    <content type="html"><![CDATA[<p>提出了一种简单有效的学习框架TLM，其不需要大规模的预训练。</p><p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114205822246.png" alt="image-20211114205822246" style="zoom:67%;"></p><a id="more"></a><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114203947385.png" alt="image-20211114203947385" style="zoom: 67%;"></p><ul><li>arxiv: <a href="https://arxiv.org/pdf/2111.04130v1.pdf">https://arxiv.org/pdf/2111.04130v1.pdf</a></li><li>code: <a href="https://github.com/yaoxingcheng/TLM">https://github.com/yaoxingcheng/TLM</a></li></ul><h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>NLP领域中，预训练-微调的框架已经显著地提升了各项任务的表现，但是预训练需要的算力过于高昂。RoBERTa-Large需要<script type="math/tex">4.36\times10^{21}</script>FLOPs的算力，而更大的GPT-3需要的算力是前者的50倍以上。大规模的预训练阻碍了研究者们探索新的预训练框架或者改进预训练的损失函数，相较之下人们花了大量精力改进微调步骤的算法，而其实预训练很大程度上决定了微调的上界。</p><p>尽管也有工作研究和改善语言模型的预训练，但他们大部分专注于设计样本高效（sample-efficient）的自监督任务，或者设计更有效的Transformer架构用于预训练。此外还有通过知识蒸馏的方式，改进推理的效率，但蒸馏前依旧需要大规模的预训练。</p><p>基于上述，本文提出了一种简单高效且无需预训练的框架，称为任务驱动的语言建模（<strong>T</strong>ask-driven Language <strong>M</strong>odeling，<strong>TLM</strong>）。本文的Motivation主要有以下两点：</p><ul><li>人类掌握任务只需要一小部分的知识，作者假设对于具体任务来说，大规模的语料过于冗余。</li><li>相较于优化无监督数据上的语言建模目标，在有监督的标注数据上训练对于下游任务是更高效的。</li></ul><p>TLM需要大规模的通用语料以及一些标注数据，将任务数据作为query以获取通用语料中的一个小的子集。本文在八个不同的任务上进行实验评估，在训练算力减小两个量级的情况下，取得了近于甚至超过BERT和RoBERTa的效果。·</p><h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><h3 id="TLM-Task-Driven-Language-Modeling"><a href="#TLM-Task-Driven-Language-Modeling" class="headerlink" title="TLM: Task-Driven Language Modeling"></a>TLM: Task-Driven Language Modeling</h3><p>作者认为，学习一个任务的关键之一在于快速准确地定位任务相关的信息。因此TLM包括两步：</p><ol><li>将任务数据作为query，从通用语料中检索数据；</li><li>在获取的数据和任务数据上，联合优化任务目标和语言建模目标。</li></ol><h4 id="Retrieval-From-General-Corpus"><a href="#Retrieval-From-General-Corpus" class="headerlink" title="Retrieval From General Corpus"></a>Retrieval From General Corpus</h4><p>给定任务数据<script type="math/tex">x_i\in\mathcal{T} = \{(x_i, y_i)\}_i</script>，从通用语料中<script type="math/tex">\mathcal{D}=\{d_i\}_i</script>获取子集<script type="math/tex">\mathcal{S_i} = \{\tilde{d}_{i,1},\tilde{d}_{i,2},\cdots\}</script>。<br>其中<script type="math/tex">\mathcal{S_i}</script>中包含了top-K个与<script type="math/tex">x_i</script>相似的样本，最后获取的数据即为并集<script type="math/tex">\mathcal{S}=\cup_iS_i</script>。</p><p>文章出于简单与高效性的考虑，使用BM25用于检索，而没有采用基于embedding的方法。</p><h4 id="Joint-Training"><a href="#Joint-Training" class="headerlink" title="Joint Training"></a>Joint Training</h4><p>TLM的优化目标如下：</p><script type="math/tex; mode=display">\mathbb{E}_{x\sim\mathcal{S}} [\rho_1\mathcal{L}_{\mathrm{mlm}}(x)] + \mathbb{E}_{x,y\sim\mathcal{T}}[\rho_2\mathcal{L}_{\mathrm{mlm}}(x) +\mathcal{L}_{\mathrm{task}}(f(x),y)]</script><p>其中<script type="math/tex">\rho_1</script>和<script type="math/tex">\rho_2</script>为超参数。</p><p>训练分为两阶段：</p><ul><li>第一阶段，将<script type="math/tex">\rho_1</script>个batch数据插入一个batch中用于梯度下降，这里<script type="math/tex">\rho_1</script>为整数；</li><li>第二阶段，将<script type="math/tex">\rho_1</script>和<script type="math/tex">\rho_2</script>都设为0，微调模型只优化任务目标。</li></ul><h3 id="Comparison-Between-TLM-and-PLMs"><a href="#Comparison-Between-TLM-and-PLMs" class="headerlink" title="Comparison Between TLM and PLMs"></a>Comparison Between TLM and PLMs</h3><div class="table-container"><table><thead><tr><th style="text-align:center"></th><th style="text-align:center">TLM</th><th style="text-align:center">PLMs</th></tr></thead><tbody><tr><td style="text-align:center">损失函数</td><td style="text-align:center"><script type="math/tex">\mathcal{L}_{task}</script>和<script type="math/tex">\mathcal{L}_{mlm}</script></td><td style="text-align:center"><script type="math/tex">\mathcal{L}_{mlm}</script></td></tr><tr><td style="text-align:center">训练数据</td><td style="text-align:center"><script type="math/tex">\mathcal{D}</script>的一个小子集和任务数据<script type="math/tex">\mathcal{T}</script></td><td style="text-align:center">完整语料<script type="math/tex">\mathcal{D}</script></td></tr><tr><td style="text-align:center">算力消耗</td><td style="text-align:center">8 GPUs<br>42 hours</td><td style="text-align:center">1000 GPUs<br>one day</td></tr><tr><td style="text-align:center">通用性</td><td style="text-align:center">Task-Driven</td><td style="text-align:center">Task-Agnostic</td></tr></tbody></table></div><p>作者从高效性、灵活性和通用性上进行了比较。</p><h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>作者将任务分为高资源和低资源两类，高资源有着超过5000个任务数据。</p><p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114222213976.png" alt="image-20211114222213976" style="zoom: 67%;"></p><p>从结果上来看，TLM以更少的算力取得了相近甚至更好的结果。</p><p>本文还比较了不同的检索方法以及不同的通用语料对结果的影响：</p><p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114223436750.png" alt="image-20211114223436750" style="zoom: 67%;"></p><p>也展现了不同超参的实验结果</p><p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114223828922.png" alt="image-20211114223828922" style="zoom:67%;"></p><p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114223841101.png" alt="image-20211114223841101" style="zoom:67%;"></p><p>此外也通过实验结果验证了第二阶段的有效性</p><p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114223924731.png" alt="image-20211114223924731" style="zoom:67%;"></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;提出了一种简单有效的学习框架TLM，其不需要大规模的预训练。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114205822246.png&quot; alt=&quot;image-20211114205822246&quot; style=&quot;zoom:67%;&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
+    
+    
+      <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
+    
+  </entry>
   
   <entry>
     <title>《自然语言处理入门》</title>
@@ -469,29 +493,6 @@
       <category term="Rabin" scheme="https://entropy2333.github.io/tags/Rabin/"/>
     
       <category term="El Gamal" scheme="https://entropy2333.github.io/tags/El-Gamal/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>现代密码学（四）序列密码</title>
-    <link href="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/"/>
-    <id>https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/</id>
-    <published>2020-12-27T09:08:45.000Z</published>
-    <updated>2020-12-28T09:25:41.429Z</updated>
-    
-    <content type="html"><![CDATA[<p>介绍序列密码（流密码）。</p><a id="more"></a><h2 id="流密码"><a href="#流密码" class="headerlink" title="流密码"></a>流密码</h2><p>流密码的简单结构如下。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165456897.png" alt="image-20201228165456897" style="zoom:67%;"></p><p>对于流密码来说，需要生成一个作为密钥流的“随机”比特序列。</p><p>流密码的安全性取决于密钥的安全等级。</p><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165551857.png" alt="image-20201228165551857" style="zoom:67%;"></p><p>流密码可以分为两种</p><ul><li>同步流密码<ul><li>密钥流的产生与明文消息相互独立</li></ul></li><li>自同步流密码<ul><li>密钥流的产生与之间产生的若干密文有关</li></ul></li></ul><h2 id="线性反馈移位寄存器-LFSR"><a href="#线性反馈移位寄存器-LFSR" class="headerlink" title="线性反馈移位寄存器 LFSR"></a>线性反馈移位寄存器 LFSR</h2><p>LFSR可以产生同步密钥流。</p><script type="math/tex; mode=display">a_i(t+1) = a_{i+1}(t),\ i=1,2,\dots,n-1 \\a_n(t+1) = c_na_1(t) \oplus c_{n-1}a_2(t) \oplus\dots\oplus c_1a_n(t)</script><p>联结多项式为</p><script type="math/tex; mode=display">c_nx^n + c_{n-1}x^{n-1} +\dots+ c_1x+1</script><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228170207505.png" alt="image-20201228170207505" style="zoom:67%;"></p><p>例如对于联接多项式<script type="math/tex">x^3+x^2+1</script>，对应的反馈函数为</p><script type="math/tex; mode=display">a_3 = a_1 \oplus a_2</script><p>对于LFSR来说，一个n级LFSR序列的周期最大为<script type="math/tex">2^n-1</script>。</p><p>如果产生了最大周期，则称为m序列，LFSR的状态转移图只有两个圈。</p><h2 id="伪随机序列"><a href="#伪随机序列" class="headerlink" title="伪随机序列"></a>伪随机序列</h2><h3 id="Golomb随机性假设"><a href="#Golomb随机性假设" class="headerlink" title="Golomb随机性假设"></a>Golomb随机性假设</h3><ul><li>在每一周期内，0和1的个数近似相等。</li><li>在每一周期内，长度为i的游程占游程总数的<script type="math/tex">\frac{1}{2^i}</script>。</li><li>定义自相关函数<script type="math/tex">C(\tau)=\sum_{i=1}^n(-1)^{a_i+a_{i+\tau}}</script>。<ul><li>那么<script type="math/tex">C(\tau)=\begin{cases}n,\quad\tau\equiv0\mod n\\c,\quad others\end{cases}</script></li></ul></li></ul><h3 id="m序列的伪随机性"><a href="#m序列的伪随机性" class="headerlink" title="m序列的伪随机性"></a>m序列的伪随机性</h3><h3 id="线性复杂度"><a href="#线性复杂度" class="headerlink" title="线性复杂度"></a>线性复杂度</h3><p>能够输出该序列的最短LFSR的级数。</p><p>一个好的流密码，应该具有大周期、大的线性复杂度，同时满足Golomb随机性假设。</p><h2 id="基于LFSR的伪随机序列生成器"><a href="#基于LFSR的伪随机序列生成器" class="headerlink" title="基于LFSR的伪随机序列生成器"></a>基于LFSR的伪随机序列生成器</h2><h3 id="滤波生成器"><a href="#滤波生成器" class="headerlink" title="滤波生成器"></a>滤波生成器</h3><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171735794.png" alt="image-20201228171735794" style="zoom:67%;"></p><h3 id="组合生成器"><a href="#组合生成器" class="headerlink" title="组合生成器"></a>组合生成器</h3><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171742568.png" alt="image-20201228171742568" style="zoom:67%;"></p><h3 id="钟控生成器"><a href="#钟控生成器" class="headerlink" title="钟控生成器"></a>钟控生成器</h3><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171755691.png" alt="image-20201228171755691" style="zoom:67%;"></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;介绍序列密码（流密码）。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="现代密码学" scheme="https://entropy2333.github.io/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
-    
-    
-      <category term="流密码" scheme="https://entropy2333.github.io/tags/%E6%B5%81%E5%AF%86%E7%A0%81/"/>
     
   </entry>
   

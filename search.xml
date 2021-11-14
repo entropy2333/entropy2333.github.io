@@ -634,11 +634,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CSAPP Chap6: 存储器层次结构</title>
-    <url>/2021/04/26/CSAPP-Chap6-%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>CSAPP Chap5: 优化程序性能</title>
     <url>/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/</url>
     <content><![CDATA[]]></content>
@@ -646,6 +641,11 @@
   <entry>
     <title>CSAPP Chap7: 链接</title>
     <url>/2021/04/26/CSAPP-Chap7-%E9%93%BE%E6%8E%A5/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>CSAPP Chap6: 存储器层次结构</title>
+    <url>/2021/04/26/CSAPP-Chap6-%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84/</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
@@ -818,69 +818,6 @@ v_t^l &= \begin{cases}
       </tags>
   </entry>
   <entry>
-    <title>Internet安全协议与分析（七）CSP</title>
-    <url>/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/</url>
-    <content><![CDATA[<p>介绍攻击结构性方法。</p>
-<a id="more"></a>
-<h2 id="攻击结构性方法"><a href="#攻击结构性方法" class="headerlink" title="攻击结构性方法"></a>攻击结构性方法</h2><p>从反面寻找协议的漏洞，如果能找到合适的攻击步骤，则说明协议有缺陷。</p>
-<p>如果找不到攻击，不能说明协议是安全的，但安全性可以得到一定程度的保证。</p>
-<ul>
-<li>主体数据的有限性：通常只分析有限个主体实例</li>
-<li>无法解决状态空间爆炸问题</li>
-<li>无法揭示安全协议的内部机理</li>
-</ul>
-<h2 id="CSP"><a href="#CSP" class="headerlink" title="CSP"></a>CSP</h2><p>通信顺序进程（Communicating Sequential Processes）</p>
-<ul>
-<li>描述并发系统的消息交互</li>
-<li>将协议的安全问题描述为CSP进行是否满足其CSP规约的问题，并用FDR对协议的性质进行分析与验证。</li>
-</ul>
-<h3 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h3><ul>
-<li><p>事件</p>
-<ul>
-<li>一个典型的CSP事件形式为：c.i.j.m，包括信道c、消息源i、目的地j和消息m。</li>
-</ul>
-</li>
-<li><p>信道</p>
-<ul>
-<li>不同事件类型看成不同信道，并规定它所传递的数据类型。</li>
-</ul>
-</li>
-<li><p>进程</p>
-<ul>
-<li>包括执行状态中的一个动作（事件）以及动作结束后的状态。</li>
-</ul>
-<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141246384.png" alt="image-20201025141246384"></p>
-</li>
-<li><p>进程间选择 P▢Q</p>
-<ul>
-<li>表示在两个进程事件间的外部选择</li>
-</ul>
-<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141612756.png" alt="image-20201025141612756"></p>
-</li>
-<li><p>并行进程</p>
-<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141658434.png" alt="image-20201025141658434"></p>
-</li>
-<li><p>重命名</p>
-<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141716208.png" alt="image-20201025141716208"></p>
-</li>
-<li><p>条件结构</p>
-<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141742620.png" alt="image-20201025141742620"></p>
-</li>
-<li><p>迹与精炼</p>
-<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141807851.png" alt="image-20201025141807851"></p>
-</li>
-</ul>
-<h3 id="协议目标的CSP描述"><a href="#协议目标的CSP描述" class="headerlink" title="协议目标的CSP描述"></a>协议目标的CSP描述</h3><p>看得头大，啥也记不住</p>
-<p>TO BE COMPLETED</p>
-]]></content>
-      <categories>
-        <category>Internet安全协议与分析</category>
-      </categories>
-      <tags>
-        <tag>CSP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Internet安全协议与分析（一）IPSec</title>
     <url>/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/</url>
     <content><![CDATA[<p>介绍IPSec协议与IKE协议 。<br><a id="more"></a></p>
@@ -990,6 +927,69 @@ v_t^l &= \begin{cases}
       <tags>
         <tag>IPSec</tag>
         <tag>IKE</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Internet安全协议与分析（七）CSP</title>
+    <url>/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/</url>
+    <content><![CDATA[<p>介绍攻击结构性方法。</p>
+<a id="more"></a>
+<h2 id="攻击结构性方法"><a href="#攻击结构性方法" class="headerlink" title="攻击结构性方法"></a>攻击结构性方法</h2><p>从反面寻找协议的漏洞，如果能找到合适的攻击步骤，则说明协议有缺陷。</p>
+<p>如果找不到攻击，不能说明协议是安全的，但安全性可以得到一定程度的保证。</p>
+<ul>
+<li>主体数据的有限性：通常只分析有限个主体实例</li>
+<li>无法解决状态空间爆炸问题</li>
+<li>无法揭示安全协议的内部机理</li>
+</ul>
+<h2 id="CSP"><a href="#CSP" class="headerlink" title="CSP"></a>CSP</h2><p>通信顺序进程（Communicating Sequential Processes）</p>
+<ul>
+<li>描述并发系统的消息交互</li>
+<li>将协议的安全问题描述为CSP进行是否满足其CSP规约的问题，并用FDR对协议的性质进行分析与验证。</li>
+</ul>
+<h3 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h3><ul>
+<li><p>事件</p>
+<ul>
+<li>一个典型的CSP事件形式为：c.i.j.m，包括信道c、消息源i、目的地j和消息m。</li>
+</ul>
+</li>
+<li><p>信道</p>
+<ul>
+<li>不同事件类型看成不同信道，并规定它所传递的数据类型。</li>
+</ul>
+</li>
+<li><p>进程</p>
+<ul>
+<li>包括执行状态中的一个动作（事件）以及动作结束后的状态。</li>
+</ul>
+<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141246384.png" alt="image-20201025141246384"></p>
+</li>
+<li><p>进程间选择 P▢Q</p>
+<ul>
+<li>表示在两个进程事件间的外部选择</li>
+</ul>
+<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141612756.png" alt="image-20201025141612756"></p>
+</li>
+<li><p>并行进程</p>
+<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141658434.png" alt="image-20201025141658434"></p>
+</li>
+<li><p>重命名</p>
+<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141716208.png" alt="image-20201025141716208"></p>
+</li>
+<li><p>条件结构</p>
+<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141742620.png" alt="image-20201025141742620"></p>
+</li>
+<li><p>迹与精炼</p>
+<p><img src="/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/image-20201025141807851.png" alt="image-20201025141807851"></p>
+</li>
+</ul>
+<h3 id="协议目标的CSP描述"><a href="#协议目标的CSP描述" class="headerlink" title="协议目标的CSP描述"></a>协议目标的CSP描述</h3><p>看得头大，啥也记不住</p>
+<p>TO BE COMPLETED</p>
+]]></content>
+      <categories>
+        <category>Internet安全协议与分析</category>
+      </categories>
+      <tags>
+        <tag>CSP</tag>
       </tags>
   </entry>
   <entry>
@@ -2075,6 +2075,48 @@ D_{PK_B}(E_{SK_B}(X)) = D_{SK_B}(E_{PK_B}(X)) = X</script></li>
       </tags>
   </entry>
   <entry>
+    <title>Lattice-BERT</title>
+    <url>/2021/04/16/Lattice-BERT/</url>
+    <content><![CDATA[<p>将词汇信息融入BERT（NAACL 2021）</p>
+<a id="more"></a>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
+<li>arxiv: <a href="https://arxiv.org/pdf/2104.07204v1.pdf">https://arxiv.org/pdf/2104.07204v1.pdf</a></li>
+<li>code: 暂无</li>
+</ul>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>中文预训练模型将文本作为字符序列处理，忽略了粗粒度的语义特征。对于中文来说，词义并不完全是字义的组合，如”老板“并不等于“老的板”。将词级别的特征加入模型，可以有效补充字级别的不足。</p>
+<p>本文设计了word lattice的结构来利用多粒度的输入，让预训练模型在下游任务中学会利用这些特征。</p>
+<p>让Bert学会单词主要有两个难点：</p>
+<ul>
+<li>Bert原本的输入是字符序列，加入lattice后怎样描述位置信息。</li>
+<li>对于Masked Languaged Model，怎样针对lattice结构设计mask任务。</li>
+</ul>
+<p>本文设计了lattice position attention（LPA），以帮助transformer利用lattice中文本单元的位置和距离信息。此外，还提出了masked segment prediction（MSP）任务。</p>
+<script type="math/tex; mode=display">
+\rm{Lattice-BERT} = \rm{BERT} + \rm{word\ lattice} + LPA + MSP</script><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Word-Lattice"><a href="#Word-Lattice" class="headerlink" title="Word Lattice"></a>Word Lattice</h3><p><img src="/2021/04/16/Lattice-BERT/image-20210416194914983.png" alt="image-20210416194914983" style="zoom: 80%;"></p>
+<p>Lattice就是一个有向无环图，和Lattice-LSTM的思想类似。难点在于如何在编码层保持lattice的结构，以及如何避免冗余信息带来的潜在影响。</p>
+<h3 id="Lattice-Position-Attention"><a href="#Lattice-Position-Attention" class="headerlink" title="Lattice Position Attention"></a>Lattice Position Attention</h3><p>在BERT的attention基础上，加了三个位置相关项。</p>
+<script type="math/tex; mode=display">
+\tilde{\alpha}_{ij} = \alpha_{ij} + \rm{att}_{ij} + b_{ij} + r_{ij}</script><p>其中，<script type="math/tex">\alpha_{ij}</script>表示原来的attention，<script type="math/tex">\rm{att}_{ij}</script>计算了绝对位置的attention权重，<script type="math/tex">b_{ij}</script>则是对相对距离的计算，<script type="math/tex">r_{ij}</script>是对相对位置的缩放项。</p>
+<script type="math/tex; mode=display">
+\rm{att}_{ij} = \frac {1} {\sqrt{2d_k}}([P_{s_i}^S;P_{e_i}^E]W^q)([P_{s_i}^S;P_{e_i}^E]W^k)^T</script><script type="math/tex; mode=display">
+b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{ee}</script><blockquote>
+<p>感觉和FLAT类似，也是计算四个距离。</p>
+</blockquote>
+<h3 id="Masked-Segment-Prediction"><a href="#Masked-Segment-Prediction" class="headerlink" title="Masked Segment Prediction"></a>Masked Segment Prediction</h3><p>BERT对单字掩码，Lattice-BERT则是对Segment掩码。</p>
+<p>Segment定义为：lattice的一个连通子图，且Segment之间彼此token不重叠，如下图。具体来说，为了句子分段，需要逐字遍历，判断当前的字是否是之前所有单词的结尾（真拗口）。</p>
+<p><img src="/2021/04/16/Lattice-BERT/image-20210416195015009.png" alt="image-20210416195015009" style="zoom:80%;"></p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>本文在11个中文NLU任务上进行实验，包括文本分类、阅读理解、序列标注等，在MSRA-NER和CLUE数据集上进行了实验，并与RoBERTa等预训练模型进行了比较。</p>
+<p><img src="/2021/04/16/Lattice-BERT/image-20210416201801843.png" alt="image-20210416201801843" style="zoom:80%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>BERT</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Lawformer: A Pre-trained Language Model for Chinese Legal Long Documents</title>
     <url>/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/</url>
     <content><![CDATA[<p>来自清华刘知远老师组，release了针对法律长文件的预训练语言模型。</p>
@@ -2120,45 +2162,91 @@ D_{PK_B}(E_{SK_B}(X)) = D_{SK_B}(E_{PK_B}(X)) = X</script></li>
       </tags>
   </entry>
   <entry>
-    <title>Lattice-BERT</title>
-    <url>/2021/04/16/Lattice-BERT/</url>
-    <content><![CDATA[<p>将词汇信息融入BERT（NAACL 2021）</p>
+    <title>NLP From Scratch Without Large-Scale Pretraining: A Simple and Efficient Framework</title>
+    <url>/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/</url>
+    <content><![CDATA[<p>提出了一种简单有效的学习框架TLM，其不需要大规模的预训练。</p>
+<p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114205822246.png" alt="image-20211114205822246" style="zoom:67%;"></p>
 <a id="more"></a>
-<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
-<li>arxiv: <a href="https://arxiv.org/pdf/2104.07204v1.pdf">https://arxiv.org/pdf/2104.07204v1.pdf</a></li>
-<li>code: 暂无</li>
-</ul>
-<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>中文预训练模型将文本作为字符序列处理，忽略了粗粒度的语义特征。对于中文来说，词义并不完全是字义的组合，如”老板“并不等于“老的板”。将词级别的特征加入模型，可以有效补充字级别的不足。</p>
-<p>本文设计了word lattice的结构来利用多粒度的输入，让预训练模型在下游任务中学会利用这些特征。</p>
-<p>让Bert学会单词主要有两个难点：</p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114203947385.png" alt="image-20211114203947385" style="zoom: 67%;"></p>
 <ul>
-<li>Bert原本的输入是字符序列，加入lattice后怎样描述位置信息。</li>
-<li>对于Masked Languaged Model，怎样针对lattice结构设计mask任务。</li>
+<li>arxiv: <a href="https://arxiv.org/pdf/2111.04130v1.pdf">https://arxiv.org/pdf/2111.04130v1.pdf</a></li>
+<li>code: <a href="https://github.com/yaoxingcheng/TLM">https://github.com/yaoxingcheng/TLM</a></li>
 </ul>
-<p>本文设计了lattice position attention（LPA），以帮助transformer利用lattice中文本单元的位置和距离信息。此外，还提出了masked segment prediction（MSP）任务。</p>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>NLP领域中，预训练-微调的框架已经显著地提升了各项任务的表现，但是预训练需要的算力过于高昂。RoBERTa-Large需要<script type="math/tex">4.36\times10^{21}</script>FLOPs的算力，而更大的GPT-3需要的算力是前者的50倍以上。大规模的预训练阻碍了研究者们探索新的预训练框架或者改进预训练的损失函数，相较之下人们花了大量精力改进微调步骤的算法，而其实预训练很大程度上决定了微调的上界。</p>
+<p>尽管也有工作研究和改善语言模型的预训练，但他们大部分专注于设计样本高效（sample-efficient）的自监督任务，或者设计更有效的Transformer架构用于预训练。此外还有通过知识蒸馏的方式，改进推理的效率，但蒸馏前依旧需要大规模的预训练。</p>
+<p>基于上述，本文提出了一种简单高效且无需预训练的框架，称为任务驱动的语言建模（<strong>T</strong>ask-driven Language <strong>M</strong>odeling，<strong>TLM</strong>）。本文的Motivation主要有以下两点：</p>
+<ul>
+<li>人类掌握任务只需要一小部分的知识，作者假设对于具体任务来说，大规模的语料过于冗余。</li>
+<li>相较于优化无监督数据上的语言建模目标，在有监督的标注数据上训练对于下游任务是更高效的。</li>
+</ul>
+<p>TLM需要大规模的通用语料以及一些标注数据，将任务数据作为query以获取通用语料中的一个小的子集。本文在八个不同的任务上进行实验评估，在训练算力减小两个量级的情况下，取得了近于甚至超过BERT和RoBERTa的效果。·</p>
+<h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><h3 id="TLM-Task-Driven-Language-Modeling"><a href="#TLM-Task-Driven-Language-Modeling" class="headerlink" title="TLM: Task-Driven Language Modeling"></a>TLM: Task-Driven Language Modeling</h3><p>作者认为，学习一个任务的关键之一在于快速准确地定位任务相关的信息。因此TLM包括两步：</p>
+<ol>
+<li>将任务数据作为query，从通用语料中检索数据；</li>
+<li>在获取的数据和任务数据上，联合优化任务目标和语言建模目标。</li>
+</ol>
+<h4 id="Retrieval-From-General-Corpus"><a href="#Retrieval-From-General-Corpus" class="headerlink" title="Retrieval From General Corpus"></a>Retrieval From General Corpus</h4><p>给定任务数据<script type="math/tex">x_i\in\mathcal{T} = \{(x_i, y_i)\}_i</script>，从通用语料中<script type="math/tex">\mathcal{D}=\{d_i\}_i</script>获取子集<script type="math/tex">\mathcal{S_i} = \{\tilde{d}_{i,1},\tilde{d}_{i,2},\cdots\}</script>。<br>其中<script type="math/tex">\mathcal{S_i}</script>中包含了top-K个与<script type="math/tex">x_i</script>相似的样本，最后获取的数据即为并集<script type="math/tex">\mathcal{S}=\cup_iS_i</script>。</p>
+<p>文章出于简单与高效性的考虑，使用BM25用于检索，而没有采用基于embedding的方法。</p>
+<h4 id="Joint-Training"><a href="#Joint-Training" class="headerlink" title="Joint Training"></a>Joint Training</h4><p>TLM的优化目标如下：</p>
 <script type="math/tex; mode=display">
-\rm{Lattice-BERT} = \rm{BERT} + \rm{word\ lattice} + LPA + MSP</script><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Word-Lattice"><a href="#Word-Lattice" class="headerlink" title="Word Lattice"></a>Word Lattice</h3><p><img src="/2021/04/16/Lattice-BERT/image-20210416194914983.png" alt="image-20210416194914983" style="zoom: 80%;"></p>
-<p>Lattice就是一个有向无环图，和Lattice-LSTM的思想类似。难点在于如何在编码层保持lattice的结构，以及如何避免冗余信息带来的潜在影响。</p>
-<h3 id="Lattice-Position-Attention"><a href="#Lattice-Position-Attention" class="headerlink" title="Lattice Position Attention"></a>Lattice Position Attention</h3><p>在BERT的attention基础上，加了三个位置相关项。</p>
-<script type="math/tex; mode=display">
-\tilde{\alpha}_{ij} = \alpha_{ij} + \rm{att}_{ij} + b_{ij} + r_{ij}</script><p>其中，<script type="math/tex">\alpha_{ij}</script>表示原来的attention，<script type="math/tex">\rm{att}_{ij}</script>计算了绝对位置的attention权重，<script type="math/tex">b_{ij}</script>则是对相对距离的计算，<script type="math/tex">r_{ij}</script>是对相对位置的缩放项。</p>
-<script type="math/tex; mode=display">
-\rm{att}_{ij} = \frac {1} {\sqrt{2d_k}}([P_{s_i}^S;P_{e_i}^E]W^q)([P_{s_i}^S;P_{e_i}^E]W^k)^T</script><script type="math/tex; mode=display">
-b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{ee}</script><blockquote>
-<p>感觉和FLAT类似，也是计算四个距离。</p>
-</blockquote>
-<h3 id="Masked-Segment-Prediction"><a href="#Masked-Segment-Prediction" class="headerlink" title="Masked Segment Prediction"></a>Masked Segment Prediction</h3><p>BERT对单字掩码，Lattice-BERT则是对Segment掩码。</p>
-<p>Segment定义为：lattice的一个连通子图，且Segment之间彼此token不重叠，如下图。具体来说，为了句子分段，需要逐字遍历，判断当前的字是否是之前所有单词的结尾（真拗口）。</p>
-<p><img src="/2021/04/16/Lattice-BERT/image-20210416195015009.png" alt="image-20210416195015009" style="zoom:80%;"></p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>本文在11个中文NLU任务上进行实验，包括文本分类、阅读理解、序列标注等，在MSRA-NER和CLUE数据集上进行了实验，并与RoBERTa等预训练模型进行了比较。</p>
-<p><img src="/2021/04/16/Lattice-BERT/image-20210416201801843.png" alt="image-20210416201801843" style="zoom:80%;"></p>
+\mathbb{E}_{x\sim\mathcal{S}} [\rho_1\mathcal{L}_{\mathrm{mlm}}(x)] + 
+\mathbb{E}_{x,y\sim\mathcal{T}}[\rho_2\mathcal{L}_{\mathrm{mlm}}(x) +
+\mathcal{L}_{\mathrm{task}}(f(x),y)]</script><p>其中<script type="math/tex">\rho_1</script>和<script type="math/tex">\rho_2</script>为超参数。</p>
+<p>训练分为两阶段：</p>
+<ul>
+<li>第一阶段，将<script type="math/tex">\rho_1</script>个batch数据插入一个batch中用于梯度下降，这里<script type="math/tex">\rho_1</script>为整数；</li>
+<li>第二阶段，将<script type="math/tex">\rho_1</script>和<script type="math/tex">\rho_2</script>都设为0，微调模型只优化任务目标。</li>
+</ul>
+<h3 id="Comparison-Between-TLM-and-PLMs"><a href="#Comparison-Between-TLM-and-PLMs" class="headerlink" title="Comparison Between TLM and PLMs"></a>Comparison Between TLM and PLMs</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">TLM</th>
+<th style="text-align:center">PLMs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">损失函数</td>
+<td style="text-align:center"><script type="math/tex">\mathcal{L}_{task}</script>和<script type="math/tex">\mathcal{L}_{mlm}</script></td>
+<td style="text-align:center"><script type="math/tex">\mathcal{L}_{mlm}</script></td>
+</tr>
+<tr>
+<td style="text-align:center">训练数据</td>
+<td style="text-align:center"><script type="math/tex">\mathcal{D}</script>的一个小子集和任务数据<script type="math/tex">\mathcal{T}</script></td>
+<td style="text-align:center">完整语料<script type="math/tex">\mathcal{D}</script></td>
+</tr>
+<tr>
+<td style="text-align:center">算力消耗</td>
+<td style="text-align:center">8 GPUs<br>42 hours</td>
+<td style="text-align:center">1000 GPUs<br>one day</td>
+</tr>
+<tr>
+<td style="text-align:center">通用性</td>
+<td style="text-align:center">Task-Driven</td>
+<td style="text-align:center">Task-Agnostic</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>作者从高效性、灵活性和通用性上进行了比较。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>作者将任务分为高资源和低资源两类，高资源有着超过5000个任务数据。</p>
+<p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114222213976.png" alt="image-20211114222213976" style="zoom: 67%;"></p>
+<p>从结果上来看，TLM以更少的算力取得了相近甚至更好的结果。</p>
+<p>本文还比较了不同的检索方法以及不同的通用语料对结果的影响：</p>
+<p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114223436750.png" alt="image-20211114223436750" style="zoom: 67%;"></p>
+<p>也展现了不同超参的实验结果</p>
+<p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114223828922.png" alt="image-20211114223828922" style="zoom:67%;"></p>
+<p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114223841101.png" alt="image-20211114223841101" style="zoom:67%;"></p>
+<p>此外也通过实验结果验证了第二阶段的有效性</p>
+<p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114223924731.png" alt="image-20211114223924731" style="zoom:67%;"></p>
 ]]></content>
       <categories>
         <category>Paper</category>
       </categories>
       <tags>
         <tag>NLP</tag>
-        <tag>BERT</tag>
       </tags>
   </entry>
   <entry>
@@ -2282,19 +2370,42 @@ p_k = \mathrm{Sigmoid}(W_k^T\mathcal{Q}_{L,k}+b_k)</script><p>本文采用了一
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2020/08/06/hello-world/</url>
-    <content><![CDATA[<p>Hello, world!<br><a id="more"></a></p>
-<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    <title>SimCSE: Simple Contrastive Learning of Sentence Embeddings</title>
+    <url>/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/</url>
+    <content><![CDATA[<p>来自陈丹琦（<a href="https://github.com/danqi">https://github.com/danqi</a>）组的文章，利用Dropout作为数据增强，进行对比学习得到句子向量表示，在无监督和有监督的语义表示上刷新SOTA。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210706175923388.png" alt="image-20210706175923388" style="zoom: 80%;"></p>
+<a id="more"></a>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
+<li>Arxiv: <a href="https://arxiv.org/pdf/2104.08821v1.pdf">https://arxiv.org/pdf/2104.08821v1.pdf</a></li>
+<li>Code: <a href="https://github.com/princeton-nlp/SimCSE">https://github.com/princeton-nlp/SimCSE</a></li>
+</ul>
+<h2 id="Background-Contrastive-Learning"><a href="#Background-Contrastive-Learning" class="headerlink" title="Background: Contrastive Learning"></a>Background: Contrastive Learning</h2><p>对比学习希望通过拉近语义相关的样本，拉远不相关的样本学习有效的向量表示。</p>
+<p>对于样本对集合<script type="math/tex">D=\{(x_i,x_i^+)\}_{i=1}^m</script>，假设<script type="math/tex">({\bf h_i},{\bf h_i^+})</script>为样本的向量表示，则训练的目标为：</p>
+<script type="math/tex; mode=display">
+l_i = \log \frac {e^{ {\rm sim} ({\bf h_i},{\bf h_i^+})}/\tau} {\sum_{j=1}^N e^{ {\rm sim}( {\bf h_i},{\bf h_j})/\tau}}</script><p>其中，<script type="math/tex">\tau</script>是一个温度超参数，<script type="math/tex">{\rm sim}({\bf h_i},{\bf h_i^+})</script>为余弦相似度<script type="math/tex">\rm\bf\frac{h_1^Th_2}{\|h_1\|·\|h2\|}</script>，本文选择的backbone是BERT或RoBERTa。</p>
+<p>其实上述的训练目标就是交叉熵：</p>
+<script type="math/tex; mode=display">
+{\rm let}\ z_{i,j} = {\rm sim} ({\bf h_i},{\bf h_j}) \\
+{\rm then}\ loss_i = -\sum_{j=1}^N y_{j}\log z_{i, j}</script><h3 id="Positive-instances"><a href="#Positive-instances" class="headerlink" title="Positive instances"></a>Positive instances</h3><p>对比学习的关键问题是如何构造样本对<script type="math/tex">(x_i,x_i^+)</script>，在CV中可以用裁剪、旋转等方法对图像进行数据增强，NLP中也有删词、替换、重排等方法。但对于NLP的离散结构来说，这些增强手段作用有限。本文采用了dropout作为数据增强手段，取得了更好的结果。</p>
+<p>本文采用了两个度量align和uniform用于衡量表示的质量。</p>
+<p>align描述了样本对之间的距离</p>
+<script type="math/tex; mode=display">
+l_{\rm align} \triangleq \mathop{\mathbb{E}}_{(x,x^+)\sim p_{pos}}\|f(x)-f(x^+)\|^2</script><p>uniform描述了样本是否分布均匀</p>
+<script type="math/tex; mode=display">
+l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(x)-f(y)\|^2}</script><p>从实验结果上看，采用dropout的SimCSE效果更好。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111255916.png" alt="image-20210823111255916" style="zoom:67%;"></p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>在语义相似度任务上大幅度刷新SOTA，无监督就可以超越之前的有监督方法。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111528036.png" alt="image-20210823111528036" style="zoom: 67%;"></p>
+<p>在迁移任务上表现一般，说明sentence embedding并不一定有益于下游训练。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111700869.png" alt="image-20210823111700869" style="zoom: 80%;"></p>
 ]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>Contrastive Learning</tag>
+      </tags>
   </entry>
   <entry>
     <title>Simplify the Usage of Lexicon in Chinese NER</title>
@@ -2357,42 +2468,19 @@ v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)</script><h2 id="Detail"><a href="#De
       </tags>
   </entry>
   <entry>
-    <title>SimCSE: Simple Contrastive Learning of Sentence Embeddings</title>
-    <url>/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/</url>
-    <content><![CDATA[<p>来自陈丹琦（<a href="https://github.com/danqi">https://github.com/danqi</a>）组的文章，利用Dropout作为数据增强，进行对比学习得到句子向量表示，在无监督和有监督的语义表示上刷新SOTA。</p>
-<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210706175923388.png" alt="image-20210706175923388" style="zoom: 80%;"></p>
-<a id="more"></a>
-<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
-<li>Arxiv: <a href="https://arxiv.org/pdf/2104.08821v1.pdf">https://arxiv.org/pdf/2104.08821v1.pdf</a></li>
-<li>Code: <a href="https://github.com/princeton-nlp/SimCSE">https://github.com/princeton-nlp/SimCSE</a></li>
-</ul>
-<h2 id="Background-Contrastive-Learning"><a href="#Background-Contrastive-Learning" class="headerlink" title="Background: Contrastive Learning"></a>Background: Contrastive Learning</h2><p>对比学习希望通过拉近语义相关的样本，拉远不相关的样本学习有效的向量表示。</p>
-<p>对于样本对集合<script type="math/tex">D=\{(x_i,x_i^+)\}_{i=1}^m</script>，假设<script type="math/tex">({\bf h_i},{\bf h_i^+})</script>为样本的向量表示，则训练的目标为：</p>
-<script type="math/tex; mode=display">
-l_i = \log \frac {e^{ {\rm sim} ({\bf h_i},{\bf h_i^+})}/\tau} {\sum_{j=1}^N e^{ {\rm sim}( {\bf h_i},{\bf h_j})/\tau}}</script><p>其中，<script type="math/tex">\tau</script>是一个温度超参数，<script type="math/tex">{\rm sim}({\bf h_i},{\bf h_i^+})</script>为余弦相似度<script type="math/tex">\rm\bf\frac{h_1^Th_2}{\|h_1\|·\|h2\|}</script>，本文选择的backbone是BERT或RoBERTa。</p>
-<p>其实上述的训练目标就是交叉熵：</p>
-<script type="math/tex; mode=display">
-{\rm let}\ z_{i,j} = {\rm sim} ({\bf h_i},{\bf h_j}) \\
-{\rm then}\ loss_i = -\sum_{j=1}^N y_{j}\log z_{i, j}</script><h3 id="Positive-instances"><a href="#Positive-instances" class="headerlink" title="Positive instances"></a>Positive instances</h3><p>对比学习的关键问题是如何构造样本对<script type="math/tex">(x_i,x_i^+)</script>，在CV中可以用裁剪、旋转等方法对图像进行数据增强，NLP中也有删词、替换、重排等方法。但对于NLP的离散结构来说，这些增强手段作用有限。本文采用了dropout作为数据增强手段，取得了更好的结果。</p>
-<p>本文采用了两个度量align和uniform用于衡量表示的质量。</p>
-<p>align描述了样本对之间的距离</p>
-<script type="math/tex; mode=display">
-l_{\rm align} \triangleq \mathop{\mathbb{E}}_{(x,x^+)\sim p_{pos}}\|f(x)-f(x^+)\|^2</script><p>uniform描述了样本是否分布均匀</p>
-<script type="math/tex; mode=display">
-l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(x)-f(y)\|^2}</script><p>从实验结果上看，采用dropout的SimCSE效果更好。</p>
-<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111255916.png" alt="image-20210823111255916" style="zoom:67%;"></p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>在语义相似度任务上大幅度刷新SOTA，无监督就可以超越之前的有监督方法。</p>
-<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111528036.png" alt="image-20210823111528036" style="zoom: 67%;"></p>
-<p>在迁移任务上表现一般，说明sentence embedding并不一定有益于下游训练。</p>
-<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111700869.png" alt="image-20210823111700869" style="zoom: 80%;"></p>
+    <title>Hello World</title>
+    <url>/2020/08/06/hello-world/</url>
+    <content><![CDATA[<p>Hello, world!<br><a id="more"></a></p>
+<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>Contrastive Learning</tag>
-      </tags>
   </entry>
   <entry>
     <title>《自然语言处理入门》</title>
@@ -2511,32 +2599,6 @@ l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(
 ]]></content>
   </entry>
   <entry>
-    <title>现代密码学（七）数字签名算法</title>
-    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%83%EF%BC%89%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[<p>介绍数字签名。</p>
-<a id="more"></a>
-<h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><script type="math/tex; mode=display">
-h = H(M) \\
-S = h^d\bmod N \\
-S^e = (h^e)^d = h\bmod N</script><h2 id="El-Gamal"><a href="#El-Gamal" class="headerlink" title="El Gamal"></a>El Gamal</h2><p>选择随机数k，满足<script type="math/tex">gck(k,\ p-1)=1</script>，计算密钥</p>
-<script type="math/tex; mode=display">
-K = a^k\bmod p</script><p>用Euclidean扩展算法求解S</p>
-<script type="math/tex; mode=display">
-M = x\cdot K + k\cdot S\bmod(p-1)</script><p>也即</p>
-<script type="math/tex; mode=display">
-S = k^{-1}(M-x\cdot K)\bmod(p-1)</script><p>签名就是<script type="math/tex">(M,K,S)</script></p>
-<script type="math/tex; mode=display">
-y^K\cdot K^S = (a^x)^K\cdot (a^k)^{k^{-1}(M-x\cdot K)} = a^M \bmod p</script><h2 id="DSA"><a href="#DSA" class="headerlink" title="DSA"></a>DSA</h2><p>基于离散对数，生成320bit签名。</p>
-<h2 id="HMAC"><a href="#HMAC" class="headerlink" title="HMAC"></a>HMAC</h2><p>带密钥的HASH。</p>
-]]></content>
-      <categories>
-        <category>现代密码学</category>
-      </categories>
-      <tags>
-        <tag>数字签名</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>现代密码学（一）绪论</title>
     <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%80%EF%BC%89%E7%BB%AA%E8%AE%BA/</url>
     <content><![CDATA[<p>介绍密码学的基本概念。</p>
@@ -2604,6 +2666,32 @@ C\xrightarrow{EK_{-1}}P</script><h2 id="算法分类"><a href="#算法分类" cl
       </categories>
       <tags>
         <tag>密码学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>现代密码学（七）数字签名算法</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%83%EF%BC%89%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<p>介绍数字签名。</p>
+<a id="more"></a>
+<h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><script type="math/tex; mode=display">
+h = H(M) \\
+S = h^d\bmod N \\
+S^e = (h^e)^d = h\bmod N</script><h2 id="El-Gamal"><a href="#El-Gamal" class="headerlink" title="El Gamal"></a>El Gamal</h2><p>选择随机数k，满足<script type="math/tex">gck(k,\ p-1)=1</script>，计算密钥</p>
+<script type="math/tex; mode=display">
+K = a^k\bmod p</script><p>用Euclidean扩展算法求解S</p>
+<script type="math/tex; mode=display">
+M = x\cdot K + k\cdot S\bmod(p-1)</script><p>也即</p>
+<script type="math/tex; mode=display">
+S = k^{-1}(M-x\cdot K)\bmod(p-1)</script><p>签名就是<script type="math/tex">(M,K,S)</script></p>
+<script type="math/tex; mode=display">
+y^K\cdot K^S = (a^x)^K\cdot (a^k)^{k^{-1}(M-x\cdot K)} = a^M \bmod p</script><h2 id="DSA"><a href="#DSA" class="headerlink" title="DSA"></a>DSA</h2><p>基于离散对数，生成320bit签名。</p>
+<h2 id="HMAC"><a href="#HMAC" class="headerlink" title="HMAC"></a>HMAC</h2><p>带密钥的HASH。</p>
+]]></content>
+      <categories>
+        <category>现代密码学</category>
+      </categories>
+      <tags>
+        <tag>数字签名</tag>
       </tags>
   </entry>
   <entry>
@@ -3930,6 +4018,86 @@ g(t) = \frac {C(t) - C(T_t)} {|T_t|-1}</script><script type="math/tex; mode=disp
       </tags>
   </entry>
   <entry>
+    <title>统计学习方法（八）提升方法</title>
+    <url>/2020/08/25/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AB%EF%BC%89%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>提升方法，在分类问题中通过改变训练样本的权重，学习多个分类器，并将分类器线性组合，提高分类的性能。</p>
+<a id="more"></a>
+<h2 id="8-1-AdaBoost算法"><a href="#8-1-AdaBoost算法" class="headerlink" title="8.1 AdaBoost算法"></a>8.1 AdaBoost算法</h2><p>提升方法的思想是，对于一个复杂任务来说，综合多个专家的判断得出的判断效果更好。</p>
+<ul>
+<li><strong>强可学习</strong>：在概率近似正确学习（PAC）的框架中，一个概念（一个类），如果存在一个多项式的学习算法<br>能够学习它，并且正确率很高，那么就称这个概念是强可学习的-</li>
+<li><strong>弱可学习</strong>：一个概念，如果存在一个多项式的学习算法能够学习它，学习的正确率仅比随机猜测略好，那么就称这个概念是弱可学习的。</li>
+</ul>
+<p>Schapire后来证明强可学习与弱可学习是等价的，也即在PAC学习的框架下，一个概念是强可学习的充要条件是这个概念是弱可学习的。</p>
+<p>利用这个前提，如果在学习中发现了”弱学习算法“，可以将其提升为”强学习算法“。对于分类问题而言，给定训练集，从弱学习算法出发，反复学习，得到一系列弱分类器，组合这些弱分类器构成一个强分类器。</p>
+<p>给定一个二分类训练集</p>
+<script type="math/tex; mode=display">
+T = \{(x_1,y_1),(x_2,y_2),\cdots,(x_N,y_N)\} \\
+x\in{\cal X}\subset{\mathbb R}^n,\quad y_i\in{\cal Y}=\{-1.+1\}</script><p>初始化训练数据的权值分布</p>
+<script type="math/tex; mode=display">
+D_1=(w_{11},\cdots,w_{1i},\cdots,w_{1N}),\quad w_{1i}=\frac1N,\quad i=1,2,\cdots,N</script><p>使用权值分布为<script type="math/tex">D_m</script>的训练集学习，得到基本分类器</p>
+<script type="math/tex; mode=display">
+G_m(x):{\cal X}\rightarrow\{-1,+1\}</script><p>计算分类器在训练集上的分类误差率</p>
+<script type="math/tex; mode=display">
+e_m=\sum_{i=1}^NP(G_m(x_i)\neq y_i)=\sum_{i=1}^Nw_{mi}I(G_m(x_i)\neq y_i)</script><p>计算分类器的系数，取自然对数</p>
+<script type="math/tex; mode=display">
+\alpha_m=\frac12\log\frac{1-e_m}{e_m}</script><p>更新训练集的权值分布</p>
+<script type="math/tex; mode=display">
+D_{m+1}=(w_{m+1.1},\cdots,w_{m+1,i},\cdots,w_{m+1,N})\\
+w_{m+1,i}=\frac{w_{mi}}{Z_m}\exp(-\alpha_my_iG_m(x_i)),\quad i=1,2,\cdots,N</script><p>其中，<script type="math/tex">Z_m</script>是规范化因子，使得<script type="math/tex">D_{m+1}</script>成为一个概率分布。</p>
+<script type="math/tex; mode=display">
+Z_m = \sum_{i=1}^N{w_{mi}}\exp(-\alpha_my_iG_m(x_i))</script><p>根据基本分类器，构造线性组合，得到最终分类器</p>
+<script type="math/tex; mode=display">
+f(x)=\sum_{m=1}^M\alpha_mG_m(x) \\
+G(x)=sign(f(x))</script><p>计算<script type="math/tex">G_m(x)</script>系数<script type="math/tex">\alpha_m</script>时，<script type="math/tex">e_m\leq\frac12</script>时，<script type="math/tex">\alpha_m\geq0</script>，并且<script type="math/tex">\alpha_m</script>关于<script type="math/tex">e_m</script>递减，所以分类误差率越小的基本分类器，在最终分类器中的作用越大。</p>
+<p>更新权值时，可以写成如下形式：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+w_{m+1,i}=\begin{cases}\frac{w_{mi}}{Z_m}e^{-\alpha_m},\quad &G_m(x_i)=y_i\\\frac{w_{mi}}{Z_m}e^{\alpha_m},\quad &G_m(x_i)\neq y_i\end{cases}
+\end{align}</script><p>所以误分类样本的权值得以扩大，在下一轮学习中起更大的作用。不改变训练数据，而不断改变训练数据权值的分布，这是AdaBoost的一个特点。</p>
+<blockquote>
+<p>注意，<script type="math/tex">\sum\alpha_m\neq1</script></p>
+</blockquote>
+<h2 id="8-2-AdaBoost算法的训练误差分析"><a href="#8-2-AdaBoost算法的训练误差分析" class="headerlink" title="8.2 AdaBoost算法的训练误差分析"></a>8.2 AdaBoost算法的训练误差分析</h2><p><strong>定理 8.1</strong>    AdaBoost算法最终分类器的训练误差界为</p>
+<script type="math/tex; mode=display">
+\frac1N\sum_{i=1}^NI(G(x_i)\neq y_i)\leq\frac1N\sum_i\exp(-y_if(x_i))\neq y_i)=\prod_mZ_m</script><p><strong>定理8.2</strong>    二分类问题中，AdaBoost的训练误差界为</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\prod_{m=1}^MZ_m&=\prod_{m=1}^M[2\sqrt{e_m(1-e_m)}]\\
+&=\prod_{m=1}^M\sqrt{(1-4\gamma_m^2)}\\
+&\leq\exp(-2\sum_{m=1}^M\gamma_m^2)
+\end{align}</script><p>其中，<script type="math/tex">\gamma_m=\frac12-e_m</script></p>
+<h2 id="8-3-AdaBoost算法的解释"><a href="#8-3-AdaBoost算法的解释" class="headerlink" title="8.3 AdaBoost算法的解释"></a>8.3 AdaBoost算法的解释</h2><h3 id="前向分步算法"><a href="#前向分步算法" class="headerlink" title="前向分步算法"></a>前向分步算法</h3><p>考虑加法模型</p>
+<script type="math/tex; mode=display">
+f(x)=\sum_{m=1}^M\beta_mb(x;\gamma_m)</script><p>其中，<script type="math/tex">b(x;\gamma_m)</script>为基函数，<script type="math/tex">\gamma_m</script>为函数的参数。</p>
+<p>给定训练集及损失函数<script type="math/tex">L(y,f(x))</script>的条件下，学习加法模型即为损失函数极小化问题</p>
+<script type="math/tex; mode=display">
+\min_{\beta_m,\gamma_m}\sum_{i=1}^NL(y_i,\sum_{m=1}^M\beta_mb(x_i;\gamma_m))</script><p>通常这是一个复杂的优化问题，前向分步算法的想法是：因为学习的是加法模型，如果能够从前向后，每步只学习一个基函数与系数，逐步逼近，就可以简化复杂度，即每步只考虑优化如下函数</p>
+<script type="math/tex; mode=display">
+\min_{\beta,\gamma}\sum_{i=1}^NL(y_i,\beta b(x_i;\gamma))</script><h3 id="前向分步与AdaBoost"><a href="#前向分步与AdaBoost" class="headerlink" title="前向分步与AdaBoost"></a>前向分步与AdaBoost</h3><p><strong>定理8.3</strong>    AdaBoost是前向分步算法的特例。这时，模型是由基本分类器组成的加法模型，损失函数是指数函数。</p>
+<h2 id="8-4-提升树"><a href="#8-4-提升树" class="headerlink" title="8.4 提升树"></a>8.4 提升树</h2><h3 id="提升树模型"><a href="#提升树模型" class="headerlink" title="提升树模型"></a>提升树模型</h3><p>提升方法实际采用加法模型与前向分步算法，以决策树为基函数的提升方法就称为提升树。</p>
+<p>提升树模型可以表示为决策树的加法模型</p>
+<script type="math/tex; mode=display">
+f_M(x)=\sum_{m=1}^MT(x;\Theta_m)</script><p>其中，<script type="math/tex">T(x;\Theta_m)</script>表示决策树，<script type="math/tex">M</script>表示树的个数。</p>
+<h3 id="提升树算法"><a href="#提升树算法" class="headerlink" title="提升树算法"></a>提升树算法</h3><p>首先初始化提升树<script type="math/tex">f_0(x)=0</script>，第m步的模型是</p>
+<script type="math/tex; mode=display">
+f_m(x)=f_{m-1}(x)+T(x;\Theta_m)</script><p>通过经验风险最小化确定下一棵决策树的参数</p>
+<script type="math/tex; mode=display">
+\hat\Theta_m=\arg\min_{\Theta_m}\sum_{i=1}^NL(y_i,f_{m-1}(x_i)+T(x_i;\Theta_m))</script><p>对于二分类问题，提升树算法只需要将AdaBoost的基本分类器限制为二类分类树即可，此时的提升树算法是AdaBoost的特殊情况。</p>
+<h3 id="梯度提升"><a href="#梯度提升" class="headerlink" title="梯度提升"></a>梯度提升</h3><p>对于提升树算法，当损失函数是平方损失和指数损失函数时，每一步优化是很简单的。</p>
+<p>对于一般损失函数，Freidman提出了梯度提升算法，利用损失函数的负梯度值</p>
+<script type="math/tex; mode=display">
+-[\frac{\partial L(y,f(x_i))}{\partial f(x_i)}]_{f(x)=f_{m-1}(x)}</script><p>作为回归问题中残差的近似值，拟合回归树。</p>
+<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line"></span><br><span class="line">clf = AdaBoostClassifier(n_estimators=<span class="number">100</span>, learning_rate=<span class="number">0.5</span>)</span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>统计学习方法</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>提升方法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>统计学习方法（六）Logistic回归与最大熵模型</title>
     <url>/2020/08/17/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AD%EF%BC%89Logistic%E5%9B%9E%E5%BD%92%E4%B8%8E%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B/</url>
     <content><![CDATA[<p>Logistic回归是统计学习中的分类方法，最大熵是概率模型学习的一个准则，推广到分类问题得到最大熵模型。</p>
@@ -4065,86 +4233,6 @@ Z_w(x) = \sum_y\exp(\sum_{i=1}^nw_if_i(x,y))</script><script type="math/tex; mod
       <tags>
         <tag>机器学习</tag>
         <tag>Logistic回归</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>统计学习方法（八）提升方法</title>
-    <url>/2020/08/25/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AB%EF%BC%89%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>提升方法，在分类问题中通过改变训练样本的权重，学习多个分类器，并将分类器线性组合，提高分类的性能。</p>
-<a id="more"></a>
-<h2 id="8-1-AdaBoost算法"><a href="#8-1-AdaBoost算法" class="headerlink" title="8.1 AdaBoost算法"></a>8.1 AdaBoost算法</h2><p>提升方法的思想是，对于一个复杂任务来说，综合多个专家的判断得出的判断效果更好。</p>
-<ul>
-<li><strong>强可学习</strong>：在概率近似正确学习（PAC）的框架中，一个概念（一个类），如果存在一个多项式的学习算法<br>能够学习它，并且正确率很高，那么就称这个概念是强可学习的-</li>
-<li><strong>弱可学习</strong>：一个概念，如果存在一个多项式的学习算法能够学习它，学习的正确率仅比随机猜测略好，那么就称这个概念是弱可学习的。</li>
-</ul>
-<p>Schapire后来证明强可学习与弱可学习是等价的，也即在PAC学习的框架下，一个概念是强可学习的充要条件是这个概念是弱可学习的。</p>
-<p>利用这个前提，如果在学习中发现了”弱学习算法“，可以将其提升为”强学习算法“。对于分类问题而言，给定训练集，从弱学习算法出发，反复学习，得到一系列弱分类器，组合这些弱分类器构成一个强分类器。</p>
-<p>给定一个二分类训练集</p>
-<script type="math/tex; mode=display">
-T = \{(x_1,y_1),(x_2,y_2),\cdots,(x_N,y_N)\} \\
-x\in{\cal X}\subset{\mathbb R}^n,\quad y_i\in{\cal Y}=\{-1.+1\}</script><p>初始化训练数据的权值分布</p>
-<script type="math/tex; mode=display">
-D_1=(w_{11},\cdots,w_{1i},\cdots,w_{1N}),\quad w_{1i}=\frac1N,\quad i=1,2,\cdots,N</script><p>使用权值分布为<script type="math/tex">D_m</script>的训练集学习，得到基本分类器</p>
-<script type="math/tex; mode=display">
-G_m(x):{\cal X}\rightarrow\{-1,+1\}</script><p>计算分类器在训练集上的分类误差率</p>
-<script type="math/tex; mode=display">
-e_m=\sum_{i=1}^NP(G_m(x_i)\neq y_i)=\sum_{i=1}^Nw_{mi}I(G_m(x_i)\neq y_i)</script><p>计算分类器的系数，取自然对数</p>
-<script type="math/tex; mode=display">
-\alpha_m=\frac12\log\frac{1-e_m}{e_m}</script><p>更新训练集的权值分布</p>
-<script type="math/tex; mode=display">
-D_{m+1}=(w_{m+1.1},\cdots,w_{m+1,i},\cdots,w_{m+1,N})\\
-w_{m+1,i}=\frac{w_{mi}}{Z_m}\exp(-\alpha_my_iG_m(x_i)),\quad i=1,2,\cdots,N</script><p>其中，<script type="math/tex">Z_m</script>是规范化因子，使得<script type="math/tex">D_{m+1}</script>成为一个概率分布。</p>
-<script type="math/tex; mode=display">
-Z_m = \sum_{i=1}^N{w_{mi}}\exp(-\alpha_my_iG_m(x_i))</script><p>根据基本分类器，构造线性组合，得到最终分类器</p>
-<script type="math/tex; mode=display">
-f(x)=\sum_{m=1}^M\alpha_mG_m(x) \\
-G(x)=sign(f(x))</script><p>计算<script type="math/tex">G_m(x)</script>系数<script type="math/tex">\alpha_m</script>时，<script type="math/tex">e_m\leq\frac12</script>时，<script type="math/tex">\alpha_m\geq0</script>，并且<script type="math/tex">\alpha_m</script>关于<script type="math/tex">e_m</script>递减，所以分类误差率越小的基本分类器，在最终分类器中的作用越大。</p>
-<p>更新权值时，可以写成如下形式：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-w_{m+1,i}=\begin{cases}\frac{w_{mi}}{Z_m}e^{-\alpha_m},\quad &G_m(x_i)=y_i\\\frac{w_{mi}}{Z_m}e^{\alpha_m},\quad &G_m(x_i)\neq y_i\end{cases}
-\end{align}</script><p>所以误分类样本的权值得以扩大，在下一轮学习中起更大的作用。不改变训练数据，而不断改变训练数据权值的分布，这是AdaBoost的一个特点。</p>
-<blockquote>
-<p>注意，<script type="math/tex">\sum\alpha_m\neq1</script></p>
-</blockquote>
-<h2 id="8-2-AdaBoost算法的训练误差分析"><a href="#8-2-AdaBoost算法的训练误差分析" class="headerlink" title="8.2 AdaBoost算法的训练误差分析"></a>8.2 AdaBoost算法的训练误差分析</h2><p><strong>定理 8.1</strong>    AdaBoost算法最终分类器的训练误差界为</p>
-<script type="math/tex; mode=display">
-\frac1N\sum_{i=1}^NI(G(x_i)\neq y_i)\leq\frac1N\sum_i\exp(-y_if(x_i))\neq y_i)=\prod_mZ_m</script><p><strong>定理8.2</strong>    二分类问题中，AdaBoost的训练误差界为</p>
-<script type="math/tex; mode=display">
-\begin{align}
-\prod_{m=1}^MZ_m&=\prod_{m=1}^M[2\sqrt{e_m(1-e_m)}]\\
-&=\prod_{m=1}^M\sqrt{(1-4\gamma_m^2)}\\
-&\leq\exp(-2\sum_{m=1}^M\gamma_m^2)
-\end{align}</script><p>其中，<script type="math/tex">\gamma_m=\frac12-e_m</script></p>
-<h2 id="8-3-AdaBoost算法的解释"><a href="#8-3-AdaBoost算法的解释" class="headerlink" title="8.3 AdaBoost算法的解释"></a>8.3 AdaBoost算法的解释</h2><h3 id="前向分步算法"><a href="#前向分步算法" class="headerlink" title="前向分步算法"></a>前向分步算法</h3><p>考虑加法模型</p>
-<script type="math/tex; mode=display">
-f(x)=\sum_{m=1}^M\beta_mb(x;\gamma_m)</script><p>其中，<script type="math/tex">b(x;\gamma_m)</script>为基函数，<script type="math/tex">\gamma_m</script>为函数的参数。</p>
-<p>给定训练集及损失函数<script type="math/tex">L(y,f(x))</script>的条件下，学习加法模型即为损失函数极小化问题</p>
-<script type="math/tex; mode=display">
-\min_{\beta_m,\gamma_m}\sum_{i=1}^NL(y_i,\sum_{m=1}^M\beta_mb(x_i;\gamma_m))</script><p>通常这是一个复杂的优化问题，前向分步算法的想法是：因为学习的是加法模型，如果能够从前向后，每步只学习一个基函数与系数，逐步逼近，就可以简化复杂度，即每步只考虑优化如下函数</p>
-<script type="math/tex; mode=display">
-\min_{\beta,\gamma}\sum_{i=1}^NL(y_i,\beta b(x_i;\gamma))</script><h3 id="前向分步与AdaBoost"><a href="#前向分步与AdaBoost" class="headerlink" title="前向分步与AdaBoost"></a>前向分步与AdaBoost</h3><p><strong>定理8.3</strong>    AdaBoost是前向分步算法的特例。这时，模型是由基本分类器组成的加法模型，损失函数是指数函数。</p>
-<h2 id="8-4-提升树"><a href="#8-4-提升树" class="headerlink" title="8.4 提升树"></a>8.4 提升树</h2><h3 id="提升树模型"><a href="#提升树模型" class="headerlink" title="提升树模型"></a>提升树模型</h3><p>提升方法实际采用加法模型与前向分步算法，以决策树为基函数的提升方法就称为提升树。</p>
-<p>提升树模型可以表示为决策树的加法模型</p>
-<script type="math/tex; mode=display">
-f_M(x)=\sum_{m=1}^MT(x;\Theta_m)</script><p>其中，<script type="math/tex">T(x;\Theta_m)</script>表示决策树，<script type="math/tex">M</script>表示树的个数。</p>
-<h3 id="提升树算法"><a href="#提升树算法" class="headerlink" title="提升树算法"></a>提升树算法</h3><p>首先初始化提升树<script type="math/tex">f_0(x)=0</script>，第m步的模型是</p>
-<script type="math/tex; mode=display">
-f_m(x)=f_{m-1}(x)+T(x;\Theta_m)</script><p>通过经验风险最小化确定下一棵决策树的参数</p>
-<script type="math/tex; mode=display">
-\hat\Theta_m=\arg\min_{\Theta_m}\sum_{i=1}^NL(y_i,f_{m-1}(x_i)+T(x_i;\Theta_m))</script><p>对于二分类问题，提升树算法只需要将AdaBoost的基本分类器限制为二类分类树即可，此时的提升树算法是AdaBoost的特殊情况。</p>
-<h3 id="梯度提升"><a href="#梯度提升" class="headerlink" title="梯度提升"></a>梯度提升</h3><p>对于提升树算法，当损失函数是平方损失和指数损失函数时，每一步优化是很简单的。</p>
-<p>对于一般损失函数，Freidman提出了梯度提升算法，利用损失函数的负梯度值</p>
-<script type="math/tex; mode=display">
--[\frac{\partial L(y,f(x_i))}{\partial f(x_i)}]_{f(x)=f_{m-1}(x)}</script><p>作为回归问题中残差的近似值，拟合回归树。</p>
-<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line"></span><br><span class="line">clf = AdaBoostClassifier(n_estimators=<span class="number">100</span>, learning_rate=<span class="number">0.5</span>)</span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>统计学习方法</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-        <tag>提升方法</tag>
       </tags>
   </entry>
   <entry>
