@@ -639,13 +639,13 @@
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>CSAPP Chap7: 链接</title>
-    <url>/2021/04/26/CSAPP-Chap7-%E9%93%BE%E6%8E%A5/</url>
+    <title>CSAPP Chap6: 存储器层次结构</title>
+    <url>/2021/04/26/CSAPP-Chap6-%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84/</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>CSAPP Chap6: 存储器层次结构</title>
-    <url>/2021/04/26/CSAPP-Chap6-%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84/</url>
+    <title>CSAPP Chap7: 链接</title>
+    <url>/2021/04/26/CSAPP-Chap7-%E9%93%BE%E6%8E%A5/</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
@@ -815,6 +815,98 @@ v_t^l &= \begin{cases}
         <tag>NLP</tag>
         <tag>BERT</tag>
         <tag>NER</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Graph Neural Networks with Learnable Structural and Positional Representations</title>
+    <url>/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/</url>
+    <content><![CDATA[<p>来自Bengio组，在GNN上引入位置编码，提出了一种新的框架LSPE，在分子数据集上的性能提升了2.87%至64.14%。</p>
+<p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211117124217530.png" alt="image-20211117124217530" style="zoom:67%;"></p>
+<a id="more"></a>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211117123851516.png" alt="image-20211117123851516" style="zoom: 50%;"></p>
+<p>arxiv: <a href="https://arxiv.org/pdf/2110.07875v1.pdf">https://arxiv.org/pdf/2110.07875v1.pdf</a></p>
+<p>code: <a href="https://github.com/vijaydwivedi75/gnn-lspe">https://github.com/vijaydwivedi75/gnn-lspe</a></p>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>GNN大多是基于消息传递机制，通过聚合邻居的信息构建节点表示，但这也带来了一定的局限性。每个节点的表示只依赖于一小块local结构，而没有考虑到节点的位置信息。比如图中两个节点有着相同的1-hop邻居，但2-hop或高阶邻居都不甚相同，此时GNN不能区分两个节点。面对这种局限性，可以有三种方法：</p>
+<ol>
+<li><p>堆叠多层网络，因为过平滑现象可能难以适用长距离的节点；</p>
+</li>
+<li><p>采用高阶的GNN，增加了计算代价；</p>
+</li>
+<li><p>考虑节点的位置编码。</p>
+</li>
+</ol>
+<p>本文希望设计一种可学习的位置编码与GNN结合，从而可以提升GNN的节点表示能力，同时保持线性的计算复杂度便于大规模应用。</p>
+<h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><h3 id="Notation"><a href="#Notation" class="headerlink" title="Notation"></a>Notation</h3><p>假设图为<script type="math/tex">\mathcal{G} = (\mathcal(V), \mathcal{E})</script>，其中<script type="math/tex">n = \lvert \mathcal{V} \rvert</script>表示节点数，<script type="math/tex">E=\lvert \mathcal{E} \rvert</script>表示边数。<script type="math/tex">A\in\mathbb{R}^{n\times n}</script>为邻接矩阵，<script type="math/tex">A_{ij} = 1</script>表示两个节点有边相连，否则<script type="math/tex">A_{ij} = 0</script>，<script type="math/tex">D\in\mathbb{R}^{n\times n}</script>表示节点的度矩阵。<script type="math/tex">h_i</script>和<script type="math/tex">p_i</script>分别表示节点<script type="math/tex">i</script>的表示和位置编码，<script type="math/tex">e_{ij}</script>表示节点<script type="math/tex">i</script>和节点<script type="math/tex">j</script>相连的边的特征。</p>
+<p>GNN模型一般有三个主要部分：嵌入层、堆叠的卷积层以及最后基于任务的层，用上标<script type="math/tex">l</script>表示层数，标准的MP-GNN参数更新公式如下：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\text{MP-GNNs}: \quad
+    h_i^{l+1} &= f_h(h_i^{l}, \{h_j^{l}\}_{j\in\mathcal{N}_i}, e_{ij}^l),
+    \ h_i^{l+1}, h_i^{l}\in \mathbb{R}^d, \tag{1} \label{eq1}\\
+    e_{ij}^{l+1} &= f_e(h_i^{l}, h_j^{l}, e_{ij}^l),
+    \ e_{ij}^{l+1}, e_{ij}^{l}\in \mathbb{R}^d \tag{2}
+\end{align}</script><p>其中<script type="math/tex">f_h</script>和<script type="math/tex">f_e</script>表示有可学习参数的函数，<script type="math/tex">\mathcal{N}_i</script>表示节点<script type="math/tex">i</script>的邻居。Transformer也被认为是MP-GNNs的一种特例，考虑全连通图，将<script type="math/tex">\eqref{eq1}</script>中的边特征丢弃，简化形式即为Transformer。</p>
+<h3 id="Positional-Encoding"><a href="#Positional-Encoding" class="headerlink" title="Positional Encoding"></a>Positional Encoding</h3><p>现有MP-GNN中融合位置信息往往是通过拼接的方式：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+    h_i^{\mathcal{l}=0} &= 
+    \mathrm{LL}_h{
+    \begin{bmatrix}
+        {h_i^{\mathrm{in}} \\ p_i^{in}}
+    \end{bmatrix}}
+    = D^0{
+    \begin{bmatrix}
+        {h_i^{\mathrm{in}} \\ p_i^{in}}
+    \end{bmatrix}}
+    +d^0\in\mathbb{R}^d,\tag{3} \\
+    e_{ij}^{l=0} &= \mathrm{LL}(e_{ij}^{\mathrm{in}})
+    = B^0e_{ij}^{\mathrm{in}}+b^0\in\mathbb{R}^d \tag{4}
+\end{align}</script><p>其中<script type="math/tex">p_i^\mathrm{in}\in\mathbb{R}^k</script>表示输入节点的位置编码，<script type="math/tex">D^0\in\mathbb{R}^{d\times(d_v+k)}</script>和<script type="math/tex">d_0\in\mathbb{R}^d</script>表示全连接层的参数。这种方法融合了位置表示和结构化表示，同时保持了线性的计算复杂度，但是不能动态改变位置表示以更好地适应当前任务。</p>
+<p>针对上述问题，本文将位置信息与结构信息分离，两种表示可以分别学习，这种框架称为可学习的结构和位置编码（<strong>L</strong>earnable <strong>S</strong>tructural and <strong>P</strong>ositional <strong>E</strong>ncodings，<strong>LSPE</strong>）。</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\text{MP-GNNs-LSPE}: \quad
+    h_i^{l+1} &= f_h\left(
+    \begin{bmatrix}
+        h_i^{l} \\ p_i^l
+    \end{bmatrix},
+    \left\{
+        \begin{bmatrix}
+            h_i^{l}\\p_i^l
+        \end{bmatrix}
+    \right\}_{j\in\mathcal{N}_i}, e_{ij}^l\right),
+    \ h_i^{l+1}, h_i^{l}\in \mathbb{R}^d, \tag{5} \label{eq2} \\
+    e_{ij}^{l+1} &= f_e(h_i^{l}, h_j^{l}, e_{ij}^l),
+    \ e_{ij}^{l+1}, e_{ij}^{l}\in \mathbb{R}^d \tag{6} \\
+    p_i^{l+1} &= f_p(p_i^l, \{p_j^{l}\}_{j\in\mathcal{N}_i}, e_{ij}^l),\ p_i^{l+1},p_i^l\in\mathbb{R}^d, \tag{7}
+\end{align}</script><h3 id="Definition-of-Initial-PE"><a href="#Definition-of-Initial-PE" class="headerlink" title="Definition of Initial PE"></a>Definition of Initial PE</h3><p>初始位置编码的选择很重要，本文比较了两种编码：Laplacian PE（LapPE）和Random Walk PE（RWPE）。LapPE为每个节点提供了唯一表示，并且是距离敏感的，但是受限于符号不明确，在训练过程中需要随机翻转符号。</p>
+<p>本文提出了RWPE编码，定义如下：</p>
+<script type="math/tex; mode=display">
+p_i^{\mathrm{RWPE}} = [\mathrm{RW}_{ii}, \mathrm{RW}_{ii}^2, \cdots,\mathrm{RW}_{ii}^k]\in\mathbb{R}^k\tag{8}</script><p>其中<script type="math/tex">\mathrm{RW}=AD^{-1}</script>，本文没有使用完整的随机游走矩阵<script type="math/tex">{R_{ij}}</script>，而是只考虑了节点自身的随机游走矩阵，降低了计算复杂度。RWPE编码没有LapPE的符号不明确问题，不需要随机额外的invariance，同时也提供了唯一的节点表示，在节点有一个独特的k-hop拓扑邻居时。</p>
+<h3 id="Positional-Loss"><a href="#Positional-Loss" class="headerlink" title="Positional Loss"></a>Positional Loss</h3><p>因为本文分离了位置信息，因此可以考虑设计位置编码loss以强迫其学习图的拓扑结构，本文采用的是Laplacian eigenvector loss。</p>
+<script type="math/tex; mode=display">
+\begin{align}
+    \text{Loss} &= \text{Loss}_{\text{Task}}\left(
+        \begin{bmatrix}
+            h^{l=L} \\ p^{l=L}
+        \end{bmatrix}
+    \right)
+         + \alpha\ \text{Loss}_{\text{LapEig}}(p^{l=L}) \tag{9} \\
+     \text{Loss}_{\text{LapEig}}(p) &= \frac{1}{k}\text{trace}(p^T\Delta p) + \frac{\lambda}{k} \lVert p^Tp-\mathrm{I}_k \rVert^2_F \tag{10}
+\end{align}</script><p>其中<script type="math/tex">h^{l=L}\in\mathbb{R}^{n\times d}</script>，<script type="math/tex">p^{l=L}\in\mathbb{R}^{n\times k}</script>，<script type="math/tex">\lVert \cdot \rVert_F</script>表示Frobenius范数，定义为矩阵各项元素平方和的平方根。此外注意到，本文限制位置向量的均值为0范数为1，以更好地近似Laplacian eigenvector loss。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>在三个数据集ZINC、OGBG-MOLTOX21和OGBG-MOLPCBA上进行了实验，在不使用PE时图网络很难取得好的表现。</p>
+<p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211120142523504.png" alt="image-20211120142523504" style="zoom:67%;"></p>
+<p>本文也比较了稀疏GNN和Transformer GNN类的方法，稀疏GNN在LSPE的加持下取得了更好的结果，尽管Transformer GNN理论上可以更好地克服长距依赖的局限性。</p>
+<p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211120143016350.png" alt="image-20211120143016350" style="zoom:67%;"></p>
+<p>此外，本文对k的选择也做了实验，结果上来看适当大一点比较好。</p>
+<p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211120143711638.png" alt="image-20211120143711638" style="zoom:67%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>GNN</tag>
+        <tag>PE</tag>
       </tags>
   </entry>
   <entry>
@@ -3113,53 +3205,6 @@ M &= C_2\cdot K^{-1}\bmod p
       </tags>
   </entry>
   <entry>
-    <title>现代密码学（八）信息隐藏与隐写分析</title>
-    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<p>介绍信息隐藏与隐写分析。</p>
-<a id="more"></a>
-<h2 id="信息隐藏"><a href="#信息隐藏" class="headerlink" title="信息隐藏"></a>信息隐藏</h2><p>信息隐藏可以分为</p>
-<ul>
-<li>空域，如LSB。</li>
-<li>变换域，如DCT。</li>
-</ul>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228213531671.png" alt="image-20201228213531671" style="zoom:67%;"></p>
-<h2 id="数字水印的嵌入"><a href="#数字水印的嵌入" class="headerlink" title="数字水印的嵌入"></a>数字水印的嵌入</h2><ul>
-<li>加法嵌入</li>
-<li>乘法嵌入</li>
-</ul>
-<p>图像质量可以用峰值信噪比PSNR评价</p>
-<h2 id="信息隐藏算法"><a href="#信息隐藏算法" class="headerlink" title="信息隐藏算法"></a>信息隐藏算法</h2><p>空域算法，通过直接修改像素值实现隐藏信息嵌入。</p>
-<ul>
-<li>简单、快速、容量大。</li>
-<li>鲁棒性差。</li>
-</ul>
-<p>灰度256的图像有8个位平面。</p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214154609.png" alt="image-20201228214154609" style="zoom:67%;"></p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214300127.png" alt="image-20201228214300127" style="zoom:67%;"></p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214310415.png" alt="image-20201228214310415" style="zoom:67%;"></p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214318464.png" alt="image-20201228214318464" style="zoom:67%;"></p>
-<h2 id="频域水印算法"><a href="#频域水印算法" class="headerlink" title="频域水印算法"></a>频域水印算法</h2><p>在频域，通过修改频域空间的系数实现水印嵌入。</p>
-<ul>
-<li>鲁棒性好</li>
-<li>复杂度高</li>
-</ul>
-<p>JPEG只改中频系数，不会被消除掉。</p>
-<ul>
-<li>修改低频部分，容易看出变化，隐蔽性差。</li>
-<li>修改高频部分，容易被图像压缩算法破坏，鲁棒性差。</li>
-</ul>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214606301.png" alt="image-20201228214606301" style="zoom:67%;"></p>
-<h2 id="隐写分析"><a href="#隐写分析" class="headerlink" title="隐写分析"></a>隐写分析</h2><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228215318459.png" alt="image-20201228215318459" style="zoom:67%;"></p>
-]]></content>
-      <categories>
-        <category>现代密码学</category>
-      </categories>
-      <tags>
-        <tag>信息隐藏</tag>
-        <tag>隐写分析</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>现代密码学（六）认证与哈希函数</title>
     <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<p>介绍认证方法与哈希函数。</p>
@@ -3261,55 +3306,50 @@ P(365, k) = 1 - \frac {365!} {(365-k)365^k}</script>]]></content>
       </tags>
   </entry>
   <entry>
-    <title>现代密码学（四）序列密码</title>
-    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/</url>
-    <content><![CDATA[<p>介绍序列密码（流密码）。</p>
+    <title>现代密码学（八）信息隐藏与隐写分析</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<p>介绍信息隐藏与隐写分析。</p>
 <a id="more"></a>
-<h2 id="流密码"><a href="#流密码" class="headerlink" title="流密码"></a>流密码</h2><p>流密码的简单结构如下。</p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165456897.png" alt="image-20201228165456897" style="zoom:67%;"></p>
-<p>对于流密码来说，需要生成一个作为密钥流的“随机”比特序列。</p>
-<p>流密码的安全性取决于密钥的安全等级。</p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165551857.png" alt="image-20201228165551857" style="zoom:67%;"></p>
-<p>流密码可以分为两种</p>
+<h2 id="信息隐藏"><a href="#信息隐藏" class="headerlink" title="信息隐藏"></a>信息隐藏</h2><p>信息隐藏可以分为</p>
 <ul>
-<li>同步流密码<ul>
-<li>密钥流的产生与明文消息相互独立</li>
+<li>空域，如LSB。</li>
+<li>变换域，如DCT。</li>
 </ul>
-</li>
-<li>自同步流密码<ul>
-<li>密钥流的产生与之间产生的若干密文有关</li>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228213531671.png" alt="image-20201228213531671" style="zoom:67%;"></p>
+<h2 id="数字水印的嵌入"><a href="#数字水印的嵌入" class="headerlink" title="数字水印的嵌入"></a>数字水印的嵌入</h2><ul>
+<li>加法嵌入</li>
+<li>乘法嵌入</li>
 </ul>
-</li>
+<p>图像质量可以用峰值信噪比PSNR评价</p>
+<h2 id="信息隐藏算法"><a href="#信息隐藏算法" class="headerlink" title="信息隐藏算法"></a>信息隐藏算法</h2><p>空域算法，通过直接修改像素值实现隐藏信息嵌入。</p>
+<ul>
+<li>简单、快速、容量大。</li>
+<li>鲁棒性差。</li>
 </ul>
-<h2 id="线性反馈移位寄存器-LFSR"><a href="#线性反馈移位寄存器-LFSR" class="headerlink" title="线性反馈移位寄存器 LFSR"></a>线性反馈移位寄存器 LFSR</h2><p>LFSR可以产生同步密钥流。</p>
-<script type="math/tex; mode=display">
-a_i(t+1) = a_{i+1}(t),\ i=1,2,\dots,n-1 \\
-a_n(t+1) = c_na_1(t) \oplus c_{n-1}a_2(t) \oplus\dots\oplus c_1a_n(t)</script><p>联结多项式为</p>
-<script type="math/tex; mode=display">
-c_nx^n + c_{n-1}x^{n-1} +\dots+ c_1x+1</script><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228170207505.png" alt="image-20201228170207505" style="zoom:67%;"></p>
-<p>例如对于联接多项式<script type="math/tex">x^3+x^2+1</script>，对应的反馈函数为</p>
-<script type="math/tex; mode=display">
-a_3 = a_1 \oplus a_2</script><p>对于LFSR来说，一个n级LFSR序列的周期最大为<script type="math/tex">2^n-1</script>。</p>
-<p>如果产生了最大周期，则称为m序列，LFSR的状态转移图只有两个圈。</p>
-<h2 id="伪随机序列"><a href="#伪随机序列" class="headerlink" title="伪随机序列"></a>伪随机序列</h2><h3 id="Golomb随机性假设"><a href="#Golomb随机性假设" class="headerlink" title="Golomb随机性假设"></a>Golomb随机性假设</h3><ul>
-<li>在每一周期内，0和1的个数近似相等。</li>
-<li>在每一周期内，长度为i的游程占游程总数的<script type="math/tex">\frac{1}{2^i}</script>。</li>
-<li>定义自相关函数<script type="math/tex">C(\tau)=\sum_{i=1}^n(-1)^{a_i+a_{i+\tau}}</script>。<ul>
-<li>那么<script type="math/tex">C(\tau)=\begin{cases}n,\quad\tau\equiv0\mod n\\c,\quad others\end{cases}</script></li>
+<p>灰度256的图像有8个位平面。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214154609.png" alt="image-20201228214154609" style="zoom:67%;"></p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214300127.png" alt="image-20201228214300127" style="zoom:67%;"></p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214310415.png" alt="image-20201228214310415" style="zoom:67%;"></p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214318464.png" alt="image-20201228214318464" style="zoom:67%;"></p>
+<h2 id="频域水印算法"><a href="#频域水印算法" class="headerlink" title="频域水印算法"></a>频域水印算法</h2><p>在频域，通过修改频域空间的系数实现水印嵌入。</p>
+<ul>
+<li>鲁棒性好</li>
+<li>复杂度高</li>
 </ul>
-</li>
+<p>JPEG只改中频系数，不会被消除掉。</p>
+<ul>
+<li>修改低频部分，容易看出变化，隐蔽性差。</li>
+<li>修改高频部分，容易被图像压缩算法破坏，鲁棒性差。</li>
 </ul>
-<h3 id="m序列的伪随机性"><a href="#m序列的伪随机性" class="headerlink" title="m序列的伪随机性"></a>m序列的伪随机性</h3><h3 id="线性复杂度"><a href="#线性复杂度" class="headerlink" title="线性复杂度"></a>线性复杂度</h3><p>能够输出该序列的最短LFSR的级数。</p>
-<p>一个好的流密码，应该具有大周期、大的线性复杂度，同时满足Golomb随机性假设。</p>
-<h2 id="基于LFSR的伪随机序列生成器"><a href="#基于LFSR的伪随机序列生成器" class="headerlink" title="基于LFSR的伪随机序列生成器"></a>基于LFSR的伪随机序列生成器</h2><h3 id="滤波生成器"><a href="#滤波生成器" class="headerlink" title="滤波生成器"></a>滤波生成器</h3><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171735794.png" alt="image-20201228171735794" style="zoom:67%;"></p>
-<h3 id="组合生成器"><a href="#组合生成器" class="headerlink" title="组合生成器"></a>组合生成器</h3><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171742568.png" alt="image-20201228171742568" style="zoom:67%;"></p>
-<h3 id="钟控生成器"><a href="#钟控生成器" class="headerlink" title="钟控生成器"></a>钟控生成器</h3><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171755691.png" alt="image-20201228171755691" style="zoom:67%;"></p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214606301.png" alt="image-20201228214606301" style="zoom:67%;"></p>
+<h2 id="隐写分析"><a href="#隐写分析" class="headerlink" title="隐写分析"></a>隐写分析</h2><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228215318459.png" alt="image-20201228215318459" style="zoom:67%;"></p>
 ]]></content>
       <categories>
         <category>现代密码学</category>
       </categories>
       <tags>
-        <tag>流密码</tag>
+        <tag>信息隐藏</tag>
+        <tag>隐写分析</tag>
       </tags>
   </entry>
   <entry>
@@ -3414,6 +3454,250 @@ L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert</script
       </categories>
       <tags>
         <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>现代密码学（四）序列密码</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/</url>
+    <content><![CDATA[<p>介绍序列密码（流密码）。</p>
+<a id="more"></a>
+<h2 id="流密码"><a href="#流密码" class="headerlink" title="流密码"></a>流密码</h2><p>流密码的简单结构如下。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165456897.png" alt="image-20201228165456897" style="zoom:67%;"></p>
+<p>对于流密码来说，需要生成一个作为密钥流的“随机”比特序列。</p>
+<p>流密码的安全性取决于密钥的安全等级。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165551857.png" alt="image-20201228165551857" style="zoom:67%;"></p>
+<p>流密码可以分为两种</p>
+<ul>
+<li>同步流密码<ul>
+<li>密钥流的产生与明文消息相互独立</li>
+</ul>
+</li>
+<li>自同步流密码<ul>
+<li>密钥流的产生与之间产生的若干密文有关</li>
+</ul>
+</li>
+</ul>
+<h2 id="线性反馈移位寄存器-LFSR"><a href="#线性反馈移位寄存器-LFSR" class="headerlink" title="线性反馈移位寄存器 LFSR"></a>线性反馈移位寄存器 LFSR</h2><p>LFSR可以产生同步密钥流。</p>
+<script type="math/tex; mode=display">
+a_i(t+1) = a_{i+1}(t),\ i=1,2,\dots,n-1 \\
+a_n(t+1) = c_na_1(t) \oplus c_{n-1}a_2(t) \oplus\dots\oplus c_1a_n(t)</script><p>联结多项式为</p>
+<script type="math/tex; mode=display">
+c_nx^n + c_{n-1}x^{n-1} +\dots+ c_1x+1</script><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228170207505.png" alt="image-20201228170207505" style="zoom:67%;"></p>
+<p>例如对于联接多项式<script type="math/tex">x^3+x^2+1</script>，对应的反馈函数为</p>
+<script type="math/tex; mode=display">
+a_3 = a_1 \oplus a_2</script><p>对于LFSR来说，一个n级LFSR序列的周期最大为<script type="math/tex">2^n-1</script>。</p>
+<p>如果产生了最大周期，则称为m序列，LFSR的状态转移图只有两个圈。</p>
+<h2 id="伪随机序列"><a href="#伪随机序列" class="headerlink" title="伪随机序列"></a>伪随机序列</h2><h3 id="Golomb随机性假设"><a href="#Golomb随机性假设" class="headerlink" title="Golomb随机性假设"></a>Golomb随机性假设</h3><ul>
+<li>在每一周期内，0和1的个数近似相等。</li>
+<li>在每一周期内，长度为i的游程占游程总数的<script type="math/tex">\frac{1}{2^i}</script>。</li>
+<li>定义自相关函数<script type="math/tex">C(\tau)=\sum_{i=1}^n(-1)^{a_i+a_{i+\tau}}</script>。<ul>
+<li>那么<script type="math/tex">C(\tau)=\begin{cases}n,\quad\tau\equiv0\mod n\\c,\quad others\end{cases}</script></li>
+</ul>
+</li>
+</ul>
+<h3 id="m序列的伪随机性"><a href="#m序列的伪随机性" class="headerlink" title="m序列的伪随机性"></a>m序列的伪随机性</h3><h3 id="线性复杂度"><a href="#线性复杂度" class="headerlink" title="线性复杂度"></a>线性复杂度</h3><p>能够输出该序列的最短LFSR的级数。</p>
+<p>一个好的流密码，应该具有大周期、大的线性复杂度，同时满足Golomb随机性假设。</p>
+<h2 id="基于LFSR的伪随机序列生成器"><a href="#基于LFSR的伪随机序列生成器" class="headerlink" title="基于LFSR的伪随机序列生成器"></a>基于LFSR的伪随机序列生成器</h2><h3 id="滤波生成器"><a href="#滤波生成器" class="headerlink" title="滤波生成器"></a>滤波生成器</h3><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171735794.png" alt="image-20201228171735794" style="zoom:67%;"></p>
+<h3 id="组合生成器"><a href="#组合生成器" class="headerlink" title="组合生成器"></a>组合生成器</h3><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171742568.png" alt="image-20201228171742568" style="zoom:67%;"></p>
+<h3 id="钟控生成器"><a href="#钟控生成器" class="headerlink" title="钟控生成器"></a>钟控生成器</h3><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171755691.png" alt="image-20201228171755691" style="zoom:67%;"></p>
+]]></content>
+      <categories>
+        <category>现代密码学</category>
+      </categories>
+      <tags>
+        <tag>流密码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>统计学习方法（三）k近邻法</title>
+    <url>/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/</url>
+    <content><![CDATA[<p>k近邻法，是一种基本分类与回归方法。输入为特征向量，输出为类别。</p>
+<a id="more"></a>
+<h2 id="3-1-k近邻算法"><a href="#3-1-k近邻算法" class="headerlink" title="3.1 k近邻算法"></a>3.1 k近邻算法</h2><p>给定一个训练集，对新的输入实例，在训练集中找到最邻近的k个实例，将输入实例分为多数类。</p>
+<ul>
+<li>输入：训练数据集T，实例特征向量x。</li>
+<li>输出：实例x所属的类y。</li>
+<li>根据给定的距离度量，在T中找出与x最邻近的k个点。</li>
+<li>在邻域中根据分类决策规则（如多数表决）决定x的类别y。</li>
+<li>k=1时，称为最近邻算法，将与x最邻近点的类作为x的类。</li>
+</ul>
+<h2 id="3-2-k近邻模型"><a href="#3-2-k近邻模型" class="headerlink" title="3.2 k近邻模型"></a>3.2 k近邻模型</h2><h3 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h3><script type="math/tex; mode=display">L_p$$距离定义为</script><p>L_p(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^p)^{\frac 1 p}</p>
+<script type="math/tex; mode=display">
+p=1时，称为曼哈顿距离</script><p>L_1(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|)</p>
+<script type="math/tex; mode=display">
+p=2时，即为欧式距离</script><p>L_2(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^2)^{\frac 1 2}</p>
+<script type="math/tex; mode=display">
+p=∞时，称为切比雪夫距离，为各个坐标距离的最大值</script><p>L_\infty(x_i, x_j) = \max_l |x_i^{(l)}-x_j^{(l)}|</p>
+<script type="math/tex; mode=display">
+下图给出了与原点距离为1的图形
+
+![](统计学习方法（三）k近邻法/1.png)
+
+### 分类决策规则
+
+k近邻法中的分类决策规则往往是多数表决，即由k个临近点的多数类决定输入类。
+
+如果分类的损失函数为0-1损失函数，分类函数为</script><p>f: \mathbf R^n \rightarrow \{c_1, c_2, …, c_K\}</p>
+<script type="math/tex; mode=display">
+那么误分类的概率为</script><p>P(Y\neq f(X)) = 1- P(Y=f(X)) \\<br>\Leftrightarrow \frac 1 k \sum _{x_i\in N_k(x)} I(y_i\neq c_j) = 1 - \frac 1 k \sum _{x_i\in N_k(x)} I(y_i= c_j)</p>
+<p>$$</p>
+<h2 id="3-3-k近邻法的实现：kd树"><a href="#3-3-k近邻法的实现：kd树" class="headerlink" title="3.3 k近邻法的实现：kd树"></a>3.3 k近邻法的实现：kd树</h2><h3 id="构造kd树"><a href="#构造kd树" class="headerlink" title="构造kd树"></a>构造kd树</h3><p>kd树是二叉树，表示对k维空间的一个划分。</p>
+<p>构造kd树相当于不断地用超平面切分k维空间，构成一系列的k维超矩形区域，kd树的每个节点对应于一个k维超矩形区域。</p>
+<p>构造算法如下</p>
+<ol>
+<li>开始：构造根节点，对应于包含T的k维空间的超矩形区域。<ul>
+<li>选择<script type="math/tex">x^{(1)}</script>为坐标轴，以T中所有实例的<script type="math/tex">x^{(1)}</script>坐标的中位数为切分点，将根节点对应的超矩形区域切分为两个子区域。</li>
+<li>由此生成深度为一的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(1)}</script>小于切分点的子区域。</li>
+</ul>
+</li>
+<li>重复：对深度为j的节点，选择<script type="math/tex">x^{(l)}</script>为切分的坐标轴，其中<script type="math/tex">l=j(mod k)+1</script>，以坐标的中位数为切分点。<ul>
+<li>由此生成深度为j+1的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(l)}</script>小于切分点的子区域。</li>
+</ul>
+</li>
+<li>直到两个子区域没有实例存在时停止，形成kd树的区域划分。</li>
+</ol>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png" alt></p>
+<h3 id="搜索kd树"><a href="#搜索kd树" class="headerlink" title="搜索kd树"></a>搜索kd树</h3><p>给定一个目标点，搜索其最近邻，首先找到包含目标点的叶节点。从叶节点出发，依次回退到父节点，不断查找与目标点最邻近的节点。</p>
+<p>给定如图所示的kd树，根节点为A，子节点为B、C等，输入实例点为S，求S的最近邻。</p>
+<ul>
+<li>首先找到包含S的叶结点D，以D作为近似最近邻。</li>
+<li>返回D的父节点B，在B的另一子节点F的区域内搜索。</li>
+<li>继续返回上一级父节点A，在A的另一子节点C的区域内搜索。</li>
+<li>点E比点D更近，成为最近邻。</li>
+</ul>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png" alt></p>
+<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">clf_sk = KNeighborsClassifier()</span><br><span class="line">clf_sk.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf_sk.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>统计学习方法</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>KNN</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>统计学习方法（九）EM算法及其推广</title>
+    <url>/2020/08/26/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B9%9D%EF%BC%89EM%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E6%8E%A8%E5%B9%BF/</url>
+    <content><![CDATA[<p>EM算法是一种迭代算法，用于含隐变量的概率模型参数的极大似然估计，或极大后验概率估计。</p>
+<a id="more"></a>
+<h2 id="9-1-EM算法的引入"><a href="#9-1-EM算法的引入" class="headerlink" title="9.1 EM算法的引入"></a>9.1 EM算法的引入</h2><h3 id="三硬币模型"><a href="#三硬币模型" class="headerlink" title="三硬币模型"></a>三硬币模型</h3><p>假设有三枚硬币，记作A、B、C，这些硬币正面出现的概率分别为π、p、q。进行如下实验：先掷硬币A，根据结果选择硬币，正面选B，反面选C；然后掷选出的硬币，正面记作1，反面记作0；独立重复n次，得到观测结果。</p>
+<p>假设只能观测到掷硬币的结果，不能观测过程，问如何估计三硬币正面出现的概率。</p>
+<script type="math/tex; mode=display">
+\begin{align}
+P(y|\theta)=\sum_zP(y,z|\theta)&=\sum_zP(z|\theta)P(y|z,\theta) \\
+&= \pi p^y(1-p)^{1-y}+(1-\pi)q^y(1-q)^{1-y}
+\end{align}</script><p>其中，y表示观测变量，z为隐变量，表示硬币A的结果，θ为模型参数。</p>
+<p>将观测数据表示为<script type="math/tex">Y=(Y_1,Y_2,\cdots Y_n)^T</script>，未观测数据表示为<script type="math/tex">Z=(Z_1,Z_2,\cdots Z_n)^T</script>，则似然函数为</p>
+<script type="math/tex; mode=display">
+\begin{align}
+P(Y|\theta)&=\sum_ZP(Z|\theta)P(Y|Z,\theta) \\
+&= \prod_{j=1}^n[\pi p^{y_i}(1-p)^{1-y_i}+(1-\pi)q^{y_i}(1-q)^{1-y_i}]
+\end{align}</script><p>考虑<script type="math/tex">\theta=(\pi,p,q)</script>的极大似然估计</p>
+<script type="math/tex; mode=display">
+\hat\theta=\arg\max_\theta\log P(Y|\theta)</script><p>这个问题没有解析解，只能通过迭代求解，EM算法就是这样一种迭代算法。</p>
+<h3 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h3><p>输入：观测变量数据Y，隐变量数据Z，联合分布<script type="math/tex">P(Y,Z|\theta)</script>，条件分布<script type="math/tex">P(Z|Y,\theta)</script>；</p>
+<p>输出：模型参数<script type="math/tex">\theta</script>。</p>
+<ul>
+<li><p>选择参数的初值<script type="math/tex">\theta^{(0)}</script>，开始迭代；</p>
+</li>
+<li><p>E步：记<script type="math/tex">\theta^{(i)}</script>表示第i次迭代时参数的估计值，在第i+1次迭代，计算</p>
+<script type="math/tex; mode=display">
+\begin{align}
+Q(\theta,\theta^{(i)})&=E_Z[\log P(Y,Z|\theta)|Y,\theta^{(i)}]\\
+&=\sum_Z\log P(Y,Z|\theta)P(Z|Y,\theta^{(i)})
+\end{align}</script></li>
+<li><p>M步：求使得<script type="math/tex">Q(\theta,\theta^{(i)})</script>极大化的参数值，确定第i+1次迭代的参数值</p>
+<script type="math/tex; mode=display">
+\theta^{(i+1)}=\arg\max_\theta Q(\theta,\theta^{(i)})</script></li>
+<li><p>重复上述步骤，直到收敛。</p>
+</li>
+</ul>
+<p>参数的初值可以任意选择，但EM算法对初值是敏感的。</p>
+<p>停止迭代的条件一般是</p>
+<script type="math/tex; mode=display">
+\|\theta^{(i+1)}-\theta^{(i)}\|<\epsilon_1 \quad or \quad \|Q(\theta^{(i+1)},\theta^{(i)})-Q(\theta^{(i)},\theta^{(i)})\|<\epsilon_2</script><h3 id="EM算法的导出"><a href="#EM算法的导出" class="headerlink" title="EM算法的导出"></a>EM算法的导出</h3><p>面对一个含有隐变量的概率模型，我们希望极大化观测数据关于参数的对数似然函数，即</p>
+<script type="math/tex; mode=display">
+\begin{align}
+L(\theta)&=\log P(Y|\theta)=\log\sum_ZP(Y,Z|\theta) \\
+&= \log(\sum_ZP(Z|\theta)P(Y|Z,\theta))
+\end{align}</script><p>EM算法通过迭代，逐步近似最大化函数，考虑</p>
+<script type="math/tex; mode=display">
+L(\theta)-L(\theta^{(i)})=\log(\sum_ZP(Z|\theta)P(Y|Z,\theta))-\log P(Y|\theta^{(i)})</script><p>利用Jensen不等式</p>
+<script type="math/tex; mode=display">
+\begin{align}
+L(\theta)-L(\theta^{(i)})&=\log(\sum_ZP(Z|Y,\theta^{(i)})\frac{P(Z|\theta)P(Y|Z,\theta)}{P(Z|Y,\theta^{(i)})})-\log P(Y|\theta^{(i)})\\
+&\geq\sum_ZP(Z|Y,\theta^{(i)})\log\frac{P(Z|\theta)P(Y|Z,\theta)}{P(Z|Y,\theta^{(i)})}-\log P(Y|\theta^{(i)})\\
+&=\sum_ZP(Z|Y,\theta^{(i)})\log\frac{P(Z|\theta)P(Y|Z,\theta)}{P(Z|Y,\theta^{(i)})P(Y|\theta^{(i)})}
+\end{align}</script><blockquote>
+<script type="math/tex; mode=display">\log\sum_j\lambda_jy_j\geq\sum_j\lambda_j\log y_j,\quad\lambda_j\geq0,\quad\sum_j\lambda_j=1</script></blockquote>
+<p>记</p>
+<script type="math/tex; mode=display">
+B(\theta,\theta^{(i)})\hat=L(\theta^{(i)})+\sum_ZP(Z|Y,\theta^{(i)})\log\frac{P(Z|\theta)P(Y|Z,\theta)}{P(Z|Y,\theta^{(i)})P(Y|\theta^{(i)})}</script><p>则有</p>
+<script type="math/tex; mode=display">
+L(\theta)\geq B(\theta,\theta^{(i)})</script><p>即<script type="math/tex">B(\theta,\theta^{(i)})</script>是<script type="math/tex">L(\theta)</script>的一个下界，为了使<script type="math/tex">L(\theta)</script>尽可能大地增长，选择</p>
+<script type="math/tex; mode=display">
+\theta^{(i+1)}=\arg\max_\theta B(\theta,\theta^{(i)})</script><p>省去常数项，得到</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\theta^{(i+1)}&=\arg\max_\theta(L(\theta^{(i)})+\sum_ZP(Z|Y,\theta^{(i)})\log\frac{P(Z|\theta)P(Y|Z,\theta)}{P(Z|Y,\theta^{(i)})P(Y|\theta^{(i)})})\\
+&=\arg\max_\theta(\sum_ZP(Z|Y,\theta^{(i)})\log P(Z|\theta)P(Y|Z,\theta))\\
+&=\arg\max_\theta(\sum_ZP(Z|Y,\theta^{(i)})\log P(Y,Z|\theta))\\
+&=\arg\max_\theta Q(\theta,\theta^{(i)})
+\end{align}</script><p><img src="/2020/08/26/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B9%9D%EF%BC%89EM%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E6%8E%A8%E5%B9%BF/1.png" alt></p>
+<h2 id="9-2-EM算法的收敛性"><a href="#9-2-EM算法的收敛性" class="headerlink" title="9.2 EM算法的收敛性"></a>9.2 EM算法的收敛性</h2><p><strong>定理 9.1</strong>    设<script type="math/tex">P(Y|\theta)</script>为观测数据的似然函数，则<script type="math/tex">P(Y|\theta^{(i)})</script>是单调递增的。</p>
+<p><strong>定理 9.2</strong>    设<script type="math/tex">L(\theta)=\log P(Y|\theta)</script>为观测数据的对数似然函数，则有</p>
+<ul>
+<li>如果<script type="math/tex">P(Y|\theta)</script>有上界，则<script type="math/tex">L(\theta^{(i)}=\log P(Y|\theta^{(i)})</script>收敛到某一值。</li>
+<li>在<script type="math/tex">Q(\theta,\theta')</script>与<script type="math/tex">L(\theta)</script>满足一定条件下，由EM算法得到的参数估计序列的收敛值是<script type="math/tex">L(\theta)</script>的稳定点。</li>
+</ul>
+<h2 id="9-3-EM算法在高斯混合模型学习中的应用"><a href="#9-3-EM算法在高斯混合模型学习中的应用" class="headerlink" title="9.3 EM算法在高斯混合模型学习中的应用"></a>9.3 EM算法在高斯混合模型学习中的应用</h2><h3 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h3><p>高斯混合模型是指具有如下形式的概率分布模型</p>
+<script type="math/tex; mode=display">
+P(y|\theta)=\sum_{k=1}^K\alpha_k\phi(y|\theta_k),\quad\alpha_k\geq0,\quad\sum_{k=1}\alpha_k=1</script><p>其中<script type="math/tex">\phi(y|\theta_k)</script>是高斯分布密度，<script type="math/tex">\theta_k=(\mu_k,\sigma_k^2)</script>，称为第k个分模型。</p>
+<script type="math/tex; mode=display">
+\phi(y|\theta_k)=\frac1{\sqrt{2\pi}\sigma_k}\exp(-\frac{(y-\mu_k)^2}{2\sigma_k^2})</script><h3 id="高斯混合模型参数估计的EM算法"><a href="#高斯混合模型参数估计的EM算法" class="headerlink" title="高斯混合模型参数估计的EM算法"></a>高斯混合模型参数估计的EM算法</h3><p>假设观测数据由高斯混合模型生成，我们用EM算法估计高斯混合模型的参数。</p>
+<h4 id="明确隐变量，写出对数似然函数"><a href="#明确隐变量，写出对数似然函数" class="headerlink" title="明确隐变量，写出对数似然函数"></a>明确隐变量，写出对数似然函数</h4><p>明确隐变量</p>
+<script type="math/tex; mode=display">
+\gamma_{jk}=\begin{cases}1,\quad第j个观测来自第k个模型\\0,\quad否则\end{cases}\\
+j=1,2,\cdots,N;\quad k=1,2,\cdots,K</script><p>写出似然函数</p>
+<script type="math/tex; mode=display">
+\begin{align}
+P(y,\gamma|\theta)&=\prod_{j=1}^NP(y_j,\gamma_{j1},\gamma_{j2},\cdots,\gamma_{jK}|\theta)\\
+&=\prod_{k=1}^K\prod_{j=1}^N[\alpha_k\phi(y_j|\theta_k)]^{\gamma_{jk}}\\
+&=\prod_{k=1}^K\alpha_k^{n_k}\prod_{j=1}^N[\phi(y_j|\theta_k)]^{\gamma_{jk}}\\
+&=\prod_{k=1}^K\alpha_k^{n_k}\prod_{j=1}^N[\frac1{\sqrt{2\pi}\sigma_k}\exp(-\frac{(y-\mu_k)^2}{2\sigma_k^2}]^{\gamma_{jk}}
+\end{align}</script><p>其中，<script type="math/tex">n_k=\sum_{j=1}^N\gamma_{jk}</script>，<script type="math/tex">\sum_{k=1}^Kn_k=N</script></p>
+<p>那么对数似然函数为</p>
+<script type="math/tex; mode=display">
+\log P(y,\gamma|\theta)=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\gamma_{jk}[\log(\frac1{\sqrt{2\pi}})-\log\sigma_k-\frac1{2\sigma_k^2}(y-\mu_k)^2]\}</script><h4 id="EM算法的E步：确定Q函数"><a href="#EM算法的E步：确定Q函数" class="headerlink" title="EM算法的E步：确定Q函数"></a>EM算法的E步：确定Q函数</h4><script type="math/tex; mode=display">
+\begin{align}
+Q(\theta,\theta^{(i)})&=E[\log P(y,\gamma|\theta)|y,\theta^{(i)}]\\
+&=E\{\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\gamma_{jk}[\log(\frac1{\sqrt{2\pi}})-\log\sigma_k-\frac1{2\sigma_k^2}(y-\mu_k)^2]\}\}\\
+&=\sum_{k=1}^K\{\sum_{j=1}^N(E\gamma_{jk})\log\alpha_k+\sum_{j=1}^N(E\gamma_{jk})[\log(\frac1{\sqrt{2\pi}})-\log\sigma_k-\frac1{2\sigma_k^2}(y-\mu_k)^2]\}
+\end{align}</script><p>这里需要计算<script type="math/tex">E(\gamma_{jk}|y,\theta)</script></p>
+<script type="math/tex; mode=display">
+\begin{align}
+\hat\gamma_{jk}&=E(\gamma_{jk}|y,\theta)=P(\gamma_{jk}=1|y,\theta)\\
+&=\frac{P(\gamma_{jk}=1,y_j|\theta)}{\sum_{k=1}^KP(\gamma_{jk}=1,y_j|\theta)}\\
+&=\frac{P(y_j|\gamma_{jk}=1,\theta)P(\gamma_{jk}=1|\theta)}{\sum_{k=1}^KP(y_j|\gamma_{jk}=1,\theta)P(\gamma_{jk}=1|\theta)}\\
+&=\frac{\alpha_k\phi(y_j|\theta_k)}{\sum_{k=1}^K\alpha_k\phi(y_j|\theta_k)},\quad j=1,2,\cdots,N;\quad k=1,2,\cdots,N
+\end{align}</script><p>代回原式</p>
+<script type="math/tex; mode=display">
+Q(\theta,\theta^{(i)})=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\hat\gamma_{jk}[\log(\frac1{\sqrt{2\pi}})-\log\sigma_k-\frac1{2\sigma_k^2}(y-\mu_k)^2]\}</script><h4 id="确定EM算法的M步"><a href="#确定EM算法的M步" class="headerlink" title="确定EM算法的M步"></a>确定EM算法的M步</h4><script type="math/tex; mode=display">
+\theta^{(i+1)}=\arg\max_\theta Q(\theta,\theta^{(i)})</script><p>将<script type="math/tex">Q(\theta,\theta^{(i)})</script>分别对<script type="math/tex">\mu_k,\sigma_k^2</script>求偏导数，令其为0；求<script type="math/tex">\hat\alpha_k</script>是在<script type="math/tex">\sum_{k=1}^K\alpha_k=1</script>条件下求偏导数并令其为0得到的。</p>
+<script type="math/tex; mode=display">
+\hat\mu_k=\frac{\sum_{j=1}^N\hat\gamma_{jk}y_j}{\sum_{j=1}^N\hat\gamma_{jk}},\quad k=1,2,\cdots,K\\
+\hat\sigma_k^2=\frac{\sum_{j=1}^N\hat\gamma_{jk}(y_j-\mu_k)^2}{\sum_{j=1}^N\hat\gamma_{jk}},\quad k=1,2,\cdots,K\\
+\hat\alpha_k=\frac{n_k}N=\frac{\sum_{j=1}^N\hat\gamma_{jk}}{N},\quad k=1,2,\cdots,K\\</script><h2 id="9-4-EM算法的推广"><a href="#9-4-EM算法的推广" class="headerlink" title="9.4 EM算法的推广"></a>9.4 EM算法的推广</h2><p>暂略，有空再补。</p>
+<h3 id="F函数的极大-极大算法"><a href="#F函数的极大-极大算法" class="headerlink" title="F函数的极大-极大算法"></a>F函数的极大-极大算法</h3><h3 id="GEM算法"><a href="#GEM算法" class="headerlink" title="GEM算法"></a>GEM算法</h3><h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.mixture <span class="keyword">import</span> GaussianMixture</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化观测数据</span></span><br><span class="line">data = np.array([<span class="number">-67</span>, <span class="number">-48</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">14</span>, <span class="number">16</span>, <span class="number">23</span>, <span class="number">24</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">41</span>, <span class="number">49</span>, <span class="number">56</span>, <span class="number">60</span>,</span><br><span class="line">                 <span class="number">75</span>]).reshape(<span class="number">-1</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 聚类</span></span><br><span class="line">gmmModel = GaussianMixture(n_components=<span class="number">2</span>)</span><br><span class="line">gmmModel.fit(data)</span><br><span class="line">labels = gmmModel.predict(data)</span><br><span class="line">print(<span class="string">&quot;labels =&quot;</span>, labels)</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>对于含隐变量的模型，分E步和M步，分别求期望和极大值，得到参数的新的估计值，迭代以极大化函数。</p>
+]]></content>
+      <categories>
+        <category>统计学习方法</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>EM算法</tag>
       </tags>
   </entry>
   <entry>
@@ -3619,198 +3903,6 @@ s.t. \quad& \sum_{i=1}^N\alpha_iy_i=0\\
       </tags>
   </entry>
   <entry>
-    <title>统计学习方法（三）k近邻法</title>
-    <url>/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/</url>
-    <content><![CDATA[<p>k近邻法，是一种基本分类与回归方法。输入为特征向量，输出为类别。</p>
-<a id="more"></a>
-<h2 id="3-1-k近邻算法"><a href="#3-1-k近邻算法" class="headerlink" title="3.1 k近邻算法"></a>3.1 k近邻算法</h2><p>给定一个训练集，对新的输入实例，在训练集中找到最邻近的k个实例，将输入实例分为多数类。</p>
-<ul>
-<li>输入：训练数据集T，实例特征向量x。</li>
-<li>输出：实例x所属的类y。</li>
-<li>根据给定的距离度量，在T中找出与x最邻近的k个点。</li>
-<li>在邻域中根据分类决策规则（如多数表决）决定x的类别y。</li>
-<li>k=1时，称为最近邻算法，将与x最邻近点的类作为x的类。</li>
-</ul>
-<h2 id="3-2-k近邻模型"><a href="#3-2-k近邻模型" class="headerlink" title="3.2 k近邻模型"></a>3.2 k近邻模型</h2><h3 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h3><script type="math/tex; mode=display">L_p$$距离定义为</script><p>L_p(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^p)^{\frac 1 p}</p>
-<script type="math/tex; mode=display">
-p=1时，称为曼哈顿距离</script><p>L_1(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|)</p>
-<script type="math/tex; mode=display">
-p=2时，即为欧式距离</script><p>L_2(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^2)^{\frac 1 2}</p>
-<script type="math/tex; mode=display">
-p=∞时，称为切比雪夫距离，为各个坐标距离的最大值</script><p>L_\infty(x_i, x_j) = \max_l |x_i^{(l)}-x_j^{(l)}|</p>
-<script type="math/tex; mode=display">
-下图给出了与原点距离为1的图形
-
-![](统计学习方法（三）k近邻法/1.png)
-
-### 分类决策规则
-
-k近邻法中的分类决策规则往往是多数表决，即由k个临近点的多数类决定输入类。
-
-如果分类的损失函数为0-1损失函数，分类函数为</script><p>f: \mathbf R^n \rightarrow \{c_1, c_2, …, c_K\}</p>
-<script type="math/tex; mode=display">
-那么误分类的概率为</script><p>P(Y\neq f(X)) = 1- P(Y=f(X)) \\<br>\Leftrightarrow \frac 1 k \sum _{x_i\in N_k(x)} I(y_i\neq c_j) = 1 - \frac 1 k \sum _{x_i\in N_k(x)} I(y_i= c_j)</p>
-<p>$$</p>
-<h2 id="3-3-k近邻法的实现：kd树"><a href="#3-3-k近邻法的实现：kd树" class="headerlink" title="3.3 k近邻法的实现：kd树"></a>3.3 k近邻法的实现：kd树</h2><h3 id="构造kd树"><a href="#构造kd树" class="headerlink" title="构造kd树"></a>构造kd树</h3><p>kd树是二叉树，表示对k维空间的一个划分。</p>
-<p>构造kd树相当于不断地用超平面切分k维空间，构成一系列的k维超矩形区域，kd树的每个节点对应于一个k维超矩形区域。</p>
-<p>构造算法如下</p>
-<ol>
-<li>开始：构造根节点，对应于包含T的k维空间的超矩形区域。<ul>
-<li>选择<script type="math/tex">x^{(1)}</script>为坐标轴，以T中所有实例的<script type="math/tex">x^{(1)}</script>坐标的中位数为切分点，将根节点对应的超矩形区域切分为两个子区域。</li>
-<li>由此生成深度为一的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(1)}</script>小于切分点的子区域。</li>
-</ul>
-</li>
-<li>重复：对深度为j的节点，选择<script type="math/tex">x^{(l)}</script>为切分的坐标轴，其中<script type="math/tex">l=j(mod k)+1</script>，以坐标的中位数为切分点。<ul>
-<li>由此生成深度为j+1的左右子节点，左子节点对应于坐标<script type="math/tex">x^{(l)}</script>小于切分点的子区域。</li>
-</ul>
-</li>
-<li>直到两个子区域没有实例存在时停止，形成kd树的区域划分。</li>
-</ol>
-<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png" alt></p>
-<h3 id="搜索kd树"><a href="#搜索kd树" class="headerlink" title="搜索kd树"></a>搜索kd树</h3><p>给定一个目标点，搜索其最近邻，首先找到包含目标点的叶节点。从叶节点出发，依次回退到父节点，不断查找与目标点最邻近的节点。</p>
-<p>给定如图所示的kd树，根节点为A，子节点为B、C等，输入实例点为S，求S的最近邻。</p>
-<ul>
-<li>首先找到包含S的叶结点D，以D作为近似最近邻。</li>
-<li>返回D的父节点B，在B的另一子节点F的区域内搜索。</li>
-<li>继续返回上一级父节点A，在A的另一子节点C的区域内搜索。</li>
-<li>点E比点D更近，成为最近邻。</li>
-</ul>
-<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png" alt></p>
-<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">clf_sk = KNeighborsClassifier()</span><br><span class="line">clf_sk.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf_sk.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>统计学习方法</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-        <tag>KNN</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>统计学习方法（九）EM算法及其推广</title>
-    <url>/2020/08/26/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B9%9D%EF%BC%89EM%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E6%8E%A8%E5%B9%BF/</url>
-    <content><![CDATA[<p>EM算法是一种迭代算法，用于含隐变量的概率模型参数的极大似然估计，或极大后验概率估计。</p>
-<a id="more"></a>
-<h2 id="9-1-EM算法的引入"><a href="#9-1-EM算法的引入" class="headerlink" title="9.1 EM算法的引入"></a>9.1 EM算法的引入</h2><h3 id="三硬币模型"><a href="#三硬币模型" class="headerlink" title="三硬币模型"></a>三硬币模型</h3><p>假设有三枚硬币，记作A、B、C，这些硬币正面出现的概率分别为π、p、q。进行如下实验：先掷硬币A，根据结果选择硬币，正面选B，反面选C；然后掷选出的硬币，正面记作1，反面记作0；独立重复n次，得到观测结果。</p>
-<p>假设只能观测到掷硬币的结果，不能观测过程，问如何估计三硬币正面出现的概率。</p>
-<script type="math/tex; mode=display">
-\begin{align}
-P(y|\theta)=\sum_zP(y,z|\theta)&=\sum_zP(z|\theta)P(y|z,\theta) \\
-&= \pi p^y(1-p)^{1-y}+(1-\pi)q^y(1-q)^{1-y}
-\end{align}</script><p>其中，y表示观测变量，z为隐变量，表示硬币A的结果，θ为模型参数。</p>
-<p>将观测数据表示为<script type="math/tex">Y=(Y_1,Y_2,\cdots Y_n)^T</script>，未观测数据表示为<script type="math/tex">Z=(Z_1,Z_2,\cdots Z_n)^T</script>，则似然函数为</p>
-<script type="math/tex; mode=display">
-\begin{align}
-P(Y|\theta)&=\sum_ZP(Z|\theta)P(Y|Z,\theta) \\
-&= \prod_{j=1}^n[\pi p^{y_i}(1-p)^{1-y_i}+(1-\pi)q^{y_i}(1-q)^{1-y_i}]
-\end{align}</script><p>考虑<script type="math/tex">\theta=(\pi,p,q)</script>的极大似然估计</p>
-<script type="math/tex; mode=display">
-\hat\theta=\arg\max_\theta\log P(Y|\theta)</script><p>这个问题没有解析解，只能通过迭代求解，EM算法就是这样一种迭代算法。</p>
-<h3 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h3><p>输入：观测变量数据Y，隐变量数据Z，联合分布<script type="math/tex">P(Y,Z|\theta)</script>，条件分布<script type="math/tex">P(Z|Y,\theta)</script>；</p>
-<p>输出：模型参数<script type="math/tex">\theta</script>。</p>
-<ul>
-<li><p>选择参数的初值<script type="math/tex">\theta^{(0)}</script>，开始迭代；</p>
-</li>
-<li><p>E步：记<script type="math/tex">\theta^{(i)}</script>表示第i次迭代时参数的估计值，在第i+1次迭代，计算</p>
-<script type="math/tex; mode=display">
-\begin{align}
-Q(\theta,\theta^{(i)})&=E_Z[\log P(Y,Z|\theta)|Y,\theta^{(i)}]\\
-&=\sum_Z\log P(Y,Z|\theta)P(Z|Y,\theta^{(i)})
-\end{align}</script></li>
-<li><p>M步：求使得<script type="math/tex">Q(\theta,\theta^{(i)})</script>极大化的参数值，确定第i+1次迭代的参数值</p>
-<script type="math/tex; mode=display">
-\theta^{(i+1)}=\arg\max_\theta Q(\theta,\theta^{(i)})</script></li>
-<li><p>重复上述步骤，直到收敛。</p>
-</li>
-</ul>
-<p>参数的初值可以任意选择，但EM算法对初值是敏感的。</p>
-<p>停止迭代的条件一般是</p>
-<script type="math/tex; mode=display">
-\|\theta^{(i+1)}-\theta^{(i)}\|<\epsilon_1 \quad or \quad \|Q(\theta^{(i+1)},\theta^{(i)})-Q(\theta^{(i)},\theta^{(i)})\|<\epsilon_2</script><h3 id="EM算法的导出"><a href="#EM算法的导出" class="headerlink" title="EM算法的导出"></a>EM算法的导出</h3><p>面对一个含有隐变量的概率模型，我们希望极大化观测数据关于参数的对数似然函数，即</p>
-<script type="math/tex; mode=display">
-\begin{align}
-L(\theta)&=\log P(Y|\theta)=\log\sum_ZP(Y,Z|\theta) \\
-&= \log(\sum_ZP(Z|\theta)P(Y|Z,\theta))
-\end{align}</script><p>EM算法通过迭代，逐步近似最大化函数，考虑</p>
-<script type="math/tex; mode=display">
-L(\theta)-L(\theta^{(i)})=\log(\sum_ZP(Z|\theta)P(Y|Z,\theta))-\log P(Y|\theta^{(i)})</script><p>利用Jensen不等式</p>
-<script type="math/tex; mode=display">
-\begin{align}
-L(\theta)-L(\theta^{(i)})&=\log(\sum_ZP(Z|Y,\theta^{(i)})\frac{P(Z|\theta)P(Y|Z,\theta)}{P(Z|Y,\theta^{(i)})})-\log P(Y|\theta^{(i)})\\
-&\geq\sum_ZP(Z|Y,\theta^{(i)})\log\frac{P(Z|\theta)P(Y|Z,\theta)}{P(Z|Y,\theta^{(i)})}-\log P(Y|\theta^{(i)})\\
-&=\sum_ZP(Z|Y,\theta^{(i)})\log\frac{P(Z|\theta)P(Y|Z,\theta)}{P(Z|Y,\theta^{(i)})P(Y|\theta^{(i)})}
-\end{align}</script><blockquote>
-<script type="math/tex; mode=display">\log\sum_j\lambda_jy_j\geq\sum_j\lambda_j\log y_j,\quad\lambda_j\geq0,\quad\sum_j\lambda_j=1</script></blockquote>
-<p>记</p>
-<script type="math/tex; mode=display">
-B(\theta,\theta^{(i)})\hat=L(\theta^{(i)})+\sum_ZP(Z|Y,\theta^{(i)})\log\frac{P(Z|\theta)P(Y|Z,\theta)}{P(Z|Y,\theta^{(i)})P(Y|\theta^{(i)})}</script><p>则有</p>
-<script type="math/tex; mode=display">
-L(\theta)\geq B(\theta,\theta^{(i)})</script><p>即<script type="math/tex">B(\theta,\theta^{(i)})</script>是<script type="math/tex">L(\theta)</script>的一个下界，为了使<script type="math/tex">L(\theta)</script>尽可能大地增长，选择</p>
-<script type="math/tex; mode=display">
-\theta^{(i+1)}=\arg\max_\theta B(\theta,\theta^{(i)})</script><p>省去常数项，得到</p>
-<script type="math/tex; mode=display">
-\begin{align}
-\theta^{(i+1)}&=\arg\max_\theta(L(\theta^{(i)})+\sum_ZP(Z|Y,\theta^{(i)})\log\frac{P(Z|\theta)P(Y|Z,\theta)}{P(Z|Y,\theta^{(i)})P(Y|\theta^{(i)})})\\
-&=\arg\max_\theta(\sum_ZP(Z|Y,\theta^{(i)})\log P(Z|\theta)P(Y|Z,\theta))\\
-&=\arg\max_\theta(\sum_ZP(Z|Y,\theta^{(i)})\log P(Y,Z|\theta))\\
-&=\arg\max_\theta Q(\theta,\theta^{(i)})
-\end{align}</script><p><img src="/2020/08/26/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B9%9D%EF%BC%89EM%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E6%8E%A8%E5%B9%BF/1.png" alt></p>
-<h2 id="9-2-EM算法的收敛性"><a href="#9-2-EM算法的收敛性" class="headerlink" title="9.2 EM算法的收敛性"></a>9.2 EM算法的收敛性</h2><p><strong>定理 9.1</strong>    设<script type="math/tex">P(Y|\theta)</script>为观测数据的似然函数，则<script type="math/tex">P(Y|\theta^{(i)})</script>是单调递增的。</p>
-<p><strong>定理 9.2</strong>    设<script type="math/tex">L(\theta)=\log P(Y|\theta)</script>为观测数据的对数似然函数，则有</p>
-<ul>
-<li>如果<script type="math/tex">P(Y|\theta)</script>有上界，则<script type="math/tex">L(\theta^{(i)}=\log P(Y|\theta^{(i)})</script>收敛到某一值。</li>
-<li>在<script type="math/tex">Q(\theta,\theta')</script>与<script type="math/tex">L(\theta)</script>满足一定条件下，由EM算法得到的参数估计序列的收敛值是<script type="math/tex">L(\theta)</script>的稳定点。</li>
-</ul>
-<h2 id="9-3-EM算法在高斯混合模型学习中的应用"><a href="#9-3-EM算法在高斯混合模型学习中的应用" class="headerlink" title="9.3 EM算法在高斯混合模型学习中的应用"></a>9.3 EM算法在高斯混合模型学习中的应用</h2><h3 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h3><p>高斯混合模型是指具有如下形式的概率分布模型</p>
-<script type="math/tex; mode=display">
-P(y|\theta)=\sum_{k=1}^K\alpha_k\phi(y|\theta_k),\quad\alpha_k\geq0,\quad\sum_{k=1}\alpha_k=1</script><p>其中<script type="math/tex">\phi(y|\theta_k)</script>是高斯分布密度，<script type="math/tex">\theta_k=(\mu_k,\sigma_k^2)</script>，称为第k个分模型。</p>
-<script type="math/tex; mode=display">
-\phi(y|\theta_k)=\frac1{\sqrt{2\pi}\sigma_k}\exp(-\frac{(y-\mu_k)^2}{2\sigma_k^2})</script><h3 id="高斯混合模型参数估计的EM算法"><a href="#高斯混合模型参数估计的EM算法" class="headerlink" title="高斯混合模型参数估计的EM算法"></a>高斯混合模型参数估计的EM算法</h3><p>假设观测数据由高斯混合模型生成，我们用EM算法估计高斯混合模型的参数。</p>
-<h4 id="明确隐变量，写出对数似然函数"><a href="#明确隐变量，写出对数似然函数" class="headerlink" title="明确隐变量，写出对数似然函数"></a>明确隐变量，写出对数似然函数</h4><p>明确隐变量</p>
-<script type="math/tex; mode=display">
-\gamma_{jk}=\begin{cases}1,\quad第j个观测来自第k个模型\\0,\quad否则\end{cases}\\
-j=1,2,\cdots,N;\quad k=1,2,\cdots,K</script><p>写出似然函数</p>
-<script type="math/tex; mode=display">
-\begin{align}
-P(y,\gamma|\theta)&=\prod_{j=1}^NP(y_j,\gamma_{j1},\gamma_{j2},\cdots,\gamma_{jK}|\theta)\\
-&=\prod_{k=1}^K\prod_{j=1}^N[\alpha_k\phi(y_j|\theta_k)]^{\gamma_{jk}}\\
-&=\prod_{k=1}^K\alpha_k^{n_k}\prod_{j=1}^N[\phi(y_j|\theta_k)]^{\gamma_{jk}}\\
-&=\prod_{k=1}^K\alpha_k^{n_k}\prod_{j=1}^N[\frac1{\sqrt{2\pi}\sigma_k}\exp(-\frac{(y-\mu_k)^2}{2\sigma_k^2}]^{\gamma_{jk}}
-\end{align}</script><p>其中，<script type="math/tex">n_k=\sum_{j=1}^N\gamma_{jk}</script>，<script type="math/tex">\sum_{k=1}^Kn_k=N</script></p>
-<p>那么对数似然函数为</p>
-<script type="math/tex; mode=display">
-\log P(y,\gamma|\theta)=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\gamma_{jk}[\log(\frac1{\sqrt{2\pi}})-\log\sigma_k-\frac1{2\sigma_k^2}(y-\mu_k)^2]\}</script><h4 id="EM算法的E步：确定Q函数"><a href="#EM算法的E步：确定Q函数" class="headerlink" title="EM算法的E步：确定Q函数"></a>EM算法的E步：确定Q函数</h4><script type="math/tex; mode=display">
-\begin{align}
-Q(\theta,\theta^{(i)})&=E[\log P(y,\gamma|\theta)|y,\theta^{(i)}]\\
-&=E\{\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\gamma_{jk}[\log(\frac1{\sqrt{2\pi}})-\log\sigma_k-\frac1{2\sigma_k^2}(y-\mu_k)^2]\}\}\\
-&=\sum_{k=1}^K\{\sum_{j=1}^N(E\gamma_{jk})\log\alpha_k+\sum_{j=1}^N(E\gamma_{jk})[\log(\frac1{\sqrt{2\pi}})-\log\sigma_k-\frac1{2\sigma_k^2}(y-\mu_k)^2]\}
-\end{align}</script><p>这里需要计算<script type="math/tex">E(\gamma_{jk}|y,\theta)</script></p>
-<script type="math/tex; mode=display">
-\begin{align}
-\hat\gamma_{jk}&=E(\gamma_{jk}|y,\theta)=P(\gamma_{jk}=1|y,\theta)\\
-&=\frac{P(\gamma_{jk}=1,y_j|\theta)}{\sum_{k=1}^KP(\gamma_{jk}=1,y_j|\theta)}\\
-&=\frac{P(y_j|\gamma_{jk}=1,\theta)P(\gamma_{jk}=1|\theta)}{\sum_{k=1}^KP(y_j|\gamma_{jk}=1,\theta)P(\gamma_{jk}=1|\theta)}\\
-&=\frac{\alpha_k\phi(y_j|\theta_k)}{\sum_{k=1}^K\alpha_k\phi(y_j|\theta_k)},\quad j=1,2,\cdots,N;\quad k=1,2,\cdots,N
-\end{align}</script><p>代回原式</p>
-<script type="math/tex; mode=display">
-Q(\theta,\theta^{(i)})=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\hat\gamma_{jk}[\log(\frac1{\sqrt{2\pi}})-\log\sigma_k-\frac1{2\sigma_k^2}(y-\mu_k)^2]\}</script><h4 id="确定EM算法的M步"><a href="#确定EM算法的M步" class="headerlink" title="确定EM算法的M步"></a>确定EM算法的M步</h4><script type="math/tex; mode=display">
-\theta^{(i+1)}=\arg\max_\theta Q(\theta,\theta^{(i)})</script><p>将<script type="math/tex">Q(\theta,\theta^{(i)})</script>分别对<script type="math/tex">\mu_k,\sigma_k^2</script>求偏导数，令其为0；求<script type="math/tex">\hat\alpha_k</script>是在<script type="math/tex">\sum_{k=1}^K\alpha_k=1</script>条件下求偏导数并令其为0得到的。</p>
-<script type="math/tex; mode=display">
-\hat\mu_k=\frac{\sum_{j=1}^N\hat\gamma_{jk}y_j}{\sum_{j=1}^N\hat\gamma_{jk}},\quad k=1,2,\cdots,K\\
-\hat\sigma_k^2=\frac{\sum_{j=1}^N\hat\gamma_{jk}(y_j-\mu_k)^2}{\sum_{j=1}^N\hat\gamma_{jk}},\quad k=1,2,\cdots,K\\
-\hat\alpha_k=\frac{n_k}N=\frac{\sum_{j=1}^N\hat\gamma_{jk}}{N},\quad k=1,2,\cdots,K\\</script><h2 id="9-4-EM算法的推广"><a href="#9-4-EM算法的推广" class="headerlink" title="9.4 EM算法的推广"></a>9.4 EM算法的推广</h2><p>暂略，有空再补。</p>
-<h3 id="F函数的极大-极大算法"><a href="#F函数的极大-极大算法" class="headerlink" title="F函数的极大-极大算法"></a>F函数的极大-极大算法</h3><h3 id="GEM算法"><a href="#GEM算法" class="headerlink" title="GEM算法"></a>GEM算法</h3><h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.mixture <span class="keyword">import</span> GaussianMixture</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化观测数据</span></span><br><span class="line">data = np.array([<span class="number">-67</span>, <span class="number">-48</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">14</span>, <span class="number">16</span>, <span class="number">23</span>, <span class="number">24</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">41</span>, <span class="number">49</span>, <span class="number">56</span>, <span class="number">60</span>,</span><br><span class="line">                 <span class="number">75</span>]).reshape(<span class="number">-1</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 聚类</span></span><br><span class="line">gmmModel = GaussianMixture(n_components=<span class="number">2</span>)</span><br><span class="line">gmmModel.fit(data)</span><br><span class="line">labels = gmmModel.predict(data)</span><br><span class="line">print(<span class="string">&quot;labels =&quot;</span>, labels)</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>对于含隐变量的模型，分E步和M步，分别求期望和极大值，得到参数的新的估计值，迭代以极大化函数。</p>
-]]></content>
-      <categories>
-        <category>统计学习方法</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-        <tag>EM算法</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>统计学习方法（二）感知机</title>
     <url>/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/</url>
     <content><![CDATA[<p>感知机，是二分类的线性分类模型。输入为实例的特征向量，输出为±1，旨在求出将训练数据进行线性划分的分离超平面，是神经网络与SVM的基础。</p>
@@ -3892,6 +3984,86 @@ b \leftarrow b + \eta y_i</script><ol>
       <tags>
         <tag>机器学习</tag>
         <tag>感知机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>统计学习方法（八）提升方法</title>
+    <url>/2020/08/25/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AB%EF%BC%89%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>提升方法，在分类问题中通过改变训练样本的权重，学习多个分类器，并将分类器线性组合，提高分类的性能。</p>
+<a id="more"></a>
+<h2 id="8-1-AdaBoost算法"><a href="#8-1-AdaBoost算法" class="headerlink" title="8.1 AdaBoost算法"></a>8.1 AdaBoost算法</h2><p>提升方法的思想是，对于一个复杂任务来说，综合多个专家的判断得出的判断效果更好。</p>
+<ul>
+<li><strong>强可学习</strong>：在概率近似正确学习（PAC）的框架中，一个概念（一个类），如果存在一个多项式的学习算法<br>能够学习它，并且正确率很高，那么就称这个概念是强可学习的-</li>
+<li><strong>弱可学习</strong>：一个概念，如果存在一个多项式的学习算法能够学习它，学习的正确率仅比随机猜测略好，那么就称这个概念是弱可学习的。</li>
+</ul>
+<p>Schapire后来证明强可学习与弱可学习是等价的，也即在PAC学习的框架下，一个概念是强可学习的充要条件是这个概念是弱可学习的。</p>
+<p>利用这个前提，如果在学习中发现了”弱学习算法“，可以将其提升为”强学习算法“。对于分类问题而言，给定训练集，从弱学习算法出发，反复学习，得到一系列弱分类器，组合这些弱分类器构成一个强分类器。</p>
+<p>给定一个二分类训练集</p>
+<script type="math/tex; mode=display">
+T = \{(x_1,y_1),(x_2,y_2),\cdots,(x_N,y_N)\} \\
+x\in{\cal X}\subset{\mathbb R}^n,\quad y_i\in{\cal Y}=\{-1.+1\}</script><p>初始化训练数据的权值分布</p>
+<script type="math/tex; mode=display">
+D_1=(w_{11},\cdots,w_{1i},\cdots,w_{1N}),\quad w_{1i}=\frac1N,\quad i=1,2,\cdots,N</script><p>使用权值分布为<script type="math/tex">D_m</script>的训练集学习，得到基本分类器</p>
+<script type="math/tex; mode=display">
+G_m(x):{\cal X}\rightarrow\{-1,+1\}</script><p>计算分类器在训练集上的分类误差率</p>
+<script type="math/tex; mode=display">
+e_m=\sum_{i=1}^NP(G_m(x_i)\neq y_i)=\sum_{i=1}^Nw_{mi}I(G_m(x_i)\neq y_i)</script><p>计算分类器的系数，取自然对数</p>
+<script type="math/tex; mode=display">
+\alpha_m=\frac12\log\frac{1-e_m}{e_m}</script><p>更新训练集的权值分布</p>
+<script type="math/tex; mode=display">
+D_{m+1}=(w_{m+1.1},\cdots,w_{m+1,i},\cdots,w_{m+1,N})\\
+w_{m+1,i}=\frac{w_{mi}}{Z_m}\exp(-\alpha_my_iG_m(x_i)),\quad i=1,2,\cdots,N</script><p>其中，<script type="math/tex">Z_m</script>是规范化因子，使得<script type="math/tex">D_{m+1}</script>成为一个概率分布。</p>
+<script type="math/tex; mode=display">
+Z_m = \sum_{i=1}^N{w_{mi}}\exp(-\alpha_my_iG_m(x_i))</script><p>根据基本分类器，构造线性组合，得到最终分类器</p>
+<script type="math/tex; mode=display">
+f(x)=\sum_{m=1}^M\alpha_mG_m(x) \\
+G(x)=sign(f(x))</script><p>计算<script type="math/tex">G_m(x)</script>系数<script type="math/tex">\alpha_m</script>时，<script type="math/tex">e_m\leq\frac12</script>时，<script type="math/tex">\alpha_m\geq0</script>，并且<script type="math/tex">\alpha_m</script>关于<script type="math/tex">e_m</script>递减，所以分类误差率越小的基本分类器，在最终分类器中的作用越大。</p>
+<p>更新权值时，可以写成如下形式：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+w_{m+1,i}=\begin{cases}\frac{w_{mi}}{Z_m}e^{-\alpha_m},\quad &G_m(x_i)=y_i\\\frac{w_{mi}}{Z_m}e^{\alpha_m},\quad &G_m(x_i)\neq y_i\end{cases}
+\end{align}</script><p>所以误分类样本的权值得以扩大，在下一轮学习中起更大的作用。不改变训练数据，而不断改变训练数据权值的分布，这是AdaBoost的一个特点。</p>
+<blockquote>
+<p>注意，<script type="math/tex">\sum\alpha_m\neq1</script></p>
+</blockquote>
+<h2 id="8-2-AdaBoost算法的训练误差分析"><a href="#8-2-AdaBoost算法的训练误差分析" class="headerlink" title="8.2 AdaBoost算法的训练误差分析"></a>8.2 AdaBoost算法的训练误差分析</h2><p><strong>定理 8.1</strong>    AdaBoost算法最终分类器的训练误差界为</p>
+<script type="math/tex; mode=display">
+\frac1N\sum_{i=1}^NI(G(x_i)\neq y_i)\leq\frac1N\sum_i\exp(-y_if(x_i))\neq y_i)=\prod_mZ_m</script><p><strong>定理8.2</strong>    二分类问题中，AdaBoost的训练误差界为</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\prod_{m=1}^MZ_m&=\prod_{m=1}^M[2\sqrt{e_m(1-e_m)}]\\
+&=\prod_{m=1}^M\sqrt{(1-4\gamma_m^2)}\\
+&\leq\exp(-2\sum_{m=1}^M\gamma_m^2)
+\end{align}</script><p>其中，<script type="math/tex">\gamma_m=\frac12-e_m</script></p>
+<h2 id="8-3-AdaBoost算法的解释"><a href="#8-3-AdaBoost算法的解释" class="headerlink" title="8.3 AdaBoost算法的解释"></a>8.3 AdaBoost算法的解释</h2><h3 id="前向分步算法"><a href="#前向分步算法" class="headerlink" title="前向分步算法"></a>前向分步算法</h3><p>考虑加法模型</p>
+<script type="math/tex; mode=display">
+f(x)=\sum_{m=1}^M\beta_mb(x;\gamma_m)</script><p>其中，<script type="math/tex">b(x;\gamma_m)</script>为基函数，<script type="math/tex">\gamma_m</script>为函数的参数。</p>
+<p>给定训练集及损失函数<script type="math/tex">L(y,f(x))</script>的条件下，学习加法模型即为损失函数极小化问题</p>
+<script type="math/tex; mode=display">
+\min_{\beta_m,\gamma_m}\sum_{i=1}^NL(y_i,\sum_{m=1}^M\beta_mb(x_i;\gamma_m))</script><p>通常这是一个复杂的优化问题，前向分步算法的想法是：因为学习的是加法模型，如果能够从前向后，每步只学习一个基函数与系数，逐步逼近，就可以简化复杂度，即每步只考虑优化如下函数</p>
+<script type="math/tex; mode=display">
+\min_{\beta,\gamma}\sum_{i=1}^NL(y_i,\beta b(x_i;\gamma))</script><h3 id="前向分步与AdaBoost"><a href="#前向分步与AdaBoost" class="headerlink" title="前向分步与AdaBoost"></a>前向分步与AdaBoost</h3><p><strong>定理8.3</strong>    AdaBoost是前向分步算法的特例。这时，模型是由基本分类器组成的加法模型，损失函数是指数函数。</p>
+<h2 id="8-4-提升树"><a href="#8-4-提升树" class="headerlink" title="8.4 提升树"></a>8.4 提升树</h2><h3 id="提升树模型"><a href="#提升树模型" class="headerlink" title="提升树模型"></a>提升树模型</h3><p>提升方法实际采用加法模型与前向分步算法，以决策树为基函数的提升方法就称为提升树。</p>
+<p>提升树模型可以表示为决策树的加法模型</p>
+<script type="math/tex; mode=display">
+f_M(x)=\sum_{m=1}^MT(x;\Theta_m)</script><p>其中，<script type="math/tex">T(x;\Theta_m)</script>表示决策树，<script type="math/tex">M</script>表示树的个数。</p>
+<h3 id="提升树算法"><a href="#提升树算法" class="headerlink" title="提升树算法"></a>提升树算法</h3><p>首先初始化提升树<script type="math/tex">f_0(x)=0</script>，第m步的模型是</p>
+<script type="math/tex; mode=display">
+f_m(x)=f_{m-1}(x)+T(x;\Theta_m)</script><p>通过经验风险最小化确定下一棵决策树的参数</p>
+<script type="math/tex; mode=display">
+\hat\Theta_m=\arg\min_{\Theta_m}\sum_{i=1}^NL(y_i,f_{m-1}(x_i)+T(x_i;\Theta_m))</script><p>对于二分类问题，提升树算法只需要将AdaBoost的基本分类器限制为二类分类树即可，此时的提升树算法是AdaBoost的特殊情况。</p>
+<h3 id="梯度提升"><a href="#梯度提升" class="headerlink" title="梯度提升"></a>梯度提升</h3><p>对于提升树算法，当损失函数是平方损失和指数损失函数时，每一步优化是很简单的。</p>
+<p>对于一般损失函数，Freidman提出了梯度提升算法，利用损失函数的负梯度值</p>
+<script type="math/tex; mode=display">
+-[\frac{\partial L(y,f(x_i))}{\partial f(x_i)}]_{f(x)=f_{m-1}(x)}</script><p>作为回归问题中残差的近似值，拟合回归树。</p>
+<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line"></span><br><span class="line">clf = AdaBoostClassifier(n_estimators=<span class="number">100</span>, learning_rate=<span class="number">0.5</span>)</span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>统计学习方法</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>提升方法</tag>
       </tags>
   </entry>
   <entry>
@@ -4015,86 +4187,6 @@ g(t) = \frac {C(t) - C(T_t)} {|T_t|-1}</script><script type="math/tex; mode=disp
       <tags>
         <tag>机器学习</tag>
         <tag>决策树</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>统计学习方法（八）提升方法</title>
-    <url>/2020/08/25/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AB%EF%BC%89%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>提升方法，在分类问题中通过改变训练样本的权重，学习多个分类器，并将分类器线性组合，提高分类的性能。</p>
-<a id="more"></a>
-<h2 id="8-1-AdaBoost算法"><a href="#8-1-AdaBoost算法" class="headerlink" title="8.1 AdaBoost算法"></a>8.1 AdaBoost算法</h2><p>提升方法的思想是，对于一个复杂任务来说，综合多个专家的判断得出的判断效果更好。</p>
-<ul>
-<li><strong>强可学习</strong>：在概率近似正确学习（PAC）的框架中，一个概念（一个类），如果存在一个多项式的学习算法<br>能够学习它，并且正确率很高，那么就称这个概念是强可学习的-</li>
-<li><strong>弱可学习</strong>：一个概念，如果存在一个多项式的学习算法能够学习它，学习的正确率仅比随机猜测略好，那么就称这个概念是弱可学习的。</li>
-</ul>
-<p>Schapire后来证明强可学习与弱可学习是等价的，也即在PAC学习的框架下，一个概念是强可学习的充要条件是这个概念是弱可学习的。</p>
-<p>利用这个前提，如果在学习中发现了”弱学习算法“，可以将其提升为”强学习算法“。对于分类问题而言，给定训练集，从弱学习算法出发，反复学习，得到一系列弱分类器，组合这些弱分类器构成一个强分类器。</p>
-<p>给定一个二分类训练集</p>
-<script type="math/tex; mode=display">
-T = \{(x_1,y_1),(x_2,y_2),\cdots,(x_N,y_N)\} \\
-x\in{\cal X}\subset{\mathbb R}^n,\quad y_i\in{\cal Y}=\{-1.+1\}</script><p>初始化训练数据的权值分布</p>
-<script type="math/tex; mode=display">
-D_1=(w_{11},\cdots,w_{1i},\cdots,w_{1N}),\quad w_{1i}=\frac1N,\quad i=1,2,\cdots,N</script><p>使用权值分布为<script type="math/tex">D_m</script>的训练集学习，得到基本分类器</p>
-<script type="math/tex; mode=display">
-G_m(x):{\cal X}\rightarrow\{-1,+1\}</script><p>计算分类器在训练集上的分类误差率</p>
-<script type="math/tex; mode=display">
-e_m=\sum_{i=1}^NP(G_m(x_i)\neq y_i)=\sum_{i=1}^Nw_{mi}I(G_m(x_i)\neq y_i)</script><p>计算分类器的系数，取自然对数</p>
-<script type="math/tex; mode=display">
-\alpha_m=\frac12\log\frac{1-e_m}{e_m}</script><p>更新训练集的权值分布</p>
-<script type="math/tex; mode=display">
-D_{m+1}=(w_{m+1.1},\cdots,w_{m+1,i},\cdots,w_{m+1,N})\\
-w_{m+1,i}=\frac{w_{mi}}{Z_m}\exp(-\alpha_my_iG_m(x_i)),\quad i=1,2,\cdots,N</script><p>其中，<script type="math/tex">Z_m</script>是规范化因子，使得<script type="math/tex">D_{m+1}</script>成为一个概率分布。</p>
-<script type="math/tex; mode=display">
-Z_m = \sum_{i=1}^N{w_{mi}}\exp(-\alpha_my_iG_m(x_i))</script><p>根据基本分类器，构造线性组合，得到最终分类器</p>
-<script type="math/tex; mode=display">
-f(x)=\sum_{m=1}^M\alpha_mG_m(x) \\
-G(x)=sign(f(x))</script><p>计算<script type="math/tex">G_m(x)</script>系数<script type="math/tex">\alpha_m</script>时，<script type="math/tex">e_m\leq\frac12</script>时，<script type="math/tex">\alpha_m\geq0</script>，并且<script type="math/tex">\alpha_m</script>关于<script type="math/tex">e_m</script>递减，所以分类误差率越小的基本分类器，在最终分类器中的作用越大。</p>
-<p>更新权值时，可以写成如下形式：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-w_{m+1,i}=\begin{cases}\frac{w_{mi}}{Z_m}e^{-\alpha_m},\quad &G_m(x_i)=y_i\\\frac{w_{mi}}{Z_m}e^{\alpha_m},\quad &G_m(x_i)\neq y_i\end{cases}
-\end{align}</script><p>所以误分类样本的权值得以扩大，在下一轮学习中起更大的作用。不改变训练数据，而不断改变训练数据权值的分布，这是AdaBoost的一个特点。</p>
-<blockquote>
-<p>注意，<script type="math/tex">\sum\alpha_m\neq1</script></p>
-</blockquote>
-<h2 id="8-2-AdaBoost算法的训练误差分析"><a href="#8-2-AdaBoost算法的训练误差分析" class="headerlink" title="8.2 AdaBoost算法的训练误差分析"></a>8.2 AdaBoost算法的训练误差分析</h2><p><strong>定理 8.1</strong>    AdaBoost算法最终分类器的训练误差界为</p>
-<script type="math/tex; mode=display">
-\frac1N\sum_{i=1}^NI(G(x_i)\neq y_i)\leq\frac1N\sum_i\exp(-y_if(x_i))\neq y_i)=\prod_mZ_m</script><p><strong>定理8.2</strong>    二分类问题中，AdaBoost的训练误差界为</p>
-<script type="math/tex; mode=display">
-\begin{align}
-\prod_{m=1}^MZ_m&=\prod_{m=1}^M[2\sqrt{e_m(1-e_m)}]\\
-&=\prod_{m=1}^M\sqrt{(1-4\gamma_m^2)}\\
-&\leq\exp(-2\sum_{m=1}^M\gamma_m^2)
-\end{align}</script><p>其中，<script type="math/tex">\gamma_m=\frac12-e_m</script></p>
-<h2 id="8-3-AdaBoost算法的解释"><a href="#8-3-AdaBoost算法的解释" class="headerlink" title="8.3 AdaBoost算法的解释"></a>8.3 AdaBoost算法的解释</h2><h3 id="前向分步算法"><a href="#前向分步算法" class="headerlink" title="前向分步算法"></a>前向分步算法</h3><p>考虑加法模型</p>
-<script type="math/tex; mode=display">
-f(x)=\sum_{m=1}^M\beta_mb(x;\gamma_m)</script><p>其中，<script type="math/tex">b(x;\gamma_m)</script>为基函数，<script type="math/tex">\gamma_m</script>为函数的参数。</p>
-<p>给定训练集及损失函数<script type="math/tex">L(y,f(x))</script>的条件下，学习加法模型即为损失函数极小化问题</p>
-<script type="math/tex; mode=display">
-\min_{\beta_m,\gamma_m}\sum_{i=1}^NL(y_i,\sum_{m=1}^M\beta_mb(x_i;\gamma_m))</script><p>通常这是一个复杂的优化问题，前向分步算法的想法是：因为学习的是加法模型，如果能够从前向后，每步只学习一个基函数与系数，逐步逼近，就可以简化复杂度，即每步只考虑优化如下函数</p>
-<script type="math/tex; mode=display">
-\min_{\beta,\gamma}\sum_{i=1}^NL(y_i,\beta b(x_i;\gamma))</script><h3 id="前向分步与AdaBoost"><a href="#前向分步与AdaBoost" class="headerlink" title="前向分步与AdaBoost"></a>前向分步与AdaBoost</h3><p><strong>定理8.3</strong>    AdaBoost是前向分步算法的特例。这时，模型是由基本分类器组成的加法模型，损失函数是指数函数。</p>
-<h2 id="8-4-提升树"><a href="#8-4-提升树" class="headerlink" title="8.4 提升树"></a>8.4 提升树</h2><h3 id="提升树模型"><a href="#提升树模型" class="headerlink" title="提升树模型"></a>提升树模型</h3><p>提升方法实际采用加法模型与前向分步算法，以决策树为基函数的提升方法就称为提升树。</p>
-<p>提升树模型可以表示为决策树的加法模型</p>
-<script type="math/tex; mode=display">
-f_M(x)=\sum_{m=1}^MT(x;\Theta_m)</script><p>其中，<script type="math/tex">T(x;\Theta_m)</script>表示决策树，<script type="math/tex">M</script>表示树的个数。</p>
-<h3 id="提升树算法"><a href="#提升树算法" class="headerlink" title="提升树算法"></a>提升树算法</h3><p>首先初始化提升树<script type="math/tex">f_0(x)=0</script>，第m步的模型是</p>
-<script type="math/tex; mode=display">
-f_m(x)=f_{m-1}(x)+T(x;\Theta_m)</script><p>通过经验风险最小化确定下一棵决策树的参数</p>
-<script type="math/tex; mode=display">
-\hat\Theta_m=\arg\min_{\Theta_m}\sum_{i=1}^NL(y_i,f_{m-1}(x_i)+T(x_i;\Theta_m))</script><p>对于二分类问题，提升树算法只需要将AdaBoost的基本分类器限制为二类分类树即可，此时的提升树算法是AdaBoost的特殊情况。</p>
-<h3 id="梯度提升"><a href="#梯度提升" class="headerlink" title="梯度提升"></a>梯度提升</h3><p>对于提升树算法，当损失函数是平方损失和指数损失函数时，每一步优化是很简单的。</p>
-<p>对于一般损失函数，Freidman提出了梯度提升算法，利用损失函数的负梯度值</p>
-<script type="math/tex; mode=display">
--[\frac{\partial L(y,f(x_i))}{\partial f(x_i)}]_{f(x)=f_{m-1}(x)}</script><p>作为回归问题中残差的近似值，拟合回归树。</p>
-<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line"></span><br><span class="line">clf = AdaBoostClassifier(n_estimators=<span class="number">100</span>, learning_rate=<span class="number">0.5</span>)</span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>统计学习方法</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-        <tag>提升方法</tag>
       </tags>
   </entry>
   <entry>

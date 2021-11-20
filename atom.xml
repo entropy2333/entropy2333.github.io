@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://entropy2333.github.io/"/>
-  <updated>2021-11-14T14:45:19.979Z</updated>
+  <updated>2021-11-20T06:37:54.640Z</updated>
   <id>https://entropy2333.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Graph Neural Networks with Learnable Structural and Positional Representations</title>
+    <link href="https://entropy2333.github.io/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/"/>
+    <id>https://entropy2333.github.io/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/</id>
+    <published>2021-11-17T04:36:32.000Z</published>
+    <updated>2021-11-20T06:37:54.640Z</updated>
+    
+    <content type="html"><![CDATA[<p>来自Bengio组，在GNN上引入位置编码，提出了一种新的框架LSPE，在分子数据集上的性能提升了2.87%至64.14%。</p><p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211117124217530.png" alt="image-20211117124217530" style="zoom:67%;"></p><a id="more"></a><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211117123851516.png" alt="image-20211117123851516" style="zoom: 50%;"></p><p>arxiv: <a href="https://arxiv.org/pdf/2110.07875v1.pdf">https://arxiv.org/pdf/2110.07875v1.pdf</a></p><p>code: <a href="https://github.com/vijaydwivedi75/gnn-lspe">https://github.com/vijaydwivedi75/gnn-lspe</a></p><h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>GNN大多是基于消息传递机制，通过聚合邻居的信息构建节点表示，但这也带来了一定的局限性。每个节点的表示只依赖于一小块local结构，而没有考虑到节点的位置信息。比如图中两个节点有着相同的1-hop邻居，但2-hop或高阶邻居都不甚相同，此时GNN不能区分两个节点。面对这种局限性，可以有三种方法：</p><ol><li><p>堆叠多层网络，因为过平滑现象可能难以适用长距离的节点；</p></li><li><p>采用高阶的GNN，增加了计算代价；</p></li><li><p>考虑节点的位置编码。</p></li></ol><p>本文希望设计一种可学习的位置编码与GNN结合，从而可以提升GNN的节点表示能力，同时保持线性的计算复杂度便于大规模应用。</p><h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><h3 id="Notation"><a href="#Notation" class="headerlink" title="Notation"></a>Notation</h3><p>假设图为<script type="math/tex">\mathcal{G} = (\mathcal(V), \mathcal{E})</script>，其中<script type="math/tex">n = \lvert \mathcal{V} \rvert</script>表示节点数，<script type="math/tex">E=\lvert \mathcal{E} \rvert</script>表示边数。<script type="math/tex">A\in\mathbb{R}^{n\times n}</script>为邻接矩阵，<script type="math/tex">A_{ij} = 1</script>表示两个节点有边相连，否则<script type="math/tex">A_{ij} = 0</script>，<script type="math/tex">D\in\mathbb{R}^{n\times n}</script>表示节点的度矩阵。<script type="math/tex">h_i</script>和<script type="math/tex">p_i</script>分别表示节点<script type="math/tex">i</script>的表示和位置编码，<script type="math/tex">e_{ij}</script>表示节点<script type="math/tex">i</script>和节点<script type="math/tex">j</script>相连的边的特征。</p><p>GNN模型一般有三个主要部分：嵌入层、堆叠的卷积层以及最后基于任务的层，用上标<script type="math/tex">l</script>表示层数，标准的MP-GNN参数更新公式如下：</p><script type="math/tex; mode=display">\begin{align}\text{MP-GNNs}: \quad    h_i^{l+1} &= f_h(h_i^{l}, \{h_j^{l}\}_{j\in\mathcal{N}_i}, e_{ij}^l),    \ h_i^{l+1}, h_i^{l}\in \mathbb{R}^d, \tag{1} \label{eq1}\\    e_{ij}^{l+1} &= f_e(h_i^{l}, h_j^{l}, e_{ij}^l),    \ e_{ij}^{l+1}, e_{ij}^{l}\in \mathbb{R}^d \tag{2}\end{align}</script><p>其中<script type="math/tex">f_h</script>和<script type="math/tex">f_e</script>表示有可学习参数的函数，<script type="math/tex">\mathcal{N}_i</script>表示节点<script type="math/tex">i</script>的邻居。Transformer也被认为是MP-GNNs的一种特例，考虑全连通图，将<script type="math/tex">\eqref{eq1}</script>中的边特征丢弃，简化形式即为Transformer。</p><h3 id="Positional-Encoding"><a href="#Positional-Encoding" class="headerlink" title="Positional Encoding"></a>Positional Encoding</h3><p>现有MP-GNN中融合位置信息往往是通过拼接的方式：</p><script type="math/tex; mode=display">\begin{align}    h_i^{\mathcal{l}=0} &=     \mathrm{LL}_h{    \begin{bmatrix}        {h_i^{\mathrm{in}} \\ p_i^{in}}    \end{bmatrix}}    = D^0{    \begin{bmatrix}        {h_i^{\mathrm{in}} \\ p_i^{in}}    \end{bmatrix}}    +d^0\in\mathbb{R}^d,\tag{3} \\    e_{ij}^{l=0} &= \mathrm{LL}(e_{ij}^{\mathrm{in}})    = B^0e_{ij}^{\mathrm{in}}+b^0\in\mathbb{R}^d \tag{4}\end{align}</script><p>其中<script type="math/tex">p_i^\mathrm{in}\in\mathbb{R}^k</script>表示输入节点的位置编码，<script type="math/tex">D^0\in\mathbb{R}^{d\times(d_v+k)}</script>和<script type="math/tex">d_0\in\mathbb{R}^d</script>表示全连接层的参数。这种方法融合了位置表示和结构化表示，同时保持了线性的计算复杂度，但是不能动态改变位置表示以更好地适应当前任务。</p><p>针对上述问题，本文将位置信息与结构信息分离，两种表示可以分别学习，这种框架称为可学习的结构和位置编码（<strong>L</strong>earnable <strong>S</strong>tructural and <strong>P</strong>ositional <strong>E</strong>ncodings，<strong>LSPE</strong>）。</p><script type="math/tex; mode=display">\begin{align}\text{MP-GNNs-LSPE}: \quad    h_i^{l+1} &= f_h\left(    \begin{bmatrix}        h_i^{l} \\ p_i^l    \end{bmatrix},    \left\{        \begin{bmatrix}            h_i^{l}\\p_i^l        \end{bmatrix}    \right\}_{j\in\mathcal{N}_i}, e_{ij}^l\right),    \ h_i^{l+1}, h_i^{l}\in \mathbb{R}^d, \tag{5} \label{eq2} \\    e_{ij}^{l+1} &= f_e(h_i^{l}, h_j^{l}, e_{ij}^l),    \ e_{ij}^{l+1}, e_{ij}^{l}\in \mathbb{R}^d \tag{6} \\    p_i^{l+1} &= f_p(p_i^l, \{p_j^{l}\}_{j\in\mathcal{N}_i}, e_{ij}^l),\ p_i^{l+1},p_i^l\in\mathbb{R}^d, \tag{7}\end{align}</script><h3 id="Definition-of-Initial-PE"><a href="#Definition-of-Initial-PE" class="headerlink" title="Definition of Initial PE"></a>Definition of Initial PE</h3><p>初始位置编码的选择很重要，本文比较了两种编码：Laplacian PE（LapPE）和Random Walk PE（RWPE）。LapPE为每个节点提供了唯一表示，并且是距离敏感的，但是受限于符号不明确，在训练过程中需要随机翻转符号。</p><p>本文提出了RWPE编码，定义如下：</p><script type="math/tex; mode=display">p_i^{\mathrm{RWPE}} = [\mathrm{RW}_{ii}, \mathrm{RW}_{ii}^2, \cdots,\mathrm{RW}_{ii}^k]\in\mathbb{R}^k\tag{8}</script><p>其中<script type="math/tex">\mathrm{RW}=AD^{-1}</script>，本文没有使用完整的随机游走矩阵<script type="math/tex">{R_{ij}}</script>，而是只考虑了节点自身的随机游走矩阵，降低了计算复杂度。RWPE编码没有LapPE的符号不明确问题，不需要随机额外的invariance，同时也提供了唯一的节点表示，在节点有一个独特的k-hop拓扑邻居时。</p><h3 id="Positional-Loss"><a href="#Positional-Loss" class="headerlink" title="Positional Loss"></a>Positional Loss</h3><p>因为本文分离了位置信息，因此可以考虑设计位置编码loss以强迫其学习图的拓扑结构，本文采用的是Laplacian eigenvector loss。</p><script type="math/tex; mode=display">\begin{align}    \text{Loss} &= \text{Loss}_{\text{Task}}\left(        \begin{bmatrix}            h^{l=L} \\ p^{l=L}        \end{bmatrix}    \right)         + \alpha\ \text{Loss}_{\text{LapEig}}(p^{l=L}) \tag{9} \\     \text{Loss}_{\text{LapEig}}(p) &= \frac{1}{k}\text{trace}(p^T\Delta p) + \frac{\lambda}{k} \lVert p^Tp-\mathrm{I}_k \rVert^2_F \tag{10}\end{align}</script><p>其中<script type="math/tex">h^{l=L}\in\mathbb{R}^{n\times d}</script>，<script type="math/tex">p^{l=L}\in\mathbb{R}^{n\times k}</script>，<script type="math/tex">\lVert \cdot \rVert_F</script>表示Frobenius范数，定义为矩阵各项元素平方和的平方根。此外注意到，本文限制位置向量的均值为0范数为1，以更好地近似Laplacian eigenvector loss。</p><h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>在三个数据集ZINC、OGBG-MOLTOX21和OGBG-MOLPCBA上进行了实验，在不使用PE时图网络很难取得好的表现。</p><p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211120142523504.png" alt="image-20211120142523504" style="zoom:67%;"></p><p>本文也比较了稀疏GNN和Transformer GNN类的方法，稀疏GNN在LSPE的加持下取得了更好的结果，尽管Transformer GNN理论上可以更好地克服长距依赖的局限性。</p><p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211120143016350.png" alt="image-20211120143016350" style="zoom:67%;"></p><p>此外，本文对k的选择也做了实验，结果上来看适当大一点比较好。</p><p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211120143711638.png" alt="image-20211120143711638" style="zoom:67%;"></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;来自Bengio组，在GNN上引入位置编码，提出了一种新的框架LSPE，在分子数据集上的性能提升了2.87%至64.14%。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211117124217530.png&quot; alt=&quot;image-20211117124217530&quot; style=&quot;zoom:67%;&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
+    
+    
+      <category term="GNN" scheme="https://entropy2333.github.io/tags/GNN/"/>
+    
+      <category term="PE" scheme="https://entropy2333.github.io/tags/PE/"/>
+    
+  </entry>
   
   <entry>
     <title>NLP From Scratch Without Large-Scale Pretraining: A Simple and Efficient Framework</title>
@@ -466,33 +492,6 @@
       <category term="MAC" scheme="https://entropy2333.github.io/tags/MAC/"/>
     
       <category term="SHA-1" scheme="https://entropy2333.github.io/tags/SHA-1/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>现代密码学（五）公钥密码</title>
-    <link href="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%94%EF%BC%89%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/"/>
-    <id>https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%94%EF%BC%89%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/</id>
-    <published>2020-12-27T09:08:56.000Z</published>
-    <updated>2020-12-28T11:31:10.068Z</updated>
-    
-    <content type="html"><![CDATA[<p>介绍公钥密码学。</p><a id="more"></a><h2 id="公钥密码理论"><a href="#公钥密码理论" class="headerlink" title="公钥密码理论"></a>公钥密码理论</h2><p>公钥算法主要有三类</p><ul><li>密钥分配</li><li>公钥加密</li><li>签名算法</li></ul><h2 id="DH密钥交换"><a href="#DH密钥交换" class="headerlink" title="DH密钥交换"></a>DH密钥交换</h2><ul><li>选定素数p和本原元a</li><li>A选定<script type="math/tex">x_A</script>，计算<script type="math/tex">y_A=a^{x_A}\bmod p</script></li><li>B选定<script type="math/tex">x_B</script>，计算<script type="math/tex">y_B=a^{x_B}\bmod p</script></li><li>公开<script type="math/tex">y_A</script>和<script type="math/tex">y_B</script></li><li>A计算<script type="math/tex">K=y_B^{x_A}\bmod p</script></li><li>B计算<script type="math/tex">K=y_A^{x_B}\bmod p</script></li></ul><h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><p>算法流程</p><ul><li>选择两个大素数p和q</li><li>计算<script type="math/tex">N=p·q</script></li><li>随机选择加密密钥e，满足<script type="math/tex">gcd(e, \phi(N)) = 1,\ e < N</script></li><li>求解解密密钥d，满足<script type="math/tex">e·d\equiv1\bmod \phi(N)</script></li><li>公开<script type="math/tex">(N, e)</script>，保存<script type="math/tex">(p,q,d)</script></li></ul><p>原理如下</p><script type="math/tex; mode=display">C = M^e\bmod N \\D = C^d= (M^e)^d\bmod N \\D = M^{(1+k\phi(N))}= M\bmod N</script><p>RSA实际上是一种单表代换</p><script type="math/tex; mode=display">RSA: \mathbb{Z/nZ} \rightarrow \mathbb{Z/nZ},\ n=pq</script><p>RSA的安全性取决于计算<script type="math/tex">\phi(N)</script>的困难性，但分解模未必是攻击RSA的最佳方法。</p><p>RSA需要计算大指数模幂，可以用中国剩余定理CRT来加速。</p><script type="math/tex; mode=display">M_1 = M\bmod p = (C\bmod p)^{d\bmod(p-1)} \\M_2 = M\bmod q = (C\bmod q)^{d\bmod(q-1)}</script><p>对于方程组</p><script type="math/tex; mode=display">\begin{cases}M = M_1\bmod p \\M = M_2\bmod q\end{cases}</script><p>有唯一解</p><script type="math/tex; mode=display">M = (q·u·M_1 + p·u'·M_2)\bmod N \\p·u\equiv1\bmod q,\ q·u'\equiv1\bmod p</script><h2 id="Rabin公钥密码体制"><a href="#Rabin公钥密码体制" class="headerlink" title="Rabin公钥密码体制"></a>Rabin公钥密码体制</h2><p>有两个困难数学问题</p><ul><li>二次剩余问题：给定奇合数n和整数a，难以判断a是n的二次剩余。</li><li>模n的平方根问题：在n的分解未知情况下，难以求解n的平方根。</li></ul><p>Rabin体制利用求解平方根的困难性构造了一种安全公钥体制。</p><p>首先选定两个形如4k+3的素数p和q，以n=pq作为公钥。</p><p>加密过程</p><script type="math/tex; mode=display">C = M^2 \bmod n,\ 0 \leq M < n</script><p>解密首先计算</p><script type="math/tex; mode=display">\begin{align}M_1 &= C^{\frac{(p+1)}{4}} \bmod p \\M_2 &= p - C^{\frac{(p+1)}{4}} \bmod p \\M_3 &= C^{\frac{(q+1)}{4}} \bmod q \\M_4 &= q - C^{\frac{(p+1)}{4}} \bmod q\end{align}</script><p>利用中国剩余定理，可以得到四个解，必有一个与M相同。</p><p>Rabin体制的安全性等价于大整数分解，但是对选择密文攻击不安全。</p><script type="math/tex; mode=display">x_1^2\equiv x_2^2\equiv0\bmod n \\\iff (x_1-x_2)(x_1+x_2)\equiv0\bmod n</script><p>与RSA相比，Rabin只需要一次乘法运算，但解密时更困难。</p><h2 id="El-Gamal"><a href="#El-Gamal" class="headerlink" title="El Gamal"></a>El Gamal</h2><p>基于离散对数，但增加了消息长度（2倍）。</p><p>首先选定大素数p和本原元g，计算</p><script type="math/tex; mode=display">y_B = g^{x_B}\bmod p</script><p>发送者选择随机数k，计算消息密钥</p><script type="math/tex; mode=display">K = y_B^k\bmod p,\ 0\leq k\leq p-1</script><p>之后计算密文对</p><script type="math/tex; mode=display">\begin{align}C_1 &= g^k\bmod p \\C_2 &= M\cdot K\bmod p\end{align}</script><p>解密时先计算密钥再计算明文</p><script type="math/tex; mode=display">\begin{align}K &= C_1^{x_B}\bmod p = (g^k)^{x_B}\bmod p \\M &= C_2\cdot K^{-1}\bmod p\end{align}</script><h2 id="对于公钥密码的攻击"><a href="#对于公钥密码的攻击" class="headerlink" title="对于公钥密码的攻击"></a>对于公钥密码的攻击</h2><p>可以对RSA发动弱参数攻击</p><ul><li>共模攻击</li><li>低加密指数攻击</li></ul><p>可以对Rabin发动选择密文攻击</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;介绍公钥密码学。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="现代密码学" scheme="https://entropy2333.github.io/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
-    
-    
-      <category term="RSA" scheme="https://entropy2333.github.io/tags/RSA/"/>
-    
-      <category term="Rabin" scheme="https://entropy2333.github.io/tags/Rabin/"/>
-    
-      <category term="El Gamal" scheme="https://entropy2333.github.io/tags/El-Gamal/"/>
     
   </entry>
   
