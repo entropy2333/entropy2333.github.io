@@ -4,7 +4,7 @@
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://entropy2333.github.io/2020/08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/2.png">
 <meta property="og:image" content="https://entropy2333.github.io/2020/08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/3.png">
 <meta property="article:published_time" content="2020-08-15T11:12:57.000Z">
-<meta property="article:modified_time" content="2020-08-16T09:45:32.151Z">
+<meta property="article:modified_time" content="2021-12-08T12:12:47.044Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="决策树">
@@ -82,7 +82,11 @@
   </style>
 </noscript>
 
-<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -285,7 +289,7 @@
 
       
         <p>决策树是一种基本的分类与回归方法，在分类问题中，用树形结构表示基于特征对实例进行分类的过程。</p>
-<a id="more"></a>
+<span id="more"></span>
 <h2 id="5-1-决策树模型与学习"><a href="#5-1-决策树模型与学习" class="headerlink" title="5.1 决策树模型与学习"></a>5.1 决策树模型与学习</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>决策树是一种描述对实例进行分类的树形结构，由节点和有向边组成。</p>
 <p>节点有两种类型：内部节点和叶子节点，内部节点表示特征或属性，叶子结点表示一个类。</p>
 <p>决策树分类时，从根节点开始，对实例的某一特征进行测试，根据测试结果将其分配到子节点。如此递归，直至到达叶节点，最后分到叶节点的类中。</p>
@@ -393,7 +397,7 @@ g(t) = \frac {C(t) - C(T_t)} {|T_t|-1}</script><script type="math/tex; mode=disp
 <li><p>采用交叉验证法，在子树序列中选取最优子树</p>
 </li>
 </ul>
-<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> export_graphviz</span><br><span class="line"><span class="keyword">import</span> graphviz</span><br><span class="line"></span><br><span class="line">clf = DecisionTreeClassifier()</span><br><span class="line">clf.fit(X_train, y_train,)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br><span class="line"></span><br><span class="line">tree_pic = export_graphviz(clf, out_file=<span class="string">&quot;mytree.pdf&quot;</span>)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;mytree.pdf&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    dot_graph = f.read()</span><br><span class="line">    </span><br><span class="line">graphviz.Source(dot_graph)</span><br></pre></td></tr></table></figure>
+<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> export_graphviz</span><br><span class="line"><span class="keyword">import</span> graphviz</span><br><span class="line"></span><br><span class="line">clf = DecisionTreeClassifier()</span><br><span class="line">clf.fit(X_train, y_train,)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br><span class="line"></span><br><span class="line">tree_pic = export_graphviz(clf, out_file=<span class="string">&quot;mytree.pdf&quot;</span>)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;mytree.pdf&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    dot_graph = f.read()</span><br><span class="line">    </span><br><span class="line">graphviz.Source(dot_graph)</span><br></pre></td></tr></table></figure>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总体思路就是构造决策树，根据损失函数进行剪枝，具体细节没怎么看懂，回头找份代码瞧瞧。</p>
 
     </div>
@@ -405,19 +409,19 @@ g(t) = \frac {C(t) - C(T_t)} {|T_t|-1}</script><script type="math/tex; mode=disp
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\11\统计学习方法（一）概论\" rel="bookmark">统计学习方法（一）概论</a></div>
+      <div class="popular-posts-title"><a href="/2020/08/11/统计学习方法（一）概论/" rel="bookmark">统计学习方法（一）概论</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\19\统计学习方法（七）支持向量机\" rel="bookmark">统计学习方法（七）支持向量机</a></div>
+      <div class="popular-posts-title"><a href="/2020/08/19/统计学习方法（七）支持向量机/" rel="bookmark">统计学习方法（七）支持向量机</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\13\统计学习方法（三）k近邻法\" rel="bookmark">统计学习方法（三）k近邻法</a></div>
+      <div class="popular-posts-title"><a href="/2020/08/13/统计学习方法（三）k近邻法/" rel="bookmark">统计学习方法（三）k近邻法</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\26\统计学习方法（九）EM算法及其推广\" rel="bookmark">统计学习方法（九）EM算法及其推广</a></div>
+      <div class="popular-posts-title"><a href="/2020/08/26/统计学习方法（九）EM算法及其推广/" rel="bookmark">统计学习方法（九）EM算法及其推广</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\12\统计学习方法（二）感知机\" rel="bookmark">统计学习方法（二）感知机</a></div>
+      <div class="popular-posts-title"><a href="/2020/08/12/统计学习方法（二）感知机/" rel="bookmark">统计学习方法（二）感知机</a></div>
     </li>
   </ul>
 
@@ -770,23 +774,7 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
     });
   }, window.Valine);
 });
-</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/javascript" src="https://cdnjs.loli.net/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

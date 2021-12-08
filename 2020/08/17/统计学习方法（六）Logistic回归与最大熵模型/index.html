@@ -4,7 +4,7 @@
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://entropy2333.github.io/2020/08/17/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AD%EF%BC%89Logistic%E5%9B%9E%E5%BD%92%E4%B8%8E%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B/1.png">
 <meta property="article:published_time" content="2020-08-17T15:57:42.000Z">
-<meta property="article:modified_time" content="2020-08-18T09:35:44.557Z">
+<meta property="article:modified_time" content="2021-12-08T12:12:47.045Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="Logistic回归">
@@ -80,7 +80,11 @@
   </style>
 </noscript>
 
-<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -283,7 +287,7 @@
 
       
         <p>Logistic回归是统计学习中的分类方法，最大熵是概率模型学习的一个准则，推广到分类问题得到最大熵模型。</p>
-<a id="more"></a>
+<span id="more"></span>
 <h2 id="6-1-Logistic回归模型"><a href="#6-1-Logistic回归模型" class="headerlink" title="6.1 Logistic回归模型"></a>6.1 Logistic回归模型</h2><h3 id="Logistic分布"><a href="#Logistic分布" class="headerlink" title="Logistic分布"></a>Logistic分布</h3><p>设X为连续随机变量，X服从Logistic分布是指</p>
 <script type="math/tex; mode=display">
 F(x) = P(X\leq x) = \frac 1 {1+e^{-(x-\mu)/\gamma}} \\
@@ -373,11 +377,11 @@ Z_w(x) = \sum_y\exp(\sum_{i=1}^nw_if_i(x,y))</script><script type="math/tex; mod
 
 ### 改进的迭代尺度法
 
-改进的迭代尺度法（improved iterative scaling，IIS）基本想法是，找到新的参数向量$$w+\delta$$，使得模型的对数似然函数值增大，即</script><p>\begin{align}<br>L(w+\delta) - L(w) &amp;= \sum_{x,y}\widetilde P(x,y)\log P_{w+\delta}(y|x) - \widetilde P(x,y)\log P_{w}(y|x) \\<br>&amp;= \sum_{x,y}\widetilde P(x,y)\sum_{i=1}^n\delta_if_i(x,y) - \sum_x\widetilde P(x)\log \frac{Z_{w+\delta}(x)}{Z_w(x)} \geq 0<br>\end{align}</p>
+改进的迭代尺度法（improved iterative scaling，IIS）基本想法是，找到新的参数向量$$w+\delta$$，使得模型的对数似然函数值增大，即</script><p>\begin{align}<br>L(w+\delta) - L(w) &amp;= \sum<em>{x,y}\widetilde P(x,y)\log P</em>{w+\delta}(y|x) - \widetilde P(x,y)\log P<em>{w}(y|x) \<br>&amp;= \sum</em>{x,y}\widetilde P(x,y)\sum<em>{i=1}^n\delta_if_i(x,y) - \sum_x\widetilde P(x)\log \frac{Z</em>{w+\delta}(x)}{Z_w(x)} \geq 0<br>\end{align}</p>
 <script type="math/tex; mode=display">
 利用不等式</script><p>-\log\alpha\geq1-\alpha,\quad\alpha&gt;0</p>
 <script type="math/tex; mode=display">
-由此</script><p>\begin{align}<br>L(w+\delta) - L(w) &amp;\geq \sum_{x,y}\widetilde P(x,y)\sum_{i=1}^n\delta_if_i(x,y)+1-\sum_x\widetilde P(x)\frac{Z_{w+\delta}(x)}{Z_w(x)} \\<br>&amp;= \sum_{x,y}\widetilde P(x,y)\sum_{i=1}^n\delta_if_i(x,y)+1-\sum_x\widetilde P(x)\sum_yP_w(y|x)\exp\sum_{i=1}^n\delta_if_i(x,y) \\<br>&amp;= A(\delta|w)<br>\end{align}</p>
+由此</script><p>\begin{align}<br>L(w+\delta) - L(w) &amp;\geq \sum<em>{x,y}\widetilde P(x,y)\sum</em>{i=1}^n\delta<em>if_i(x,y)+1-\sum_x\widetilde P(x)\frac{Z</em>{w+\delta}(x)}{Z<em>w(x)} \<br>&amp;= \sum</em>{x,y}\widetilde P(x,y)\sum<em>{i=1}^n\delta_if_i(x,y)+1-\sum_x\widetilde P(x)\sum_yP_w(y|x)\exp\sum</em>{i=1}^n\delta_if_i(x,y) \<br>&amp;= A(\delta|w)<br>\end{align}</p>
 <script type="math/tex; mode=display">
 即$$A(\delta|w)$$是改变量的一个下界，IIS试图每次只优化其中一个变量$$\delta_i$$，而固定其他变量。
 
@@ -395,7 +399,7 @@ Z_w(x) = \sum_y\exp(\sum_{i=1}^nw_if_i(x,y))</script><script type="math/tex; mod
 
 - $$\forall i\in\{1,2,\cdots,n\},\quad w_i=0</script><ul>
 <li><script type="math/tex; mode=display">\forall i\in\{1,2,\cdots,n\}</script><ul>
-<li><script type="math/tex; mode=display">\delta_i$$满足方程</script><p>\sum_{x,y}\widetilde P(x)P(y|x)f_i(x,y)\exp(\delta_if^#(x,y)) = E_{\widetilde P}(f_i)</p>
+<li><script type="math/tex; mode=display">\delta_i$$满足方程</script><p>\sum<em>{x,y}\widetilde P(x)P(y|x)f_i(x,y)\exp(\delta_if^#(x,y)) = E</em>{\widetilde P}(f_i)</p>
 <script type="math/tex; mode=display">
 其中</script><p>f^#(x,y) = \sum_{i=1}^nf_i(x,y)<br>$$</p>
 </li>
@@ -407,7 +411,7 @@ Z_w(x) = \sum_y\exp(\sum_{i=1}^nw_if_i(x,y))</script><script type="math/tex; mod
 </li>
 </ul>
 <h3 id="拟牛顿法"><a href="#拟牛顿法" class="headerlink" title="拟牛顿法"></a>拟牛顿法</h3><p>略。</p>
-<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line"></span><br><span class="line"><span class="comment"># solver: liblinear, lbfgs, newton-cg, sag</span></span><br><span class="line">clf = LogisticRegression(max_iter=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br><span class="line"></span><br><span class="line">print(clf.coef_, clf.intercept_)</span><br></pre></td></tr></table></figure>
+<h2 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line"></span><br><span class="line"><span class="comment"># solver: liblinear, lbfgs, newton-cg, sag</span></span><br><span class="line">clf = LogisticRegression(max_iter=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(clf.coef_, clf.intercept_)</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -418,19 +422,19 @@ Z_w(x) = \sum_y\exp(\sum_{i=1}^nw_if_i(x,y))</script><script type="math/tex; mod
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\11\统计学习方法（一）概论\" rel="bookmark">统计学习方法（一）概论</a></div>
+      <div class="popular-posts-title"><a href="/2020/08/11/统计学习方法（一）概论/" rel="bookmark">统计学习方法（一）概论</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\19\统计学习方法（七）支持向量机\" rel="bookmark">统计学习方法（七）支持向量机</a></div>
+      <div class="popular-posts-title"><a href="/2020/08/19/统计学习方法（七）支持向量机/" rel="bookmark">统计学习方法（七）支持向量机</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\13\统计学习方法（三）k近邻法\" rel="bookmark">统计学习方法（三）k近邻法</a></div>
+      <div class="popular-posts-title"><a href="/2020/08/13/统计学习方法（三）k近邻法/" rel="bookmark">统计学习方法（三）k近邻法</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\26\统计学习方法（九）EM算法及其推广\" rel="bookmark">统计学习方法（九）EM算法及其推广</a></div>
+      <div class="popular-posts-title"><a href="/2020/08/26/统计学习方法（九）EM算法及其推广/" rel="bookmark">统计学习方法（九）EM算法及其推广</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2020\08\12\统计学习方法（二）感知机\" rel="bookmark">统计学习方法（二）感知机</a></div>
+      <div class="popular-posts-title"><a href="/2020/08/12/统计学习方法（二）感知机/" rel="bookmark">统计学习方法（二）感知机</a></div>
     </li>
   </ul>
 
@@ -783,23 +787,7 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
     });
   }, window.Valine);
 });
-</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/javascript" src="https://cdnjs.loli.net/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>
