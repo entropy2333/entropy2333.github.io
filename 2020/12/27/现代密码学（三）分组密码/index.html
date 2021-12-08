@@ -2,9 +2,11 @@
 <html lang="zh-CN">
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.4.0">
+
+
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -13,14 +15,12 @@
 <link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"entropy2333.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
-  </script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-  <meta name="description" content="介绍分组密码，包括Feistel Cipher、DES和IDEA等。">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"entropy2333.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="介绍分组密码，包括Feistel Cipher、DES和IDEA等。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="现代密码学（三）分组密码">
 <meta property="og:url" content="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/index.html">
@@ -58,56 +58,29 @@
 <meta property="og:image" content="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201228164338403.png">
 <meta property="og:image" content="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201228164700793.png">
 <meta property="article:published_time" content="2020-12-27T09:08:30.000Z">
-<meta property="article:modified_time" content="2021-12-08T13:34:09.771Z">
+<meta property="article:modified_time" content="2021-12-08T13:44:07.989Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="分组密码">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227181933426.png">
 
+
 <link rel="canonical" href="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/">
 
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
 
-  <title>现代密码学（三）分组密码 | entropy2333</title>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/","path":"2020/12/27/现代密码学（三）分组密码/","title":"现代密码学（三）分组密码"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>现代密码学（三）分组密码 | entropy2333</title>
   
 
 
 
 
-
-
   <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
@@ -115,26 +88,26 @@
 <!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
-    <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
 
+  <main class="main">
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
   <div class="site-meta">
 
     <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
+      <i class="logo-line"></i>
       <h1 class="site-title">entropy2333</h1>
-      <span class="logo-line-after"><i></i></span>
+      <i class="logo-line"></i>
     </a>
   </div>
 
@@ -147,34 +120,13 @@
 
 
 
-
 <nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -185,23 +137,22 @@
 
 
   <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
+    <div class="popup search-popup"><div class="search-header">
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
   <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
            placeholder="搜索..." spellcheck="false"
            type="search" class="search-input">
   </div>
-  <span class="popup-btn-close">
+  <span class="popup-btn-close" role="button">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
   </div>
 </div>
 
@@ -209,10 +160,106 @@
   </div>
 
 </div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81"><span class="nav-number">1.</span> <span class="nav-text">分组密码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2-%E7%BD%AE%E6%8D%A2%E5%AF%86%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">替换-置换密码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Feistel-Cipher"><span class="nav-number">3.</span> <span class="nav-text">Feistel Cipher</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%AA%E5%B4%A9%E6%95%88%E5%BA%94"><span class="nav-number">3.1.</span> <span class="nav-text">雪崩效应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E5%A4%87%E6%80%A7%E6%95%88%E5%BA%94"><span class="nav-number">3.2.</span> <span class="nav-text">完备性效应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Feistel-Cipher%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.3.</span> <span class="nav-text">Feistel Cipher设计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lucifer"><span class="nav-number">4.</span> <span class="nav-text">Lucifer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S-DES"><span class="nav-number">5.</span> <span class="nav-text">S-DES</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90"><span class="nav-number">5.1.</span> <span class="nav-text">安全分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DES"><span class="nav-number">6.</span> <span class="nav-text">DES</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DES%E7%9A%84%E6%94%B9%E8%BF%9B"><span class="nav-number">6.1.</span> <span class="nav-text">DES的改进</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IDEA"><span class="nav-number">7.</span> <span class="nav-text">IDEA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AES-Rijndael"><span class="nav-number">8.</span> <span class="nav-text">AES-Rijndael</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F"><span class="nav-number">9.</span> <span class="nav-text">分组密码的工作模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ECB-Electronic-Codebook-Book"><span class="nav-number">9.1.</span> <span class="nav-text">ECB - Electronic Codebook Book</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CBC-Cipher-Block-Chaining"><span class="nav-number">9.2.</span> <span class="nav-text">CBC - Cipher Block Chaining</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CFB-Cipher-FeedBack"><span class="nav-number">9.3.</span> <span class="nav-text">CFB - Cipher FeedBack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OFB-Output-FeedBack"><span class="nav-number">9.4.</span> <span class="nav-text">OFB - Output FeedBack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CTR-Counter"><span class="nav-number">9.5.</span> <span class="nav-text">CTR - Counter</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%86%E7%A0%81%E5%88%86%E6%9E%90%E6%94%BB%E5%87%BB"><span class="nav-number">10.</span> <span class="nav-text">密码分析攻击</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="entropy2333"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">entropy2333</p>
+  <div class="site-description" itemprop="description">Cyber Security, SJTU</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/entropy2333" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;entropy2333" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://ainevsia.github.io/" title="https:&#x2F;&#x2F;ainevsia.github.io&#x2F;" rel="noopener" target="_blank">ainevsia</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://entropy2333.gitee.io/" title="https:&#x2F;&#x2F;entropy2333.gitee.io" rel="noopener" target="_blank">entropy2333</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://rooki3ray.github.io/" title="https:&#x2F;&#x2F;rooki3ray.github.io" rel="noopener" target="_blank">rooki3ray</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://thomas-li-sjtu.github.io/" title="https:&#x2F;&#x2F;thomas-li-sjtu.github.io" rel="noopener" target="_blank">thomas-li</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://schenk75.github.io/" title="https:&#x2F;&#x2F;schenk75.github.io&#x2F;" rel="noopener" target="_blank">schenk</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
     </header>
 
     
-  <div class="back-to-top">
+  <div class="back-to-top" role="button" aria-label="返回顶部">
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
@@ -220,19 +267,22 @@
 
   <a href="https://github.com/entropy2333" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
 
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
 
-          <div class="content post posts-expand">
-            
+    <div class="main-inner post posts-expand">
 
-    
+
+  
+
+
+<div class="post-block">
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -249,61 +299,44 @@
           现代密码学（三）分组密码
         </h1>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-27 17:08:30" itemprop="dateCreated datePublished" datetime="2020-12-27T17:08:30+08:00">2020-12-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">现代密码学</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/" class="post-meta-item leancloud_visitors" data-flag-title="现代密码学（三）分组密码" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
       <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
+        <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/" itemprop="commentCount"></span>
-    </a>
-  </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-27 17:08:30" itemprop="dateCreated datePublished" datetime="2020-12-27T17:08:30+08:00">2020-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">现代密码学</span></a>
+        </span>
+    </span>
+
   
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>4.3k</span>
-            </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.4k</span>
+    </span>
+</div>
 
         </div>
       </header>
@@ -312,14 +345,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
         <p>介绍分组密码，包括Feistel Cipher、DES和IDEA等。</p>
 <span id="more"></span>
 <h2 id="分组密码"><a href="#分组密码" class="headerlink" title="分组密码"></a>分组密码</h2><p>分组密码（Block Cipher），是指将明文分成许多块，利用加密算法对每一块进行加密，形式如下。</p>
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227181933426.png" alt="image-20201227181933426" style="zoom:67%;"></p>
 <p>分组密码希望使用对每一块使用尽可能大的替换模块，但并不现实。</p>
-<p>当分组长度为64bit时，即需要<script type="math/tex">2^{64}</script>个实体的替换表，因此使用乘积密码的思想，用一些小的模块替代。</p>
+<p>当分组长度为64bit时，即需要$2^{64}$个实体的替换表，因此使用乘积密码的思想，用一些小的模块替代。</p>
 <h2 id="替换-置换密码"><a href="#替换-置换密码" class="headerlink" title="替换-置换密码"></a>替换-置换密码</h2><p>Shannon在那篇著名的文章中，介绍了替换-置换（S-P）网络的概念。</p>
 <ul>
 <li>替换 Substitution</li>
@@ -350,17 +381,17 @@ R(i) &= L(i-1) \oplus g(K(i), R(i-1))
 </ul>
 <h3 id="雪崩效应"><a href="#雪崩效应" class="headerlink" title="雪崩效应"></a>雪崩效应</h3><ul>
 <li>输入改变1bit，导致近半的bit发生变化。</li>
-<li>对于一个函数<script type="math/tex">f</script>来说，较好的雪崩特性是指<ul>
-<li>对于<script type="math/tex">2^m</script>个明文向量，分为<script type="math/tex">2^{m-1}</script>个向量对<script type="math/tex">(x_i, x_i')</script>，每对向量只有一个bit不同。</li>
-<li>定义<script type="math/tex">v_i = f(x) \oplus f(x_i)</script>，则近半的<script type="math/tex">v_i</script>为1。</li>
+<li>对于一个函数$f$来说，较好的雪崩特性是指<ul>
+<li>对于$2^m$个明文向量，分为$2^{m-1}$个向量对$(x_i, x_i’)$，每对向量只有一个bit不同。</li>
+<li>定义$v_i = f(x) \oplus f(x_i)$，则近半的$v_i$为1。</li>
 </ul>
 </li>
 </ul>
 <h3 id="完备性效应"><a href="#完备性效应" class="headerlink" title="完备性效应"></a>完备性效应</h3><ul>
 <li>每个输出比特是所有输入比特的复杂函数的输出。</li>
-<li>对于一个函数<script type="math/tex">f</script>来说，较好的完备性是指<ul>
-<li>对密文输出向量的每一个比特j，至少存在一个明文对<script type="math/tex">(x_i, x_i')</script>。</li>
-<li>此明文对只在第i比特不同，且<script type="math/tex">f(x_i)</script>与<script type="math/tex">f(x_i')</script>的第j比特不同。</li>
+<li>对于一个函数$f$来说，较好的完备性是指<ul>
+<li>对密文输出向量的每一个比特j，至少存在一个明文对$(x_i, x_i’)$。</li>
+<li>此明文对只在第i比特不同，且$f(x_i)$与$f(x_i’)$的第j比特不同。</li>
 </ul>
 </li>
 </ul>
@@ -389,7 +420,7 @@ K_i &= ROL(K_{i-1})
 <p>S-DES主要有以下几个函数</p>
 <ul>
 <li>初始置换IP（initial permutation）</li>
-<li>复合函数<script type="math/tex">f_k</script><ul>
+<li>复合函数$f_k$$<ul>
 <li>由密钥K确定，具有转换和替换的运算。</li>
 </ul>
 </li>
@@ -409,7 +440,7 @@ IP = \begin{pmatrix} 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\ 2 & 6 & 3 & 1 & 4 & 8 & 5 
 IP^{-1} = \begin{pmatrix} 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\ 4 & 1 & 3 & 5 & 7 & 2 & 8 & 6 \end{pmatrix}</script><p>S-DES的加密过程如下</p>
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227195605766.png" style="zoom:67%;"></p>
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227195620844.png" style="zoom:67%;"></p>
-<p>对于S-DES，<script type="math/tex">f_k</script>是加密方案中最重要的部分</p>
+<p>对于S-DES，$f_k$是加密方案中最重要的部分</p>
 <script type="math/tex; mode=display">
 f_k(L, R) = (L\oplus F(R, SK), R)</script><p>其中对于映射F，输入为4bit，第一步进行扩张/置换（E/P）运算</p>
 <script type="math/tex; mode=display">
@@ -419,19 +450,19 @@ f_k(L, R) = (L\oplus F(R, SK), R)</script><p>其中对于映射F，输入为4bit
 <p>S盒接收4bit输入，将第1和第4比特组成的数作为行，第2和第3比特组成的数作为列。</p>
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227201918812.png" alt="image-20201227201918812" style="zoom:67%;"></p>
 <h3 id="安全分析"><a href="#安全分析" class="headerlink" title="安全分析"></a>安全分析</h3><p>对10bit密钥的强行攻击是可行的，可以利用已知明文攻击。</p>
-<p>密钥空间：<script type="math/tex">2^{10}=1024</script></p>
-<p>已知明文<script type="math/tex">(p_1, p_2,\dots,p_8)</script>和密文<script type="math/tex">(c_1, c_2,\dots,c_8)</script>，密钥<script type="math/tex">(k_1, k_2,\dots,k_{10})</script>作为未知数。</p>
+<p>密钥空间：$2^{10}=1024$$</p>
+<p>已知明文$(p<em>1, p_2,\dots,p_8)$和密文$(c_1, c_2,\dots,c_8)$，密钥$(k_1, k_2,\dots,k</em>{10})$作为未知数。</p>
 <p>S-DES可以表示为8个含10个变量的非线性方程，非线性是S盒作用的结果。</p>
 <h2 id="DES"><a href="#DES" class="headerlink" title="DES"></a>DES</h2><p>分组长度64bit，密文64bit。密钥为64bit，只有56bit参与运算，8bit作为奇偶校验位。</p>
 <p>算法有以下三个阶段</p>
 <ul>
-<li>对明文X，通过初始置换IP得到<script type="math/tex">X_0 = IP(X) = L_0R_0</script></li>
+<li>对明文X，通过初始置换IP得到$X_0 = IP(X) = L_0R_0$$</li>
 <li>函数F进行16次迭代<ul>
-<li><script type="math/tex; mode=display">L_i = R_{i-1}, R_i = L_{i-1} \oplus F(R_{i-1}, K_i)\quad 1\leq i\leq 16</script></li>
-<li><script type="math/tex">K_i</script>是长为48位的子密钥。</li>
+<li>$L<em>i = R</em>{i-1}, R<em>i = L</em>{i-1} \oplus F(R_{i-1}, K_i)\quad 1\leq i\leq 16$$</li>
+<li>$K_i$是长为48位的子密钥。</li>
 </ul>
 </li>
-<li>对比特串使用逆置换得到密文<script type="math/tex">Y=IP^{-1}(R_{16}L_{16})</script></li>
+<li>对比特串使用逆置换得到密文$Y=IP^{-1}(R<em>{16}L</em>{16})$$</li>
 </ul>
 <p>每一轮的结构可以用下图表示</p>
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227204624671.png" alt="image-20201227204624671" style="zoom:67%;"></p>
@@ -446,23 +477,23 @@ f_k(L, R) = (L\oplus F(R, SK), R)</script><p>其中对于映射F，输入为4bit
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227204728767.png" alt="image-20201227204728767" style="zoom:67%;"></p>
 <p>子密钥的生成如下图所示</p>
 <ul>
-<li>PC-1和PC-2都是固定置换，<script type="math/tex">LS_i</script>表示循环左移。</li>
-<li>注意<script type="math/tex">K_i</script>为48bit。</li>
+<li>PC-1和PC-2都是固定置换，$LS_i$表示循环左移。</li>
+<li>注意$K_i$为48bit。</li>
 </ul>
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201227205558988.png" alt="image-20201227205558988" style="zoom:67%;"></p>
 <h3 id="DES的改进"><a href="#DES的改进" class="headerlink" title="DES的改进"></a>DES的改进</h3><p>双重DES</p>
 <script type="math/tex; mode=display">
-C = E_{K_2}[E_{K_1}[P]] \\ 
+C = E_{K_2}[E_{K_1}[P]] \\
 P = D_{K_1}[D_{K_2}[C]]</script><p>三重DES</p>
 <script type="math/tex; mode=display">
-C = E_{K_1}[D_{K_2}[E_{K_1}[P]]] \\ 
-P = D_{K_1}[E_{K_2}[D_{K_1}[C]]]</script><p>三种DES的密钥长度为<script type="math/tex">2^{112}</script>，而标准DES的密钥长度为<script type="math/tex">2^{56}</script>。</p>
+C = E_{K_1}[D_{K_2}[E_{K_1}[P]]] \\
+P = D_{K_1}[E_{K_2}[D_{K_1}[C]]]</script><p>三种DES的密钥长度为$2^{112}$，而标准DES的密钥长度为$2^{56}$。</p>
 <h2 id="IDEA"><a href="#IDEA" class="headerlink" title="IDEA"></a>IDEA</h2><p>分组长度64bit，密钥长度128bit，进行8轮迭代操作。</p>
 <p>IDEA中，定义了三种运算。</p>
 <ul>
 <li>逐位异或</li>
-<li>整数模<script type="math/tex">2^{16}</script>加<script type="math/tex">\boxplus</script></li>
-<li>整数模<script type="math/tex">2^{16}+1</script>乘<script type="math/tex">\boxdot</script>（IDEA的S盒）</li>
+<li>整数模$2^{16}$加$\boxplus$$</li>
+<li>整数模$2^{16}+1$乘$\boxdot$（IDEA的S盒）</li>
 </ul>
 <p>IDEA的扩散来自于MA结构，它接收两个16bit的明文消息和两个子密钥作为输入，产生两个16bit的输出。</p>
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/image-20201228100105211.png" alt="image-20201228100105211"></p>
@@ -493,8 +524,8 @@ P = D_{K_1}[E_{K_2}[D_{K_1}[C]]]</script><p>三种DES的密钥长度为<script t
 </li>
 <li><p>列混合</p>
 <ul>
-<li>在<script type="math/tex">GF(2^8)</script>上乘以固定多项式<script type="math/tex">a(x)</script>并模除<script type="math/tex">(x^4+1)</script></li>
-<li><script type="math/tex; mode=display">S'(x)=a(x)\otimes S(x),\ a(x)=3x^3+x^2+x+2</script></li>
+<li>在$GF(2^8)$上乘以固定多项式$a(x)$并模除$(x^4+1)$$</li>
+<li>$S’(x)=a(x)\otimes S(x),\ a(x)=3x^3+x^2+x+2$$</li>
 </ul>
 </li>
 <li><p>轮密钥加</p>
@@ -573,198 +604,91 @@ C_{-1} = IV</script><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%8
     
       
 
-        <div class="reward-container">
+
+    <footer class="post-footer">
+          <div class="reward-container">
   <div></div>
-  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
-    打赏
+  <button>
+    赞赏
   </button>
-  <div id="qr" style="display: none;">
-      
-      <div style="display: inline-block;">
-        <img src="/images/wechatpay.png" alt="entropy2333 微信支付">
-        <p>微信支付</p>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="entropy2333 微信">
+        <span>微信</span>
       </div>
 
   </div>
 </div>
 
+          
 
-      <footer class="post-footer">
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>entropy2333
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://entropy2333.github.io/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%89%EF%BC%89%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/" title="现代密码学（三）分组密码">https://entropy2333.github.io/2020/12/27/现代密码学（三）分组密码/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
           <div class="post-tags">
               <a href="/tags/%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81/" rel="tag"># 分组密码</a>
           </div>
 
         
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/" rel="prev" title="现代密码学（二）古典密码">
-      <i class="fa fa-chevron-left"></i> 现代密码学（二）古典密码
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/" rel="next" title="现代密码学（四）序列密码">
-      现代密码学（四）序列密码 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
-
-
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/" rel="prev" title="现代密码学（二）古典密码">
+                  <i class="fa fa-chevron-left"></i> 现代密码学（二）古典密码
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/" rel="next" title="现代密码学（四）序列密码">
+                  现代密码学（四）序列密码 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
           </div>
-          
-    <div class="comments" id="valine-comments"></div>
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81"><span class="nav-number">1.</span> <span class="nav-text">分组密码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2-%E7%BD%AE%E6%8D%A2%E5%AF%86%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">替换-置换密码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Feistel-Cipher"><span class="nav-number">3.</span> <span class="nav-text">Feistel Cipher</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%AA%E5%B4%A9%E6%95%88%E5%BA%94"><span class="nav-number">3.1.</span> <span class="nav-text">雪崩效应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E5%A4%87%E6%80%A7%E6%95%88%E5%BA%94"><span class="nav-number">3.2.</span> <span class="nav-text">完备性效应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Feistel-Cipher%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.3.</span> <span class="nav-text">Feistel Cipher设计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lucifer"><span class="nav-number">4.</span> <span class="nav-text">Lucifer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#S-DES"><span class="nav-number">5.</span> <span class="nav-text">S-DES</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90"><span class="nav-number">5.1.</span> <span class="nav-text">安全分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DES"><span class="nav-number">6.</span> <span class="nav-text">DES</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DES%E7%9A%84%E6%94%B9%E8%BF%9B"><span class="nav-number">6.1.</span> <span class="nav-text">DES的改进</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IDEA"><span class="nav-number">7.</span> <span class="nav-text">IDEA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AES-Rijndael"><span class="nav-number">8.</span> <span class="nav-text">AES-Rijndael</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F"><span class="nav-number">9.</span> <span class="nav-text">分组密码的工作模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ECB-Electronic-Codebook-Book"><span class="nav-number">9.1.</span> <span class="nav-text">ECB - Electronic Codebook Book</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CBC-Cipher-Block-Chaining"><span class="nav-number">9.2.</span> <span class="nav-text">CBC - Cipher Block Chaining</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CFB-Cipher-FeedBack"><span class="nav-number">9.3.</span> <span class="nav-text">CFB - Cipher FeedBack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OFB-Output-FeedBack"><span class="nav-number">9.4.</span> <span class="nav-text">OFB - Output FeedBack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CTR-Counter"><span class="nav-number">9.5.</span> <span class="nav-text">CTR - Counter</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%86%E7%A0%81%E5%88%86%E6%9E%90%E6%94%BB%E5%87%BB"><span class="nav-number">10.</span> <span class="nav-text">密码分析攻击</span></a></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="entropy2333"
-      src="/images/myavatar.jpg">
-  <p class="site-author-name" itemprop="name">entropy2333</p>
-  <div class="site-description" itemprop="description">Cyber Security, SJTU</div>
+    </footer>
+  </article>
 </div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">50</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">8</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">56</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
+
+
+
+
+
+
 </div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/entropy2333" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;entropy2333" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-  </div>
+  </main>
 
+  <footer class="footer">
+    <div class="footer-inner">
 
-  <div class="links-of-blogroll motion-element">
-    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
-      Links
-    </div>
-    <ul class="links-of-blogroll-list">
-        <li class="links-of-blogroll-item">
-          <a href="https://ainevsia.github.io/" title="https:&#x2F;&#x2F;ainevsia.github.io&#x2F;" rel="noopener" target="_blank">ainevsia</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="https://entropy2333.gitee.io/" title="https:&#x2F;&#x2F;entropy2333.gitee.io" rel="noopener" target="_blank">entropy2333</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="https://rooki3ray.github.io/" title="https:&#x2F;&#x2F;rooki3ray.github.io" rel="noopener" target="_blank">rooki3ray</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="https://thomas-li-sjtu.github.io/" title="https:&#x2F;&#x2F;thomas-li-sjtu.github.io" rel="noopener" target="_blank">thomas-li</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="https://schenk75.github.io/" title="https:&#x2F;&#x2F;schenk75.github.io&#x2F;" rel="noopener" target="_blank">schenk</a>
-        </li>
-    </ul>
-  </div>
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
 
 <div class="copyright">
-  
   &copy; 
   <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">entropy2333</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-area"></i>
-    </span>
-    <span title="站点总字数">87k</span>
 </div>
-
-        
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">90k</span>
+  </span>
+</div>
 <div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
       <span class="post-meta-item-icon">
         <i class="fa fa-user"></i>
       </span>
@@ -772,8 +696,7 @@ C_{-1} = IV</script><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%8
         <span id="busuanzi_value_site_uv"></span>
       </span>
     </span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
       <span class="post-meta-item-icon">
         <i class="fa fa-eye"></i>
       </span>
@@ -783,90 +706,31 @@ C_{-1} = IV</script><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%8
     </span>
 </div>
 
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
+    </div>
+  </footer>
 
   
-  <script color='' opacity='' zIndex='' count='' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
+  
+<script src="/js/third-party/search/local-search.js"></script>
 
 
-<script src="/js/schemes/pisces.js"></script>
 
 
-<script src="/js/next-boot.js"></script>
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 
 
   
 
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
+<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
-
-  
-<script src="/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-
-  
-
-
-<script>
-NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.3.4/dist/Valine.min.js', () => {
-    var GUEST = ['nick', 'mail', 'link'];
-    var guest = 'nick,mail';
-    guest = guest.split(',').filter(item => {
-      return GUEST.includes(item);
-    });
-    new Valine({
-      el         : '#valine-comments',
-      verify     : false,
-      notify     : false,
-      appId      : '4YzFtMjP3CbBoiDRnfdk5CFw-9Nh9j0Va',
-      appKey     : 'FQ4wwfmyNaTgMjKnNjtgCAXA',
-      placeholder: "Too young, too simple",
-      avatar     : 'mm',
-      meta       : guest,
-      pageSize   : '10' || 10,
-      visitor    : true,
-      lang       : 'zh-cn' || 'zh-cn',
-      path       : location.pathname,
-      recordIP   : false,
-      serverURLs : ''
-    });
-  }, window.Valine);
-});
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>
