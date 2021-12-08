@@ -62,7 +62,7 @@ BERT中[CLS]作为输入语句的第一个字符，以捕获整个语句的全�
 
 <img src="Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417214551502.png" alt="image-20210417214551502" style="zoom:67%;" />
 
-其中，$$\theta_1$$和$$\theta_2$$是可学习的参数，计算方式的变化如下图。
+其中，$\theta_1$和$\theta_2$是可学习的参数，计算方式的变化如下图。
 
 <img src="Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417212900647.png" alt="image-20210417212900647" style="zoom:80%;" />
 

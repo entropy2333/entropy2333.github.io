@@ -39,9 +39,9 @@ $$
 \{Q^l,K^l,V^l\} = \{h^{l-1}W_q^l,h^{l-1}W_k^l,h^{l-1}W_v^l\} \\
 Atten(Q^l,K^l,V^l) = {\rm softmax}(\frac{Q^l {K^l}^T}{\sqrt{d_k}})
 $$
-本文也是先对给定的字符序列$${\mathcal C} = \{c_1,\dots,c_T\}$$，给定词典$$\mathcal E_{ent}$$，匹配得到对应的实体序列$$\mathcal E = \{e_1,\dots,e_T\}$$。
+本文也是先对给定的字符序列${\mathcal C} = \{c_1,\dots,c_T\}$，给定词典$\mathcal E_{ent}$，匹配得到对应的实体序列$\mathcal E = \{e_1,\dots,e_T\}$。
 
-给定$$(l-1)$$层的隐层状态$$\{h_1^{l-1},\dots,h_T^{l-1}\}$$，QKV的计算如下
+给定$(l-1)$层的隐层状态$\{h_1^{l-1},\dots,h_T^{l-1}\}$，QKV的计算如下
 $$
 \begin{align}
 q_t^l &= h_t^{l-1}W_{h,q}^l; \\
@@ -55,7 +55,7 @@ v_t^l &= \begin{cases}
 		 \end{cases}
 \end{align}
 $$
-其中$$E_{ent}$$表示实体embedding，$$W$$表示可学习的参数。
+其中$E_{ent}$表示实体embedding，$W$表示可学习的参数。
 
 如果字符没有匹配到实体，那么计算退化为原始的self-attention。
 

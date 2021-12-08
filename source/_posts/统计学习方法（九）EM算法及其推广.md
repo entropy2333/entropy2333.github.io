@@ -28,14 +28,14 @@ P(y|\theta)=\sum_zP(y,z|\theta)&=\sum_zP(z|\theta)P(y|z,\theta) \\
 $$
 其中，y表示观测变量，z为隐变量，表示硬币A的结果，θ为模型参数。
 
-将观测数据表示为$$Y=(Y_1,Y_2,\cdots Y_n)^T$$，未观测数据表示为$$Z=(Z_1,Z_2,\cdots Z_n)^T$$，则似然函数为
+将观测数据表示为$Y=(Y_1,Y_2,\cdots Y_n)^T$，未观测数据表示为$Z=(Z_1,Z_2,\cdots Z_n)^T$，则似然函数为
 $$
 \begin{align}
 P(Y|\theta)&=\sum_ZP(Z|\theta)P(Y|Z,\theta) \\
 &= \prod_{j=1}^n[\pi p^{y_i}(1-p)^{1-y_i}+(1-\pi)q^{y_i}(1-q)^{1-y_i}]
 \end{align}
 $$
-考虑$$\theta=(\pi,p,q)$$的极大似然估计
+考虑$\theta=(\pi,p,q)$的极大似然估计
 $$
 \hat\theta=\arg\max_\theta\log P(Y|\theta)
 $$
@@ -44,21 +44,21 @@ $$
 
 ### EM算法
 
-输入：观测变量数据Y，隐变量数据Z，联合分布$$P(Y,Z|\theta)$$，条件分布$$P(Z|Y,\theta)$$；
+输入：观测变量数据Y，隐变量数据Z，联合分布$P(Y,Z|\theta)$，条件分布$P(Z|Y,\theta)$；
 
-输出：模型参数$$\theta$$。
+输出：模型参数$\theta$。
 
-- 选择参数的初值$$\theta^{(0)}$$，开始迭代；
+- 选择参数的初值$\theta^{(0)}$，开始迭代；
 
-- E步：记$$\theta^{(i)}$$表示第i次迭代时参数的估计值，在第i+1次迭代，计算
+- E步：记$\theta^{(i)}$表示第i次迭代时参数的估计值，在第i+1次迭代，计算
   $$
   \begin{align}
   Q(\theta,\theta^{(i)})&=E_Z[\log P(Y,Z|\theta)|Y,\theta^{(i)}]\\
   &=\sum_Z\log P(Y,Z|\theta)P(Z|Y,\theta^{(i)})
   \end{align}
   $$
-  
-- M步：求使得$$Q(\theta,\theta^{(i)})$$极大化的参数值，确定第i+1次迭代的参数值
+
+- M步：求使得$Q(\theta,\theta^{(i)})$极大化的参数值，确定第i+1次迭代的参数值
   $$
   \theta^{(i+1)}=\arg\max_\theta Q(\theta,\theta^{(i)})
   $$
@@ -93,7 +93,7 @@ L(\theta)-L(\theta^{(i)})&=\log(\sum_ZP(Z|Y,\theta^{(i)})\frac{P(Z|\theta)P(Y|Z,
 \end{align}
 $$
 
-> $$\log\sum_j\lambda_jy_j\geq\sum_j\lambda_j\log y_j,\quad\lambda_j\geq0,\quad\sum_j\lambda_j=1$$
+> $\log\sum_j\lambda_jy_j\geq\sum_j\lambda_j\log y_j,\quad\lambda_j\geq0,\quad\sum_j\lambda_j=1$$
 
 记
 $$
@@ -103,7 +103,7 @@ $$
 $$
 L(\theta)\geq B(\theta,\theta^{(i)})
 $$
-即$$B(\theta,\theta^{(i)})$$是$$L(\theta)$$的一个下界，为了使$$L(\theta)$$尽可能大地增长，选择
+即$B(\theta,\theta^{(i)})$是$L(\theta)$的一个下界，为了使$L(\theta)$尽可能大地增长，选择
 $$
 \theta^{(i+1)}=\arg\max_\theta B(\theta,\theta^{(i)})
 $$
@@ -120,12 +120,12 @@ $$
 
 ## 9.2 EM算法的收敛性
 
-**定理 9.1**	设$$P(Y|\theta)$$为观测数据的似然函数，则$$P(Y|\theta^{(i)})$$是单调递增的。
+**定理 9.1**	设$P(Y|\theta)$为观测数据的似然函数，则$P(Y|\theta^{(i)})$是单调递增的。
 
-**定理 9.2**	设$$L(\theta)=\log P(Y|\theta)$$为观测数据的对数似然函数，则有
+**定理 9.2**	设$L(\theta)=\log P(Y|\theta)$为观测数据的对数似然函数，则有
 
-- 如果$$P(Y|\theta)$$有上界，则$$L(\theta^{(i)}=\log P(Y|\theta^{(i)})$$收敛到某一值。
-- 在$$Q(\theta,\theta')$$与$$L(\theta)$$满足一定条件下，由EM算法得到的参数估计序列的收敛值是$$L(\theta)$$的稳定点。
+- 如果$P(Y|\theta)$有上界，则$L(\theta^{(i)}=\log P(Y|\theta^{(i)})$收敛到某一值。
+- 在$Q(\theta,\theta')$与$L(\theta)$满足一定条件下，由EM算法得到的参数估计序列的收敛值是$L(\theta)$的稳定点。
 
 ## 9.3 EM算法在高斯混合模型学习中的应用
 
@@ -135,7 +135,7 @@ $$
 $$
 P(y|\theta)=\sum_{k=1}^K\alpha_k\phi(y|\theta_k),\quad\alpha_k\geq0,\quad\sum_{k=1}\alpha_k=1
 $$
-其中$$\phi(y|\theta_k)$$是高斯分布密度，$$\theta_k=(\mu_k,\sigma_k^2)$$，称为第k个分模型。
+其中$\phi(y|\theta_k)$是高斯分布密度，$\theta_k=(\mu_k,\sigma_k^2)$，称为第k个分模型。
 $$
 \phi(y|\theta_k)=\frac1{\sqrt{2\pi}\sigma_k}\exp(-\frac{(y-\mu_k)^2}{2\sigma_k^2})
 $$
@@ -160,7 +160,7 @@ P(y,\gamma|\theta)&=\prod_{j=1}^NP(y_j,\gamma_{j1},\gamma_{j2},\cdots,\gamma_{jK
 &=\prod_{k=1}^K\alpha_k^{n_k}\prod_{j=1}^N[\frac1{\sqrt{2\pi}\sigma_k}\exp(-\frac{(y-\mu_k)^2}{2\sigma_k^2}]^{\gamma_{jk}}
 \end{align}
 $$
-其中，$$n_k=\sum_{j=1}^N\gamma_{jk}$$，$$\sum_{k=1}^Kn_k=N$$
+其中，$n_k=\sum_{j=1}^N\gamma_{jk}$，$\sum_{k=1}^Kn_k=N$$
 
 那么对数似然函数为
 $$
@@ -177,7 +177,7 @@ Q(\theta,\theta^{(i)})&=E[\log P(y,\gamma|\theta)|y,\theta^{(i)}]\\
 \end{align}
 $$
 
-这里需要计算$$E(\gamma_{jk}|y,\theta)$$
+这里需要计算$E(\gamma_{jk}|y,\theta)$$
 
 $$
 \begin{align}
@@ -199,7 +199,7 @@ $$
 \theta^{(i+1)}=\arg\max_\theta Q(\theta,\theta^{(i)})
 $$
 
-将$$Q(\theta,\theta^{(i)})$$分别对$$\mu_k,\sigma_k^2$$求偏导数，令其为0；求$$\hat\alpha_k$$是在$$\sum_{k=1}^K\alpha_k=1$$条件下求偏导数并令其为0得到的。
+将$Q(\theta,\theta^{(i)})$分别对$\mu_k,\sigma_k^2$求偏导数，令其为0；求$\hat\alpha_k$是在$\sum_{k=1}^K\alpha_k=1$条件下求偏导数并令其为0得到的。
 
 $$
 \hat\mu_k=\frac{\sum_{j=1}^N\hat\gamma_{jk}y_j}{\sum_{j=1}^N\hat\gamma_{jk}},\quad k=1,2,\cdots,K\\

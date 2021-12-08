@@ -23,11 +23,11 @@ category:
 
 对比学习希望通过拉近语义相关的样本，拉远不相关的样本学习有效的向量表示。
 
-对于样本对集合$$D=\{(x_i,x_i^+)\}_{i=1}^m$$，假设$$({\bf h_i},{\bf h_i^+})$$为样本的向量表示，则训练的目标为：
+对于样本对集合$D=\{(x_i,x_i^+)\}_{i=1}^m$，假设$({\bf h_i},{\bf h_i^+})$为样本的向量表示，则训练的目标为：
 $$
 l_i = \log \frac {e^{ {\rm sim} ({\bf h_i},{\bf h_i^+})}/\tau} {\sum_{j=1}^N e^{ {\rm sim}( {\bf h_i},{\bf h_j})/\tau}}
 $$
-其中，$$\tau$$是一个温度超参数，$${\rm sim}({\bf h_i},{\bf h_i^+})$$为余弦相似度$$\rm\bf\frac{h_1^Th_2}{\|h_1\|·\|h2\|}$$，本文选择的backbone是BERT或RoBERTa。
+其中，$\tau$是一个温度超参数，${\rm sim}({\bf h_i},{\bf h_i^+})$为余弦相似度$\rm\bf\frac{h_1^Th_2}{\|h_1\|·\|h2\|}$，本文选择的backbone是BERT或RoBERTa。
 
 其实上述的训练目标就是交叉熵：
 $$
@@ -37,7 +37,7 @@ $$
 
 ### Positive instances
 
-对比学习的关键问题是如何构造样本对$$(x_i,x_i^+)$$，在CV中可以用裁剪、旋转等方法对图像进行数据增强，NLP中也有删词、替换、重排等方法。但对于NLP的离散结构来说，这些增强手段作用有限。本文采用了dropout作为数据增强手段，取得了更好的结果。
+对比学习的关键问题是如何构造样本对$(x_i,x_i^+)$，在CV中可以用裁剪、旋转等方法对图像进行数据增强，NLP中也有删词、替换、重排等方法。但对于NLP的离散结构来说，这些增强手段作用有限。本文采用了dropout作为数据增强手段，取得了更好的结果。
 
 本文采用了两个度量align和uniform用于衡量表示的质量。
 
@@ -63,4 +63,3 @@ $$
 在迁移任务上表现一般，说明sentence embedding并不一定有益于下游训练。
 
 <img src="SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111700869.png" alt="image-20210823111700869" style="zoom: 80%;" />
-

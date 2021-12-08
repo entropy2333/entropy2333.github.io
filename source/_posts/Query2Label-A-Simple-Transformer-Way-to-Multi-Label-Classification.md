@@ -53,9 +53,9 @@ category:
 
 <center>Query2Label的总体框架</center>
 
-给定图片$$x\in\mathbb{R}^{H_0\times W_0 \times 3}$$，提取特征$$\mathcal{F}_0 \in \mathbb{R}^{H \times W \times d_0}$$，后接全连接层并reshape得到特征$$\mathcal{F} \in \mathbb{R}^{HW \times d}$$。
+给定图片$x\in\mathbb{R}^{H_0\times W_0 \times 3}$，提取特征$\mathcal{F}_0 \in \mathbb{R}^{H \times W \times d_0}$，后接全连接层并reshape得到特征$\mathcal{F} \in \mathbb{R}^{HW \times d}$。
 
-构造label embedding$$\mathcal{Q}_0 \in \mathbb{R}^{K\times d}$$，其中$$K$$为类别数，Transformer的每一层解码层都在更新参数。
+构造label embedding$\mathcal{Q}_0 \in \mathbb{R}^{K\times d}$，其中$K$为类别数，Transformer的每一层解码层都在更新参数。
 $$
 \begin{aligned}
 &{\rm{self-attn}}:
@@ -70,7 +70,7 @@ $$
 
 在self-attention中，query、key和value都来自label embedding；而在cross-attention中，key和value变成了时序特征。
 
-在经过L层Transformer后，得到最后一层的query向量$$\mathcal{Q}_L \in \mathbb{R}^{K\times d}$$，使用全连接层+sigmoid进行分类。
+在经过L层Transformer后，得到最后一层的query向量$\mathcal{Q}_L \in \mathbb{R}^{K\times d}$，使用全连接层+sigmoid进行分类。
 $$
 p_k = \mathrm{Sigmoid}(W_k^T\mathcal{Q}_{L,k}+b_k)
 $$
@@ -85,7 +85,7 @@ $$
 	\end{cases}
 \end{align}
 $$
-在实验中选取$$\gamma+=0$$和$$\gamma-=1$$。
+在实验中选取$\gamma+=0$和$\gamma-=1$。
 
 ## Experiment
 
@@ -98,4 +98,3 @@ $$
 <img src="Query2Label-A-Simple-Transformer-Way-to-Multi-Label-Classification/image-20211010133339563.png" alt="image-20211010133339563" style="zoom:67%;" />
 
 <center>消融实验</center>
-

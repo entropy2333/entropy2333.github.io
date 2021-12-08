@@ -46,9 +46,9 @@ $$
 
 基于label co-occurrence的先验，建立label graph，随后采用一个两层的GCN进行学习。
 
-具体而言，对训练集中的所有标签对计算概率，得到转移矩阵$$\mathbf{A}^s\in R^{|C|\times|C|}$$，其中$$\mathbf{A}^s_{ij}$$表示样本属于第j类时，属于第i类的概率。
+具体而言，对训练集中的所有标签对计算概率，得到转移矩阵$\mathbf{A}^s\in R^{|C|\times|C|}$，其中$\mathbf{A}^s_{ij}$表示样本属于第j类时，属于第i类的概率。
 
-GCN以$$\mathbf{U}\in R^{|C|\times D}$$作为输入，输出$$\mathbf{H}^2\in R^{|C|\times D'}$$。
+GCN以$\mathbf{U}\in R^{|C|\times D}$作为输入，输出$\mathbf{H}^2\in R^{|C|\times D'}$。
 
 label graph基于训练集建立，可能带有噪声并形成长尾分布，本文采用了re-learning的方法处理这个问题。
 
@@ -56,7 +56,7 @@ label graph基于训练集建立，可能带有噪声并形成长尾分布，本
 $$
 \mathbf{A}^D=f((\mathbf{W}_a*\mathbf{H}^2)^{\mathbf{T}}(\mathbf{W}_b*\mathbf{H}^2))
 $$
-其中激活函数采用sigmoid，随后归一化得到最终的邻接矩阵$$\hat{\mathbf{A}}^D$$，再用一个两层的GCN学习，得到$$\mathbf{H}^4\in R^{|C|\times D'}$$。
+其中激活函数采用sigmoid，随后归一化得到最终的邻接矩阵$\hat{\mathbf{A}}^D$，再用一个两层的GCN学习，得到$\mathbf{H}^4\in R^{|C|\times D'}$。
 
 ### Multi-label Text Classification
 
@@ -73,4 +73,3 @@ $$
 <img src="Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823110708702.png" alt="image-20210823110708702" style="zoom: 50%;" />
 
 <img src="Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823110727630.png" alt="image-20210823110727630" style="zoom: 50%;" />
-

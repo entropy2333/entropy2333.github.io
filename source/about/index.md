@@ -1,10 +1,11 @@
 ---
 title: about
-date: 2020-08-06 17:06:31
+date: 2021-12-06 17:06:31
 type: "about"
 comments: false
 ---
 
-- Undergraduate, Cyber Security@SJTU
-- Onmyoji and B&S player
+- Cyber Security Postgraduate@SJTU
+- Onmyoji and Genshim player
+- Currently working on NLP & KG.
 - Life is short, I need Python.

@@ -48,7 +48,7 @@ $$
 \tilde{\alpha}_{ij} = \alpha_{ij} + \rm{att}_{ij} + b_{ij} + r_{ij}
 $$
 
-其中，$$\alpha_{ij}$$表示原来的attention，$$\rm{att}_{ij}$$计算了绝对位置的attention权重，$$b_{ij}$$则是对相对距离的计算，$$r_{ij}$$是对相对位置的缩放项。
+其中，$\alpha_{ij}$表示原来的attention，$\rm{att}_{ij}$计算了绝对位置的attention权重，$b_{ij}$则是对相对距离的计算，$r_{ij}$是对相对位置的缩放项。
 
 $$
 \rm{att}_{ij} = \frac {1} {\sqrt{2d_k}}([P_{s_i}^S;P_{e_i}^E]W^q)([P_{s_i}^S;P_{e_i}^E]W^k)^T
@@ -73,4 +73,3 @@ Segment定义为：lattice的一个连通子图，且Segment之间彼此token不
 本文在11个中文NLU任务上进行实验，包括文本分类、阅读理解、序列标注等，在MSRA-NER和CLUE数据集上进行了实验，并与RoBERTa等预训练模型进行了比较。
 
 <img src="Lattice-BERT/image-20210416201801843.png" alt="image-20210416201801843" style="zoom:80%;" />
-

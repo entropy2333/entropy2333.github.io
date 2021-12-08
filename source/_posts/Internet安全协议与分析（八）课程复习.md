@@ -55,7 +55,7 @@ $$
 - S的权威性
 
 $$
-bel(A, cont(S, skey(A, K_{ab}, B))) \\ 
+bel(A, cont(S, skey(A, K_{ab}, B))) \\
 bel(B, cont(S, skey(A, K_{ab}, B))) \\
 bel(A, cont(S, fresh(skey(A, K_{ab}, B)))
 $$
@@ -67,9 +67,9 @@ bel(A, fresh(N_a)) \\
 bel(B, fresh(N_b))
 $$
 
-### Kerberos协议中$$Ticket_v$$和认证头的结构和作用
+### Kerberos协议中$Ticket_v$和认证头的结构和作用
 
-- $$Ticket_v$$表示该用户已被AS认证
+- $Ticket_v$表示该用户已被AS认证
 - 验证头用于验证ticket有效
 
 ### 安全协议中Nonce和时戳的作用和区别
@@ -100,4 +100,3 @@ $$
     - 使用签名密钥ID作为索引获取公钥
     - 恢复消息摘要
     - 计算消息摘要并和传输版本比较认证
-
