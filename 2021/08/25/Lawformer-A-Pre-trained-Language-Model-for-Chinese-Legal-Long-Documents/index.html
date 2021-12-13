@@ -4,7 +4,7 @@
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.0.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -54,11 +54,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -156,7 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Contribution"><span class="nav-number">2.1.</span> <span class="nav-text">Contribution</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Approach"><span class="nav-number">3.</span> <span class="nav-text">Approach</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Processing"><span class="nav-number">3.1.</span> <span class="nav-text">Data Processing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pre-training-Details"><span class="nav-number">3.2.</span> <span class="nav-text">Pre-training Details</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#contribution"><span class="nav-number">2.1.</span> <span class="nav-text">Contribution</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#approach"><span class="nav-number">3.</span> <span class="nav-text">Approach</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#data-processing"><span class="nav-number">3.1.</span> <span class="nav-text">Data Processing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pre-training-details"><span class="nav-number">3.2.</span> <span class="nav-text">Pre-training Details</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -199,7 +195,7 @@
 
 
   <div class="links-of-blogroll site-overview-item animated">
-    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
       Links
     </div>
     <ul class="links-of-blogroll-list">
@@ -320,37 +316,44 @@
     <div class="post-body" itemprop="articleBody">
         <p>来自清华刘知远老师组，release了针对法律长文件的预训练语言模型。</p>
 <p><img src="/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/image-20210825160718281.png" alt="image-20210825160718281" style="zoom: 67%;"></p>
-<span id="more"></span>
-<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
-<li>code: <a target="_blank" rel="noopener" href="https://github.com/thunlp/LegalPLMs">https://github.com/thunlp/LegalPLMs</a></li>
-<li>arxiv: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2105.03887v1.pdf">https://arxiv.org/pdf/2105.03887v1.pdf</a></li>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<ul>
+<li>code: https://github.com/thunlp/LegalPLMs</li>
+<li>arxiv: https://arxiv.org/pdf/2105.03887v1.pdf</li>
 </ul>
-<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>法律领域有许多长文件，刑事案件的平均长度为1260.2，远远超过了主流预训练模型的最大长度（BERT、RoBerta等）。如果对于这样长的序列采用注意力机制，会带来很大的计算复杂度，也很容易爆显存。</p>
+<h2 id="background">Background</h2>
+<p>法律领域有许多长文件，刑事案件的平均长度为1260.2，远远超过了主流预训练模型的最大长度（BERT、RoBerta等）。如果对于这样长的序列采用注意力机制，会带来很大的计算复杂度，也很容易爆显存。</p>
 <p>本文提出了Lawformer模型，在大规模的中文法律长文本上预训练得到。Lawformer基于Longformer，可以处理上千个token。并且Lawformer并没有采用标准的self-attention，而是结合局部滑窗和全局attention机制来捕获长程依赖。</p>
-<h3 id="Contribution"><a href="#Contribution" class="headerlink" title="Contribution"></a>Contribution</h3><ul>
+<h3 id="contribution">Contribution</h3>
+<ul>
 <li>发布了第一个中文法律预训练模型Lawformer，可以处理上千个字符的法律长文本。</li>
 <li>在典型的LegalAI任务上评估了Lawformer，并为刑事和民事案件提出了一个新的法律诉讼判决数据集。</li>
 <li>大量实验结果表明，Lawformer在长文本任务上能取得很好的表现。对于短文本，在法律领域也可以媲美RoBerta。</li>
 </ul>
-<h2 id="Approach"><a href="#Approach" class="headerlink" title="Approach"></a>Approach</h2><p>采用Longformer作为编码器，其结合了三种注意力机制来编码长序列：</p>
+<h2 id="approach">Approach</h2>
+<p>采用Longformer作为编码器，其结合了三种注意力机制来编码长序列：</p>
 <ul>
-<li>Sliding Window attention<ul>
+<li>Sliding Window attention
+<ul>
 <li>每个token只计算周围w/2的的attention，随着层数增加，全局信息也可以被整合进隐层表示。</li>
-</ul>
-</li>
-<li>Dilated Sliding Window Attention<ul>
+</ul></li>
+<li>Dilated Sliding Window Attention
+<ul>
 <li>类似于dilated CNN，窗口增大但之间有间隔。在多头注意力中，间隔可以不同，可以促进模型性能。</li>
-</ul>
-</li>
-<li>Global Attention<ul>
+</ul></li>
+<li>Global Attention
+<ul>
 <li>对于选定的token，关注整个序列产生隐层表示。</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h3 id="Data-Processing"><a href="#Data-Processing" class="headerlink" title="Data Processing"></a>Data Processing</h3><p>从中国裁判文书网上搜集了千万份的法律文书，只保留了刑事和民事案件。将每份文书分为四个部分：当事人信息、事实描述、法院意见和判决结果，只保留了事实描述长于50的文书。</p>
+<h3 id="data-processing">Data Processing</h3>
+<p>从中国裁判文书网上搜集了千万份的法律文书，只保留了刑事和民事案件。将每份文书分为四个部分：当事人信息、事实描述、法院意见和判决结果，只保留了事实描述长于50的文书。</p>
 <p><img src="/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/image-20210825161233449.png" alt="image-20210825161233449" style="zoom: 80%;"></p>
-<h3 id="Pre-training-Details"><a href="#Pre-training-Details" class="headerlink" title="Pre-training Details"></a>Pre-training Details</h3><p>基于RoBERTa-wwm-ext的checkpoint训练，以MLM为任务。学习率为5e-5，序列长度4096，batch_size为32。为充分利用长序列，将一些短文书拼接。优化器为Adam，模型采用8块32G V100训练。</p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>选了BERT、RoBERTa和Legal-RoBERTa作为基线，在多个法律任务上进行比较，包括判决预测、案例检索、阅读理解和问答。</p>
+<h3 id="pre-training-details">Pre-training Details</h3>
+<p>基于RoBERTa-wwm-ext的checkpoint训练，以MLM为任务。学习率为5e-5，序列长度4096，batch_size为32。为充分利用长序列，将一些短文书拼接。优化器为Adam，模型采用8块32G V100训练。</p>
+<h2 id="experiment">Experiment</h2>
+<p>选了BERT、RoBERTa和Legal-RoBERTa作为基线，在多个法律任务上进行比较，包括判决预测、案例检索、阅读理解和问答。</p>
 
     </div>
 
@@ -367,10 +370,10 @@
       <div class="popular-posts-title"><a href="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/" rel="bookmark">K-BERT: Enabling Language Representation with Knowledge Graph</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/" rel="bookmark">Label-Specific Dual Graph Neural Network for Multi-Label Text Classification</a></div>
+      <div class="popular-posts-title"><a href="/2021/04/16/Lattice-BERT/" rel="bookmark">Lattice-BERT</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/04/16/Lattice-BERT/" rel="bookmark">Lattice-BERT</a></div>
+      <div class="popular-posts-title"><a href="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/" rel="bookmark">Label-Specific Dual Graph Neural Network for Multi-Label Text Classification</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/" rel="bookmark">NLP From Scratch Without Large-Scale Pretraining: A Simple and Efficient Framework</a></div>
@@ -458,7 +461,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">90k</span>
+    <span title="站点总字数">100k</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -501,8 +504,25 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
-<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
+<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
 

@@ -4,7 +4,7 @@
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.0.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -57,11 +57,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -159,7 +155,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Method"><span class="nav-number">3.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Notation"><span class="nav-number">3.1.</span> <span class="nav-text">Notation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Positional-Encoding"><span class="nav-number">3.2.</span> <span class="nav-text">Positional Encoding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Definition-of-Initial-PE"><span class="nav-number">3.3.</span> <span class="nav-text">Definition of Initial PE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Positional-Loss"><span class="nav-number">3.4.</span> <span class="nav-text">Positional Loss</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method"><span class="nav-number">3.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#notation"><span class="nav-number">3.1.</span> <span class="nav-text">Notation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#positional-encoding"><span class="nav-number">3.2.</span> <span class="nav-text">Positional Encoding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#definition-of-initial-pe"><span class="nav-number">3.3.</span> <span class="nav-text">Definition of Initial PE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#positional-loss"><span class="nav-number">3.4.</span> <span class="nav-text">Positional Loss</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -202,7 +198,7 @@
 
 
   <div class="links-of-blogroll site-overview-item animated">
-    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
       Links
     </div>
     <ul class="links-of-blogroll-list">
@@ -310,7 +306,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.4k</span>
+      <span>3.5k</span>
     </span>
 </div>
 
@@ -323,38 +319,38 @@
     <div class="post-body" itemprop="articleBody">
         <p>来自Bengio组，在GNN上引入位置编码，提出了一种新的框架LSPE，在分子数据集上的性能提升了2.87%至64.14%。</p>
 <p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211117124217530.png" alt="image-20211117124217530" style="zoom:67%;"></p>
-<span id="more"></span>
-<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211117123851516.png" alt="image-20211117123851516" style="zoom: 50%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211117123851516.png" alt="image-20211117123851516" style="zoom: 50%;"></p>
 <ul>
-<li><p>arxiv: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2110.07875v1.pdf">https://arxiv.org/pdf/2110.07875v1.pdf</a></p>
-</li>
-<li><p>code: <a target="_blank" rel="noopener" href="https://github.com/vijaydwivedi75/gnn-lspe">https://github.com/vijaydwivedi75/gnn-lspe</a></p>
-</li>
+<li><p>arxiv: https://arxiv.org/pdf/2110.07875v1.pdf</p></li>
+<li><p>code: https://github.com/vijaydwivedi75/gnn-lspe</p></li>
 </ul>
-<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>GNN大多是基于消息传递机制，通过聚合邻居的信息构建节点表示，但这也带来了一定的局限性。每个节点的表示只依赖于一小块local结构，而没有考虑到节点的位置信息。比如图中两个节点有着相同的1-hop邻居，但2-hop或高阶邻居都不甚相同，此时GNN不能区分两个节点。面对这种局限性，可以有三种方法：</p>
-<ol>
-<li><p>堆叠多层网络，因为过平滑现象可能难以适用长距离的节点；</p>
-</li>
-<li><p>采用高阶的GNN，增加了计算代价；</p>
-</li>
-<li><p>考虑节点的位置编码。</p>
-</li>
+<h2 id="background">Background</h2>
+<p>GNN大多是基于消息传递机制，通过聚合邻居的信息构建节点表示，但这也带来了一定的局限性。每个节点的表示只依赖于一小块local结构，而没有考虑到节点的位置信息。比如图中两个节点有着相同的1-hop邻居，但2-hop或高阶邻居都不甚相同，此时GNN不能区分两个节点。面对这种局限性，可以有三种方法：</p>
+<ol type="1">
+<li><p>堆叠多层网络，因为过平滑现象可能难以适用长距离的节点；</p></li>
+<li><p>采用高阶的GNN，增加了计算代价；</p></li>
+<li><p>考虑节点的位置编码。</p></li>
 </ol>
 <p>本文希望设计一种可学习的位置编码与GNN结合，从而可以提升GNN的节点表示能力，同时保持线性的计算复杂度便于大规模应用。</p>
-<h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><h3 id="Notation"><a href="#Notation" class="headerlink" title="Notation"></a>Notation</h3><p>假设图为$\mathcal{G} = (\mathcal(V), \mathcal{E})$，其中$n = \lvert \mathcal{V} \rvert$表示节点数，$E=\lvert \mathcal{E} \rvert$表示边数。$A\in\mathbb{R}^{n\times n}$为邻接矩阵，$A<em>{ij} = 1$表示两个节点有边相连，否则$A</em>{ij} = 0$，$D\in\mathbb{R}^{n\times n}$表示节点的度矩阵。$h<em>i$和$p_i$分别表示节点$i$的表示和位置编码，$e</em>{ij}$表示节点$i$和节点$j$相连的边的特征。</p>
-<p>GNN模型一般有三个主要部分：嵌入层、堆叠的卷积层以及最后基于任务的层，用上标$l$表示层数，标准的MP-GNN参数更新公式如下：</p>
-<script type="math/tex; mode=display">
+<h2 id="method">Method</h2>
+<h3 id="notation">Notation</h3>
+<p>假设图为<span class="math inline">\(\mathcal{G} = (\mathcal(V), \mathcal{E})\)</span>，其中<span class="math inline">\(n = \lvert \mathcal{V} \rvert\)</span>表示节点数，<span class="math inline">\(E=\lvert \mathcal{E} \rvert\)</span>表示边数。<span class="math inline">\(A\in\mathbb{R}^{n\times n}\)</span>为邻接矩阵，<span class="math inline">\(A_{ij} = 1\)</span>表示两个节点有边相连，否则<span class="math inline">\(A_{ij} = 0\)</span>，<span class="math inline">\(D\in\mathbb{R}^{n\times n}\)</span>表示节点的度矩阵。<span class="math inline">\(h_i\)</span>和<span class="math inline">\(p_i\)</span>分别表示节点<span class="math inline">\(i\)</span>的表示和位置编码，<span class="math inline">\(e_{ij}\)</span>表示节点<span class="math inline">\(i\)</span>和节点<span class="math inline">\(j\)</span>相连的边的特征。</p>
+<p>GNN模型一般有三个主要部分：嵌入层、堆叠的卷积层以及最后基于任务的层，用上标<span class="math inline">\(l\)</span>表示层数，标准的MP-GNN参数更新公式如下： <span class="math display">\[
 \begin{align}
 \text{MP-GNNs}: \quad
-    h_i^{l+1} &= f_h(h_i^{l}, \{h_j^{l}\}_{j\in\mathcal{N}_i}, e_{ij}^l),
+    h_i^{l+1} &amp;= f_h(h_i^{l}, \{h_j^{l}\}_{j\in\mathcal{N}_i}, e_{ij}^l),
     \ h_i^{l+1}, h_i^{l}\in \mathbb{R}^d, \tag{1} \label{eq1}\\
-    e_{ij}^{l+1} &= f_e(h_i^{l}, h_j^{l}, e_{ij}^l),
+    e_{ij}^{l+1} &amp;= f_e(h_i^{l}, h_j^{l}, e_{ij}^l),
     \ e_{ij}^{l+1}, e_{ij}^{l}\in \mathbb{R}^d \tag{2}
-\end{align}</script><p>其中$f_h$和$f_e$表示有可学习参数的函数，$\mathcal{N}_i$表示节点$i$的邻居。Transformer也被认为是MP-GNNs的一种特例，考虑全连通图，将$\eqref{eq1}$中的边特征丢弃，简化形式即为Transformer。</p>
-<h3 id="Positional-Encoding"><a href="#Positional-Encoding" class="headerlink" title="Positional Encoding"></a>Positional Encoding</h3><p>现有MP-GNN中融合位置信息往往是通过拼接的方式：</p>
-<script type="math/tex; mode=display">
+\end{align}
+\]</span></p>
+<p>其中<span class="math inline">\(f_h\)</span>和<span class="math inline">\(f_e\)</span>表示有可学习参数的函数，<span class="math inline">\(\mathcal{N}_i\)</span>表示节点<span class="math inline">\(i\)</span>的邻居。Transformer也被认为是MP-GNNs的一种特例，考虑全连通图，将<span class="math inline">\(\eqref{eq1}\)</span>中的边特征丢弃，简化形式即为Transformer。</p>
+<h3 id="positional-encoding">Positional Encoding</h3>
+<p>现有MP-GNN中融合位置信息往往是通过拼接的方式： <span class="math display">\[
 \begin{align}
-    h_i^{\mathcal{l}=0} &=
+    h_i^{\mathcal{l}=0} &amp;=
     \mathrm{LL}_h{
     \begin{bmatrix}
         {h_i^{\mathrm{in}} \\ p_i^{in}}
@@ -364,14 +360,14 @@
         {h_i^{\mathrm{in}} \\ p_i^{in}}
     \end{bmatrix}}
     +d^0\in\mathbb{R}^d,\tag{3} \\
-    e_{ij}^{l=0} &= \mathrm{LL}(e_{ij}^{\mathrm{in}})
+    e_{ij}^{l=0} &amp;= \mathrm{LL}(e_{ij}^{\mathrm{in}})
     = B^0e_{ij}^{\mathrm{in}}+b^0\in\mathbb{R}^d \tag{4}
-\end{align}</script><p>其中$p_i^\mathrm{in}\in\mathbb{R}^k$表示输入节点的位置编码，$D^0\in\mathbb{R}^{d\times(d_v+k)}$和$d_0\in\mathbb{R}^d$表示全连接层的参数。这种方法融合了位置表示和结构化表示，同时保持了线性的计算复杂度，但是不能动态改变位置表示以更好地适应当前任务。</p>
-<p>针对上述问题，本文将位置信息与结构信息分离，两种表示可以分别学习，这种框架称为可学习的结构和位置编码（<strong>L</strong>earnable <strong>S</strong>tructural and <strong>P</strong>ositional <strong>E</strong>ncodings，<strong>LSPE</strong>）。</p>
-<script type="math/tex; mode=display">
+\end{align}
+\]</span> 其中<span class="math inline">\(p_i^\mathrm{in}\in\mathbb{R}^k\)</span>表示输入节点的位置编码，<span class="math inline">\(D^0\in\mathbb{R}^{d\times(d_v+k)}\)</span>和<span class="math inline">\(d_0\in\mathbb{R}^d\)</span>表示全连接层的参数。这种方法融合了位置表示和结构化表示，同时保持了线性的计算复杂度，但是不能动态改变位置表示以更好地适应当前任务。</p>
+<p>针对上述问题，本文将位置信息与结构信息分离，两种表示可以分别学习，这种框架称为可学习的结构和位置编码（<strong>L</strong>earnable <strong>S</strong>tructural and <strong>P</strong>ositional <strong>E</strong>ncodings，<strong>LSPE</strong>）。 <span class="math display">\[
 \begin{align}
 \text{MP-GNNs-LSPE}: \quad
-    h_i^{l+1} &= f_h\left(
+    h_i^{l+1} &amp;= f_h\left(
     \begin{bmatrix}
         h_i^{l} \\ p_i^l
     \end{bmatrix},
@@ -381,25 +377,30 @@
         \end{bmatrix}
     \right\}_{j\in\mathcal{N}_i}, e_{ij}^l\right),
     \ h_i^{l+1}, h_i^{l}\in \mathbb{R}^d, \tag{5} \label{eq2} \\
-    e_{ij}^{l+1} &= f_e(h_i^{l}, h_j^{l}, e_{ij}^l),
+    e_{ij}^{l+1} &amp;= f_e(h_i^{l}, h_j^{l}, e_{ij}^l),
     \ e_{ij}^{l+1}, e_{ij}^{l}\in \mathbb{R}^d \tag{6} \\
-    p_i^{l+1} &= f_p(p_i^l, \{p_j^{l}\}_{j\in\mathcal{N}_i}, e_{ij}^l),\ p_i^{l+1},p_i^l\in\mathbb{R}^d, \tag{7}
-\end{align}</script><h3 id="Definition-of-Initial-PE"><a href="#Definition-of-Initial-PE" class="headerlink" title="Definition of Initial PE"></a>Definition of Initial PE</h3><p>初始位置编码的选择很重要，本文比较了两种编码：Laplacian PE（LapPE）和Random Walk PE（RWPE）。LapPE为每个节点提供了唯一表示，并且是距离敏感的，但是受限于符号不明确，在训练过程中需要随机翻转符号。</p>
-<p>本文提出了RWPE编码，定义如下：</p>
-<script type="math/tex; mode=display">
-p_i^{\mathrm{RWPE}} = [\mathrm{RW}_{ii}, \mathrm{RW}_{ii}^2, \cdots,\mathrm{RW}_{ii}^k]\in\mathbb{R}^k\tag{8}</script><p>其中$\mathrm{RW}=AD^{-1}$，本文没有使用完整的随机游走矩阵${R_{ij}}$，而是只考虑了节点自身的随机游走矩阵，降低了计算复杂度。RWPE编码没有LapPE的符号不明确问题，不需要随机额外的invariance，同时也提供了唯一的节点表示，在节点有一个独特的k-hop拓扑邻居时。</p>
-<h3 id="Positional-Loss"><a href="#Positional-Loss" class="headerlink" title="Positional Loss"></a>Positional Loss</h3><p>因为本文分离了位置信息，因此可以考虑设计位置编码loss以强迫其学习图的拓扑结构，本文采用的是Laplacian eigenvector loss。</p>
-<script type="math/tex; mode=display">
+    p_i^{l+1} &amp;= f_p(p_i^l, \{p_j^{l}\}_{j\in\mathcal{N}_i}, e_{ij}^l),\ p_i^{l+1},p_i^l\in\mathbb{R}^d, \tag{7}
+\end{align}
+\]</span></p>
+<h3 id="definition-of-initial-pe">Definition of Initial PE</h3>
+<p>初始位置编码的选择很重要，本文比较了两种编码：Laplacian PE（LapPE）和Random Walk PE（RWPE）。LapPE为每个节点提供了唯一表示，并且是距离敏感的，但是受限于符号不明确，在训练过程中需要随机翻转符号。</p>
+<p>本文提出了RWPE编码，定义如下： <span class="math display">\[
+p_i^{\mathrm{RWPE}} = [\mathrm{RW}_{ii}, \mathrm{RW}_{ii}^2, \cdots,\mathrm{RW}_{ii}^k]\in\mathbb{R}^k\tag{8}
+\]</span> 其中<span class="math inline">\(\mathrm{RW}=AD^{-1}\)</span>，本文没有使用完整的随机游走矩阵<span class="math inline">\({R_{ij}}\)</span>，而是只考虑了节点自身的随机游走矩阵，降低了计算复杂度。RWPE编码没有LapPE的符号不明确问题，不需要随机额外的invariance，同时也提供了唯一的节点表示，在节点有一个独特的k-hop拓扑邻居时。</p>
+<h3 id="positional-loss">Positional Loss</h3>
+<p>因为本文分离了位置信息，因此可以考虑设计位置编码loss以强迫其学习图的拓扑结构，本文采用的是Laplacian eigenvector loss。 <span class="math display">\[
 \begin{align}
-    \text{Loss} &= \text{Loss}_{\text{Task}}\left(
+    \text{Loss} &amp;= \text{Loss}_{\text{Task}}\left(
         \begin{bmatrix}
             h^{l=L} \\ p^{l=L}
         \end{bmatrix}
     \right)
          + \alpha\ \text{Loss}_{\text{LapEig}}(p^{l=L}) \tag{9} \\
-     \text{Loss}_{\text{LapEig}}(p) &= \frac{1}{k}\text{trace}(p^T\Delta p) + \frac{\lambda}{k} \lVert p^Tp-\mathrm{I}_k \rVert^2_F \tag{10}
-\end{align}</script><p>其中$h^{l=L}\in\mathbb{R}^{n\times d}$，$p^{l=L}\in\mathbb{R}^{n\times k}$，$\lVert \cdot \rVert_F$表示Frobenius范数，定义为矩阵各项元素平方和的平方根。此外注意到，本文限制位置向量的均值为0范数为1，以更好地近似Laplacian eigenvector loss。</p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>在三个数据集ZINC、OGBG-MOLTOX21和OGBG-MOLPCBA上进行了实验，在不使用PE时图网络很难取得好的表现。</p>
+     \text{Loss}_{\text{LapEig}}(p) &amp;= \frac{1}{k}\text{trace}(p^T\Delta p) + \frac{\lambda}{k} \lVert p^Tp-\mathrm{I}_k \rVert^2_F \tag{10}
+\end{align}
+\]</span> 其中<span class="math inline">\(h^{l=L}\in\mathbb{R}^{n\times d}\)</span>，<span class="math inline">\(p^{l=L}\in\mathbb{R}^{n\times k}\)</span>，<span class="math inline">\(\lVert \cdot \rVert_F\)</span>表示Frobenius范数，定义为矩阵各项元素平方和的平方根。此外注意到，本文限制位置向量的均值为0范数为1，以更好地近似Laplacian eigenvector loss。</p>
+<h2 id="experiment">Experiment</h2>
+<p>在三个数据集ZINC、OGBG-MOLTOX21和OGBG-MOLPCBA上进行了实验，在不使用PE时图网络很难取得好的表现。</p>
 <p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211120142523504.png" alt="image-20211120142523504" style="zoom:67%;"></p>
 <p>本文也比较了稀疏GNN和Transformer GNN类的方法，稀疏GNN在LSPE的加持下取得了更好的结果，尽管Transformer GNN理论上可以更好地克服长距依赖的局限性。</p>
 <p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211120143016350.png" alt="image-20211120143016350" style="zoom:67%;"></p>
@@ -494,7 +495,7 @@ p_i^{\mathrm{RWPE}} = [\mathrm{RW}_{ii}, \mathrm{RW}_{ii}^2, \cdots,\mathrm{RW}_
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">90k</span>
+    <span title="站点总字数">100k</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -537,8 +538,25 @@ p_i^{\mathrm{RWPE}} = [\mathrm{RW}_{ii}, \mathrm{RW}_{ii}^2, \cdots,\mathrm{RW}_
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
-<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
+<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
 

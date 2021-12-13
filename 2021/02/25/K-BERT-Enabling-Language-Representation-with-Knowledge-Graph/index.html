@@ -4,7 +4,7 @@
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.0.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -56,11 +56,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -201,7 +197,7 @@
 
 
   <div class="links-of-blogroll site-overview-item animated">
-    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
       Links
     </div>
     <ul class="links-of-blogroll-list">
@@ -309,7 +305,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>570</span>
+      <span>593</span>
     </span>
 </div>
 
@@ -321,12 +317,14 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>介绍K-BERT模型（AAAI 2020）</p>
-<span id="more"></span>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
-<li>arxiv：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1909.07606v1">https://arxiv.org/abs/1909.07606v1</a></li>
-<li>code：<a target="_blank" rel="noopener" href="https://github.com/autoliuweijie/K-BERT">https://github.com/autoliuweijie/K-BERT</a></li>
+<a id="more"></a>
+<h2 id="概述">概述</h2>
+<ul>
+<li>arxiv：https://arxiv.org/abs/1909.07606v1</li>
+<li>code：https://github.com/autoliuweijie/K-BERT</li>
 </ul>
-<h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
+<h2 id="细节">细节</h2>
+<p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
 <p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003741712.png" alt="image-20210225003741712" style="zoom:67%;"></p>
 <p>具体来说，算法分为以下几步。</p>
 <ul>
@@ -336,11 +334,14 @@
 <li>计算实体位置，得到位置编码，也即论文中的soft-position index。</li>
 <li>计算可见矩阵，控制每个词受哪些词影响（如Cook不会被Beijing关联的China影响）。</li>
 </ul>
-<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"></p>
+<figure>
+<img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"><figcaption aria-hidden="true">image-20210225003844098</figcaption>
+</figure>
 <p>K-BERT并不算预训练模型，嵌入层依旧是使用的BERT模型，应该算基于BERT的fine-tuning网络，可以用于分类和序列标注。同时，K-BERT也可以加载其他BERT类模型，如ERNIE、RoBERTa等。</p>
 <p>创新点在于使用可见矩阵控制了Self-Attention的计算（如下图）。</p>
 <p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225005229317.png" alt="image-20210225005229317" style="zoom: 67%;"></p>
-<h2 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h2><ul>
+<h2 id="不足">不足</h2>
+<ul>
 <li>模型的鲁棒性受限于知识图谱的质量，取自于开放领域图谱中的信息，其实BERT通过大语料学习也能获得，可以考虑特定领域的知识。</li>
 <li>关联的三元组没有筛选，一词多义会引入错误的实体关联。</li>
 <li>对于非知识驱动的任务，引入知识反而会效果下降。</li>
@@ -358,10 +359,10 @@
       <div class="popular-posts-title"><a href="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/" rel="bookmark">Entity Enhanced BERT Pre-training for Chinese NER</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/" rel="bookmark">Label-Specific Dual Graph Neural Network for Multi-Label Text Classification</a></div>
+      <div class="popular-posts-title"><a href="/2021/04/16/Lattice-BERT/" rel="bookmark">Lattice-BERT</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/04/16/Lattice-BERT/" rel="bookmark">Lattice-BERT</a></div>
+      <div class="popular-posts-title"><a href="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/" rel="bookmark">Label-Specific Dual Graph Neural Network for Multi-Label Text Classification</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/" rel="bookmark">Lawformer: A Pre-trained Language Model for Chinese Legal Long Documents</a></div>
@@ -453,7 +454,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">90k</span>
+    <span title="站点总字数">100k</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -496,8 +497,25 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
-<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
+<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
 

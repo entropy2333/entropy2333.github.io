@@ -4,7 +4,7 @@
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.0.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -50,11 +50,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -152,7 +148,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA"><span class="nav-number">1.</span> <span class="nav-text">RSA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#El-Gamal"><span class="nav-number">2.</span> <span class="nav-text">El Gamal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DSA"><span class="nav-number">3.</span> <span class="nav-text">DSA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HMAC"><span class="nav-number">4.</span> <span class="nav-text">HMAC</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#rsa"><span class="nav-number">1.</span> <span class="nav-text">RSA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#el-gamal"><span class="nav-number">2.</span> <span class="nav-text">El Gamal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dsa"><span class="nav-number">3.</span> <span class="nav-text">DSA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hmac"><span class="nav-number">4.</span> <span class="nav-text">HMAC</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -195,7 +191,7 @@
 
 
   <div class="links-of-blogroll site-overview-item animated">
-    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
       Links
     </div>
     <ul class="links-of-blogroll-list">
@@ -303,7 +299,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>279</span>
+      <span>303</span>
     </span>
 </div>
 
@@ -315,20 +311,28 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>介绍数字签名。</p>
-<span id="more"></span>
-<h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><script type="math/tex; mode=display">
+<a id="more"></a>
+<h2 id="rsa">RSA</h2>
+<p><span class="math display">\[
 h = H(M) \\
 S = h^d\bmod N \\
-S^e = (h^e)^d = h\bmod N</script><h2 id="El-Gamal"><a href="#El-Gamal" class="headerlink" title="El Gamal"></a>El Gamal</h2><p>选择随机数k，满足$gck(k,\ p-1)=1$，计算密钥</p>
-<script type="math/tex; mode=display">
-K = a^k\bmod p</script><p>用Euclidean扩展算法求解S</p>
-<script type="math/tex; mode=display">
-M = x\cdot K + k\cdot S\bmod(p-1)</script><p>也即</p>
-<script type="math/tex; mode=display">
-S = k^{-1}(M-x\cdot K)\bmod(p-1)</script><p>签名就是$(M,K,S)$$</p>
-<script type="math/tex; mode=display">
-y^K\cdot K^S = (a^x)^K\cdot (a^k)^{k^{-1}(M-x\cdot K)} = a^M \bmod p</script><h2 id="DSA"><a href="#DSA" class="headerlink" title="DSA"></a>DSA</h2><p>基于离散对数，生成320bit签名。</p>
-<h2 id="HMAC"><a href="#HMAC" class="headerlink" title="HMAC"></a>HMAC</h2><p>带密钥的HASH。</p>
+S^e = (h^e)^d = h\bmod N
+\]</span></p>
+<h2 id="el-gamal">El Gamal</h2>
+<p>选择随机数k，满足<span class="math inline">\(gck(k,\ p-1)=1\)</span>，计算密钥 <span class="math display">\[
+K = a^k\bmod p
+\]</span></p>
+<p>用Euclidean扩展算法求解S <span class="math display">\[
+M = x\cdot K + k\cdot S\bmod(p-1)
+\]</span> 也即 <span class="math display">\[
+S = k^{-1}(M-x\cdot K)\bmod(p-1)
+\]</span> 签名就是<span class="math inline">\((M,K,S)\)</span>$ <span class="math display">\[
+y^K\cdot K^S = (a^x)^K\cdot (a^k)^{k^{-1}(M-x\cdot K)} = a^M \bmod p
+\]</span></p>
+<h2 id="dsa">DSA</h2>
+<p>基于离散对数，生成320bit签名。</p>
+<h2 id="hmac">HMAC</h2>
+<p>带密钥的HASH。</p>
 
     </div>
 
@@ -423,7 +427,7 @@ y^K\cdot K^S = (a^x)^K\cdot (a^k)^{k^{-1}(M-x\cdot K)} = a^M \bmod p</script><h2
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">90k</span>
+    <span title="站点总字数">100k</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -466,8 +470,25 @@ y^K\cdot K^S = (a^x)^K\cdot (a^k)^{k^{-1}(M-x\cdot K)} = a^M \bmod p</script><h2
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
-<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
+<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
 

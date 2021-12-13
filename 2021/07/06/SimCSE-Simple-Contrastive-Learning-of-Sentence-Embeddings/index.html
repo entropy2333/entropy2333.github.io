@@ -4,7 +4,7 @@
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.0.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -56,11 +56,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -158,7 +154,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Background-Contrastive-Learning"><span class="nav-number">2.</span> <span class="nav-text">Background: Contrastive Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Positive-instances"><span class="nav-number">2.1.</span> <span class="nav-text">Positive instances</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">3.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#background-contrastive-learning"><span class="nav-number">2.</span> <span class="nav-text">Background: Contrastive Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#positive-instances"><span class="nav-number">2.1.</span> <span class="nav-text">Positive instances</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experiment"><span class="nav-number">3.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -201,7 +197,7 @@
 
 
   <div class="links-of-blogroll site-overview-item animated">
-    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
       Links
     </div>
     <ul class="links-of-blogroll-list">
@@ -309,7 +305,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.1k</span>
+      <span>1.2k</span>
     </span>
 </div>
 
@@ -320,29 +316,35 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>来自陈丹琦（<a target="_blank" rel="noopener" href="https://github.com/danqi">https://github.com/danqi</a>）组的文章，利用Dropout作为数据增强，进行对比学习得到句子向量表示，在无监督和有监督的语义表示上刷新SOTA。</p>
+        <p>来自陈丹琦（<a target="_blank" rel="noopener" href="https://github.com/danqi" class="uri">https://github.com/danqi</a>）组的文章，利用Dropout作为数据增强，进行对比学习得到句子向量表示，在无监督和有监督的语义表示上刷新SOTA。</p>
 <p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210706175923388.png" alt="image-20210706175923388" style="zoom: 80%;"></p>
-<span id="more"></span>
-<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
-<li>Arxiv: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2104.08821v1.pdf">https://arxiv.org/pdf/2104.08821v1.pdf</a></li>
-<li>Code: <a target="_blank" rel="noopener" href="https://github.com/princeton-nlp/SimCSE">https://github.com/princeton-nlp/SimCSE</a></li>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<ul>
+<li>Arxiv: https://arxiv.org/pdf/2104.08821v1.pdf</li>
+<li>Code: https://github.com/princeton-nlp/SimCSE</li>
 </ul>
-<h2 id="Background-Contrastive-Learning"><a href="#Background-Contrastive-Learning" class="headerlink" title="Background: Contrastive Learning"></a>Background: Contrastive Learning</h2><p>对比学习希望通过拉近语义相关的样本，拉远不相关的样本学习有效的向量表示。</p>
-<p>对于样本对集合$D={(x<em>i,x_i^+)}</em>{i=1}^m$，假设$({\bf h_i},{\bf h_i^+})$为样本的向量表示，则训练的目标为：</p>
-<script type="math/tex; mode=display">
-l_i = \log \frac {e^{ {\rm sim} ({\bf h_i},{\bf h_i^+})}/\tau} {\sum_{j=1}^N e^{ {\rm sim}( {\bf h_i},{\bf h_j})/\tau}}</script><p>其中，$\tau$是一个温度超参数，${\rm sim}({\bf h_i},{\bf h_i^+})$为余弦相似度$\rm\bf\frac{h_1^Th_2}{|h_1|·|h2|}$，本文选择的backbone是BERT或RoBERTa。</p>
-<p>其实上述的训练目标就是交叉熵：</p>
-<script type="math/tex; mode=display">
+<h2 id="background-contrastive-learning">Background: Contrastive Learning</h2>
+<p>对比学习希望通过拉近语义相关的样本，拉远不相关的样本学习有效的向量表示。</p>
+<p>对于样本对集合<span class="math inline">\(D=\{(x_i,x_i^+)\}_{i=1}^m\)</span>，假设<span class="math inline">\(({\bf h_i},{\bf h_i^+})\)</span>为样本的向量表示，则训练的目标为： <span class="math display">\[
+l_i = \log \frac {e^{ {\rm sim} ({\bf h_i},{\bf h_i^+})}/\tau} {\sum_{j=1}^N e^{ {\rm sim}( {\bf h_i},{\bf h_j})/\tau}}
+\]</span> 其中，<span class="math inline">\(\tau\)</span>是一个温度超参数，<span class="math inline">\({\rm sim}({\bf h_i},{\bf h_i^+})\)</span>为余弦相似度<span class="math inline">\(\rm\bf\frac{h_1^Th_2}{\|h_1\|·\|h2\|}\)</span>，本文选择的backbone是BERT或RoBERTa。</p>
+<p>其实上述的训练目标就是交叉熵： <span class="math display">\[
 {\rm let}\ z_{i,j} = {\rm sim} ({\bf h_i},{\bf h_j}) \\
-{\rm then}\ loss_i = -\sum_{j=1}^N y_{j}\log z_{i, j}</script><h3 id="Positive-instances"><a href="#Positive-instances" class="headerlink" title="Positive instances"></a>Positive instances</h3><p>对比学习的关键问题是如何构造样本对$(x_i,x_i^+)$，在CV中可以用裁剪、旋转等方法对图像进行数据增强，NLP中也有删词、替换、重排等方法。但对于NLP的离散结构来说，这些增强手段作用有限。本文采用了dropout作为数据增强手段，取得了更好的结果。</p>
+{\rm then}\ loss_i = -\sum_{j=1}^N y_{j}\log z_{i, j}
+\]</span></p>
+<h3 id="positive-instances">Positive instances</h3>
+<p>对比学习的关键问题是如何构造样本对<span class="math inline">\((x_i,x_i^+)\)</span>，在CV中可以用裁剪、旋转等方法对图像进行数据增强，NLP中也有删词、替换、重排等方法。但对于NLP的离散结构来说，这些增强手段作用有限。本文采用了dropout作为数据增强手段，取得了更好的结果。</p>
 <p>本文采用了两个度量align和uniform用于衡量表示的质量。</p>
-<p>align描述了样本对之间的距离</p>
-<script type="math/tex; mode=display">
-l_{\rm align} \triangleq \mathop{\mathbb{E}}_{(x,x^+)\sim p_{pos}}\|f(x)-f(x^+)\|^2</script><p>uniform描述了样本是否分布均匀</p>
-<script type="math/tex; mode=display">
-l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(x)-f(y)\|^2}</script><p>从实验结果上看，采用dropout的SimCSE效果更好。</p>
+<p>align描述了样本对之间的距离 <span class="math display">\[
+l_{\rm align} \triangleq \mathop{\mathbb{E}}_{(x,x^+)\sim p_{pos}}\|f(x)-f(x^+)\|^2
+\]</span> uniform描述了样本是否分布均匀 <span class="math display">\[
+l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(x)-f(y)\|^2}
+\]</span></p>
+<p>从实验结果上看，采用dropout的SimCSE效果更好。</p>
 <p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111255916.png" alt="image-20210823111255916" style="zoom:67%;"></p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>在语义相似度任务上大幅度刷新SOTA，无监督就可以超越之前的有监督方法。</p>
+<h2 id="experiment">Experiment</h2>
+<p>在语义相似度任务上大幅度刷新SOTA，无监督就可以超越之前的有监督方法。</p>
 <p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111528036.png" alt="image-20210823111528036" style="zoom: 67%;"></p>
 <p>在迁移任务上表现一般，说明sentence embedding并不一定有益于下游训练。</p>
 <p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111700869.png" alt="image-20210823111700869" style="zoom: 80%;"></p>
@@ -362,10 +364,10 @@ l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(
       <div class="popular-posts-title"><a href="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/" rel="bookmark">K-BERT: Enabling Language Representation with Knowledge Graph</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/" rel="bookmark">Label-Specific Dual Graph Neural Network for Multi-Label Text Classification</a></div>
+      <div class="popular-posts-title"><a href="/2021/04/16/Lattice-BERT/" rel="bookmark">Lattice-BERT</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/04/16/Lattice-BERT/" rel="bookmark">Lattice-BERT</a></div>
+      <div class="popular-posts-title"><a href="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/" rel="bookmark">Label-Specific Dual Graph Neural Network for Multi-Label Text Classification</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/" rel="bookmark">Lawformer: A Pre-trained Language Model for Chinese Legal Long Documents</a></div>
@@ -453,7 +455,7 @@ l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">90k</span>
+    <span title="站点总字数">100k</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -496,8 +498,25 @@ l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
-<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
+<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
 

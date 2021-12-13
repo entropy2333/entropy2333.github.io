@@ -4,7 +4,7 @@
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.0.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -50,11 +50,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -195,7 +191,7 @@
 
 
   <div class="links-of-blogroll site-overview-item animated">
-    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
       Links
     </div>
     <ul class="links-of-blogroll-list">
@@ -303,7 +299,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>515</span>
+      <span>527</span>
     </span>
 </div>
 
@@ -315,8 +311,9 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>介绍密码学的基本概念。</p>
-<span id="more"></span>
-<h2 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h2><p>密码学是一门研究秘密信息隐写技术的学科。</p>
+<a id="more"></a>
+<h2 id="基本术语">基本术语</h2>
+<p>密码学是一门研究秘密信息隐写技术的学科。</p>
 <ul>
 <li>可以使消息的内容对所有人（除了发送者和接收者）保密</li>
 <li>可以使接收者验证消息的正确性</li>
@@ -332,46 +329,52 @@
 <li>密码分析 cryptanalysis/codebreaking</li>
 <li>密码学 cryptology</li>
 </ul>
-<h3 id="符号记法"><a href="#符号记法" class="headerlink" title="符号记法"></a>符号记法</h3><p>加密 Encryption</p>
-<script type="math/tex; mode=display">
-C = EK(P)</script><p>解密 Decryption</p>
-<script type="math/tex; mode=display">
-P = EK_{-1}(C)</script><p>可以把密码系统理解为明文空间到密文空间的变换，其中密钥取自密钥空间。</p>
-<script type="math/tex; mode=display">
+<h3 id="符号记法">符号记法</h3>
+<p>加密 Encryption <span class="math display">\[
+C = EK(P)
+\]</span></p>
+<p>解密 Decryption <span class="math display">\[
+P = EK_{-1}(C)
+\]</span></p>
+<p>可以把密码系统理解为明文空间到密文空间的变换，其中密钥取自密钥空间。 <span class="math display">\[
 P\xrightarrow{EK}C \\
-C\xrightarrow{EK_{-1}}P</script><h2 id="算法分类"><a href="#算法分类" class="headerlink" title="算法分类"></a>算法分类</h2><ul>
-<li>私钥加密算法<ul>
+C\xrightarrow{EK_{-1}}P
+\]</span></p>
+<h2 id="算法分类">算法分类</h2>
+<ul>
+<li>私钥加密算法
+<ul>
 <li>分组密码</li>
 <li>流密码（序列密码）</li>
-</ul>
-</li>
+</ul></li>
 <li>公钥加密算法</li>
 <li>数字签名算法</li>
 <li>哈希函数</li>
 </ul>
-<h2 id="密码分析"><a href="#密码分析" class="headerlink" title="密码分析"></a>密码分析</h2><p>密码分析学是指在没有加密密钥的情况下，攻击密文的过程。</p>
+<h2 id="密码分析">密码分析</h2>
+<p>密码分析学是指在没有加密密钥的情况下，攻击密文的过程。</p>
 <ul>
-<li>唯密文攻击<ul>
+<li>唯密文攻击
+<ul>
 <li>只知道算法与一些密文</li>
 <li>利用统计方法</li>
 <li>需要能够识别明文</li>
-</ul>
-</li>
-<li>已知明文攻击<ul>
+</ul></li>
+<li>已知明文攻击
+<ul>
 <li>知道一些明文/密文对</li>
 <li>利用已知的明文/密文对进行攻击</li>
-</ul>
-</li>
-<li>选择明文攻击<ul>
+</ul></li>
+<li>选择明文攻击
+<ul>
 <li>能够选择明文并得到相应的密文</li>
 <li>利用算法的结构进行攻击</li>
-</ul>
-</li>
-<li>选择密文攻击<ul>
+</ul></li>
+<li>选择密文攻击
+<ul>
 <li>能够选择密文并得到相应的明文</li>
 <li>利用对算法结构的知识进行攻击</li>
-</ul>
-</li>
+</ul></li>
 </ul>
 
     </div>
@@ -461,7 +464,7 @@ C\xrightarrow{EK_{-1}}P</script><h2 id="算法分类"><a href="#算法分类" cl
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">90k</span>
+    <span title="站点总字数">100k</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -504,8 +507,25 @@ C\xrightarrow{EK_{-1}}P</script><h2 id="算法分类"><a href="#算法分类" cl
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
-<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
+<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
 

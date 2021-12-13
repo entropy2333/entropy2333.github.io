@@ -4,7 +4,7 @@
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.0.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -64,11 +64,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -166,7 +162,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E5%8D%8F%E8%AE%AE%E5%B1%82%E7%9A%84%E5%AE%89%E5%85%A8"><span class="nav-number">1.</span> <span class="nav-text">不同协议层的安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL"><span class="nav-number">2.</span> <span class="nav-text">SSL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E6%9C%BA%E5%88%B6"><span class="nav-number">2.1.</span> <span class="nav-text">安全机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSL%E7%89%88%E6%9C%AC"><span class="nav-number">2.2.</span> <span class="nav-text">SSL版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSL%E7%9A%84%E5%88%86%E5%B1%82%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.</span> <span class="nav-text">SSL的分层结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSL%E5%9F%BA%E6%9C%AC%E8%BF%87%E7%A8%8B"><span class="nav-number">2.4.</span> <span class="nav-text">SSL基本过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5-amp-%E4%BC%9A%E8%AF%9D"><span class="nav-number">2.5.</span> <span class="nav-text">连接&amp;会话</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%A1%E6%89%8B%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.6.</span> <span class="nav-text">握手协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B6%E6%AE%B51%EF%BC%9A%E5%BB%BA%E7%AB%8B%E5%AE%89%E5%85%A8%E8%83%BD%E5%8A%9B"><span class="nav-number">2.6.1.</span> <span class="nav-text">阶段1：建立安全能力</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B6%E6%AE%B52%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%89%B4%E5%88%AB%E4%B8%8E%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2"><span class="nav-number">2.6.2.</span> <span class="nav-text">阶段2：服务器鉴别与密钥交换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B6%E6%AE%B53%EF%BC%9A%E5%AE%A2%E6%88%B7%E6%9C%BA%E9%89%B4%E5%88%AB%E4%B8%8E%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2"><span class="nav-number">2.6.3.</span> <span class="nav-text">阶段3：客户机鉴别与密钥交换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B6%E6%AE%B54%EF%BC%9A%E5%AE%8C%E6%88%90"><span class="nav-number">2.6.4.</span> <span class="nav-text">阶段4：完成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ChangeCipherSpec"><span class="nav-number">2.7.</span> <span class="nav-text">ChangeCipherSpec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.8.</span> <span class="nav-text">记录协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AD%A6%E5%91%8A%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.9.</span> <span class="nav-text">警告协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSL%E7%9A%84%E5%8A%A0%E5%AF%86%E5%92%8C%E8%AE%A4%E8%AF%81%E7%AE%97%E6%B3%95"><span class="nav-number">2.10.</span> <span class="nav-text">SSL的加密和认证算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSL%E5%AE%89%E5%85%A8%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">2.11.</span> <span class="nav-text">SSL安全性分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSL%E8%84%86%E5%BC%B1%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">2.12.</span> <span class="nav-text">SSL脆弱性分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WTLS"><span class="nav-number">3.</span> <span class="nav-text">WTLS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BE%9B%E7%9A%84%E5%AE%89%E5%85%A8%E6%9C%8D%E5%8A%A1"><span class="nav-number">3.1.</span> <span class="nav-text">提供的安全服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE%E6%A0%88"><span class="nav-number">3.2.</span> <span class="nav-text">协议栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%A1%E6%89%8B%E5%8D%8F%E8%AE%AE-1"><span class="nav-number">3.3.</span> <span class="nav-text">握手协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E5%8D%8F%E8%AE%AE-1"><span class="nav-number">3.4.</span> <span class="nav-text">记录协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%8A%E8%AD%A6%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.5.</span> <span class="nav-text">告警协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2"><span class="nav-number">3.6.</span> <span class="nav-text">密钥交换</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E5%8D%8F%E8%AE%AE%E5%B1%82%E7%9A%84%E5%AE%89%E5%85%A8"><span class="nav-number">1.</span> <span class="nav-text">不同协议层的安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssl"><span class="nav-number">2.</span> <span class="nav-text">SSL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E6%9C%BA%E5%88%B6"><span class="nav-number">2.1.</span> <span class="nav-text">安全机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssl%E7%89%88%E6%9C%AC"><span class="nav-number">2.2.</span> <span class="nav-text">SSL版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssl%E7%9A%84%E5%88%86%E5%B1%82%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.</span> <span class="nav-text">SSL的分层结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssl%E5%9F%BA%E6%9C%AC%E8%BF%87%E7%A8%8B"><span class="nav-number">2.4.</span> <span class="nav-text">SSL基本过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E4%BC%9A%E8%AF%9D"><span class="nav-number">2.5.</span> <span class="nav-text">连接&amp;会话</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%A1%E6%89%8B%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.6.</span> <span class="nav-text">握手协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B6%E6%AE%B51%E5%BB%BA%E7%AB%8B%E5%AE%89%E5%85%A8%E8%83%BD%E5%8A%9B"><span class="nav-number">2.6.1.</span> <span class="nav-text">阶段1：建立安全能力</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B6%E6%AE%B52%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%89%B4%E5%88%AB%E4%B8%8E%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2"><span class="nav-number">2.6.2.</span> <span class="nav-text">阶段2：服务器鉴别与密钥交换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B6%E6%AE%B53%E5%AE%A2%E6%88%B7%E6%9C%BA%E9%89%B4%E5%88%AB%E4%B8%8E%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2"><span class="nav-number">2.6.3.</span> <span class="nav-text">阶段3：客户机鉴别与密钥交换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B6%E6%AE%B54%E5%AE%8C%E6%88%90"><span class="nav-number">2.6.4.</span> <span class="nav-text">阶段4：完成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#changecipherspec"><span class="nav-number">2.7.</span> <span class="nav-text">ChangeCipherSpec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.8.</span> <span class="nav-text">记录协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AD%A6%E5%91%8A%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.9.</span> <span class="nav-text">警告协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssl%E7%9A%84%E5%8A%A0%E5%AF%86%E5%92%8C%E8%AE%A4%E8%AF%81%E7%AE%97%E6%B3%95"><span class="nav-number">2.10.</span> <span class="nav-text">SSL的加密和认证算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssl%E5%AE%89%E5%85%A8%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">2.11.</span> <span class="nav-text">SSL安全性分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssl%E8%84%86%E5%BC%B1%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">2.12.</span> <span class="nav-text">SSL脆弱性分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wtls"><span class="nav-number">3.</span> <span class="nav-text">WTLS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BE%9B%E7%9A%84%E5%AE%89%E5%85%A8%E6%9C%8D%E5%8A%A1"><span class="nav-number">3.1.</span> <span class="nav-text">提供的安全服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE%E6%A0%88"><span class="nav-number">3.2.</span> <span class="nav-text">协议栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%A1%E6%89%8B%E5%8D%8F%E8%AE%AE-1"><span class="nav-number">3.3.</span> <span class="nav-text">握手协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E5%8D%8F%E8%AE%AE-1"><span class="nav-number">3.4.</span> <span class="nav-text">记录协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%8A%E8%AD%A6%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.5.</span> <span class="nav-text">告警协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2"><span class="nav-number">3.6.</span> <span class="nav-text">密钥交换</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -209,7 +205,7 @@
 
 
   <div class="links-of-blogroll site-overview-item animated">
-    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
       Links
     </div>
     <ul class="links-of-blogroll-list">
@@ -317,7 +313,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2k</span>
+      <span>2.3k</span>
     </span>
 </div>
 
@@ -328,163 +324,209 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>介绍SSL协议与WTLS协议 。<br><span id="more"></span></p>
-<h2 id="不同协议层的安全"><a href="#不同协议层的安全" class="headerlink" title="不同协议层的安全"></a>不同协议层的安全</h2><p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201027193018383.png" alt="image-20201027193018383"></p>
-<h2 id="SSL"><a href="#SSL" class="headerlink" title="SSL"></a>SSL</h2><p>1994年，由Netscape公司提出SSL，为HTTP提供安全连接。</p>
-<h3 id="安全机制"><a href="#安全机制" class="headerlink" title="安全机制"></a>安全机制</h3><ul>
+        <p>介绍SSL协议与WTLS协议 。 <a id="more"></a></p>
+<h2 id="不同协议层的安全">不同协议层的安全</h2>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201027193018383.png" alt="image-20201027193018383"><figcaption aria-hidden="true">image-20201027193018383</figcaption>
+</figure>
+<h2 id="ssl">SSL</h2>
+<p>1994年，由Netscape公司提出SSL，为HTTP提供安全连接。</p>
+<h3 id="安全机制">安全机制</h3>
+<ul>
 <li>机密性：使用对称密钥算法对传输的数据进行加密。</li>
 <li>身份验证：基于证书利用数字签名对server和client进行身份验证。</li>
 <li>消息完整性验证：使用MAC算法检验消息的完整性。</li>
 </ul>
-<h3 id="SSL版本"><a href="#SSL版本" class="headerlink" title="SSL版本"></a>SSL版本</h3><ul>
+<h3 id="ssl版本">SSL版本</h3>
+<ul>
 <li>SSL由Netscape公司设计，是用于web的安全传输协议。</li>
 <li>IETF将SSL标准化，称为TLS，TLS1.0与SSL3.0差别非常小。</li>
 <li>wap论坛在TLS基础上做了WTLS协议，以适应无线的特殊环境。</li>
 </ul>
-<h3 id="SSL的分层结构"><a href="#SSL的分层结构" class="headerlink" title="SSL的分层结构"></a>SSL的分层结构</h3><ul>
-<li>上层协议<ul>
+<h3 id="ssl的分层结构">SSL的分层结构</h3>
+<ul>
+<li>上层协议
+<ul>
 <li>SSL握手协议</li>
 <li>SSL passowrd变化协议</li>
 <li>SSL警告协议</li>
-</ul>
-</li>
+</ul></li>
 <li>下层协议为SSL记录协议</li>
 </ul>
-<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201027193738047.png" alt="image-20201027193738047"></p>
-<h3 id="SSL基本过程"><a href="#SSL基本过程" class="headerlink" title="SSL基本过程"></a>SSL基本过程</h3><ul>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201027193738047.png" alt="image-20201027193738047"><figcaption aria-hidden="true">image-20201027193738047</figcaption>
+</figure>
+<h3 id="ssl基本过程">SSL基本过程</h3>
+<ul>
 <li>建立会话</li>
 <li>传输应用数据</li>
 </ul>
-<h3 id="连接-amp-会话"><a href="#连接-amp-会话" class="headerlink" title="连接&amp;会话"></a>连接&amp;会话</h3><ul>
+<h3 id="连接会话">连接&amp;会话</h3>
+<ul>
 <li><p>SSL连接</p>
 <ul>
 <li>点对点</li>
 <li>连接是暂时的，每个连接和一个会话关联。</li>
-</ul>
-</li>
+</ul></li>
 <li><p>SSL会话</p>
 <ul>
 <li>会话是在server和client之间的一个关联，由握手协议建立，定义了一组密码安全参数。</li>
 <li>避免为每一个连接提供新的安全参数所需昂贵的协商代价。</li>
-</ul>
-</li>
+</ul></li>
 <li><p>在任意一对通信主体之间，可以有多个安全连接。</p>
-<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010113915965.png" alt="image-20201010113915965"></p>
-</li>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010113915965.png" alt="image-20201010113915965"><figcaption aria-hidden="true">image-20201010113915965</figcaption>
+</figure></li>
 </ul>
-<h3 id="握手协议"><a href="#握手协议" class="headerlink" title="握手协议"></a>握手协议</h3><p>握手协议允许服务器和客户端相互验证，协商加密和MAC算法以及保密密钥。</p>
+<h3 id="握手协议">握手协议</h3>
+<p>握手协议允许服务器和客户端相互验证，协商加密和MAC算法以及保密密钥。</p>
 <p>握手协议的消息都含有以下三个字段</p>
-<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010114509495.png" alt="image-20201010114509495"></p>
-<h4 id="阶段1：建立安全能力"><a href="#阶段1：建立安全能力" class="headerlink" title="阶段1：建立安全能力"></a>阶段1：建立安全能力</h4><ul>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010114509495.png" alt="image-20201010114509495"><figcaption aria-hidden="true">image-20201010114509495</figcaption>
+</figure>
+<h4 id="阶段1建立安全能力">阶段1：建立安全能力</h4>
+<ul>
 <li>SSL握手第一阶段启动逻辑连接，建立这个连接的安全能力。</li>
-<li>client向server发送client hello消息<ul>
+<li>client向server发送client hello消息
+<ul>
 <li>支持的协议版本，比如TLS 1.0。</li>
 <li>客户端生成的随机数，用于生成“对话密钥”。</li>
 <li>支持的加密方法，比如RSA。</li>
 <li>支持的压缩方法。</li>
-</ul>
-</li>
-<li>server向client发送server hello消息<ul>
+</ul></li>
+<li>server向client发送server hello消息
+<ul>
 <li>确认使用的协议版本，如果版本不一致则关闭加密通信。</li>
 <li>服务器生成的随机数，用于生成“对话密钥”。</li>
 <li>确认使用的加密方法。</li>
 <li>服务器证书。</li>
-</ul>
-</li>
-<li>此阶段后，client、server知道了以下内容<ul>
+</ul></li>
+<li>此阶段后，client、server知道了以下内容
+<ul>
 <li>SSL版本</li>
 <li>密钥交换、信息验证和加密算法</li>
 <li>压缩方法</li>
 <li>密钥生成的两个随机数</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010114955273.png" alt="image-20201010114955273"></p>
-<h4 id="阶段2：服务器鉴别与密钥交换"><a href="#阶段2：服务器鉴别与密钥交换" class="headerlink" title="阶段2：服务器鉴别与密钥交换"></a>阶段2：服务器鉴别与密钥交换</h4><ul>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010114955273.png" alt="image-20201010114955273"><figcaption aria-hidden="true">image-20201010114955273</figcaption>
+</figure>
+<h4 id="阶段2服务器鉴别与密钥交换">阶段2：服务器鉴别与密钥交换</h4>
+<ul>
 <li>server发送证书，包含一个X.509证书，或一条证书链。</li>
-<li>server发送server_key_exchange消息<ul>
+<li>server发送server_key_exchange消息
+<ul>
 <li>可选，服务器证书没有包含必需数据时发送。</li>
 <li>包含签名，签名内容包括两个随机数以及服务器参数。</li>
-</ul>
-</li>
-<li>server发送certificate_request消息<ul>
+</ul></li>
+<li>server发送certificate_request消息
+<ul>
 <li>非匿名server可以像client请求一个证书。</li>
 <li>包含证书类型和CAs。</li>
-</ul>
-</li>
+</ul></li>
 <li>服务器发送server_hello_done，等待应答。</li>
 </ul>
-<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010115349419.png" alt="image-20201010115349419"></p>
-<h4 id="阶段3：客户机鉴别与密钥交换"><a href="#阶段3：客户机鉴别与密钥交换" class="headerlink" title="阶段3：客户机鉴别与密钥交换"></a>阶段3：客户机鉴别与密钥交换</h4><ul>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010115349419.png" alt="image-20201010115349419"><figcaption aria-hidden="true">image-20201010115349419</figcaption>
+</figure>
+<h4 id="阶段3客户机鉴别与密钥交换">阶段3：客户机鉴别与密钥交换</h4>
+<ul>
 <li>client收到server_done消息后，检查server提供的证书，判断参数是否可以接收，如果没有问题就发送消息。</li>
 <li>如果server请求证书，就发送certificate，若client没有证书，则发送no_certificate警告，然后发送client_key_exchange消息。</li>
 <li>最后，client发送certificate_verify消息，包含一个签名，对第一条消息以来的所有握手消息的MAC值进行签名。</li>
 </ul>
-<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010115612373.png" alt="image-20201010115612373"></p>
-<h4 id="阶段4：完成"><a href="#阶段4：完成" class="headerlink" title="阶段4：完成"></a>阶段4：完成</h4><ul>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010115612373.png" alt="image-20201010115612373"><figcaption aria-hidden="true">image-20201010115612373</figcaption>
+</figure>
+<h4 id="阶段4完成">阶段4：完成</h4>
+<ul>
 <li>第四阶段建立起一个安全连接。</li>
 <li>client发送change_cipher_spec消息，将协商得到的CipherSuite拷贝到当前连接的状态之中。</li>
 <li>client用新的算法、密钥参数发送一个finished消息，检查密钥交换和鉴别过程是否已经成功。其中包括一个校验值，对所有以来的消息进行校验。</li>
 <li>服务器同样发送change_cipher_spec和finished消息。</li>
 <li>握手过程完成，client和server可以交换应用层数据。</li>
 </ul>
-<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010120038944.png" alt="image-20201010120038944"></p>
-<h3 id="ChangeCipherSpec"><a href="#ChangeCipherSpec" class="headerlink" title="ChangeCipherSpec"></a>ChangeCipherSpec</h3><ul>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010120038944.png" alt="image-20201010120038944"><figcaption aria-hidden="true">image-20201010120038944</figcaption>
+</figure>
+<h3 id="changecipherspec">ChangeCipherSpec</h3>
+<ul>
 <li>在数据包中就是一个字节的数据，用于告知服务端，客户端已经切换到之前协商好的加密套件的状态，准备使用之前协商好的加密套件加密数据并传输。</li>
 </ul>
-<h3 id="记录协议"><a href="#记录协议" class="headerlink" title="记录协议"></a>记录协议</h3><p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010132038339.png" alt="image-20201010132038339"></p>
-<h3 id="警告协议"><a href="#警告协议" class="headerlink" title="警告协议"></a>警告协议</h3><p>当握手过程或者数据加密等操作出错或者发生异常情况时，向对方发出警告或中止当前连接。</p>
-<h3 id="SSL的加密和认证算法"><a href="#SSL的加密和认证算法" class="headerlink" title="SSL的加密和认证算法"></a>SSL的加密和认证算法</h3><p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010132259141.png" alt="image-20201010132259141"></p>
+<h3 id="记录协议">记录协议</h3>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010132038339.png" alt="image-20201010132038339"><figcaption aria-hidden="true">image-20201010132038339</figcaption>
+</figure>
+<h3 id="警告协议">警告协议</h3>
+<p>当握手过程或者数据加密等操作出错或者发生异常情况时，向对方发出警告或中止当前连接。</p>
+<h3 id="ssl的加密和认证算法">SSL的加密和认证算法</h3>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201010132259141.png" alt="image-20201010132259141"><figcaption aria-hidden="true">image-20201010132259141</figcaption>
+</figure>
 <p>认证算法采用X.509电子证书标准，通过RSA算法进行数字签名来实现。</p>
-<h3 id="SSL安全性分析"><a href="#SSL安全性分析" class="headerlink" title="SSL安全性分析"></a>SSL安全性分析</h3><ul>
-<li>鉴别机制<ul>
+<h3 id="ssl安全性分析">SSL安全性分析</h3>
+<ul>
+<li>鉴别机制
+<ul>
 <li>客户端与服务器交换了证书</li>
-</ul>
-</li>
-<li>加密机制<ul>
+</ul></li>
+<li>加密机制
+<ul>
 <li>对称加密保护数据传输，非对称加密协商会话密钥。</li>
-</ul>
-</li>
-<li>完整性机制<ul>
+</ul></li>
+<li>完整性机制
+<ul>
 <li>数据分组压缩后，产生MAC。</li>
-</ul>
-</li>
-<li>抗重放攻击<ul>
+</ul></li>
+<li>抗重放攻击
+<ul>
 <li>使用序列号，传输中被加密。</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h3 id="SSL脆弱性分析"><a href="#SSL脆弱性分析" class="headerlink" title="SSL脆弱性分析"></a>SSL脆弱性分析</h3><ul>
+<h3 id="ssl脆弱性分析">SSL脆弱性分析</h3>
+<ul>
 <li>客户端假冒</li>
 <li>无法提供基于UDP应用的安全保护</li>
 <li>不能对抗通信流量分析</li>
 <li>进程中主密钥泄露</li>
 </ul>
-<h2 id="WTLS"><a href="#WTLS" class="headerlink" title="WTLS"></a>WTLS</h2><ul>
+<h2 id="wtls">WTLS</h2>
+<ul>
 <li>保证传输层安全，作为WAP协议栈的一个层次向上层提供安全传输服务接口。</li>
 </ul>
-<h3 id="提供的安全服务"><a href="#提供的安全服务" class="headerlink" title="提供的安全服务"></a>提供的安全服务</h3><ul>
+<h3 id="提供的安全服务">提供的安全服务</h3>
+<ul>
 <li>第一类服务：使用交换的公共密钥建立安全传输，使用对称算法加解密数据，检查数据完整性，可以建立安全通信的通道，但没有对通信双方的身份进行鉴别，</li>
 <li>第二类服务：在第一类服务的基础上，可以交换服务器证书，完成对服务器的鉴别。</li>
 <li>第三类服务：在第二类服务的基础上，可以交换客户端证书，对恶意的用户冒充也能抗击。</li>
 </ul>
-<h3 id="协议栈"><a href="#协议栈" class="headerlink" title="协议栈"></a>协议栈</h3><p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201027201909276.png" alt="image-20201027201909276"></p>
-<h3 id="握手协议-1"><a href="#握手协议-1" class="headerlink" title="握手协议"></a>握手协议</h3><ul>
+<h3 id="协议栈">协议栈</h3>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201027201909276.png" alt="image-20201027201909276"><figcaption aria-hidden="true">image-20201027201909276</figcaption>
+</figure>
+<h3 id="握手协议-1">握手协议</h3>
+<ul>
 <li>和SSL一致？</li>
 </ul>
-<h3 id="记录协议-1"><a href="#记录协议-1" class="headerlink" title="记录协议"></a>记录协议</h3><p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201027202237703.png" alt="image-20201027202237703"></p>
-<h3 id="告警协议"><a href="#告警协议" class="headerlink" title="告警协议"></a>告警协议</h3><ul>
+<h3 id="记录协议-1">记录协议</h3>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89SSL/image-20201027202237703.png" alt="image-20201027202237703"><figcaption aria-hidden="true">image-20201027202237703</figcaption>
+</figure>
+<h3 id="告警协议">告警协议</h3>
+<ul>
 <li>描述信息错误的严重程度及告警描述</li>
 <li>警告、危急、致命</li>
 </ul>
-<h3 id="密钥交换"><a href="#密钥交换" class="headerlink" title="密钥交换"></a>密钥交换</h3><ul>
+<h3 id="密钥交换">密钥交换</h3>
+<ul>
 <li>共享密钥方法</li>
 <li>RSA加密传输方法</li>
 <li>DH密钥交换方法</li>
-<li>EC-DH密钥交换方法<ul>
+<li>EC-DH密钥交换方法
+<ul>
 <li>椭圆曲线版本的DH密钥交换</li>
-</ul>
-</li>
+</ul></li>
 </ul>
 
     </div>
@@ -575,7 +617,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">90k</span>
+    <span title="站点总字数">100k</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -618,8 +660,25 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
-<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
+<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
 

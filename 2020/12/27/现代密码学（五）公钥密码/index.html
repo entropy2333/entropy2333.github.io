@@ -4,7 +4,7 @@
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.0.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -52,11 +52,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -154,7 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E7%90%86%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">公钥密码理论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DH%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2"><span class="nav-number">2.</span> <span class="nav-text">DH密钥交换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA"><span class="nav-number">3.</span> <span class="nav-text">RSA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rabin%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E4%BD%93%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">Rabin公钥密码体制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#El-Gamal"><span class="nav-number">5.</span> <span class="nav-text">El Gamal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E7%9A%84%E6%94%BB%E5%87%BB"><span class="nav-number">6.</span> <span class="nav-text">对于公钥密码的攻击</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E7%90%86%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">公钥密码理论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dh%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2"><span class="nav-number">2.</span> <span class="nav-text">DH密钥交换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rsa"><span class="nav-number">3.</span> <span class="nav-text">RSA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rabin%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E4%BD%93%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">Rabin公钥密码体制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#el-gamal"><span class="nav-number">5.</span> <span class="nav-text">El Gamal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E7%9A%84%E6%94%BB%E5%87%BB"><span class="nav-number">6.</span> <span class="nav-text">对于公钥密码的攻击</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -197,7 +193,7 @@
 
 
   <div class="links-of-blogroll site-overview-item animated">
-    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
       Links
     </div>
     <ul class="links-of-blogroll-list">
@@ -305,7 +301,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
+      <span>1.6k</span>
     </span>
 </div>
 
@@ -317,84 +313,93 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>介绍公钥密码学。</p>
-<span id="more"></span>
-<h2 id="公钥密码理论"><a href="#公钥密码理论" class="headerlink" title="公钥密码理论"></a>公钥密码理论</h2><p>公钥算法主要有三类</p>
+<a id="more"></a>
+<h2 id="公钥密码理论">公钥密码理论</h2>
+<p>公钥算法主要有三类</p>
 <ul>
 <li>密钥分配</li>
 <li>公钥加密</li>
 <li>签名算法</li>
 </ul>
-<h2 id="DH密钥交换"><a href="#DH密钥交换" class="headerlink" title="DH密钥交换"></a>DH密钥交换</h2><ul>
+<h2 id="dh密钥交换">DH密钥交换</h2>
+<ul>
 <li>选定素数p和本原元a</li>
-<li>A选定$x_A$，计算$y_A=a^{x_A}\bmod p$$</li>
-<li>B选定$x_B$，计算$y_B=a^{x_B}\bmod p$$</li>
-<li>公开$y_A$和$y_B$$</li>
-<li>A计算$K=y_B^{x_A}\bmod p$$</li>
-<li>B计算$K=y_A^{x_B}\bmod p$$</li>
+<li>A选定<span class="math inline">\(x_A\)</span>，计算<span class="math inline">\(y_A=a^{x_A}\bmod p\)</span>$</li>
+<li>B选定<span class="math inline">\(x_B\)</span>，计算<span class="math inline">\(y_B=a^{x_B}\bmod p\)</span>$</li>
+<li>公开<span class="math inline">\(y_A\)</span>和<span class="math inline">\(y_B\)</span>$</li>
+<li>A计算<span class="math inline">\(K=y_B^{x_A}\bmod p\)</span>$</li>
+<li>B计算<span class="math inline">\(K=y_A^{x_B}\bmod p\)</span>$</li>
 </ul>
-<h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><p>算法流程</p>
+<h2 id="rsa">RSA</h2>
+<p>算法流程</p>
 <ul>
 <li>选择两个大素数p和q</li>
-<li>计算$N=p·q$$</li>
-<li>随机选择加密密钥e，满足$gcd(e, \phi(N)) = 1,\ e &lt; N$$</li>
-<li>求解解密密钥d，满足$e·d\equiv1\bmod \phi(N)$$</li>
-<li>公开$(N, e)$，保存$(p,q,d)$$</li>
+<li>计算<span class="math inline">\(N=p·q\)</span>$</li>
+<li>随机选择加密密钥e，满足<span class="math inline">\(gcd(e, \phi(N)) = 1,\ e &lt; N\)</span>$</li>
+<li>求解解密密钥d，满足<span class="math inline">\(e·d\equiv1\bmod \phi(N)\)</span>$</li>
+<li>公开<span class="math inline">\((N, e)\)</span>，保存<span class="math inline">\((p,q,d)\)</span>$</li>
 </ul>
-<p>原理如下</p>
-<script type="math/tex; mode=display">
+<p>原理如下 <span class="math display">\[
 C = M^e\bmod N \\
 D = C^d= (M^e)^d\bmod N \\
-D = M^{(1+k\phi(N))}= M\bmod N</script><p>RSA实际上是一种单表代换</p>
-<script type="math/tex; mode=display">
-RSA: \mathbb{Z/nZ} \rightarrow \mathbb{Z/nZ},\ n=pq</script><p>RSA的安全性取决于计算$\phi(N)$的困难性，但分解模未必是攻击RSA的最佳方法。</p>
-<p>RSA需要计算大指数模幂，可以用中国剩余定理CRT来加速。</p>
-<script type="math/tex; mode=display">
+D = M^{(1+k\phi(N))}= M\bmod N
+\]</span> RSA实际上是一种单表代换 <span class="math display">\[
+RSA: \mathbb{Z/nZ} \rightarrow \mathbb{Z/nZ},\ n=pq
+\]</span> RSA的安全性取决于计算<span class="math inline">\(\phi(N)\)</span>的困难性，但分解模未必是攻击RSA的最佳方法。</p>
+<p>RSA需要计算大指数模幂，可以用中国剩余定理CRT来加速。 <span class="math display">\[
 M_1 = M\bmod p = (C\bmod p)^{d\bmod(p-1)} \\
-M_2 = M\bmod q = (C\bmod q)^{d\bmod(q-1)}</script><p>对于方程组</p>
-<script type="math/tex; mode=display">
+M_2 = M\bmod q = (C\bmod q)^{d\bmod(q-1)}
+\]</span></p>
+<p>对于方程组 <span class="math display">\[
 \begin{cases}
 M = M_1\bmod p \\
 M = M_2\bmod q
-\end{cases}</script><p>有唯一解</p>
-<script type="math/tex; mode=display">
-M = (q·u·M_1 + p·u'·M_2)\bmod N \\
-p·u\equiv1\bmod q,\ q·u'\equiv1\bmod p</script><h2 id="Rabin公钥密码体制"><a href="#Rabin公钥密码体制" class="headerlink" title="Rabin公钥密码体制"></a>Rabin公钥密码体制</h2><p>有两个困难数学问题</p>
+\end{cases}
+\]</span> 有唯一解 <span class="math display">\[
+M = (q·u·M_1 + p·u&#39;·M_2)\bmod N \\
+p·u\equiv1\bmod q,\ q·u&#39;\equiv1\bmod p
+\]</span></p>
+<h2 id="rabin公钥密码体制">Rabin公钥密码体制</h2>
+<p>有两个困难数学问题</p>
 <ul>
 <li>二次剩余问题：给定奇合数n和整数a，难以判断a是n的二次剩余。</li>
 <li>模n的平方根问题：在n的分解未知情况下，难以求解n的平方根。</li>
 </ul>
 <p>Rabin体制利用求解平方根的困难性构造了一种安全公钥体制。</p>
 <p>首先选定两个形如4k+3的素数p和q，以n=pq作为公钥。</p>
-<p>加密过程</p>
-<script type="math/tex; mode=display">
-C = M^2 \bmod n,\ 0 \leq M < n</script><p>解密首先计算</p>
-<script type="math/tex; mode=display">
+<p>加密过程 <span class="math display">\[
+C = M^2 \bmod n,\ 0 \leq M &lt; n
+\]</span> 解密首先计算 <span class="math display">\[
 \begin{align}
-M_1 &= C^{\frac{(p+1)}{4}} \bmod p \\
-M_2 &= p - C^{\frac{(p+1)}{4}} \bmod p \\
-M_3 &= C^{\frac{(q+1)}{4}} \bmod q \\
-M_4 &= q - C^{\frac{(p+1)}{4}} \bmod q
-\end{align}</script><p>利用中国剩余定理，可以得到四个解，必有一个与M相同。</p>
-<p>Rabin体制的安全性等价于大整数分解，但是对选择密文攻击不安全。</p>
-<script type="math/tex; mode=display">
+M_1 &amp;= C^{\frac{(p+1)}{4}} \bmod p \\
+M_2 &amp;= p - C^{\frac{(p+1)}{4}} \bmod p \\
+M_3 &amp;= C^{\frac{(q+1)}{4}} \bmod q \\
+M_4 &amp;= q - C^{\frac{(p+1)}{4}} \bmod q
+\end{align}
+\]</span> 利用中国剩余定理，可以得到四个解，必有一个与M相同。</p>
+<p>Rabin体制的安全性等价于大整数分解，但是对选择密文攻击不安全。 <span class="math display">\[
 x_1^2\equiv x_2^2\equiv0\bmod n \\
-\iff (x_1-x_2)(x_1+x_2)\equiv0\bmod n</script><p>与RSA相比，Rabin只需要一次乘法运算，但解密时更困难。</p>
-<h2 id="El-Gamal"><a href="#El-Gamal" class="headerlink" title="El Gamal"></a>El Gamal</h2><p>基于离散对数，但增加了消息长度（2倍）。</p>
-<p>首先选定大素数p和本原元g，计算</p>
-<script type="math/tex; mode=display">
-y_B = g^{x_B}\bmod p</script><p>发送者选择随机数k，计算消息密钥</p>
-<script type="math/tex; mode=display">
-K = y_B^k\bmod p,\ 0\leq k\leq p-1</script><p>之后计算密文对</p>
-<script type="math/tex; mode=display">
+\iff (x_1-x_2)(x_1+x_2)\equiv0\bmod n
+\]</span> 与RSA相比，Rabin只需要一次乘法运算，但解密时更困难。</p>
+<h2 id="el-gamal">El Gamal</h2>
+<p>基于离散对数，但增加了消息长度（2倍）。</p>
+<p>首先选定大素数p和本原元g，计算 <span class="math display">\[
+y_B = g^{x_B}\bmod p
+\]</span> 发送者选择随机数k，计算消息密钥 <span class="math display">\[
+K = y_B^k\bmod p,\ 0\leq k\leq p-1
+\]</span> 之后计算密文对 <span class="math display">\[
 \begin{align}
-C_1 &= g^k\bmod p \\
-C_2 &= M\cdot K\bmod p
-\end{align}</script><p>解密时先计算密钥再计算明文</p>
-<script type="math/tex; mode=display">
+C_1 &amp;= g^k\bmod p \\
+C_2 &amp;= M\cdot K\bmod p
+\end{align}
+\]</span> 解密时先计算密钥再计算明文 <span class="math display">\[
 \begin{align}
-K &= C_1^{x_B}\bmod p = (g^k)^{x_B}\bmod p \\
-M &= C_2\cdot K^{-1}\bmod p
-\end{align}</script><h2 id="对于公钥密码的攻击"><a href="#对于公钥密码的攻击" class="headerlink" title="对于公钥密码的攻击"></a>对于公钥密码的攻击</h2><p>可以对RSA发动弱参数攻击</p>
+K &amp;= C_1^{x_B}\bmod p = (g^k)^{x_B}\bmod p \\
+M &amp;= C_2\cdot K^{-1}\bmod p
+\end{align}
+\]</span></p>
+<h2 id="对于公钥密码的攻击">对于公钥密码的攻击</h2>
+<p>可以对RSA发动弱参数攻击</p>
 <ul>
 <li>共模攻击</li>
 <li>低加密指数攻击</li>
@@ -490,7 +495,7 @@ M &= C_2\cdot K^{-1}\bmod p
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">90k</span>
+    <span title="站点总字数">100k</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -533,8 +538,25 @@ M &= C_2\cdot K^{-1}\bmod p
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
-<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
+<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
 

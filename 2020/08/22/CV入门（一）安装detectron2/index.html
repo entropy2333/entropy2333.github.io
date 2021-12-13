@@ -4,7 +4,7 @@
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.0.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -54,11 +54,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -156,7 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E4%BE%9D%E8%B5%96"><span class="nav-number">1.</span> <span class="nav-text">环境依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-CUDA"><span class="nav-number">1.1.</span> <span class="nav-text">安装 CUDA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-Pytorch"><span class="nav-number">1.2.</span> <span class="nav-text">安装 Pytorch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-VS-2019"><span class="nav-number">1.3.</span> <span class="nav-text">安装 VS 2019</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-pycocotools"><span class="nav-number">1.4.</span> <span class="nav-text">安装 pycocotools</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-detectron2"><span class="nav-number">1.5.</span> <span class="nav-text">安装 detectron2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B"><span class="nav-number">1.5.1.</span> <span class="nav-text">目标检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E5%88%86%E5%89%B2"><span class="nav-number">1.5.2.</span> <span class="nav-text">实例分割</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E8%83%BD%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">可能出现的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cl-exe%E5%87%BA%E9%94%99"><span class="nav-number">2.1.</span> <span class="nav-text">cl.exe出错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cocoeval%E5%87%BA%E9%94%99"><span class="nav-number">2.2.</span> <span class="nav-text">cocoeval出错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nvcc-exe%E5%87%BA%E9%94%99"><span class="nav-number">2.3.</span> <span class="nav-text">nvcc.exe出错</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E4%BE%9D%E8%B5%96"><span class="nav-number">1.</span> <span class="nav-text">环境依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-cuda"><span class="nav-number">1.1.</span> <span class="nav-text">安装 CUDA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-pytorch"><span class="nav-number">1.2.</span> <span class="nav-text">安装 Pytorch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-vs-2019"><span class="nav-number">1.3.</span> <span class="nav-text">安装 VS 2019</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-pycocotools"><span class="nav-number">1.4.</span> <span class="nav-text">安装 pycocotools</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-detectron2"><span class="nav-number">1.5.</span> <span class="nav-text">安装 detectron2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B"><span class="nav-number">1.5.1.</span> <span class="nav-text">目标检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E5%88%86%E5%89%B2"><span class="nav-number">1.5.2.</span> <span class="nav-text">实例分割</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E8%83%BD%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">可能出现的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cl.exe%E5%87%BA%E9%94%99"><span class="nav-number">2.1.</span> <span class="nav-text">cl.exe出错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cocoeval%E5%87%BA%E9%94%99"><span class="nav-number">2.2.</span> <span class="nav-text">cocoeval出错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nvcc.exe%E5%87%BA%E9%94%99"><span class="nav-number">2.3.</span> <span class="nav-text">nvcc.exe出错</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -199,7 +195,7 @@
 
 
   <div class="links-of-blogroll site-overview-item animated">
-    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
       Links
     </div>
     <ul class="links-of-blogroll-list">
@@ -319,8 +315,9 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>在windows 10系统上安装detectron2。</p>
-<span id="more"></span>
-<h2 id="环境依赖"><a href="#环境依赖" class="headerlink" title="环境依赖"></a>环境依赖</h2><p>给出自己的环境，低版本未测试。</p>
+<a id="more"></a>
+<h2 id="环境依赖">环境依赖</h2>
+<p>给出自己的环境，低版本未测试。</p>
 <ul>
 <li>Python 3.7.2</li>
 <li>Pytorch 1.6</li>
@@ -328,50 +325,62 @@
 <li>CUDA 10.2</li>
 <li>VS 2019 Community</li>
 </ul>
-<h3 id="安装-CUDA"><a href="#安装-CUDA" class="headerlink" title="安装 CUDA"></a>安装 CUDA</h3><p>进入<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-downloads">官网</a>，按部就班安装，<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37296487/article/details/83028394">参考教程</a>。</p>
+<h3 id="安装-cuda">安装 CUDA</h3>
+<p>进入<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-downloads">官网</a>，按部就班安装，<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37296487/article/details/83028394">参考教程</a>。</p>
 <p>cmd输入如下命令，测试CUDA是否安装成功。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvcc -V</span><br></pre></td></tr></table></figure>
-<h3 id="安装-Pytorch"><a href="#安装-Pytorch" class="headerlink" title="安装 Pytorch"></a>安装 Pytorch</h3><p>python和git这些基本的就不提了，介绍一下pytorch的安装。</p>
+<h3 id="安装-pytorch">安装 Pytorch</h3>
+<p>python和git这些基本的就不提了，介绍一下pytorch的安装。</p>
 <p>进入<a target="_blank" rel="noopener" href="https://pytorch.org/">pytorch官网</a>，选择相对应的版本，使用pip直接安装。</p>
-<p><img src="/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/1.png" alt></p>
+<p><img src="/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/1.png"></p>
 <p>测试Pytorch是否安装成功。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch, torchvision</span><br><span class="line"><span class="built_in">print</span>(torch.__version__, torch.cuda.is_available())</span><br></pre></td></tr></table></figure>
-<h3 id="安装-VS-2019"><a href="#安装-VS-2019" class="headerlink" title="安装 VS 2019"></a>安装 VS 2019</h3><p>进入<a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/zh-hans/downloads/">vs官网</a>，选择community版本进行下载。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch, torchvision</span><br><span class="line">print(torch.__version__, torch.cuda.is_available())</span><br></pre></td></tr></table></figure>
+<h3 id="安装-vs-2019">安装 VS 2019</h3>
+<p>进入<a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/zh-hans/downloads/">vs官网</a>，选择community版本进行下载。</p>
 <p>下载完成后，先不着急运行安装程序，按<a target="_blank" rel="noopener" href="https://www.loongten.com/2019/06/18/vs2019/">博客</a>将安装目录迁移到非系统盘（C盘实在是装不下了）。</p>
 <p>完成后，运行安装程序，选择C++组件即可，其他组件看个人需求选择。</p>
-<h3 id="安装-pycocotools"><a href="#安装-pycocotools" class="headerlink" title="安装 pycocotools"></a>安装 pycocotools</h3><p><a target="_blank" rel="noopener" href="https://github.com/cocodataset/cocoapi">原版</a>的pycocotools不支持windows，需要使用<a target="_blank" rel="noopener" href="https://github.com/philferriere/cocoapi">修改版</a>。</p>
+<h3 id="安装-pycocotools">安装 pycocotools</h3>
+<p><a target="_blank" rel="noopener" href="https://github.com/cocodataset/cocoapi">原版</a>的pycocotools不支持windows，需要使用<a target="_blank" rel="noopener" href="https://github.com/philferriere/cocoapi">修改版</a>。</p>
 <p>可通过如下命令安装</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/philferriere/cocoapi.git</span><br><span class="line"><span class="built_in">cd</span> PythonAPI</span><br><span class="line">python setup.py build_ext --inplace</span><br><span class="line">python setup.py build_ext install</span><br></pre></td></tr></table></figure>
 <p>或者直接</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install git+https://github.com/philferriere/cocoapi.git<span class="comment">#subdirectory=PythonAPI</span></span><br></pre></td></tr></table></figure>
 <p>出现Successfully installed pycocotools-2.0即为安装成功。</p>
-<h3 id="安装-detectron2"><a href="#安装-detectron2" class="headerlink" title="安装 detectron2"></a>安装 detectron2</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/facebookresearch/detectron2.git</span><br></pre></td></tr></table></figure>
+<h3 id="安装-detectron2">安装 detectron2</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/facebookresearch/detectron2.git</span><br></pre></td></tr></table></figure>
 <p>修改文件 setup.py，注释掉</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;pycocotools&gt;=2.0.1&quot;</span>,</span><br></pre></td></tr></table></figure>
 <p>开始安装</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python setup.py build develop</span><br></pre></td></tr></table></figure>
 <p>安装过程无报错即可。</p>
-<h4 id="目标检测"><a href="#目标检测" class="headerlink" title="目标检测"></a>目标检测</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_b275ba.pkl</span><br></pre></td></tr></table></figure>
-<h4 id="实例分割"><a href="#实例分割" class="headerlink" title="实例分割"></a>实例分割</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_f10217.pkl</span><br></pre></td></tr></table></figure>
-<h2 id="可能出现的问题"><a href="#可能出现的问题" class="headerlink" title="可能出现的问题"></a>可能出现的问题</h2><p><a target="_blank" rel="noopener" href="https://github.com/conansherry/detectron2/issues/2">github issue</a></p>
+<h4 id="目标检测">目标检测</h4>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_b275ba.pkl</span><br></pre></td></tr></table></figure>
+<h4 id="实例分割">实例分割</h4>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_f10217.pkl</span><br></pre></td></tr></table></figure>
+<h2 id="可能出现的问题">可能出现的问题</h2>
+<p><a target="_blank" rel="noopener" href="https://github.com/conansherry/detectron2/issues/2">github issue</a></p>
 <p>安装时提示缺少什么包，直接pip install即可，出问题可以查stackoverflow。</p>
-<h3 id="cl-exe出错"><a href="#cl-exe出错" class="headerlink" title="cl.exe出错"></a>cl.exe出错</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35067322/article/details/105835311">解决方法</a></p>
+<h3 id="cl.exe出错">cl.exe出错</h3>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35067322/article/details/105835311">解决方法</a></p>
 <p>添加环境变量</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\bin\Hostx64\x64</span><br></pre></td></tr></table></figure>
 <p>如下即可</p>
-<p><img src="/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/2.png" alt></p>
-<h3 id="cocoeval出错"><a href="#cocoeval出错" class="headerlink" title="cocoeval出错"></a>cocoeval出错</h3><p>修改文件 detectron2\detectron2\layers\csrc\cocoeval\cocoeval.cpp</p>
+<p><img src="/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/2.png"></p>
+<h3 id="cocoeval出错">cocoeval出错</h3>
+<p>修改文件 detectron2.cpp</p>
 <p>添加</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br></pre></td></tr></table></figure>
 <p>修改</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">localtime_r</span>(&amp;rawtime, &amp;local_time);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localtime_r(&amp;rawtime, &amp;local_time);</span><br></pre></td></tr></table></figure>
 <p>为</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">localtime_s</span>(&amp;local_time, &amp;rawtime);</span><br></pre></td></tr></table></figure>
-<h3 id="nvcc-exe出错"><a href="#nvcc-exe出错" class="headerlink" title="nvcc.exe出错"></a>nvcc.exe出错</h3><p>修改文件 detectron2/detectron2/layers/csrc/nms_rotated/nms_rotated_cuda.cu</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localtime_s(&amp;local_time, &amp;rawtime);</span><br></pre></td></tr></table></figure>
+<h3 id="nvcc.exe出错">nvcc.exe出错</h3>
+<p>修改文件 detectron2/detectron2/layers/csrc/nms_rotated/nms_rotated_cuda.cu</p>
 <p>在11行</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> WITH_HIP</span></span><br></pre></td></tr></table></figure>
 <p>之前添加</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WITH_HIP</span></span><br></pre></td></tr></table></figure>
+
     </div>
 
     
@@ -460,7 +469,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">90k</span>
+    <span title="站点总字数">100k</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -503,8 +512,25 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
-<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
+<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
 

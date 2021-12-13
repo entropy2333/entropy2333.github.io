@@ -4,7 +4,7 @@
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.0.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -55,11 +55,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -157,7 +153,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">3.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Word-Lattice"><span class="nav-number">3.1.</span> <span class="nav-text">Word Lattice</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lattice-Position-Attention"><span class="nav-number">3.2.</span> <span class="nav-text">Lattice Position Attention</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Masked-Segment-Prediction"><span class="nav-number">3.3.</span> <span class="nav-text">Masked Segment Prediction</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#methodology"><span class="nav-number">3.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#word-lattice"><span class="nav-number">3.1.</span> <span class="nav-text">Word Lattice</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lattice-position-attention"><span class="nav-number">3.2.</span> <span class="nav-text">Lattice Position Attention</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#masked-segment-prediction"><span class="nav-number">3.3.</span> <span class="nav-text">Masked Segment Prediction</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -200,7 +196,7 @@
 
 
   <div class="links-of-blogroll site-overview-item animated">
-    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
       Links
     </div>
     <ul class="links-of-blogroll-list">
@@ -308,7 +304,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.2k</span>
+      <span>1.3k</span>
     </span>
 </div>
 
@@ -320,34 +316,47 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>将词汇信息融入BERT（NAACL 2021）</p>
-<span id="more"></span>
-<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
-<li>arxiv: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2104.07204v1.pdf">https://arxiv.org/pdf/2104.07204v1.pdf</a></li>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<ul>
+<li>arxiv: https://arxiv.org/pdf/2104.07204v1.pdf</li>
 <li>code: 暂无</li>
 </ul>
-<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>中文预训练模型将文本作为字符序列处理，忽略了粗粒度的语义特征。对于中文来说，词义并不完全是字义的组合，如”老板“并不等于“老的板”。将词级别的特征加入模型，可以有效补充字级别的不足。</p>
+<h2 id="background">Background</h2>
+<p>中文预训练模型将文本作为字符序列处理，忽略了粗粒度的语义特征。对于中文来说，词义并不完全是字义的组合，如”老板“并不等于“老的板”。将词级别的特征加入模型，可以有效补充字级别的不足。</p>
 <p>本文设计了word lattice的结构来利用多粒度的输入，让预训练模型在下游任务中学会利用这些特征。</p>
 <p>让Bert学会单词主要有两个难点：</p>
 <ul>
 <li>Bert原本的输入是字符序列，加入lattice后怎样描述位置信息。</li>
 <li>对于Masked Languaged Model，怎样针对lattice结构设计mask任务。</li>
 </ul>
-<p>本文设计了lattice position attention（LPA），以帮助transformer利用lattice中文本单元的位置和距离信息。此外，还提出了masked segment prediction（MSP）任务。</p>
-<script type="math/tex; mode=display">
-\rm{Lattice-BERT} = \rm{BERT} + \rm{word\ lattice} + LPA + MSP</script><h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Word-Lattice"><a href="#Word-Lattice" class="headerlink" title="Word Lattice"></a>Word Lattice</h3><p><img src="/2021/04/16/Lattice-BERT/image-20210416194914983.png" alt="image-20210416194914983" style="zoom: 80%;"></p>
+<p>本文设计了lattice position attention（LPA），以帮助transformer利用lattice中文本单元的位置和距离信息。此外，还提出了masked segment prediction（MSP）任务。 <span class="math display">\[
+\rm{Lattice-BERT} = \rm{BERT} + \rm{word\ lattice} + LPA + MSP
+\]</span></p>
+<h2 id="methodology">Methodology</h2>
+<h3 id="word-lattice">Word Lattice</h3>
+<p><img src="/2021/04/16/Lattice-BERT/image-20210416194914983.png" alt="image-20210416194914983" style="zoom: 80%;"></p>
 <p>Lattice就是一个有向无环图，和Lattice-LSTM的思想类似。难点在于如何在编码层保持lattice的结构，以及如何避免冗余信息带来的潜在影响。</p>
-<h3 id="Lattice-Position-Attention"><a href="#Lattice-Position-Attention" class="headerlink" title="Lattice Position Attention"></a>Lattice Position Attention</h3><p>在BERT的attention基础上，加了三个位置相关项。</p>
-<script type="math/tex; mode=display">
-\tilde{\alpha}_{ij} = \alpha_{ij} + \rm{att}_{ij} + b_{ij} + r_{ij}</script><p>其中，$\alpha<em>{ij}$表示原来的attention，$\rm{att}</em>{ij}$计算了绝对位置的attention权重，$b<em>{ij}$则是对相对距离的计算，$r</em>{ij}$是对相对位置的缩放项。</p>
-<script type="math/tex; mode=display">
-\rm{att}_{ij} = \frac {1} {\sqrt{2d_k}}([P_{s_i}^S;P_{e_i}^E]W^q)([P_{s_i}^S;P_{e_i}^E]W^k)^T</script><script type="math/tex; mode=display">
-b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{ee}</script><blockquote>
+<h3 id="lattice-position-attention">Lattice Position Attention</h3>
+<p>在BERT的attention基础上，加了三个位置相关项。 <span class="math display">\[
+\tilde{\alpha}_{ij} = \alpha_{ij} + \rm{att}_{ij} + b_{ij} + r_{ij}
+\]</span></p>
+<p>其中，<span class="math inline">\(\alpha_{ij}\)</span>表示原来的attention，<span class="math inline">\(\rm{att}_{ij}\)</span>计算了绝对位置的attention权重，<span class="math inline">\(b_{ij}\)</span>则是对相对距离的计算，<span class="math inline">\(r_{ij}\)</span>是对相对位置的缩放项。</p>
+<p><span class="math display">\[
+\rm{att}_{ij} = \frac {1} {\sqrt{2d_k}}([P_{s_i}^S;P_{e_i}^E]W^q)([P_{s_i}^S;P_{e_i}^E]W^k)^T
+\]</span></p>
+<p><span class="math display">\[
+b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{ee}
+\]</span></p>
+<blockquote>
 <p>感觉和FLAT类似，也是计算四个距离。</p>
 </blockquote>
-<h3 id="Masked-Segment-Prediction"><a href="#Masked-Segment-Prediction" class="headerlink" title="Masked Segment Prediction"></a>Masked Segment Prediction</h3><p>BERT对单字掩码，Lattice-BERT则是对Segment掩码。</p>
+<h3 id="masked-segment-prediction">Masked Segment Prediction</h3>
+<p>BERT对单字掩码，Lattice-BERT则是对Segment掩码。</p>
 <p>Segment定义为：lattice的一个连通子图，且Segment之间彼此token不重叠，如下图。具体来说，为了句子分段，需要逐字遍历，判断当前的字是否是之前所有单词的结尾（真拗口）。</p>
 <p><img src="/2021/04/16/Lattice-BERT/image-20210416195015009.png" alt="image-20210416195015009" style="zoom:80%;"></p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>本文在11个中文NLU任务上进行实验，包括文本分类、阅读理解、序列标注等，在MSRA-NER和CLUE数据集上进行了实验，并与RoBERTa等预训练模型进行了比较。</p>
+<h2 id="experiment">Experiment</h2>
+<p>本文在11个中文NLU任务上进行实验，包括文本分类、阅读理解、序列标注等，在MSRA-NER和CLUE数据集上进行了实验，并与RoBERTa等预训练模型进行了比较。</p>
 <p><img src="/2021/04/16/Lattice-BERT/image-20210416201801843.png" alt="image-20210416201801843" style="zoom:80%;"></p>
 
     </div>
@@ -456,7 +465,7 @@ b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{e
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">90k</span>
+    <span title="站点总字数">100k</span>
   </span>
 </div>
 <div class="busuanzi-count">
@@ -499,8 +508,25 @@ b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{e
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
-<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
+<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
 
