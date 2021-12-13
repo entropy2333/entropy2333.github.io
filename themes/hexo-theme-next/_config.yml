@@ -160,7 +160,7 @@ social_icons:
 
 # Blog rolls
 links_settings:
-  icon: fa fa-globe
+  icon: fa fa-link
   title: Links
   # Available values: block | inline
   layout: block
@@ -523,7 +523,7 @@ math:
   mathjax:
     enable: true
     # Available values: none | ams | all
-    tags: none
+    tags: ams
 
   katex:
     enable: false
