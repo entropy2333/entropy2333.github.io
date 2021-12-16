@@ -156,7 +156,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method"><span class="nav-number">3.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tlm-task-driven-language-modeling"><span class="nav-number">3.1.</span> <span class="nav-text">TLM: Task-Driven Language Modeling</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#retrieval-from-general-corpus"><span class="nav-number">3.1.1.</span> <span class="nav-text">Retrieval From General Corpus</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#joint-training"><span class="nav-number">3.1.2.</span> <span class="nav-text">Joint Training</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#comparison-between-tlm-and-plms"><span class="nav-number">3.2.</span> <span class="nav-text">Comparison Between TLM and PLMs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Method"><span class="nav-number">3.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TLM-Task-Driven-Language-Modeling"><span class="nav-number">3.1.</span> <span class="nav-text">TLM: Task-Driven Language Modeling</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Retrieval-From-General-Corpus"><span class="nav-number">3.1.1.</span> <span class="nav-text">Retrieval From General Corpus</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Joint-Training"><span class="nav-number">3.1.2.</span> <span class="nav-text">Joint Training</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Comparison-Between-TLM-and-PLMs"><span class="nav-number">3.2.</span> <span class="nav-text">Comparison Between TLM and PLMs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -307,7 +307,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
+      <span>1.8k</span>
     </span>
 </div>
 
@@ -321,14 +321,12 @@
         <p>提出了一种简单有效的学习框架TLM，其不需要大规模的预训练。</p>
 <p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114205822246.png" alt="image-20211114205822246" style="zoom:67%;"></p>
 <a id="more"></a>
-<h2 id="overview">Overview</h2>
-<p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114203947385.png" alt="image-20211114203947385" style="zoom: 67%;"></p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114203947385.png" alt="image-20211114203947385" style="zoom: 67%;"></p>
 <ul>
-<li>arxiv: https://arxiv.org/pdf/2111.04130v1.pdf</li>
-<li>code: https://github.com/yaoxingcheng/TLM</li>
+<li>arxiv: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2111.04130v1.pdf">https://arxiv.org/pdf/2111.04130v1.pdf</a></li>
+<li>code: <a target="_blank" rel="noopener" href="https://github.com/yaoxingcheng/TLM">https://github.com/yaoxingcheng/TLM</a></li>
 </ul>
-<h2 id="background">Background</h2>
-<p>NLP领域中，预训练-微调的框架已经显著地提升了各项任务的表现，但是预训练需要的算力过于高昂。RoBERTa-Large需要<span class="math inline">\(4.36\times10^{21}\)</span>FLOPs的算力，而更大的GPT-3需要的算力是前者的50倍以上。大规模的预训练阻碍了研究者们探索新的预训练框架或者改进预训练的损失函数，相较之下人们花了大量精力改进微调步骤的算法，而其实预训练很大程度上决定了微调的上界。</p>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>NLP领域中，预训练-微调的框架已经显著地提升了各项任务的表现，但是预训练需要的算力过于高昂。RoBERTa-Large需要$4.36\times10^{21}$FLOPs的算力，而更大的GPT-3需要的算力是前者的50倍以上。大规模的预训练阻碍了研究者们探索新的预训练框架或者改进预训练的损失函数，相较之下人们花了大量精力改进微调步骤的算法，而其实预训练很大程度上决定了微调的上界。</p>
 <p>尽管也有工作研究和改善语言模型的预训练，但他们大部分专注于设计样本高效（sample-efficient）的自监督任务，或者设计更有效的Transformer架构用于预训练。此外还有通过知识蒸馏的方式，改进推理的效率，但蒸馏前依旧需要大规模的预训练。</p>
 <p>基于上述，本文提出了一种简单高效且无需预训练的框架，称为任务驱动的语言建模（<strong>T</strong>ask-driven Language <strong>M</strong>odeling，<strong>TLM</strong>）。本文的Motivation主要有以下两点：</p>
 <ul>
@@ -336,62 +334,58 @@
 <li>相较于优化无监督数据上的语言建模目标，在有监督的标注数据上训练对于下游任务是更高效的。</li>
 </ul>
 <p>TLM需要大规模的通用语料以及一些标注数据，将任务数据作为query以获取通用语料中的一个小的子集。本文在八个不同的任务上进行实验评估，在训练算力减小两个量级的情况下，取得了近于甚至超过BERT和RoBERTa的效果。·</p>
-<h2 id="method">Method</h2>
-<h3 id="tlm-task-driven-language-modeling">TLM: Task-Driven Language Modeling</h3>
-<p>作者认为，学习一个任务的关键之一在于快速准确地定位任务相关的信息。因此TLM包括两步：</p>
-<ol type="1">
+<h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><h3 id="TLM-Task-Driven-Language-Modeling"><a href="#TLM-Task-Driven-Language-Modeling" class="headerlink" title="TLM: Task-Driven Language Modeling"></a>TLM: Task-Driven Language Modeling</h3><p>作者认为，学习一个任务的关键之一在于快速准确地定位任务相关的信息。因此TLM包括两步：</p>
+<ol>
 <li>将任务数据作为query，从通用语料中检索数据；</li>
 <li>在获取的数据和任务数据上，联合优化任务目标和语言建模目标。</li>
 </ol>
-<h4 id="retrieval-from-general-corpus">Retrieval From General Corpus</h4>
-<p>给定任务数据<span class="math inline">\(x_i\in\mathcal{T} = \{(x_i, y_i)\}_i\)</span>，从通用语料中<span class="math inline">\(\mathcal{D}=\{d_i\}_i\)</span>获取子集<span class="math inline">\(\mathcal{S_i} = \{\tilde{d}_{i,1},\tilde{d}_{i,2},\cdots\}\)</span>。 其中<span class="math inline">\(\mathcal{S_i}\)</span>中包含了top-K个与<span class="math inline">\(x_i\)</span>相似的样本，最后获取的数据即为并集<span class="math inline">\(\mathcal{S}=\cup_iS_i\)</span>。</p>
+<h4 id="Retrieval-From-General-Corpus"><a href="#Retrieval-From-General-Corpus" class="headerlink" title="Retrieval From General Corpus"></a>Retrieval From General Corpus</h4><p>给定任务数据$x<em>i\in\mathcal{T} = {(x_i, y_i)}_i$，从通用语料中$\mathcal{D}={d_i}_i$获取子集$\mathcal{S_i} = {\tilde{d}</em>{i,1},\tilde{d}_{i,2},\cdots}$。<br>其中$\mathcal{S_i}$中包含了top-K个与$x_i$相似的样本，最后获取的数据即为并集$\mathcal{S}=\cup_iS_i$。</p>
 <p>文章出于简单与高效性的考虑，使用BM25用于检索，而没有采用基于embedding的方法。</p>
-<h4 id="joint-training">Joint Training</h4>
-<p>TLM的优化目标如下： <span class="math display">\[
+<h4 id="Joint-Training"><a href="#Joint-Training" class="headerlink" title="Joint Training"></a>Joint Training</h4><p>TLM的优化目标如下：</p>
+<script type="math/tex; mode=display">
 \mathbb{E}_{x\sim\mathcal{S}} [\rho_1\mathcal{L}_{\mathrm{mlm}}(x)] +
 \mathbb{E}_{x,y\sim\mathcal{T}}[\rho_2\mathcal{L}_{\mathrm{mlm}}(x) +
-\mathcal{L}_{\mathrm{task}}(f(x),y)]
-\]</span> 其中<span class="math inline">\(\rho_1\)</span>和<span class="math inline">\(\rho_2\)</span>为超参数。</p>
+\mathcal{L}_{\mathrm{task}}(f(x),y)]</script><p>其中$\rho_1$和$\rho_2$为超参数。</p>
 <p>训练分为两阶段：</p>
 <ul>
-<li>第一阶段，将<span class="math inline">\(\rho_1\)</span>个batch数据插入一个batch中用于梯度下降，这里<span class="math inline">\(\rho_1\)</span>为整数；</li>
-<li>第二阶段，将<span class="math inline">\(\rho_1\)</span>和<span class="math inline">\(\rho_2\)</span>都设为0，微调模型只优化任务目标。</li>
+<li>第一阶段，将$\rho_1$个batch数据插入一个batch中用于梯度下降，这里$\rho_1$为整数；</li>
+<li>第二阶段，将$\rho_1$和$\rho_2$都设为0，微调模型只优化任务目标。</li>
 </ul>
-<h3 id="comparison-between-tlm-and-plms">Comparison Between TLM and PLMs</h3>
+<h3 id="Comparison-Between-TLM-and-PLMs"><a href="#Comparison-Between-TLM-and-PLMs" class="headerlink" title="Comparison Between TLM and PLMs"></a>Comparison Between TLM and PLMs</h3><div class="table-container">
 <table>
 <thead>
-<tr class="header">
-<th style="text-align: center;"></th>
-<th style="text-align: center;">TLM</th>
-<th style="text-align: center;">PLMs</th>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">TLM</th>
+<th style="text-align:center">PLMs</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: center;">损失函数</td>
-<td style="text-align: center;"><span class="math inline">\(\mathcal{L}_{task}\)</span>和<span class="math inline">\(\mathcal{L}_{mlm}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\mathcal{L}_{mlm}\)</span></td>
+<tr>
+<td style="text-align:center">损失函数</td>
+<td style="text-align:center">$\mathcal{L}<em>{task}$和$\mathcal{L}</em>{mlm}$</td>
+<td style="text-align:center">$\mathcal{L}_{mlm}$</td>
 </tr>
-<tr class="even">
-<td style="text-align: center;">训练数据</td>
-<td style="text-align: center;"><span class="math inline">\(\mathcal{D}\)</span>的一个小子集和任务数据<span class="math inline">\(\mathcal{T}\)</span></td>
-<td style="text-align: center;">完整语料<span class="math inline">\(\mathcal{D}\)</span></td>
+<tr>
+<td style="text-align:center">训练数据</td>
+<td style="text-align:center">$\mathcal{D}$的一个小子集和任务数据$\mathcal{T}$</td>
+<td style="text-align:center">完整语料$\mathcal{D}$</td>
 </tr>
-<tr class="odd">
-<td style="text-align: center;">算力消耗</td>
-<td style="text-align: center;">8 GPUs<br>42 hours</td>
-<td style="text-align: center;">1000 GPUs<br>one day</td>
+<tr>
+<td style="text-align:center">算力消耗</td>
+<td style="text-align:center">8 GPUs<br>42 hours</td>
+<td style="text-align:center">1000 GPUs<br>one day</td>
 </tr>
-<tr class="even">
-<td style="text-align: center;">通用性</td>
-<td style="text-align: center;">Task-Driven</td>
-<td style="text-align: center;">Task-Agnostic</td>
+<tr>
+<td style="text-align:center">通用性</td>
+<td style="text-align:center">Task-Driven</td>
+<td style="text-align:center">Task-Agnostic</td>
 </tr>
 </tbody>
 </table>
+</div>
 <p>作者从高效性、灵活性和通用性上进行了比较。</p>
-<h2 id="experiment">Experiment</h2>
-<p>作者将任务分为高资源和低资源两类，高资源有着超过5000个任务数据。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>作者将任务分为高资源和低资源两类，高资源有着超过5000个任务数据。</p>
 <p><img src="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/image-20211114222213976.png" alt="image-20211114222213976" style="zoom: 67%;"></p>
 <p>从结果上来看，TLM以更少的算力取得了相近甚至更好的结果。</p>
 <p>本文还比较了不同的检索方法以及不同的通用语料对结果的影响：</p>
@@ -417,13 +411,13 @@
       <div class="popular-posts-title"><a href="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/" rel="bookmark">K-BERT: Enabling Language Representation with Knowledge Graph</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/" rel="bookmark">Label-Specific Dual Graph Neural Network for Multi-Label Text Classification</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2021/04/16/Lattice-BERT/" rel="bookmark">Lattice-BERT</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/" rel="bookmark">Lawformer: A Pre-trained Language Model for Chinese Legal Long Documents</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/" rel="bookmark">Label-Specific Dual Graph Neural Network for Multi-Label Text Classification</a></div>
     </li>
   </ul>
 
@@ -507,7 +501,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">101k</span>
+    <span title="站点总字数">90k</span>
   </span>
 </div>
 <div class="busuanzi-count">

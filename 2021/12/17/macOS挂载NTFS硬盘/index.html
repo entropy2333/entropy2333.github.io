@@ -20,21 +20,21 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"entropy2333.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="在macOS上挂载NTFS硬盘，支持读写。 问题 硬盘：西数 My Passport 1T 通过拓展坞连到mbp上只能读不能写，网上大概有三种方案：  下载NTFS For Mac软件 格式化硬盘为ExFAT格式 对于希捷硬盘，可以下载Paragon驱动。  操作步骤 展示命令行挂载硬盘的方法，用作备忘。 在桌面预先建立一个文件夹（如Passport） 1mkdir ~&#x2F;Desktop&#x2F;Passp">
+<meta name="description" content="在macOS上挂载NTFS硬盘，支持读写。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="macOS挂载NTFS硬盘">
 <meta property="og:url" content="https://entropy2333.github.io/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/index.html">
 <meta property="og:site_name" content="entropy2333">
-<meta property="og:description" content="在macOS上挂载NTFS硬盘，支持读写。 问题 硬盘：西数 My Passport 1T 通过拓展坞连到mbp上只能读不能写，网上大概有三种方案：  下载NTFS For Mac软件 格式化硬盘为ExFAT格式 对于希捷硬盘，可以下载Paragon驱动。  操作步骤 展示命令行挂载硬盘的方法，用作备忘。 在桌面预先建立一个文件夹（如Passport） 1mkdir ~&#x2F;Desktop&#x2F;Passp">
+<meta property="og:description" content="在macOS上挂载NTFS硬盘，支持读写。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://entropy2333.github.io/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/entropy2333/Desktop/blog/source/_posts/macOS挂载NTFS硬盘/image-20211217003813737.png">
+<meta property="og:image" content="https://entropy2333.github.io/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/image-20211217003813737.png">
 <meta property="article:published_time" content="2021-12-16T16:31:02.000Z">
-<meta property="article:modified_time" content="2021-12-16T16:40:57.884Z">
+<meta property="article:modified_time" content="2021-12-16T16:45:52.874Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="mac">
 <meta property="article:tag" content="shell">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://entropy2333.github.io/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/entropy2333/Desktop/blog/source/_posts/macOS挂载NTFS硬盘/image-20211217003813737.png">
+<meta name="twitter:image" content="https://entropy2333.github.io/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/image-20211217003813737.png">
 
 
 <link rel="canonical" href="https://entropy2333.github.io/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/">
@@ -302,7 +302,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>425</span>
+      <span>402</span>
     </span>
 </div>
 
@@ -314,24 +314,24 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>在macOS上挂载NTFS硬盘，支持读写。</p>
-<h2 id="问题">问题</h2>
-<p>硬盘：西数 My Passport 1T</p>
+<a id="more"></a>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>硬盘：西数 My Passport 1T</p>
 <p>通过拓展坞连到mbp上只能读不能写，网上大概有三种方案：</p>
 <ul>
-<li><p>下载NTFS For Mac软件</p></li>
-<li><p>格式化硬盘为ExFAT格式</p></li>
-<li><p>对于希捷硬盘，可以下载<a target="_blank" rel="noopener" href="https://www.seagate.com/cn/zh/support/software/paragon/">Paragon驱动</a>。</p></li>
+<li><p>下载NTFS For Mac软件</p>
+</li>
+<li><p>格式化硬盘为ExFAT格式</p>
+</li>
+<li><p>对于希捷硬盘，可以下载<a target="_blank" rel="noopener" href="https://www.seagate.com/cn/zh/support/software/paragon/">Paragon驱动</a>。</p>
+</li>
 </ul>
-<h2 id="操作步骤">操作步骤</h2>
-<p>展示命令行挂载硬盘的方法，用作备忘。</p>
+<h2 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h2><p>展示命令行挂载硬盘的方法，用作备忘。</p>
 <p>在桌面预先建立一个文件夹（如Passport）</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/Desktop/Passport</span><br></pre></td></tr></table></figure>
 <p>查看当前磁盘是否被挂载</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diskutil list</span><br></pre></td></tr></table></figure>
 <p>带有external的即为移动硬盘</p>
-<figure>
-<img src="/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/entropy2333/Desktop/blog/source/_posts/macOS挂载NTFS硬盘/image-20211217003813737.png" alt="image-20211217003813737"><figcaption aria-hidden="true">image-20211217003813737</figcaption>
-</figure>
+<p><img title src="/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/image-20211217003813737.png" alt="image-20211217003813737" data-align="center" width="613"></p>
 <p>如果已经挂载需要先卸载</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo umount &#x2F;dev&#x2F;disk4s1</span><br></pre></td></tr></table></figure>
 <p>否则以NTFS格式挂载到桌面建立的文件夹</p>
@@ -423,7 +423,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">101k</span>
+    <span title="站点总字数">90k</span>
   </span>
 </div>
 <div class="busuanzi-count">
