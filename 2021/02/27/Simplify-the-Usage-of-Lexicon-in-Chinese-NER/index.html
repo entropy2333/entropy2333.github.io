@@ -155,7 +155,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Approach"><span class="nav-number">3.</span> <span class="nav-text">Approach</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Softword"><span class="nav-number">3.1.</span> <span class="nav-text">Softword</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ExSoftword"><span class="nav-number">3.2.</span> <span class="nav-text">ExSoftword</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SoftLexicon"><span class="nav-number">3.3.</span> <span class="nav-text">SoftLexicon</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Detail"><span class="nav-number">4.</span> <span class="nav-text">Detail</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#approach"><span class="nav-number">3.</span> <span class="nav-text">Approach</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#softword"><span class="nav-number">3.1.</span> <span class="nav-text">Softword</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exsoftword"><span class="nav-number">3.2.</span> <span class="nav-text">ExSoftword</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#softlexicon"><span class="nav-number">3.3.</span> <span class="nav-text">SoftLexicon</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#detail"><span class="nav-number">4.</span> <span class="nav-text">Detail</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -319,13 +319,13 @@
     <div class="post-body" itemprop="articleBody">
         <p>介绍如何在中文NER模型中更好地结合词典信息（ACL 2020）</p>
 <a id="more"></a>
-<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
-<li><p>arxiv: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1908.05969v2.pdf">https://arxiv.org/pdf/1908.05969v2.pdf</a></p>
-</li>
-<li><p>code: <a target="_blank" rel="noopener" href="https://github.com/v-mipeng/LexiconAugmentedNER">https://github.com/v-mipeng/LexiconAugmentedNER</a></p>
-</li>
+<h2 id="overview">Overview</h2>
+<ul>
+<li><p>arxiv: https://arxiv.org/pdf/1908.05969v2.pdf</p></li>
+<li><p>code: https://github.com/v-mipeng/LexiconAugmentedNER</p></li>
 </ul>
-<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>ref：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/142615620">https://zhuanlan.zhihu.com/p/142615620</a></p>
+<h2 id="background">Background</h2>
+<p>ref：https://zhuanlan.zhihu.com/p/142615620</p>
 <p>近几年，在中文NER模型中融合词典信息的工作有许多，这主要得益于Lattice-LSTM的工作。但是Lattice-LSTM有几个缺点：</p>
 <ul>
 <li>计算性能低下，采用RNN结构，不能batch并行化。</li>
@@ -333,22 +333,29 @@
 <li>可迁移性差，只适用于LSTM。</li>
 </ul>
 <p>本篇论文提出了一种简单的方法，在embedding层利用词典信息，避免了复杂的模型结构，易于迁移。</p>
-<h2 id="Approach"><a href="#Approach" class="headerlink" title="Approach"></a>Approach</h2><p>本文比较了三种不同的融合方式</p>
-<h3 id="Softword"><a href="#Softword" class="headerlink" title="Softword"></a>Softword</h3><p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/v2-8924bacd6f5e4b98a1aea8ad51c01bfa_720w.jpg" alt="img" style="zoom:80%;"></p>
+<h2 id="approach">Approach</h2>
+<p>本文比较了三种不同的融合方式</p>
+<h3 id="softword">Softword</h3>
+<p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/v2-8924bacd6f5e4b98a1aea8ad51c01bfa_720w.jpg" alt="img" style="zoom:80%;"></p>
 <p>Softword先对句子分词，然后对每个字符嵌入BMESO的embedding。这种方法存在分词造成的误差传播，也无法引入词汇对应的信息。</p>
-<h3 id="ExSoftword"><a href="#ExSoftword" class="headerlink" title="ExSoftword"></a>ExSoftword</h3><p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/image-20210227130546383.png" alt="image-20210227130546383" style="zoom:80%;"></p>
-<p>ExSoftword在Softword的基础上，将所有匹配的词汇对字符进行编码，按照BMESO编码构建5维向量。比如山表示为[1, 1, 1, 0, 0]</p>
-<script type="math/tex; mode=display">
-x_j^c \leftarrow [x_j^c; e^{seg}(segs(c_j))]</script><p>ExSoftword虽然引入了标注信息，但仍然没有引入词汇的embedding信息。并且这种方法无法恢复词汇匹配结果，从而导致信息损失。</p>
-<h3 id="SoftLexicon"><a href="#SoftLexicon" class="headerlink" title="SoftLexicon"></a>SoftLexicon</h3><p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/image-20210227130555211.png" alt="image-20210227130555211" style="zoom:80%;"></p>
+<h3 id="exsoftword">ExSoftword</h3>
+<p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/image-20210227130546383.png" alt="image-20210227130546383" style="zoom:80%;"></p>
+<p>ExSoftword在Softword的基础上，将所有匹配的词汇对字符进行编码，按照BMESO编码构建5维向量。比如山表示为[1, 1, 1, 0, 0] <span class="math display">\[
+x_j^c \leftarrow [x_j^c; e^{seg}(segs(c_j))]
+\]</span> ExSoftword虽然引入了标注信息，但仍然没有引入词汇的embedding信息。并且这种方法无法恢复词汇匹配结果，从而导致信息损失。</p>
+<h3 id="softlexicon">SoftLexicon</h3>
+<p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/image-20210227130555211.png" alt="image-20210227130555211" style="zoom:80%;"></p>
 <p>为了解决上述问题，SoftLexicon对每个字符依次获取BMES对应所有的词汇集合，然后再编码表示。</p>
 <p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/image-20210227131612177.png" alt="image-20210227131612177" style="zoom:80%;"></p>
-<p>之后将词汇的embedding与词向量拼接作为输入</p>
-<script type="math/tex; mode=display">
-e^s(B,M,E,S) = [v^s(B)\oplus v^s(M)\oplus v^s(E)\oplus v^s(S)]</script><script type="math/tex; mode=display">
-x^c \leftarrow [x^c;e^s(B,M,E,S)]</script><p>对于词汇集合编码，采取词频加权进行计算</p>
-<script type="math/tex; mode=display">
-v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)</script><h2 id="Detail"><a href="#Detail" class="headerlink" title="Detail"></a>Detail</h2><p>模型主要基于Lattice-LSTM，所以后续的模型结构依旧是BiLSTM-CRF，但因为只在embedding层修改，所以可以迁移到其他模型（CNN、BERT等）。</p>
+<p>之后将词汇的embedding与词向量拼接作为输入 <span class="math display">\[
+e^s(B,M,E,S) = [v^s(B)\oplus v^s(M)\oplus v^s(E)\oplus v^s(S)]
+\]</span> <span class="math display">\[
+x^c \leftarrow [x^c;e^s(B,M,E,S)]
+\]</span> 对于词汇集合编码，采取词频加权进行计算 <span class="math display">\[
+v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)
+\]</span></p>
+<h2 id="detail">Detail</h2>
+<p>模型主要基于Lattice-LSTM，所以后续的模型结构依旧是BiLSTM-CRF，但因为只在embedding层修改，所以可以迁移到其他模型（CNN、BERT等）。</p>
 <p>与Lattice-LSTM类似，采用了预训练的char+bichar embedding，还有一个word embedding文件（词典）。代码中中的预处理也主要分为三类：word、biword和gaz。</p>
 <p>首先根据预训练embedding建立alphabet，存储字符到id的映射以及对应的embedding向量。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">data_initialization</span>(<span class="params">data, gaz_file, train_file, dev_file, test_file</span>):</span></span><br><span class="line">    data.build_alphabet(train_file)</span><br><span class="line">    data.build_alphabet(dev_file)</span><br><span class="line">    data.build_alphabet(test_file)</span><br><span class="line">    data.build_gaz_file(gaz_file)</span><br><span class="line">    data.build_gaz_alphabet(train_file,count=<span class="literal">True</span>)</span><br><span class="line">    data.build_gaz_alphabet(dev_file,count=<span class="literal">True</span>)</span><br><span class="line">    data.build_gaz_alphabet(test_file,count=<span class="literal">True</span>)</span><br><span class="line">    data.fix_alphabet()</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line">data = data_initialization(data, gaz_file, train_file, dev_file, test_file)</span><br></pre></td></tr></table></figure>
@@ -472,7 +479,7 @@ v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)</script><h2 id="Detail"><a href="#De
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">90k</span>
+    <span title="站点总字数">101k</span>
   </span>
 </div>
 <div class="busuanzi-count">

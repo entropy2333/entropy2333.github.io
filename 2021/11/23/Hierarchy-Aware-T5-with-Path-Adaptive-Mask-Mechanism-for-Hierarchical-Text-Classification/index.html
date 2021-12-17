@@ -159,7 +159,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#T5"><span class="nav-number">2.1.</span> <span class="nav-text">T5</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Method"><span class="nav-number">3.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hierarchy-Aware-T5"><span class="nav-number">3.1.</span> <span class="nav-text">Hierarchy-Aware T5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Path-Adaptive-Mask-Mechanism"><span class="nav-number">3.2.</span> <span class="nav-text">Path-Adaptive Mask Mechanism</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#t5"><span class="nav-number">2.1.</span> <span class="nav-text">T5</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method"><span class="nav-number">3.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hierarchy-aware-t5"><span class="nav-number">3.1.</span> <span class="nav-text">Hierarchy-Aware T5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#path-adaptive-mask-mechanism"><span class="nav-number">3.2.</span> <span class="nav-text">Path-Adaptive Mask Mechanism</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -310,7 +310,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>2k</span>
     </span>
 </div>
 
@@ -324,67 +324,81 @@
         <p>本文提出了一种层次感知的T5模型以及一种路径适应的掩码机制，称为PAMM-HiA-T5，不仅将上层标签的信息融入了下层标签，同时在标签预测时也引入了路径依赖信息。本文的模型在RCV1-V2、NYT和WOS上取得了SOTA。</p>
 <p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123135058290.png" alt="image-20211123135058290" style="zoom:67%;"></p>
 <a id="more"></a>
-<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123134904566.png" alt="image-20211123134904566" style="zoom:67%;"></p>
+<h2 id="overview">Overview</h2>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123134904566.png" alt="image-20211123134904566" style="zoom:67%;"></p>
 <ul>
-<li>arxiv: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2109.08585.pdf">https://arxiv.org/pdf/2109.08585.pdf</a></li>
+<li>arxiv: https://arxiv.org/pdf/2109.08585.pdf</li>
 <li>code: 暂无</li>
 </ul>
-<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>标签依赖性在层次化文本分类中很重要，作者认为主要可以分为层次依赖和路径依赖两种：</p>
+<h2 id="background">Background</h2>
+<p>标签依赖性在层次化文本分类中很重要，作者认为主要可以分为层次依赖和路径依赖两种：</p>
 <p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123140332274.png" alt="image-20211123140332274" style="zoom:67%;"></p>
 <p>本文提出的模型不仅可以在生成模型中捕获父子标签的依赖关系，也可以识别特定路径中的层次依赖。在预测阶段，下一个标签取决于文本序列和当前路径上已经生成的标签。</p>
-<h3 id="T5"><a href="#T5" class="headerlink" title="T5"></a>T5</h3><p>T5模型是一种编码器-解码器架构，模型结构如下图所示：</p>
+<h3 id="t5">T5</h3>
+<p>T5模型是一种编码器-解码器架构，模型结构如下图所示：</p>
 <p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123140806474.png" alt="image-20211123140806474" style="zoom: 67%;"></p>
-<p>在解码器部分，有一个额外的sublayer用于处理解码器的输出，被称为Casual Self-Attention Sublayer。</p>
-<script type="math/tex; mode=display">
+<p>在解码器部分，有一个额外的sublayer用于处理解码器的输出，被称为Casual Self-Attention Sublayer。 <span class="math display">\[
 \begin{align}
-\text{Block}_{Decoder}(Q_d,K_d,V_d,O_e) &= 
+\text{Block}_{Decoder}(Q_d,K_d,V_d,O_e) &amp;= 
     \text{FFN}(\text{Multi-Head}(\text{Multi-Head}(Q_d, K_d, V_d), O_e, O_e)) \\
-\text{Decoder}(Q_d, K_d, V_d, O_e) &= \text{stack}(\text{Block}_{Decoder}(Q_d, K_d, V_d, O_e))
-\end{align}</script><h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><h3 id="Hierarchy-Aware-T5"><a href="#Hierarchy-Aware-T5" class="headerlink" title="Hierarchy-Aware T5"></a>Hierarchy-Aware T5</h3><p>首先将标签集转化为multi-level的标签序列</p>
-<script type="math/tex; mode=display">
+\text{Decoder}(Q_d, K_d, V_d, O_e) &amp;= \text{stack}(\text{Block}_{Decoder}(Q_d, K_d, V_d, O_e))
+\end{align}
+\]</span></p>
+<h2 id="method">Method</h2>
+<h3 id="hierarchy-aware-t5">Hierarchy-Aware T5</h3>
+<p>首先将标签集转化为multi-level的标签序列 <span class="math display">\[
 \begin{align}
-L_i &= \{l_1, l_2, l_3, l_5, l_5\} \\ 
-\Rightarrow ML_i &= [l_1,\_,l_3,/,l_2,\_,l_4,/,l_5,EOS]
-\end{align}</script><p>其中“_”表示intra-level关系，“/”表示inter-level关系。</p>
-<p>对于文本序列，直接送入T5编码器：</p>
-<script type="math/tex; mode=display">
-O_{text} = \text{Encoder}(Q_{text},K_{text},V_{text})</script><p>对于标签序列，送入T5的解码器：</p>
-<script type="math/tex; mode=display">
-O_{hierarchy} = \text{Decoder}(Q_{label},K_{label},V_{label},O_{text})</script><p>由此得到了level dependency信息</p>
-<script type="math/tex; mode=display">
-A_{label} = \text{Multi-Head}(Q_{label},K_{label},V_{label})</script><p>并通过cross-attention融合文本和标签信息</p>
-<script type="math/tex; mode=display">
-A_{cross} = \text{Multi-Head}(A_{label}, O_{text}, O_{text})</script><p>预测时是n个时间戳的结果（n表示文本长度）</p>
-<script type="math/tex; mode=display">
-\text{Pred} = \text{softmax}(O_{hierarchy}W_3+b_3)\in\mathbb{R}^{n\times K}</script><h3 id="Path-Adaptive-Mask-Mechanism"><a href="#Path-Adaptive-Mask-Mechanism" class="headerlink" title="Path-Adaptive Mask Mechanism"></a>Path-Adaptive Mask Mechanism</h3><p>掩码矩阵是一个下三角矩阵，通常由0和1组成</p>
+L_i &amp;= \{l_1, l_2, l_3, l_5, l_5\} \\ 
+\Rightarrow ML_i &amp;= [l_1,\_,l_3,/,l_2,\_,l_4,/,l_5,EOS]
+\end{align}
+\]</span> 其中“_”表示intra-level关系，“/”表示inter-level关系。</p>
+<p>对于文本序列，直接送入T5编码器： <span class="math display">\[
+O_{text} = \text{Encoder}(Q_{text},K_{text},V_{text})
+\]</span> 对于标签序列，送入T5的解码器： <span class="math display">\[
+O_{hierarchy} = \text{Decoder}(Q_{label},K_{label},V_{label},O_{text})
+\]</span> 由此得到了level dependency信息 <span class="math display">\[
+A_{label} = \text{Multi-Head}(Q_{label},K_{label},V_{label})
+\]</span> 并通过cross-attention融合文本和标签信息 <span class="math display">\[
+A_{cross} = \text{Multi-Head}(A_{label}, O_{text}, O_{text})
+\]</span> 预测时是n个时间戳的结果（n表示文本长度） <span class="math display">\[
+\text{Pred} = \text{softmax}(O_{hierarchy}W_3+b_3)\in\mathbb{R}^{n\times K}
+\]</span></p>
+<h3 id="path-adaptive-mask-mechanism">Path-Adaptive Mask Mechanism</h3>
+<p>掩码矩阵是一个下三角矩阵，通常由0和1组成</p>
 <p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123144409350.png" alt="image-20211123144409350" style="zoom:67%;"></p>
-<p>掩码矩阵的定义如下</p>
-<script type="math/tex; mode=display">
+<p>掩码矩阵的定义如下 <span class="math display">\[
 m_{i,j}=\left\{
 \begin{array}
     {rl}
-    1  & {\{I_i\in L, I_j\in \text{ancestor}(I_i), 1\leq j<i\}} \\
-    &  \cup{\{I_i\in S, j=i-1\}} \\
-    &  \cup{\{I_i\in S, I_j\in \text{ancestor}(I_{i-1}), 1\leq j<i\}} \\
-    0  & {else}
-\end{array} \right.</script><p>并定义了掩码损失</p>
-<script type="math/tex; mode=display">
+    1  &amp; {\{I_i\in L, I_j\in \text{ancestor}(I_i), 1\leq j&lt;i\}} \\
+    &amp;  \cup{\{I_i\in S, j=i-1\}} \\
+    &amp;  \cup{\{I_i\in S, I_j\in \text{ancestor}(I_{i-1}), 1\leq j&lt;i\}} \\
+    0  &amp; {else}
+\end{array} \right.
+\]</span> 并定义了掩码损失 <span class="math display">\[
 \begin{aligned}
 \text{Loss}_{\text{PAMM}}=\sum_{b=1}^{B}(\frac{\sum_{h=1}^{H}(\sum_{i=1}^{n}(1-\sum_{j\in C}s_{i,j}))}{H})
-\end{aligned}</script><script type="math/tex; mode=display">
+\end{aligned}
+\]</span></p>
+<p><span class="math display">\[
 \begin{aligned}
-    \text{Loss}=&\text{Loss}_{\text{HiA-T5}}+\rho \text{Loss}_{\text{PAMM}}
-\end{aligned}</script><h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>数据集选取RCV1-V2、NTY和WOS</p>
+    \text{Loss}=&amp;\text{Loss}_{\text{HiA-T5}}+\rho \text{Loss}_{\text{PAMM}}
+\end{aligned}
+\]</span></p>
+<h2 id="experiment">Experiment</h2>
+<p>数据集选取RCV1-V2、NTY和WOS</p>
 <p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141604818.png" alt="image-20211123141604818" style="zoom:67%;"></p>
 <p>并统计了数据集内不同层次标签的数量：</p>
 <p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141625514.png" alt="image-20211123141625514" style="zoom:67%;"></p>
 <p>选用T5-base作为backbone，有220M参数，12个注意力头。编码器输入的最大长度为300，解码器的最大输出长度为60。采用Adam优化器，batch size为10，学习率为3e-4，微调3个epoch。</p>
 <p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141847051.png" alt="image-20211123141847051" style="zoom:67%;"></p>
-<center>RCV1-V2实验结果</center>
-
+<center>
+RCV1-V2实验结果
+</center>
 <p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141920675.png" alt="image-20211123141920675" style="zoom:67%;"></p>
-<center>NYT和WOS的实验结果</center>
-
+<center>
+NYT和WOS的实验结果
+</center>
 
     </div>
 
@@ -474,7 +488,7 @@ m_{i,j}=\left\{
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">90k</span>
+    <span title="站点总字数">101k</span>
   </span>
 </div>
 <div class="busuanzi-count">

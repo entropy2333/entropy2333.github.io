@@ -154,7 +154,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">3.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#New-Word-Discovery"><span class="nav-number">3.1.</span> <span class="nav-text">New-Word Discovery</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Char-Entity-Transformer"><span class="nav-number">3.2.</span> <span class="nav-text">Char-Entity-Transformer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NER%E4%BB%BB%E5%8A%A1"><span class="nav-number">3.3.</span> <span class="nav-text">NER任务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#methodology"><span class="nav-number">3.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#new-word-discovery"><span class="nav-number">3.1.</span> <span class="nav-text">New-Word Discovery</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#char-entity-transformer"><span class="nav-number">3.2.</span> <span class="nav-text">Char-Entity-Transformer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ner%E4%BB%BB%E5%8A%A1"><span class="nav-number">3.3.</span> <span class="nav-text">NER任务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -305,7 +305,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.2k</span>
+      <span>1.3k</span>
     </span>
 </div>
 
@@ -319,33 +319,40 @@
         <p>张岳老师的文章，关注如何更充分利用实体信息以增强预训练语言模型在中文NER上的表现（EMNLP 2020）。</p>
 <p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422192212061.png" alt="image-20210422192212061" style="zoom:80%;"></p>
 <a id="more"></a>
-<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><ul>
-<li>arxiv: <a target="_blank" rel="noopener" href="https://www.aclweb.org/anthology/2020.emnlp-main.518.pdf">https://www.aclweb.org/anthology/2020.emnlp-main.518.pdf</a></li>
+<h2 id="overview">Overview</h2>
+<ul>
+<li>arxiv: https://www.aclweb.org/anthology/2020.emnlp-main.518.pdf</li>
 <li>code: 暂无</li>
 </ul>
-<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>在中文NER中引入词典已经被证明是一个有效的方法，但是将实体信息融入BERT这类预训练模型的研究还很少。</p>
+<h2 id="background">Background</h2>
+<p>在中文NER中引入词典已经被证明是一个有效的方法，但是将实体信息融入BERT这类预训练模型的研究还很少。</p>
 <p>论文首先基于互信息的计算，用新词发现策略来识别文档中的entity；然后设计了char-entity自注意力机制来捕捉中文字与实体之间的关系，将字符隐层状态和实体向量组合。</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="New-Word-Discovery"><a href="#New-Word-Discovery" class="headerlink" title="New-Word Discovery"></a>New-Word Discovery</h3><p>采用了<a target="_blank" rel="noopener" href="https://svn.spraakdata.gu.se/repos/gerlof/pub/www/Docs/npmi-pfd.pdf">Bouma（2009）</a>提出的方法，用互信息计算，不予赘述。</p>
-<h3 id="Char-Entity-Transformer"><a href="#Char-Entity-Transformer" class="headerlink" title="Char-Entity-Transformer"></a>Char-Entity-Transformer</h3><p>经典的Transformer计算Q、K、V三个矩阵</p>
-<script type="math/tex; mode=display">
+<h2 id="methodology">Methodology</h2>
+<h3 id="new-word-discovery">New-Word Discovery</h3>
+<p>采用了<a target="_blank" rel="noopener" href="https://svn.spraakdata.gu.se/repos/gerlof/pub/www/Docs/npmi-pfd.pdf">Bouma（2009）</a>提出的方法，用互信息计算，不予赘述。</p>
+<h3 id="char-entity-transformer">Char-Entity-Transformer</h3>
+<p>经典的Transformer计算Q、K、V三个矩阵 <span class="math display">\[
 \{Q^l,K^l,V^l\} = \{h^{l-1}W_q^l,h^{l-1}W_k^l,h^{l-1}W_v^l\} \\
-Atten(Q^l,K^l,V^l) = {\rm softmax}(\frac{Q^l {K^l}^T}{\sqrt{d_k}})</script><p>本文也是先对给定的字符序列${\mathcal C} = {c<em>1,\dots,c_T}$，给定词典$\mathcal E</em>{ent}$，匹配得到对应的实体序列$\mathcal E = {e_1,\dots,e_T}$。</p>
-<p>给定$(l-1)$层的隐层状态${h_1^{l-1},\dots,h_T^{l-1}}$，QKV的计算如下</p>
-<script type="math/tex; mode=display">
+Atten(Q^l,K^l,V^l) = {\rm softmax}(\frac{Q^l {K^l}^T}{\sqrt{d_k}})
+\]</span> 本文也是先对给定的字符序列<span class="math inline">\({\mathcal C} = \{c_1,\dots,c_T\}\)</span>，给定词典<span class="math inline">\(\mathcal E_{ent}\)</span>，匹配得到对应的实体序列<span class="math inline">\(\mathcal E = \{e_1,\dots,e_T\}\)</span>。</p>
+<p>给定<span class="math inline">\((l-1)\)</span>层的隐层状态<span class="math inline">\(\{h_1^{l-1},\dots,h_T^{l-1}\}\)</span>，QKV的计算如下 <span class="math display">\[
 \begin{align}
-q_t^l &= h_t^{l-1}W_{h,q}^l; \\
-k_t^l &= \begin{cases}{
-            {h_t^{l-1}}^T W_{h,k}^l}\quad &{\rm if}\space e_t = 0,\\
-            \frac12({h_t^{l-1}}^T W_{h,k}^l + E_{ent}^T[e_t]W_{e,k}^l)\quad &else;
+q_t^l &amp;= h_t^{l-1}W_{h,q}^l; \\
+k_t^l &amp;= \begin{cases}{
+            {h_t^{l-1}}^T W_{h,k}^l}\quad &amp;{\rm if}\space e_t = 0,\\
+            \frac12({h_t^{l-1}}^T W_{h,k}^l + E_{ent}^T[e_t]W_{e,k}^l)\quad &amp;else;
          \end{cases} \\
-v_t^l &= \begin{cases}
-            {h_t^{l-1}}^T W_{h,v}^l\quad &{\rm if}\space e_t = 0,\\
-            \frac12({h_t^{l-1}}^T W_{h,v}^l + E_{ent}^T[e_t]W_{e,v}^l)\quad &else;
+v_t^l &amp;= \begin{cases}
+            {h_t^{l-1}}^T W_{h,v}^l\quad &amp;{\rm if}\space e_t = 0,\\
+            \frac12({h_t^{l-1}}^T W_{h,v}^l + E_{ent}^T[e_t]W_{e,v}^l)\quad &amp;else;
          \end{cases}
-\end{align}</script><p>其中$E_{ent}$表示实体embedding，$W$表示可学习的参数。</p>
+\end{align}
+\]</span> 其中<span class="math inline">\(E_{ent}\)</span>表示实体embedding，<span class="math inline">\(W\)</span>表示可学习的参数。</p>
 <p>如果字符没有匹配到实体，那么计算退化为原始的self-attention。</p>
-<h3 id="NER任务"><a href="#NER任务" class="headerlink" title="NER任务"></a>NER任务</h3><p>针对NER任务，模型使用softmax解码，采用BIO标注方式。</p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>论文的实验使用了一个公开数据集CLUENER-2020，和两个自己标注的数据集。</p>
+<h3 id="ner任务">NER任务</h3>
+<p>针对NER任务，模型使用softmax解码，采用BIO标注方式。</p>
+<h2 id="experiment">Experiment</h2>
+<p>论文的实验使用了一个公开数据集CLUENER-2020，和两个自己标注的数据集。</p>
 <p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422200804396.png" alt="image-20210422200804396" style="zoom:67%;"></p>
 <p>本文还和ERNIE（百度）、Lattice进行了比较，采用的词典和ERNIE一样。</p>
 <p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422200849220.png" alt="image-20210422200849220" style="zoom: 67%;"></p>
@@ -457,7 +464,7 @@ v_t^l &= \begin{cases}
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">90k</span>
+    <span title="站点总字数">101k</span>
   </span>
 </div>
 <div class="busuanzi-count">

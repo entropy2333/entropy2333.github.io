@@ -161,7 +161,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A4%E8%AF%81"><span class="nav-number">1.</span> <span class="nav-text">认证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E8%AE%A4%E8%AF%81%E7%A0%81-MAC"><span class="nav-number">2.</span> <span class="nav-text">消息认证码 MAC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">哈希函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Merkle-Damgard%E7%BB%93%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text">Merkle-Damgard结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MD5"><span class="nav-number">4.</span> <span class="nav-text">MD5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SHA-1"><span class="nav-number">5.</span> <span class="nav-text">SHA-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">6.</span> <span class="nav-text">安全性分析</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A4%E8%AF%81"><span class="nav-number">1.</span> <span class="nav-text">认证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E8%AE%A4%E8%AF%81%E7%A0%81-mac"><span class="nav-number">2.</span> <span class="nav-text">消息认证码 MAC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">哈希函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#merkle-damgard%E7%BB%93%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text">Merkle-Damgard结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#md5"><span class="nav-number">4.</span> <span class="nav-text">MD5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sha-1"><span class="nav-number">5.</span> <span class="nav-text">SHA-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">6.</span> <span class="nav-text">安全性分析</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -325,7 +325,8 @@
     <div class="post-body" itemprop="articleBody">
         <p>介绍认证方法与哈希函数。</p>
 <a id="more"></a>
-<h2 id="认证"><a href="#认证" class="headerlink" title="认证"></a>认证</h2><p>认证是为了防止主动攻击。</p>
+<h2 id="认证">认证</h2>
+<p>认证是为了防止主动攻击。</p>
 <ul>
 <li>实体认证（确认发送者的身份）</li>
 <li>消息认证（验证消息的完整性）</li>
@@ -335,15 +336,16 @@
 <p>有三种方式产生认证符</p>
 <ul>
 <li>消息加密</li>
-<li>消息认证码MAC<ul>
+<li>消息认证码MAC
+<ul>
 <li>需要密钥</li>
-</ul>
-</li>
+</ul></li>
 <li>哈希函数</li>
 </ul>
 <p>基于公钥体制，可以实现加密与认证。</p>
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228195806099.png" alt="image-20201228195806099" style="zoom:67%;"></p>
-<h2 id="消息认证码-MAC"><a href="#消息认证码-MAC" class="headerlink" title="消息认证码 MAC"></a>消息认证码 MAC</h2><p>MAC对给定消息，使用一个密钥，产生一个短小的定长数据分组。</p>
+<h2 id="消息认证码-mac">消息认证码 MAC</h2>
+<p>MAC对给定消息，使用一个密钥，产生一个短小的定长数据分组。</p>
 <p>可以提供认证，因为只有通信双方共享密钥。</p>
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228200208994.png" alt="image-20201228200208994" style="zoom: 67%;"></p>
 <p>也可以实现认证与保密。</p>
@@ -362,37 +364,44 @@
 <ul>
 <li>将消息分为连续的64bit分组</li>
 </ul>
-<script type="math/tex; mode=display">
+<p><span class="math display">\[
 \begin{align}
-C_1 &= E_K(M_1) \\
-C_2 &= E_K(M_2\oplus C_1) \\
-&\dots \\
-C_n &= E_K(M_n\oplus C_{n-1})
-\end{align}</script><h2 id="哈希函数"><a href="#哈希函数" class="headerlink" title="哈希函数"></a>哈希函数</h2><p>哈希函数将任意长度的消息映射为较短的定长消息。</p>
+C_1 &amp;= E_K(M_1) \\
+C_2 &amp;= E_K(M_2\oplus C_1) \\
+&amp;\dots \\
+C_n &amp;= E_K(M_n\oplus C_{n-1})
+\end{align}
+\]</span></p>
+<h2 id="哈希函数">哈希函数</h2>
+<p>哈希函数将任意长度的消息映射为较短的定长消息。</p>
 <ul>
-<li>$E_K(M||H(M))$$<ul>
+<li><span class="math inline">\(E_K(M||H(M))\)</span>$
+<ul>
 <li>提供保密与鉴别</li>
-</ul>
-</li>
-<li>$M||E_K(H(M))$$<ul>
-<li>提供鉴别</li>
-</ul>
-</li>
-<li>$M||E<em>{K</em>{R_a}}(H(M))$$<ul>
-<li>提供鉴别与数字签名</li>
-</ul>
-</li>
-</ul>
-<p>简单的哈希函数，对每个分组按bit异或（奇偶校验）。</p>
-<script type="math/tex; mode=display">
-C_i = b_{i1}\oplus b_{i2}\oplus\cdots\oplus b_{im}</script><h3 id="Merkle-Damgard结构"><a href="#Merkle-Damgard结构" class="headerlink" title="Merkle-Damgard结构"></a>Merkle-Damgard结构</h3><p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228204306226.png" alt="image-20201228204306226" style="zoom:67%;"></p>
-<script type="math/tex; mode=display">
-CV_i = f(CV_{i-1}, Y_{i-1}) \\
-H(M) = CV_L</script><h2 id="MD5"><a href="#MD5" class="headerlink" title="MD5"></a>MD5</h2><p>符合Merkle-Damgard结构，输入分组长度512bit，输出128bit。</p>
+</ul></li>
+<li><span class="math inline">\(M||E_K(H(M))\)</span>$
 <ul>
-<li>添加填充位，满足$length\equiv448\bmod512$。</li>
+<li>提供鉴别</li>
+</ul></li>
+<li><span class="math inline">\(M||E_{K_{R_a}}(H(M))\)</span>$
+<ul>
+<li>提供鉴别与数字签名</li>
+</ul></li>
+</ul>
+<p>简单的哈希函数，对每个分组按bit异或（奇偶校验）。 <span class="math display">\[
+C_i = b_{i1}\oplus b_{i2}\oplus\cdots\oplus b_{im}
+\]</span></p>
+<h3 id="merkle-damgard结构">Merkle-Damgard结构</h3>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228204306226.png" alt="image-20201228204306226" style="zoom:67%;"> <span class="math display">\[
+CV_i = f(CV_{i-1}, Y_{i-1}) \\
+H(M) = CV_L
+\]</span></p>
+<h2 id="md5">MD5</h2>
+<p>符合Merkle-Damgard结构，输入分组长度512bit，输出128bit。</p>
+<ul>
+<li>添加填充位，满足<span class="math inline">\(length\equiv448\bmod512\)</span>。</li>
 <li>添加长度，用64bit表示，若超过只取低64位。</li>
-<li>使用一个128bit缓存存放结果，表示为$(A,B,C,D)$。</li>
+<li>使用一个128bit缓存存放结果，表示为<span class="math inline">\((A,B,C,D)\)</span>。</li>
 <li>处理512bit的报文分组，核心是包含4个循环的压缩函数f，每个循环包括16步。</li>
 <li>所有L个51bit的分组处理后，第L个阶段的输出作为128bit摘要输出。</li>
 </ul>
@@ -400,18 +409,21 @@ H(M) = CV_L</script><h2 id="MD5"><a href="#MD5" class="headerlink" title="MD5"><
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228205300355.png" alt="image-20201228205336335" style="zoom:67%;"></p>
 <p>MD4有3轮，每轮16步。</p>
 <p>MD5每轮加上前一步的结果，有雪崩效应。</p>
-<h2 id="SHA-1"><a href="#SHA-1" class="headerlink" title="SHA-1"></a>SHA-1</h2><p>输入最大长度为$2^{64}$，输出160bit，分组大小512bit。</p>
+<h2 id="sha-1">SHA-1</h2>
+<p>输入最大长度为<span class="math inline">\(2^{64}\)</span>，输出160bit，分组大小512bit。</p>
 <p>SHA-1的函数有四轮，每轮20步。</p>
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228210321190.png" alt="image-20201228210321190" style="zoom:67%;"></p>
-<h2 id="安全性分析"><a href="#安全性分析" class="headerlink" title="安全性分析"></a>安全性分析</h2><ul>
+<h2 id="安全性分析">安全性分析</h2>
+<ul>
 <li>SHA = MD4 + 扩展变换 + 外加一轮 + 更好的雪崩</li>
 <li>MD5 = MD4 + 改进的比特杂凑 + 外加一轮 + 更好的雪崩</li>
 </ul>
 <p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/image-20201228210617475.png" alt="image-20201228210617475" style="zoom:67%;"></p>
 <p>哈希函数可以受到野蛮攻击和生日攻击</p>
-<p>k个人中，至少存在两人生日相同的概率为</p>
-<script type="math/tex; mode=display">
-P(365, k) = 1 - \frac {365!} {(365-k)365^k}</script>
+<p>k个人中，至少存在两人生日相同的概率为 <span class="math display">\[
+P(365, k) = 1 - \frac {365!} {(365-k)365^k}
+\]</span></p>
+
     </div>
 
     
@@ -501,7 +513,7 @@ P(365, k) = 1 - \frac {365!} {(365-k)365^k}</script>
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">90k</span>
+    <span title="站点总字数">101k</span>
   </span>
 </div>
 <div class="busuanzi-count">

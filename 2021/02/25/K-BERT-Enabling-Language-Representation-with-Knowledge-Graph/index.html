@@ -305,7 +305,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>570</span>
+      <span>593</span>
     </span>
 </div>
 
@@ -318,11 +318,13 @@
     <div class="post-body" itemprop="articleBody">
         <p>介绍K-BERT模型（AAAI 2020）</p>
 <a id="more"></a>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
-<li>arxiv：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1909.07606v1">https://arxiv.org/abs/1909.07606v1</a></li>
-<li>code：<a target="_blank" rel="noopener" href="https://github.com/autoliuweijie/K-BERT">https://github.com/autoliuweijie/K-BERT</a></li>
+<h2 id="概述">概述</h2>
+<ul>
+<li>arxiv：https://arxiv.org/abs/1909.07606v1</li>
+<li>code：https://github.com/autoliuweijie/K-BERT</li>
 </ul>
-<h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
+<h2 id="细节">细节</h2>
+<p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
 <p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003741712.png" alt="image-20210225003741712" style="zoom:67%;"></p>
 <p>具体来说，算法分为以下几步。</p>
 <ul>
@@ -332,11 +334,14 @@
 <li>计算实体位置，得到位置编码，也即论文中的soft-position index。</li>
 <li>计算可见矩阵，控制每个词受哪些词影响（如Cook不会被Beijing关联的China影响）。</li>
 </ul>
-<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"></p>
+<figure>
+<img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"><figcaption aria-hidden="true">image-20210225003844098</figcaption>
+</figure>
 <p>K-BERT并不算预训练模型，嵌入层依旧是使用的BERT模型，应该算基于BERT的fine-tuning网络，可以用于分类和序列标注。同时，K-BERT也可以加载其他BERT类模型，如ERNIE、RoBERTa等。</p>
 <p>创新点在于使用可见矩阵控制了Self-Attention的计算（如下图）。</p>
 <p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225005229317.png" alt="image-20210225005229317" style="zoom: 67%;"></p>
-<h2 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h2><ul>
+<h2 id="不足">不足</h2>
+<ul>
 <li>模型的鲁棒性受限于知识图谱的质量，取自于开放领域图谱中的信息，其实BERT通过大语料学习也能获得，可以考虑特定领域的知识。</li>
 <li>关联的三元组没有筛选，一词多义会引入错误的实体关联。</li>
 <li>对于非知识驱动的任务，引入知识反而会效果下降。</li>
@@ -363,7 +368,7 @@
       <div class="popular-posts-title"><a href="/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/" rel="bookmark">Lawformer: A Pre-trained Language Model for Chinese Legal Long Documents</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/11/14/NLP-From-Scratch-Without-Large-Scale-Pretraining-A-Simple-and-Efficient-Framework/" rel="bookmark">NLP From Scratch Without Large-Scale Pretraining: A Simple and Efficient Framework</a></div>
+      <div class="popular-posts-title"><a href="/2021/10/10/Query2Label-A-Simple-Transformer-Way-to-Multi-Label-Classification/" rel="bookmark">Query2Label: A Simple Transformer Way to Multi-Label Classification</a></div>
     </li>
   </ul>
 
@@ -449,7 +454,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">90k</span>
+    <span title="站点总字数">101k</span>
   </span>
 </div>
 <div class="busuanzi-count">
