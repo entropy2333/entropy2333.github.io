@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://entropy2333.github.io/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141847051.png">
 <meta property="og:image" content="https://entropy2333.github.io/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141920675.png">
 <meta property="article:published_time" content="2021-11-23T05:46:57.000Z">
-<meta property="article:modified_time" content="2021-12-08T13:44:07.965Z">
+<meta property="article:modified_time" content="2021-12-17T02:20:12.101Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="T5">
 <meta property="article:tag" content="HTC">
@@ -176,7 +176,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -339,9 +339,10 @@
 <p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123140806474.png" alt="image-20211123140806474" style="zoom: 67%;"></p>
 <p>在解码器部分，有一个额外的sublayer用于处理解码器的输出，被称为Casual Self-Attention Sublayer。 <span class="math display">\[
 \begin{align}
-\text{Block}_{Decoder}(Q_d,K_d,V_d,O_e) &amp;= 
-    \text{FFN}(\text{Multi-Head}(\text{Multi-Head}(Q_d, K_d, V_d), O_e, O_e)) \\
-\text{Decoder}(Q_d, K_d, V_d, O_e) &amp;= \text{stack}(\text{Block}_{Decoder}(Q_d, K_d, V_d, O_e))
+\mathrm{Block}_{Decoder}(Q_d,K_d,V_d,O_e)
+&amp;= \text{FFN}(\text{Multi-Head}(\text{Multi-Head}(Q_d, K_d, V_d), O_e, O_e)) \\
+\text{Decoder}(Q_d, K_d, V_d, O_e)
+&amp;= \text{stack}(\text{Block}_{Decoder}(Q_d, K_d, V_d, O_e))
 \end{align}
 \]</span></p>
 <h2 id="method">Method</h2>
@@ -488,7 +489,7 @@ NYT和WOS的实验结果
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">101k</span>
+    <span title="站点总字数">103k</span>
   </span>
 </div>
 <div class="busuanzi-count">
