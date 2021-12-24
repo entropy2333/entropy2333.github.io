@@ -40,9 +40,10 @@ T5模型是一种编码器-解码器架构，模型结构如下图所示：
 在解码器部分，有一个额外的sublayer用于处理解码器的输出，被称为Casual Self-Attention Sublayer。
 $$
 \begin{align}
-\text{Block}_{Decoder}(Q_d,K_d,V_d,O_e) &= 
-	\text{FFN}(\text{Multi-Head}(\text{Multi-Head}(Q_d, K_d, V_d), O_e, O_e)) \\
-\text{Decoder}(Q_d, K_d, V_d, O_e) &= \text{stack}(\text{Block}_{Decoder}(Q_d, K_d, V_d, O_e))
+\mathrm{Block}_{Decoder}(Q_d,K_d,V_d,O_e)
+&= \text{FFN}(\text{Multi-Head}(\text{Multi-Head}(Q_d, K_d, V_d), O_e, O_e)) \\
+\text{Decoder}(Q_d, K_d, V_d, O_e)
+&= \text{stack}(\text{Block}_{Decoder}(Q_d, K_d, V_d, O_e))
 \end{align}
 $$
 
@@ -106,7 +107,7 @@ $$
 
 $$
 \begin{aligned}
-	\text{Loss}=&\text{Loss}_{\text{HiA-T5}}+\rho \text{Loss}_{\text{PAMM}}
+    \text{Loss}=&\text{Loss}_{\text{HiA-T5}}+\rho \text{Loss}_{\text{PAMM}}
 \end{aligned}
 $$
 
@@ -129,4 +130,3 @@ $$
 <img src="Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141920675.png" alt="image-20211123141920675" style="zoom:67%;" />
 
 <center>NYT和WOS的实验结果</center>
-
