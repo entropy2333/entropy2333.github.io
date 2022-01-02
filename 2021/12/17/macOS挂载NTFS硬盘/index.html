@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://entropy2333.github.io/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/image-20211217003813737.png">
 <meta property="article:published_time" content="2021-12-16T16:31:02.000Z">
-<meta property="article:modified_time" content="2021-12-17T03:29:07.706Z">
+<meta property="article:modified_time" content="2021-12-27T03:45:05.686Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="mac">
 <meta property="article:tag" content="shell">
@@ -168,20 +168,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">58</span>
+        <span class="site-state-item-count">59</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -302,7 +302,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>425</span>
+      <span>395</span>
     </span>
 </div>
 
@@ -327,15 +327,15 @@
 <h2 id="操作步骤">操作步骤</h2>
 <p>展示命令行挂载硬盘的方法，用作备忘。</p>
 <p>在桌面预先建立一个文件夹（如Passport）</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/Desktop/Passport</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/Desktop/Passport</span><br></pre></td></tr></table></figure>
 <p>查看当前磁盘是否被挂载</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diskutil list</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diskutil list</span><br></pre></td></tr></table></figure>
 <p>带有external的即为移动硬盘</p>
 <p><img title src="/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/image-20211217003813737.png" alt="image-20211217003813737" data-align="center" width="613"></p>
 <p>如果已经挂载需要先卸载</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo umount &#x2F;dev&#x2F;disk4s1</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo umount /dev/disk4s1</span><br></pre></td></tr></table></figure>
 <p>否则以NTFS格式挂载到桌面建立的文件夹</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mount_ntfs -o rw,nobrowse &#x2F;dev&#x2F;disk4s1 ~&#x2F;Desktop&#x2F;Passport</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mount_ntfs -o rw,nobrowse /dev/disk4s1 ~/Desktop/Passport</span><br></pre></td></tr></table></figure>
 <p>由此就可以读写了，使用完记得卸载，或许可以写个脚本自动执行这些操作。</p>
 
     </div>
@@ -415,7 +415,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

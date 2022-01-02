@@ -349,6 +349,12 @@
       </tags>
   </entry>
   <entry>
+    <title>CSAPP Chap5: 优化程序性能</title>
+    <url>/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
     <title>CSAPP Chap3: 程序的机器级表示</title>
     <url>/2021/04/21/CSAPP-Chap3-%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA/</url>
     <content><![CDATA[<p>CSAPP第三章</p>
@@ -691,20 +697,14 @@
       </tags>
   </entry>
   <entry>
-    <title>CSAPP Chap5: 优化程序性能</title>
-    <url>/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/</url>
+    <title>CSAPP Chap6: 存储器层次结构</title>
+    <url>/2021/04/26/CSAPP-Chap6-%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84/</url>
     <content><![CDATA[
 ]]></content>
   </entry>
   <entry>
     <title>CSAPP Chap7: 链接</title>
     <url>/2021/04/26/CSAPP-Chap7-%E9%93%BE%E6%8E%A5/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
-    <title>CSAPP Chap6: 存储器层次结构</title>
-    <url>/2021/04/26/CSAPP-Chap6-%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84/</url>
     <content><![CDATA[
 ]]></content>
   </entry>
@@ -1014,97 +1014,6 @@ p_i^{\mathrm{RWPE}} = [\mathrm{RW}_{ii}, \mathrm{RW}_{ii}^2, \cdots,\mathrm{RW}_
       </tags>
   </entry>
   <entry>
-    <title>Hierarchy-Aware T5 with Path-Adaptive Mask Mechanism for Hierarchical Text Classification</title>
-    <url>/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/</url>
-    <content><![CDATA[<p>本文提出了一种层次感知的T5模型以及一种路径适应的掩码机制，称为PAMM-HiA-T5，不仅将上层标签的信息融入了下层标签，同时在标签预测时也引入了路径依赖信息。本文的模型在RCV1-V2、NYT和WOS上取得了SOTA。</p>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123135058290.png" alt="image-20211123135058290" style="zoom:67%;"></p>
-<a id="more"></a>
-<h2 id="overview">Overview</h2>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123134904566.png" alt="image-20211123134904566" style="zoom:67%;"></p>
-<ul>
-<li>arxiv: https://arxiv.org/pdf/2109.08585.pdf</li>
-<li>code: 暂无</li>
-</ul>
-<h2 id="background">Background</h2>
-<p>标签依赖性在层次化文本分类中很重要，作者认为主要可以分为层次依赖和路径依赖两种：</p>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123140332274.png" alt="image-20211123140332274" style="zoom:67%;"></p>
-<p>本文提出的模型不仅可以在生成模型中捕获父子标签的依赖关系，也可以识别特定路径中的层次依赖。在预测阶段，下一个标签取决于文本序列和当前路径上已经生成的标签。</p>
-<h3 id="t5">T5</h3>
-<p>T5模型是一种编码器-解码器架构，模型结构如下图所示：</p>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123140806474.png" alt="image-20211123140806474" style="zoom: 67%;"></p>
-<p>在解码器部分，有一个额外的sublayer用于处理解码器的输出，被称为Casual Self-Attention Sublayer。 <span class="math display">\[
-\begin{align}
-\mathrm{Block}_{Decoder}(Q_d,K_d,V_d,O_e)
-&amp;= \text{FFN}(\text{Multi-Head}(\text{Multi-Head}(Q_d, K_d, V_d), O_e, O_e)) \\
-\text{Decoder}(Q_d, K_d, V_d, O_e)
-&amp;= \text{stack}(\text{Block}_{Decoder}(Q_d, K_d, V_d, O_e))
-\end{align}
-\]</span></p>
-<h2 id="method">Method</h2>
-<h3 id="hierarchy-aware-t5">Hierarchy-Aware T5</h3>
-<p>首先将标签集转化为multi-level的标签序列 <span class="math display">\[
-\begin{align}
-L_i &amp;= \{l_1, l_2, l_3, l_5, l_5\} \\ 
-\Rightarrow ML_i &amp;= [l_1,\_,l_3,/,l_2,\_,l_4,/,l_5,EOS]
-\end{align}
-\]</span> 其中“_”表示intra-level关系，“/”表示inter-level关系。</p>
-<p>对于文本序列，直接送入T5编码器： <span class="math display">\[
-O_{text} = \text{Encoder}(Q_{text},K_{text},V_{text})
-\]</span> 对于标签序列，送入T5的解码器： <span class="math display">\[
-O_{hierarchy} = \text{Decoder}(Q_{label},K_{label},V_{label},O_{text})
-\]</span> 由此得到了level dependency信息 <span class="math display">\[
-A_{label} = \text{Multi-Head}(Q_{label},K_{label},V_{label})
-\]</span> 并通过cross-attention融合文本和标签信息 <span class="math display">\[
-A_{cross} = \text{Multi-Head}(A_{label}, O_{text}, O_{text})
-\]</span> 预测时是n个时间戳的结果（n表示文本长度） <span class="math display">\[
-\text{Pred} = \text{softmax}(O_{hierarchy}W_3+b_3)\in\mathbb{R}^{n\times K}
-\]</span></p>
-<h3 id="path-adaptive-mask-mechanism">Path-Adaptive Mask Mechanism</h3>
-<p>掩码矩阵是一个下三角矩阵，通常由0和1组成</p>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123144409350.png" alt="image-20211123144409350" style="zoom:67%;"></p>
-<p>掩码矩阵的定义如下 <span class="math display">\[
-m_{i,j}=\left\{
-\begin{array}
-    {rl}
-    1  &amp; {\{I_i\in L, I_j\in \text{ancestor}(I_i), 1\leq j&lt;i\}} \\
-    &amp;  \cup{\{I_i\in S, j=i-1\}} \\
-    &amp;  \cup{\{I_i\in S, I_j\in \text{ancestor}(I_{i-1}), 1\leq j&lt;i\}} \\
-    0  &amp; {else}
-\end{array} \right.
-\]</span> 并定义了掩码损失 <span class="math display">\[
-\begin{aligned}
-\text{Loss}_{\text{PAMM}}=\sum_{b=1}^{B}(\frac{\sum_{h=1}^{H}(\sum_{i=1}^{n}(1-\sum_{j\in C}s_{i,j}))}{H})
-\end{aligned}
-\]</span></p>
-<p><span class="math display">\[
-\begin{aligned}
-    \text{Loss}=&amp;\text{Loss}_{\text{HiA-T5}}+\rho \text{Loss}_{\text{PAMM}}
-\end{aligned}
-\]</span></p>
-<h2 id="experiment">Experiment</h2>
-<p>数据集选取RCV1-V2、NTY和WOS</p>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141604818.png" alt="image-20211123141604818" style="zoom:67%;"></p>
-<p>并统计了数据集内不同层次标签的数量：</p>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141625514.png" alt="image-20211123141625514" style="zoom:67%;"></p>
-<p>选用T5-base作为backbone，有220M参数，12个注意力头。编码器输入的最大长度为300，解码器的最大输出长度为60。采用Adam优化器，batch size为10，学习率为3e-4，微调3个epoch。</p>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141847051.png" alt="image-20211123141847051" style="zoom:67%;"></p>
-<center>
-RCV1-V2实验结果
-</center>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141920675.png" alt="image-20211123141920675" style="zoom:67%;"></p>
-<center>
-NYT和WOS的实验结果
-</center>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>T5</tag>
-        <tag>HTC</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Internet安全协议与分析（一）IPSec</title>
     <url>/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/</url>
     <content><![CDATA[<p>介绍IPSec协议与IKE协议 。 <a id="more"></a></p>
@@ -1262,6 +1171,97 @@ NYT和WOS的实验结果
       <tags>
         <tag>IPSec</tag>
         <tag>IKE</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hierarchy-Aware T5 with Path-Adaptive Mask Mechanism for Hierarchical Text Classification</title>
+    <url>/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/</url>
+    <content><![CDATA[<p>本文提出了一种层次感知的T5模型以及一种路径适应的掩码机制，称为PAMM-HiA-T5，不仅将上层标签的信息融入了下层标签，同时在标签预测时也引入了路径依赖信息。本文的模型在RCV1-V2、NYT和WOS上取得了SOTA。</p>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123135058290.png" alt="image-20211123135058290" style="zoom:67%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123134904566.png" alt="image-20211123134904566" style="zoom:67%;"></p>
+<ul>
+<li>arxiv: https://arxiv.org/pdf/2109.08585.pdf</li>
+<li>code: 暂无</li>
+</ul>
+<h2 id="background">Background</h2>
+<p>标签依赖性在层次化文本分类中很重要，作者认为主要可以分为层次依赖和路径依赖两种：</p>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123140332274.png" alt="image-20211123140332274" style="zoom:67%;"></p>
+<p>本文提出的模型不仅可以在生成模型中捕获父子标签的依赖关系，也可以识别特定路径中的层次依赖。在预测阶段，下一个标签取决于文本序列和当前路径上已经生成的标签。</p>
+<h3 id="t5">T5</h3>
+<p>T5模型是一种编码器-解码器架构，模型结构如下图所示：</p>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123140806474.png" alt="image-20211123140806474" style="zoom: 67%;"></p>
+<p>在解码器部分，有一个额外的sublayer用于处理解码器的输出，被称为Casual Self-Attention Sublayer。 <span class="math display">\[
+\begin{align}
+\mathrm{Block}_{Decoder}(Q_d,K_d,V_d,O_e)
+&amp;= \text{FFN}(\text{Multi-Head}(\text{Multi-Head}(Q_d, K_d, V_d), O_e, O_e)) \\
+\text{Decoder}(Q_d, K_d, V_d, O_e)
+&amp;= \text{stack}(\text{Block}_{Decoder}(Q_d, K_d, V_d, O_e))
+\end{align}
+\]</span></p>
+<h2 id="method">Method</h2>
+<h3 id="hierarchy-aware-t5">Hierarchy-Aware T5</h3>
+<p>首先将标签集转化为multi-level的标签序列 <span class="math display">\[
+\begin{align}
+L_i &amp;= \{l_1, l_2, l_3, l_5, l_5\} \\ 
+\Rightarrow ML_i &amp;= [l_1,\_,l_3,/,l_2,\_,l_4,/,l_5,EOS]
+\end{align}
+\]</span> 其中“_”表示intra-level关系，“/”表示inter-level关系。</p>
+<p>对于文本序列，直接送入T5编码器： <span class="math display">\[
+O_{text} = \text{Encoder}(Q_{text},K_{text},V_{text})
+\]</span> 对于标签序列，送入T5的解码器： <span class="math display">\[
+O_{hierarchy} = \text{Decoder}(Q_{label},K_{label},V_{label},O_{text})
+\]</span> 由此得到了level dependency信息 <span class="math display">\[
+A_{label} = \text{Multi-Head}(Q_{label},K_{label},V_{label})
+\]</span> 并通过cross-attention融合文本和标签信息 <span class="math display">\[
+A_{cross} = \text{Multi-Head}(A_{label}, O_{text}, O_{text})
+\]</span> 预测时是n个时间戳的结果（n表示文本长度） <span class="math display">\[
+\text{Pred} = \text{softmax}(O_{hierarchy}W_3+b_3)\in\mathbb{R}^{n\times K}
+\]</span></p>
+<h3 id="path-adaptive-mask-mechanism">Path-Adaptive Mask Mechanism</h3>
+<p>掩码矩阵是一个下三角矩阵，通常由0和1组成</p>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123144409350.png" alt="image-20211123144409350" style="zoom:67%;"></p>
+<p>掩码矩阵的定义如下 <span class="math display">\[
+m_{i,j}=\left\{
+\begin{array}
+    {rl}
+    1  &amp; {\{I_i\in L, I_j\in \text{ancestor}(I_i), 1\leq j&lt;i\}} \\
+    &amp;  \cup{\{I_i\in S, j=i-1\}} \\
+    &amp;  \cup{\{I_i\in S, I_j\in \text{ancestor}(I_{i-1}), 1\leq j&lt;i\}} \\
+    0  &amp; {else}
+\end{array} \right.
+\]</span> 并定义了掩码损失 <span class="math display">\[
+\begin{aligned}
+\text{Loss}_{\text{PAMM}}=\sum_{b=1}^{B}(\frac{\sum_{h=1}^{H}(\sum_{i=1}^{n}(1-\sum_{j\in C}s_{i,j}))}{H})
+\end{aligned}
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+    \text{Loss}=&amp;\text{Loss}_{\text{HiA-T5}}+\rho \text{Loss}_{\text{PAMM}}
+\end{aligned}
+\]</span></p>
+<h2 id="experiment">Experiment</h2>
+<p>数据集选取RCV1-V2、NTY和WOS</p>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141604818.png" alt="image-20211123141604818" style="zoom:67%;"></p>
+<p>并统计了数据集内不同层次标签的数量：</p>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141625514.png" alt="image-20211123141625514" style="zoom:67%;"></p>
+<p>选用T5-base作为backbone，有220M参数，12个注意力头。编码器输入的最大长度为300，解码器的最大输出长度为60。采用Adam优化器，batch size为10，学习率为3e-4，微调3个epoch。</p>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141847051.png" alt="image-20211123141847051" style="zoom:67%;"></p>
+<center>
+RCV1-V2实验结果
+</center>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141920675.png" alt="image-20211123141920675" style="zoom:67%;"></p>
+<center>
+NYT和WOS的实验结果
+</center>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>T5</tag>
+        <tag>HTC</tag>
       </tags>
   </entry>
   <entry>
@@ -2016,6 +2016,118 @@ NYT和WOS的实验结果
       </tags>
   </entry>
   <entry>
+    <title>Internet安全协议与分析（八）课程复习</title>
+    <url>/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/</url>
+    <content><![CDATA[<p>复习所学知识，应付考试orz。</p>
+<a id="more"></a>
+<h2 id="名词解释">名词解释</h2>
+<h3 id="挑战-应答">挑战-应答</h3>
+<ul>
+<li>客户端向服务器发出请求，请求身份认证。</li>
+<li>服务器查询用户是否合法，合法则进行下一步。</li>
+<li>服务器产生随机数，作为“挑战”发给客户端。</li>
+<li>客户端将ID和随机数Hash，发送给服务器。</li>
+<li>服务器比较结果，相同则通过认证，并通知客户端。</li>
+</ul>
+<h3 id="数字信封">数字信封</h3>
+<ul>
+<li>将对称密钥通过非对称加密的方式分发。</li>
+<li>发送方用对称密钥加密明文，并用接收方公钥加密对称密钥，将消息发给接收方。</li>
+<li>接收方用私钥解密获得对称密钥，随后解密得到明文。</li>
+</ul>
+<h3 id="公钥环私钥环">公钥环&amp;私钥环</h3>
+<ul>
+<li>公钥环保存该结点拥有的其他用户的公钥</li>
+<li>私钥环保存该节点拥有的公私钥对（加密）</li>
+</ul>
+<h3 id="隧道模式">隧道模式</h3>
+<ul>
+<li><p>AH</p>
+<figure>
+<img src="/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/image-20201031143043915.png" alt="image-20201031143043915"><figcaption aria-hidden="true">image-20201031143043915</figcaption>
+</figure></li>
+<li><p>ESP</p>
+<figure>
+<img src="/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/image-20201031143105550.png" alt="image-20201031143105550"><figcaption aria-hidden="true">image-20201031143105550</figcaption>
+</figure></li>
+</ul>
+<h2 id="简答">简答</h2>
+<h3 id="ban分析otway-rees">BAN分析Otway-Rees</h3>
+<ul>
+<li>密钥有效性</li>
+</ul>
+<p><span class="math display">\[
+bel(A, goodkey(S, K_{as}, S)) \\
+bel(B, goodkey(S, K_{bs}, S))
+\]</span></p>
+<ul>
+<li>S的权威性</li>
+</ul>
+<p><span class="math display">\[
+bel(A, cont(S, skey(A, K_{ab}, B))) \\
+bel(B, cont(S, skey(A, K_{ab}, B))) \\
+bel(A, cont(S, fresh(skey(A, K_{ab}, B)))
+\]</span></p>
+<ul>
+<li>随机数的新鲜性</li>
+</ul>
+<p><span class="math display">\[
+bel(A, fresh(N_a)) \\
+bel(B, fresh(N_b))
+\]</span></p>
+<h3 id="kerberos协议中ticket_v和认证头的结构和作用">Kerberos协议中<span class="math inline">\(Ticket_v\)</span>和认证头的结构和作用</h3>
+<ul>
+<li><span class="math inline">\(Ticket_v\)</span>表示该用户已被AS认证</li>
+<li>验证头用于验证ticket有效</li>
+</ul>
+<h3 id="安全协议中nonce和时戳的作用和区别">安全协议中Nonce和时戳的作用和区别</h3>
+<ul>
+<li>随机数是为了提供消息的新鲜性
+<ul>
+<li>可以用于挑战应答，只使用一次，防止重放攻击。</li>
+</ul></li>
+<li>时戳依赖于时钟的同步。</li>
+</ul>
+<h2 id="分析">分析</h2>
+<h3 id="pgp">PGP</h3>
+<ul>
+<li>发送方
+<ul>
+<li>签名消息
+<ul>
+<li>使用用户ID作为索引获取发送者的私钥</li>
+<li>提示用户输入口令解密私钥</li>
+<li>创建签名</li>
+</ul></li>
+<li>加密消息
+<ul>
+<li>生成会话密钥，加密消息。</li>
+<li>使用用户ID作为索引获取接收方公钥</li>
+<li>创建会话消息</li>
+</ul></li>
+</ul></li>
+<li>接收方
+<ul>
+<li>解密消息
+<ul>
+<li>使用消息内ID字段作为索引获取私钥</li>
+<li>提示用户输入密钥解密私钥</li>
+<li>恢复会话密钥，解密消息。</li>
+</ul></li>
+<li>认证消息
+<ul>
+<li>使用签名密钥ID作为索引获取公钥</li>
+<li>恢复消息摘要</li>
+<li>计算消息摘要并和传输版本比较认证</li>
+</ul></li>
+</ul></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Internet安全协议与分析</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Internet安全协议与分析（六）BAN</title>
     <url>/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AD%EF%BC%89BAN/</url>
     <content><![CDATA[<p>介绍基于推理结构性方法。</p>
@@ -2290,118 +2402,6 @@ NYT和WOS的实验结果
       <tags>
         <tag>PGP</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Internet安全协议与分析（八）课程复习</title>
-    <url>/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/</url>
-    <content><![CDATA[<p>复习所学知识，应付考试orz。</p>
-<a id="more"></a>
-<h2 id="名词解释">名词解释</h2>
-<h3 id="挑战-应答">挑战-应答</h3>
-<ul>
-<li>客户端向服务器发出请求，请求身份认证。</li>
-<li>服务器查询用户是否合法，合法则进行下一步。</li>
-<li>服务器产生随机数，作为“挑战”发给客户端。</li>
-<li>客户端将ID和随机数Hash，发送给服务器。</li>
-<li>服务器比较结果，相同则通过认证，并通知客户端。</li>
-</ul>
-<h3 id="数字信封">数字信封</h3>
-<ul>
-<li>将对称密钥通过非对称加密的方式分发。</li>
-<li>发送方用对称密钥加密明文，并用接收方公钥加密对称密钥，将消息发给接收方。</li>
-<li>接收方用私钥解密获得对称密钥，随后解密得到明文。</li>
-</ul>
-<h3 id="公钥环私钥环">公钥环&amp;私钥环</h3>
-<ul>
-<li>公钥环保存该结点拥有的其他用户的公钥</li>
-<li>私钥环保存该节点拥有的公私钥对（加密）</li>
-</ul>
-<h3 id="隧道模式">隧道模式</h3>
-<ul>
-<li><p>AH</p>
-<figure>
-<img src="/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/image-20201031143043915.png" alt="image-20201031143043915"><figcaption aria-hidden="true">image-20201031143043915</figcaption>
-</figure></li>
-<li><p>ESP</p>
-<figure>
-<img src="/2020/10/31/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E5%85%AB%EF%BC%89%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/image-20201031143105550.png" alt="image-20201031143105550"><figcaption aria-hidden="true">image-20201031143105550</figcaption>
-</figure></li>
-</ul>
-<h2 id="简答">简答</h2>
-<h3 id="ban分析otway-rees">BAN分析Otway-Rees</h3>
-<ul>
-<li>密钥有效性</li>
-</ul>
-<p><span class="math display">\[
-bel(A, goodkey(S, K_{as}, S)) \\
-bel(B, goodkey(S, K_{bs}, S))
-\]</span></p>
-<ul>
-<li>S的权威性</li>
-</ul>
-<p><span class="math display">\[
-bel(A, cont(S, skey(A, K_{ab}, B))) \\
-bel(B, cont(S, skey(A, K_{ab}, B))) \\
-bel(A, cont(S, fresh(skey(A, K_{ab}, B)))
-\]</span></p>
-<ul>
-<li>随机数的新鲜性</li>
-</ul>
-<p><span class="math display">\[
-bel(A, fresh(N_a)) \\
-bel(B, fresh(N_b))
-\]</span></p>
-<h3 id="kerberos协议中ticket_v和认证头的结构和作用">Kerberos协议中<span class="math inline">\(Ticket_v\)</span>和认证头的结构和作用</h3>
-<ul>
-<li><span class="math inline">\(Ticket_v\)</span>表示该用户已被AS认证</li>
-<li>验证头用于验证ticket有效</li>
-</ul>
-<h3 id="安全协议中nonce和时戳的作用和区别">安全协议中Nonce和时戳的作用和区别</h3>
-<ul>
-<li>随机数是为了提供消息的新鲜性
-<ul>
-<li>可以用于挑战应答，只使用一次，防止重放攻击。</li>
-</ul></li>
-<li>时戳依赖于时钟的同步。</li>
-</ul>
-<h2 id="分析">分析</h2>
-<h3 id="pgp">PGP</h3>
-<ul>
-<li>发送方
-<ul>
-<li>签名消息
-<ul>
-<li>使用用户ID作为索引获取发送者的私钥</li>
-<li>提示用户输入口令解密私钥</li>
-<li>创建签名</li>
-</ul></li>
-<li>加密消息
-<ul>
-<li>生成会话密钥，加密消息。</li>
-<li>使用用户ID作为索引获取接收方公钥</li>
-<li>创建会话消息</li>
-</ul></li>
-</ul></li>
-<li>接收方
-<ul>
-<li>解密消息
-<ul>
-<li>使用消息内ID字段作为索引获取私钥</li>
-<li>提示用户输入密钥解密私钥</li>
-<li>恢复会话密钥，解密消息。</li>
-</ul></li>
-<li>认证消息
-<ul>
-<li>使用签名密钥ID作为索引获取公钥</li>
-<li>恢复消息摘要</li>
-<li>计算消息摘要并和传输版本比较认证</li>
-</ul></li>
-</ul></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Internet安全协议与分析</category>
-      </categories>
   </entry>
   <entry>
     <title>Internet安全协议与分析（零）安全协议基础</title>
@@ -2996,6 +2996,50 @@ p_k = \mathrm{Sigmoid}(W_k^T\mathcal{Q}_{L,k}+b_k)
       </tags>
   </entry>
   <entry>
+    <title>SimCSE: Simple Contrastive Learning of Sentence Embeddings</title>
+    <url>/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/</url>
+    <content><![CDATA[<p>来自陈丹琦（<a href="https://github.com/danqi" class="uri">https://github.com/danqi</a>）组的文章，利用Dropout作为数据增强，进行对比学习得到句子向量表示，在无监督和有监督的语义表示上刷新SOTA。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210706175923388.png" alt="image-20210706175923388" style="zoom: 80%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<ul>
+<li>Arxiv: https://arxiv.org/pdf/2104.08821v1.pdf</li>
+<li>Code: https://github.com/princeton-nlp/SimCSE</li>
+</ul>
+<h2 id="background-contrastive-learning">Background: Contrastive Learning</h2>
+<p>对比学习希望通过拉近语义相关的样本，拉远不相关的样本学习有效的向量表示。</p>
+<p>对于样本对集合<span class="math inline">\(D=\{(x_i,x_i^+)\}_{i=1}^m\)</span>，假设<span class="math inline">\(({\bf h_i},{\bf h_i^+})\)</span>为样本的向量表示，则训练的目标为： <span class="math display">\[
+l_i = \log \frac {e^{ {\rm sim} ({\bf h_i},{\bf h_i^+})}/\tau} {\sum_{j=1}^N e^{ {\rm sim}( {\bf h_i},{\bf h_j})/\tau}}
+\]</span> 其中，<span class="math inline">\(\tau\)</span>是一个温度超参数，<span class="math inline">\({\rm sim}({\bf h_i},{\bf h_i^+})\)</span>为余弦相似度<span class="math inline">\(\rm\bf\frac{h_1^Th_2}{\|h_1\|·\|h2\|}\)</span>，本文选择的backbone是BERT或RoBERTa。</p>
+<p>其实上述的训练目标就是交叉熵： <span class="math display">\[
+{\rm let}\ z_{i,j} = {\rm sim} ({\bf h_i},{\bf h_j}) \\
+{\rm then}\ loss_i = -\sum_{j=1}^N y_{j}\log z_{i, j}
+\]</span></p>
+<h3 id="positive-instances">Positive instances</h3>
+<p>对比学习的关键问题是如何构造样本对<span class="math inline">\((x_i,x_i^+)\)</span>，在CV中可以用裁剪、旋转等方法对图像进行数据增强，NLP中也有删词、替换、重排等方法。但对于NLP的离散结构来说，这些增强手段作用有限。本文采用了dropout作为数据增强手段，取得了更好的结果。</p>
+<p>本文采用了两个度量align和uniform用于衡量表示的质量。</p>
+<p>align描述了样本对之间的距离 <span class="math display">\[
+l_{\rm align} \triangleq \mathop{\mathbb{E}}_{(x,x^+)\sim p_{pos}}\|f(x)-f(x^+)\|^2
+\]</span> uniform描述了样本是否分布均匀 <span class="math display">\[
+l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(x)-f(y)\|^2}
+\]</span></p>
+<p>从实验结果上看，采用dropout的SimCSE效果更好。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111255916.png" alt="image-20210823111255916" style="zoom:67%;"></p>
+<h2 id="experiment">Experiment</h2>
+<p>在语义相似度任务上大幅度刷新SOTA，无监督就可以超越之前的有监督方法。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111528036.png" alt="image-20210823111528036" style="zoom: 67%;"></p>
+<p>在迁移任务上表现一般，说明sentence embedding并不一定有益于下游训练。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111700869.png" alt="image-20210823111700869" style="zoom: 80%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>Contrastive Learning</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Rethinking Positional Encoding In Language Pre-Training</title>
     <url>/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/</url>
     <content><![CDATA[<p><img src="/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417211502265.png" alt="image-20210417211502265" style="zoom:67%;"></p>
@@ -3120,70 +3164,6 @@ v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)
       </tags>
   </entry>
   <entry>
-    <title>SimCSE: Simple Contrastive Learning of Sentence Embeddings</title>
-    <url>/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/</url>
-    <content><![CDATA[<p>来自陈丹琦（<a href="https://github.com/danqi" class="uri">https://github.com/danqi</a>）组的文章，利用Dropout作为数据增强，进行对比学习得到句子向量表示，在无监督和有监督的语义表示上刷新SOTA。</p>
-<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210706175923388.png" alt="image-20210706175923388" style="zoom: 80%;"></p>
-<a id="more"></a>
-<h2 id="overview">Overview</h2>
-<ul>
-<li>Arxiv: https://arxiv.org/pdf/2104.08821v1.pdf</li>
-<li>Code: https://github.com/princeton-nlp/SimCSE</li>
-</ul>
-<h2 id="background-contrastive-learning">Background: Contrastive Learning</h2>
-<p>对比学习希望通过拉近语义相关的样本，拉远不相关的样本学习有效的向量表示。</p>
-<p>对于样本对集合<span class="math inline">\(D=\{(x_i,x_i^+)\}_{i=1}^m\)</span>，假设<span class="math inline">\(({\bf h_i},{\bf h_i^+})\)</span>为样本的向量表示，则训练的目标为： <span class="math display">\[
-l_i = \log \frac {e^{ {\rm sim} ({\bf h_i},{\bf h_i^+})}/\tau} {\sum_{j=1}^N e^{ {\rm sim}( {\bf h_i},{\bf h_j})/\tau}}
-\]</span> 其中，<span class="math inline">\(\tau\)</span>是一个温度超参数，<span class="math inline">\({\rm sim}({\bf h_i},{\bf h_i^+})\)</span>为余弦相似度<span class="math inline">\(\rm\bf\frac{h_1^Th_2}{\|h_1\|·\|h2\|}\)</span>，本文选择的backbone是BERT或RoBERTa。</p>
-<p>其实上述的训练目标就是交叉熵： <span class="math display">\[
-{\rm let}\ z_{i,j} = {\rm sim} ({\bf h_i},{\bf h_j}) \\
-{\rm then}\ loss_i = -\sum_{j=1}^N y_{j}\log z_{i, j}
-\]</span></p>
-<h3 id="positive-instances">Positive instances</h3>
-<p>对比学习的关键问题是如何构造样本对<span class="math inline">\((x_i,x_i^+)\)</span>，在CV中可以用裁剪、旋转等方法对图像进行数据增强，NLP中也有删词、替换、重排等方法。但对于NLP的离散结构来说，这些增强手段作用有限。本文采用了dropout作为数据增强手段，取得了更好的结果。</p>
-<p>本文采用了两个度量align和uniform用于衡量表示的质量。</p>
-<p>align描述了样本对之间的距离 <span class="math display">\[
-l_{\rm align} \triangleq \mathop{\mathbb{E}}_{(x,x^+)\sim p_{pos}}\|f(x)-f(x^+)\|^2
-\]</span> uniform描述了样本是否分布均匀 <span class="math display">\[
-l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(x)-f(y)\|^2}
-\]</span></p>
-<p>从实验结果上看，采用dropout的SimCSE效果更好。</p>
-<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111255916.png" alt="image-20210823111255916" style="zoom:67%;"></p>
-<h2 id="experiment">Experiment</h2>
-<p>在语义相似度任务上大幅度刷新SOTA，无监督就可以超越之前的有监督方法。</p>
-<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111528036.png" alt="image-20210823111528036" style="zoom: 67%;"></p>
-<p>在迁移任务上表现一般，说明sentence embedding并不一定有益于下游训练。</p>
-<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111700869.png" alt="image-20210823111700869" style="zoom: 80%;"></p>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>Contrastive Learning</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2021/12/08/hello-world/</url>
-    <content><![CDATA[<p>Hello, world! <a id="more"></a></p>
-<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="quick-start">Quick Start</h2>
-<h3 id="create-a-new-post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="run-server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="generate-static-files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>WantWords: An Open-source Online Reverse Dictionary System</title>
     <url>/2021/12/20/WantWords-An-Open-source-Online-Reverse-Dictionary-System/</url>
     <content><![CDATA[<p>EMNLP2020，展示了一个开源在线的反向词典系统，称为WantWords（万词王）。可以根据单词的描述，按语义相似度排序列出单词。</p>
@@ -3271,6 +3251,50 @@ WantWords工作流
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2021/12/08/hello-world/</url>
+    <content><![CDATA[<p>Hello, world! <a id="more"></a></p>
+<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="create-a-new-post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="run-server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="generate-static-files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>《程序员的自我修养》——链接、装载与库</title>
+    <url>/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/</url>
+    <content><![CDATA[<p>《程序员的自我修养》——链接、装载与库思维导图</p>
+<a id="more"></a>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/1. 温故而知新.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/2. 静态链接.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/3. 目标文件里有什么.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/4. 静态链接.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/5. Windows PE.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/6. 可执行文件的装载与进程.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/7. 动态链接.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/8. Linux共享库的组织.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/9. Windows下的动态链接.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/10. 内存.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/11. 运行库.png" style="zoom:67%;"></p>
+]]></content>
+      <categories>
+        <category>思维导图</category>
+      </categories>
+      <tags>
+        <tag>coding</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>macOS挂载NTFS硬盘</title>
     <url>/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/</url>
     <content><![CDATA[<p>在macOS上挂载NTFS硬盘，支持读写。</p>
@@ -3287,15 +3311,15 @@ WantWords工作流
 <h2 id="操作步骤">操作步骤</h2>
 <p>展示命令行挂载硬盘的方法，用作备忘。</p>
 <p>在桌面预先建立一个文件夹（如Passport）</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir ~/Desktop/Passport</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir ~/Desktop/Passport</span><br></pre></td></tr></table></figure>
 <p>查看当前磁盘是否被挂载</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">diskutil list</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">diskutil list</span><br></pre></td></tr></table></figure>
 <p>带有external的即为移动硬盘</p>
 <p><img title src="/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/image-20211217003813737.png" alt="image-20211217003813737" data-align="center" width="613"></p>
 <p>如果已经挂载需要先卸载</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo umount &#x2F;dev&#x2F;disk4s1</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo umount /dev/disk4s1</span><br></pre></td></tr></table></figure>
 <p>否则以NTFS格式挂载到桌面建立的文件夹</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo mount_ntfs -o rw,nobrowse &#x2F;dev&#x2F;disk4s1 ~&#x2F;Desktop&#x2F;Passport</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mount_ntfs -o rw,nobrowse /dev/disk4s1 ~/Desktop/Passport</span><br></pre></td></tr></table></figure>
 <p>由此就可以读写了，使用完记得卸载，或许可以写个脚本自动执行这些操作。</p>
 ]]></content>
       <categories>
@@ -3304,6 +3328,58 @@ WantWords工作流
       <tags>
         <tag>mac</tag>
         <tag>shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《自然语言处理入门》</title>
+    <url>/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/</url>
+    <content><![CDATA[<p>《自然语言处理入门》思维导图</p>
+<a id="more"></a>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第1章%20新手上路.png" alt="第1章 新手上路"><figcaption aria-hidden="true">第1章 新手上路</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第2章%20词典分词.png" alt="第2章 词典分词"><figcaption aria-hidden="true">第2章 词典分词</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第3章%20二元语法与中文分词.png" alt="第3章 二元语法与中文分词"><figcaption aria-hidden="true">第3章 二元语法与中文分词</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第4章%20隐马尔可夫模型与序列标注.png" alt="第4章 隐马尔可夫模型与序列标注"><figcaption aria-hidden="true">第4章 隐马尔可夫模型与序列标注</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第5章%20感知机分类与序列标注.png" alt="第5章 感知机分类与序列标注"><figcaption aria-hidden="true">第5章 感知机分类与序列标注</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第6章%20条件随机场与序列标注.png" alt="第6章 条件随机场与序列标注"><figcaption aria-hidden="true">第6章 条件随机场与序列标注</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第7章%20词性标注.png" alt="第7章 词性标注"><figcaption aria-hidden="true">第7章 词性标注</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第8章%20命名实体识别.png" alt="第8章 命名实体识别"><figcaption aria-hidden="true">第8章 命名实体识别</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第9章%20信息抽取.png" alt="第9章 信息抽取"><figcaption aria-hidden="true">第9章 信息抽取</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第10章%20文本聚类.png" alt="第10章 文本聚类"><figcaption aria-hidden="true">第10章 文本聚类</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第11章%20文本分类.png" alt="第11章 文本分类"><figcaption aria-hidden="true">第11章 文本分类</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第12章%20依存句法分析.png" alt="第12章 依存句法分析"><figcaption aria-hidden="true">第12章 依存句法分析</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第13章%20深度学习与自然语言处理.png" alt="第13章 深度学习与自然语言处理"><figcaption aria-hidden="true">第13章 深度学习与自然语言处理</figcaption>
+</figure>
+]]></content>
+      <categories>
+        <category>《自然语言处理入门》</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
       </tags>
   </entry>
   <entry>
@@ -3394,58 +3470,6 @@ WantWords工作流
 <p><a href="https://www.jianshu.com/p/9f63b925b322">Hexo+NexT搭建个人博客</a></p>
 <p><a href="https://blog.csdn.net/qq_33840251/article/details/103899972">Cannot read property ‘enable_sync’ of undefined</a></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>《自然语言处理入门》</title>
-    <url>/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/</url>
-    <content><![CDATA[<p>《自然语言处理入门》思维导图</p>
-<a id="more"></a>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第1章%20新手上路.png" alt="第1章 新手上路"><figcaption aria-hidden="true">第1章 新手上路</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第2章%20词典分词.png" alt="第2章 词典分词"><figcaption aria-hidden="true">第2章 词典分词</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第3章%20二元语法与中文分词.png" alt="第3章 二元语法与中文分词"><figcaption aria-hidden="true">第3章 二元语法与中文分词</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第4章%20隐马尔可夫模型与序列标注.png" alt="第4章 隐马尔可夫模型与序列标注"><figcaption aria-hidden="true">第4章 隐马尔可夫模型与序列标注</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第5章%20感知机分类与序列标注.png" alt="第5章 感知机分类与序列标注"><figcaption aria-hidden="true">第5章 感知机分类与序列标注</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第6章%20条件随机场与序列标注.png" alt="第6章 条件随机场与序列标注"><figcaption aria-hidden="true">第6章 条件随机场与序列标注</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第7章%20词性标注.png" alt="第7章 词性标注"><figcaption aria-hidden="true">第7章 词性标注</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第8章%20命名实体识别.png" alt="第8章 命名实体识别"><figcaption aria-hidden="true">第8章 命名实体识别</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第9章%20信息抽取.png" alt="第9章 信息抽取"><figcaption aria-hidden="true">第9章 信息抽取</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第10章%20文本聚类.png" alt="第10章 文本聚类"><figcaption aria-hidden="true">第10章 文本聚类</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第11章%20文本分类.png" alt="第11章 文本分类"><figcaption aria-hidden="true">第11章 文本分类</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第12章%20依存句法分析.png" alt="第12章 依存句法分析"><figcaption aria-hidden="true">第12章 依存句法分析</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第13章%20深度学习与自然语言处理.png" alt="第13章 深度学习与自然语言处理"><figcaption aria-hidden="true">第13章 深度学习与自然语言处理</figcaption>
-</figure>
-]]></content>
-      <categories>
-        <category>《自然语言处理入门》</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-      </tags>
   </entry>
   <entry>
     <title>现代密码学（一）绪论</title>
@@ -4084,6 +4108,69 @@ M &amp;= C_2\cdot K^{-1}\bmod p
       </tags>
   </entry>
   <entry>
+    <title>现代密码学（四）序列密码</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/</url>
+    <content><![CDATA[<p>介绍序列密码（流密码）。</p>
+<a id="more"></a>
+<h2 id="流密码">流密码</h2>
+<p>流密码的简单结构如下。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165456897.png" alt="image-20201228165456897" style="zoom:67%;"></p>
+<p>对于流密码来说，需要生成一个作为密钥流的“随机”比特序列。</p>
+<p>流密码的安全性取决于密钥的安全等级。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165551857.png" alt="image-20201228165551857" style="zoom:67%;"></p>
+<p>流密码可以分为两种</p>
+<ul>
+<li>同步流密码
+<ul>
+<li>密钥流的产生与明文消息相互独立</li>
+</ul></li>
+<li>自同步流密码
+<ul>
+<li>密钥流的产生与之间产生的若干密文有关</li>
+</ul></li>
+</ul>
+<h2 id="线性反馈移位寄存器-lfsr">线性反馈移位寄存器 LFSR</h2>
+<p>LFSR可以产生同步密钥流。 <span class="math display">\[
+a_i(t+1) = a_{i+1}(t),\ i=1,2,\dots,n-1 \\
+a_n(t+1) = c_na_1(t) \oplus c_{n-1}a_2(t) \oplus\dots\oplus c_1a_n(t)
+\]</span> 联结多项式为 <span class="math display">\[
+c_nx^n + c_{n-1}x^{n-1} +\dots+ c_1x+1
+\]</span></p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228170207505.png" alt="image-20201228170207505" style="zoom:67%;"></p>
+<p>例如对于联接多项式<span class="math inline">\(x^3+x^2+1\)</span>，对应的反馈函数为 <span class="math display">\[
+a_3 = a_1 \oplus a_2
+\]</span> 对于LFSR来说，一个n级LFSR序列的周期最大为<span class="math inline">\(2^n-1\)</span>。</p>
+<p>如果产生了最大周期，则称为m序列，LFSR的状态转移图只有两个圈。</p>
+<h2 id="伪随机序列">伪随机序列</h2>
+<h3 id="golomb随机性假设">Golomb随机性假设</h3>
+<ul>
+<li>在每一周期内，0和1的个数近似相等。</li>
+<li>在每一周期内，长度为i的游程占游程总数的<span class="math inline">\(\frac{1}{2^i}\)</span>。</li>
+<li>定义自相关函数<span class="math inline">\(C(\tau)=\sum_{i=1}^n(-1)^{a_i+a_{i+\tau}}\)</span>。
+<ul>
+<li>那么<span class="math inline">\(C(\tau)=\begin{cases}n,\quad\tau\equiv0\mod n\\c,\quad others\end{cases}\)</span>$</li>
+</ul></li>
+</ul>
+<h3 id="m序列的伪随机性">m序列的伪随机性</h3>
+<h3 id="线性复杂度">线性复杂度</h3>
+<p>能够输出该序列的最短LFSR的级数。</p>
+<p>一个好的流密码，应该具有大周期、大的线性复杂度，同时满足Golomb随机性假设。</p>
+<h2 id="基于lfsr的伪随机序列生成器">基于LFSR的伪随机序列生成器</h2>
+<h3 id="滤波生成器">滤波生成器</h3>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171735794.png" alt="image-20201228171735794" style="zoom:67%;"></p>
+<h3 id="组合生成器">组合生成器</h3>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171742568.png" alt="image-20201228171742568" style="zoom:67%;"></p>
+<h3 id="钟控生成器">钟控生成器</h3>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171755691.png" alt="image-20201228171755691" style="zoom:67%;"></p>
+]]></content>
+      <categories>
+        <category>现代密码学</category>
+      </categories>
+      <tags>
+        <tag>流密码</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>现代密码学（六）认证与哈希函数</title>
     <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AD%EF%BC%89%E8%AE%A4%E8%AF%81%E4%B8%8E%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<p>介绍认证方法与哈希函数。</p>
@@ -4194,69 +4281,6 @@ P(365, k) = 1 - \frac {365!} {(365-k)365^k}
         <tag>MD5</tag>
         <tag>MAC</tag>
         <tag>SHA-1</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>现代密码学（四）序列密码</title>
-    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/</url>
-    <content><![CDATA[<p>介绍序列密码（流密码）。</p>
-<a id="more"></a>
-<h2 id="流密码">流密码</h2>
-<p>流密码的简单结构如下。</p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165456897.png" alt="image-20201228165456897" style="zoom:67%;"></p>
-<p>对于流密码来说，需要生成一个作为密钥流的“随机”比特序列。</p>
-<p>流密码的安全性取决于密钥的安全等级。</p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165551857.png" alt="image-20201228165551857" style="zoom:67%;"></p>
-<p>流密码可以分为两种</p>
-<ul>
-<li>同步流密码
-<ul>
-<li>密钥流的产生与明文消息相互独立</li>
-</ul></li>
-<li>自同步流密码
-<ul>
-<li>密钥流的产生与之间产生的若干密文有关</li>
-</ul></li>
-</ul>
-<h2 id="线性反馈移位寄存器-lfsr">线性反馈移位寄存器 LFSR</h2>
-<p>LFSR可以产生同步密钥流。 <span class="math display">\[
-a_i(t+1) = a_{i+1}(t),\ i=1,2,\dots,n-1 \\
-a_n(t+1) = c_na_1(t) \oplus c_{n-1}a_2(t) \oplus\dots\oplus c_1a_n(t)
-\]</span> 联结多项式为 <span class="math display">\[
-c_nx^n + c_{n-1}x^{n-1} +\dots+ c_1x+1
-\]</span></p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228170207505.png" alt="image-20201228170207505" style="zoom:67%;"></p>
-<p>例如对于联接多项式<span class="math inline">\(x^3+x^2+1\)</span>，对应的反馈函数为 <span class="math display">\[
-a_3 = a_1 \oplus a_2
-\]</span> 对于LFSR来说，一个n级LFSR序列的周期最大为<span class="math inline">\(2^n-1\)</span>。</p>
-<p>如果产生了最大周期，则称为m序列，LFSR的状态转移图只有两个圈。</p>
-<h2 id="伪随机序列">伪随机序列</h2>
-<h3 id="golomb随机性假设">Golomb随机性假设</h3>
-<ul>
-<li>在每一周期内，0和1的个数近似相等。</li>
-<li>在每一周期内，长度为i的游程占游程总数的<span class="math inline">\(\frac{1}{2^i}\)</span>。</li>
-<li>定义自相关函数<span class="math inline">\(C(\tau)=\sum_{i=1}^n(-1)^{a_i+a_{i+\tau}}\)</span>。
-<ul>
-<li>那么<span class="math inline">\(C(\tau)=\begin{cases}n,\quad\tau\equiv0\mod n\\c,\quad others\end{cases}\)</span>$</li>
-</ul></li>
-</ul>
-<h3 id="m序列的伪随机性">m序列的伪随机性</h3>
-<h3 id="线性复杂度">线性复杂度</h3>
-<p>能够输出该序列的最短LFSR的级数。</p>
-<p>一个好的流密码，应该具有大周期、大的线性复杂度，同时满足Golomb随机性假设。</p>
-<h2 id="基于lfsr的伪随机序列生成器">基于LFSR的伪随机序列生成器</h2>
-<h3 id="滤波生成器">滤波生成器</h3>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171735794.png" alt="image-20201228171735794" style="zoom:67%;"></p>
-<h3 id="组合生成器">组合生成器</h3>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171742568.png" alt="image-20201228171742568" style="zoom:67%;"></p>
-<h3 id="钟控生成器">钟控生成器</h3>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171755691.png" alt="image-20201228171755691" style="zoom:67%;"></p>
-]]></content>
-      <categories>
-        <category>现代密码学</category>
-      </categories>
-      <tags>
-        <tag>流密码</tag>
       </tags>
   </entry>
   <entry>
@@ -4621,6 +4645,103 @@ Q(\theta,\theta^{(i)})=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\hat\gamma_{jk}
       </tags>
   </entry>
   <entry>
+    <title>统计学习方法（二）感知机</title>
+    <url>/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/</url>
+    <content><![CDATA[<p>感知机，是二分类的线性分类模型。输入为实例的特征向量，输出为±1，旨在求出将训练数据进行线性划分的分离超平面，是神经网络与SVM的基础。</p>
+<a id="more"></a>
+<h2 id="感知机模型">2.1 感知机模型</h2>
+<h3 id="定义">定义</h3>
+<p><span class="math display">\[
+f(x) = sign(w·x + b) \\
+{\cal X} \subset R^n, \quad {\cal Y} = \{-1, +1\}
+\]</span></p>
+<p>其中w和b为感知机模型参数，w称为权值（向量），b称为偏置（bias）。 <span class="math display">\[
+sign(x) = \begin{cases} +1, \quad x\geq 0 \\ -1, \quad x &lt; 0\end{cases}
+\]</span></p>
+<h3 id="几何解释">几何解释</h3>
+<p>线性方程 <span class="math display">\[
+w·x + b = 0
+\]</span> 对应于特征空间中的一个超平面S，w表示超平面的法向量，b为超平面的截距。</p>
+<p><img src="/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/perc1.png"></p>
+<h2 id="感知机学习策略">2.2 感知机学习策略</h2>
+<h3 id="数据集的线性可分性">数据集的线性可分性</h3>
+<p>给定一个数据集，如果存在超平面S，能够将数据集的正实例点和负实例点完全正确划分，则称数据及为线性可分数据集。</p>
+<h4 id="损失函数">损失函数</h4>
+<p>损失函数的一个自然选择是误分类点的总数，但这样不是参数的连续可导函数，不易优化。</p>
+<p>感知机选择的损失函数是误分类点到超平面S的总距离，输入空间任一点到超平面S的距离为 <span class="math display">\[
+\frac 1 {\|w\|} |w·x_0+b|,其中\|w\|为w的L_2范数
+\]</span> 对于误分类的数据来说，始终有 <span class="math display">\[
+-y_i(w·x_i+b) &gt; 0
+\]</span> 所以距离为 <span class="math display">\[
+- \frac 1 {\|w\|}y_i(w·x_i+b)
+\]</span> 假设误分类点集合为M，求和即得 <span class="math display">\[
+- \frac 1 {\|w\|}\sum _{x_i\in M}y_i(w·x_i+b)
+\]</span> 不考虑系数，损失函数即为 <span class="math display">\[
+L(w, b) = - \sum _{x_i\in M}y_i(w·x_i+b)
+\]</span> 误分类点越少，损失函数值越小，如果没有误分类点，损失函数值为0。</p>
+<h2 id="感知机学习算法">2.3 感知机学习算法</h2>
+<h3 id="形式化">形式化</h3>
+<p>给定训练集 <span class="math display">\[
+T = \{(x_1, y_1), (x_2, y_2), ... , (x_N, y_N)\} \\
+x_i\in {\cal X} = R^n, y_i \in {\cal Y} = \{-1, +1\}
+\]</span> 求参数w和b，使得损失函数极小化 <span class="math display">\[
+\min_{w,b} L(w,b) = - \sum _{x_i\in M}y_i(w·x_i+b)
+\]</span> 学习算法是误分类驱动的，具体采用随机梯度下降法，首先任意选取一个超平面，之后用梯度下降法不断极小化目标函数。</p>
+<p>损失函数的梯度为 <span class="math display">\[
+\nabla_w L(w,b) = -\sum _{x_i\in M} y_ix_i \\
+\nabla_b L(w,b) = -\sum _{x_i\in M} y_i
+\]</span> 随机选取一个误分类点，对参数进行更新 <span class="math display">\[
+w \leftarrow w + \eta y_ix_i \\
+b \leftarrow b + \eta y_i \\
+\eta \in (0, 1]
+\]</span></p>
+<h3 id="原始形式">原始形式</h3>
+<ol type="1">
+<li><p>选取参数初值<span class="math inline">\(w_0,b_0\)</span>$</p></li>
+<li><p>在训练集中选取数据<span class="math inline">\((x_i, y_i)\)</span>$</p></li>
+<li><p>如果<span class="math inline">\(y_i(wx_i+b)\leq 0\)</span>，则更新参数 <span class="math display">\[
+w \leftarrow w + \eta y_ix_i \\
+b \leftarrow b + \eta y_i
+\]</span></p></li>
+<li><p>转至2直至没有误分类点</p></li>
+</ol>
+<h3 id="收敛性">收敛性</h3>
+<p>(<strong>Novikoff</strong>) 存在满足条件的超平面，且感知机算法的误分类次数k满足不等式 <span class="math display">\[
+k \leq (\frac R \gamma)^2
+\]</span></p>
+<h3 id="对偶形式">对偶形式</h3>
+<p>基本想法是，将w和b表示为实例x与标记y的线性组合，通过求解系数求得w和b。</p>
+<p>最后学习到的w和b可表示为 <span class="math display">\[
+w = \sum _{i=1} ^N \alpha_iy_ix_i \\
+b = \sum _{i=1} ^N \alpha_iy_i
+\]</span> 训练过程</p>
+<ol type="1">
+<li><p>选取α和b为0,</p></li>
+<li><p>在训练集中选取数据</p></li>
+<li><p>若<span class="math inline">\(y_i(\sum _{j=1} ^N \alpha_jy_jx_j\cdot x_i+b)\leq 0\)</span>，则更新参数</p></li>
+</ol>
+<p><span class="math display">\[
+\alpha_i \leftarrow \alpha_i + \eta \\
+b \leftarrow b + \eta y_i
+\]</span></p>
+<ol start="4" type="1">
+<li>转至2直至没有误分类数据</li>
+</ol>
+<blockquote>
+<p>Gram矩阵？</p>
+</blockquote>
+<h2 id="scikit-learn">Scikit-learn</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Perceptron</span><br><span class="line"></span><br><span class="line">clf = Perceptron(fit_intercept=<span class="literal">True</span>,</span><br><span class="line">                 max_iter=<span class="number">1000</span>,</span><br><span class="line">                 shuffle=<span class="literal">True</span>)</span><br><span class="line">clf.fit(X, y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Weights assigned to the features.</span></span><br><span class="line">print(clf.coef_)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Constants in decision function.</span></span><br><span class="line">print(clf.intercept_)</span><br><span class="line"></span><br><span class="line">y_ = -(clf.coef_[<span class="number">0</span>][<span class="number">0</span>]*x_ponits + clf.intercept_)/clf.coef_[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">plt.plot(x_ponits, y_)</span><br><span class="line">plt.plot(x_ponits, y_)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>统计学习方法</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>感知机</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>统计学习方法（七）支持向量机</title>
     <url>/2020/08/19/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%83%EF%BC%89%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/</url>
     <content><![CDATA[<p>SVM是一种二分类模型，其基本模型是定义在特征空间上的间隔最大的线性分类器，间隔最大使其区别于感知机。</p>
@@ -4855,103 +4976,6 @@ s.t. \quad&amp; \sum_{i=1}^N\alpha_iy_i=0\\
       </tags>
   </entry>
   <entry>
-    <title>统计学习方法（二）感知机</title>
-    <url>/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/</url>
-    <content><![CDATA[<p>感知机，是二分类的线性分类模型。输入为实例的特征向量，输出为±1，旨在求出将训练数据进行线性划分的分离超平面，是神经网络与SVM的基础。</p>
-<a id="more"></a>
-<h2 id="感知机模型">2.1 感知机模型</h2>
-<h3 id="定义">定义</h3>
-<p><span class="math display">\[
-f(x) = sign(w·x + b) \\
-{\cal X} \subset R^n, \quad {\cal Y} = \{-1, +1\}
-\]</span></p>
-<p>其中w和b为感知机模型参数，w称为权值（向量），b称为偏置（bias）。 <span class="math display">\[
-sign(x) = \begin{cases} +1, \quad x\geq 0 \\ -1, \quad x &lt; 0\end{cases}
-\]</span></p>
-<h3 id="几何解释">几何解释</h3>
-<p>线性方程 <span class="math display">\[
-w·x + b = 0
-\]</span> 对应于特征空间中的一个超平面S，w表示超平面的法向量，b为超平面的截距。</p>
-<p><img src="/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/perc1.png"></p>
-<h2 id="感知机学习策略">2.2 感知机学习策略</h2>
-<h3 id="数据集的线性可分性">数据集的线性可分性</h3>
-<p>给定一个数据集，如果存在超平面S，能够将数据集的正实例点和负实例点完全正确划分，则称数据及为线性可分数据集。</p>
-<h4 id="损失函数">损失函数</h4>
-<p>损失函数的一个自然选择是误分类点的总数，但这样不是参数的连续可导函数，不易优化。</p>
-<p>感知机选择的损失函数是误分类点到超平面S的总距离，输入空间任一点到超平面S的距离为 <span class="math display">\[
-\frac 1 {\|w\|} |w·x_0+b|,其中\|w\|为w的L_2范数
-\]</span> 对于误分类的数据来说，始终有 <span class="math display">\[
--y_i(w·x_i+b) &gt; 0
-\]</span> 所以距离为 <span class="math display">\[
-- \frac 1 {\|w\|}y_i(w·x_i+b)
-\]</span> 假设误分类点集合为M，求和即得 <span class="math display">\[
-- \frac 1 {\|w\|}\sum _{x_i\in M}y_i(w·x_i+b)
-\]</span> 不考虑系数，损失函数即为 <span class="math display">\[
-L(w, b) = - \sum _{x_i\in M}y_i(w·x_i+b)
-\]</span> 误分类点越少，损失函数值越小，如果没有误分类点，损失函数值为0。</p>
-<h2 id="感知机学习算法">2.3 感知机学习算法</h2>
-<h3 id="形式化">形式化</h3>
-<p>给定训练集 <span class="math display">\[
-T = \{(x_1, y_1), (x_2, y_2), ... , (x_N, y_N)\} \\
-x_i\in {\cal X} = R^n, y_i \in {\cal Y} = \{-1, +1\}
-\]</span> 求参数w和b，使得损失函数极小化 <span class="math display">\[
-\min_{w,b} L(w,b) = - \sum _{x_i\in M}y_i(w·x_i+b)
-\]</span> 学习算法是误分类驱动的，具体采用随机梯度下降法，首先任意选取一个超平面，之后用梯度下降法不断极小化目标函数。</p>
-<p>损失函数的梯度为 <span class="math display">\[
-\nabla_w L(w,b) = -\sum _{x_i\in M} y_ix_i \\
-\nabla_b L(w,b) = -\sum _{x_i\in M} y_i
-\]</span> 随机选取一个误分类点，对参数进行更新 <span class="math display">\[
-w \leftarrow w + \eta y_ix_i \\
-b \leftarrow b + \eta y_i \\
-\eta \in (0, 1]
-\]</span></p>
-<h3 id="原始形式">原始形式</h3>
-<ol type="1">
-<li><p>选取参数初值<span class="math inline">\(w_0,b_0\)</span>$</p></li>
-<li><p>在训练集中选取数据<span class="math inline">\((x_i, y_i)\)</span>$</p></li>
-<li><p>如果<span class="math inline">\(y_i(wx_i+b)\leq 0\)</span>，则更新参数 <span class="math display">\[
-w \leftarrow w + \eta y_ix_i \\
-b \leftarrow b + \eta y_i
-\]</span></p></li>
-<li><p>转至2直至没有误分类点</p></li>
-</ol>
-<h3 id="收敛性">收敛性</h3>
-<p>(<strong>Novikoff</strong>) 存在满足条件的超平面，且感知机算法的误分类次数k满足不等式 <span class="math display">\[
-k \leq (\frac R \gamma)^2
-\]</span></p>
-<h3 id="对偶形式">对偶形式</h3>
-<p>基本想法是，将w和b表示为实例x与标记y的线性组合，通过求解系数求得w和b。</p>
-<p>最后学习到的w和b可表示为 <span class="math display">\[
-w = \sum _{i=1} ^N \alpha_iy_ix_i \\
-b = \sum _{i=1} ^N \alpha_iy_i
-\]</span> 训练过程</p>
-<ol type="1">
-<li><p>选取α和b为0,</p></li>
-<li><p>在训练集中选取数据</p></li>
-<li><p>若<span class="math inline">\(y_i(\sum _{j=1} ^N \alpha_jy_jx_j\cdot x_i+b)\leq 0\)</span>，则更新参数</p></li>
-</ol>
-<p><span class="math display">\[
-\alpha_i \leftarrow \alpha_i + \eta \\
-b \leftarrow b + \eta y_i
-\]</span></p>
-<ol start="4" type="1">
-<li>转至2直至没有误分类数据</li>
-</ol>
-<blockquote>
-<p>Gram矩阵？</p>
-</blockquote>
-<h2 id="scikit-learn">Scikit-learn</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Perceptron</span><br><span class="line"></span><br><span class="line">clf = Perceptron(fit_intercept=<span class="literal">True</span>,</span><br><span class="line">                 max_iter=<span class="number">1000</span>,</span><br><span class="line">                 shuffle=<span class="literal">True</span>)</span><br><span class="line">clf.fit(X, y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Weights assigned to the features.</span></span><br><span class="line">print(clf.coef_)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Constants in decision function.</span></span><br><span class="line">print(clf.intercept_)</span><br><span class="line"></span><br><span class="line">y_ = -(clf.coef_[<span class="number">0</span>][<span class="number">0</span>]*x_ponits + clf.intercept_)/clf.coef_[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">plt.plot(x_ponits, y_)</span><br><span class="line">plt.plot(x_ponits, y_)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>统计学习方法</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-        <tag>感知机</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>统计学习方法（五）决策树</title>
     <url>/2020/08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/</url>
     <content><![CDATA[<p>决策树是一种基本的分类与回归方法，在分类问题中，用树形结构表示基于特征对实例进行分类的过程。</p>
@@ -5082,6 +5106,97 @@ g(t) = \frac {C(t) - C(T_t)} {|T_t|-1}
       <tags>
         <tag>机器学习</tag>
         <tag>决策树</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>统计学习方法（八）提升方法</title>
+    <url>/2020/08/25/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AB%EF%BC%89%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>提升方法，在分类问题中通过改变训练样本的权重，学习多个分类器，并将分类器线性组合，提高分类的性能。</p>
+<a id="more"></a>
+<h2 id="adaboost算法">8.1 AdaBoost算法</h2>
+<p>提升方法的思想是，对于一个复杂任务来说，综合多个专家的判断得出的判断效果更好。</p>
+<ul>
+<li><strong>强可学习</strong>：在概率近似正确学习（PAC）的框架中，一个概念（一个类），如果存在一个多项式的学习算法 能够学习它，并且正确率很高，那么就称这个概念是强可学习的-</li>
+<li><strong>弱可学习</strong>：一个概念，如果存在一个多项式的学习算法能够学习它，学习的正确率仅比随机猜测略好，那么就称这个概念是弱可学习的。</li>
+</ul>
+<p>Schapire后来证明强可学习与弱可学习是等价的，也即在PAC学习的框架下，一个概念是强可学习的充要条件是这个概念是弱可学习的。</p>
+<p>利用这个前提，如果在学习中发现了”弱学习算法“，可以将其提升为”强学习算法“。对于分类问题而言，给定训练集，从弱学习算法出发，反复学习，得到一系列弱分类器，组合这些弱分类器构成一个强分类器。</p>
+<p>给定一个二分类训练集 <span class="math display">\[
+T = \{(x_1,y_1),(x_2,y_2),\cdots,(x_N,y_N)\} \\
+x\in{\cal X}\subset{\mathbb R}^n,\quad y_i\in{\cal Y}=\{-1.+1\}
+\]</span> 初始化训练数据的权值分布 <span class="math display">\[
+D_1=(w_{11},\cdots,w_{1i},\cdots,w_{1N}),\quad w_{1i}=\frac1N,\quad i=1,2,\cdots,N
+\]</span> 使用权值分布为<span class="math inline">\(D_m\)</span>的训练集学习，得到基本分类器 <span class="math display">\[
+G_m(x):{\cal X}\rightarrow\{-1,+1\}
+\]</span> 计算分类器在训练集上的分类误差率 <span class="math display">\[
+e_m=\sum_{i=1}^NP(G_m(x_i)\neq y_i)=\sum_{i=1}^Nw_{mi}I(G_m(x_i)\neq y_i)
+\]</span> 计算分类器的系数，取自然对数 <span class="math display">\[
+\alpha_m=\frac12\log\frac{1-e_m}{e_m}
+\]</span> 更新训练集的权值分布 <span class="math display">\[
+D_{m+1}=(w_{m+1.1},\cdots,w_{m+1,i},\cdots,w_{m+1,N})\\
+w_{m+1,i}=\frac{w_{mi}}{Z_m}\exp(-\alpha_my_iG_m(x_i)),\quad i=1,2,\cdots,N
+\]</span> 其中，<span class="math inline">\(Z_m\)</span>是规范化因子，使得<span class="math inline">\(D_{m+1}\)</span>成为一个概率分布。 <span class="math display">\[
+Z_m = \sum_{i=1}^N{w_{mi}}\exp(-\alpha_my_iG_m(x_i))
+\]</span> 根据基本分类器，构造线性组合，得到最终分类器 <span class="math display">\[
+f(x)=\sum_{m=1}^M\alpha_mG_m(x) \\
+G(x)=sign(f(x))
+\]</span> 计算<span class="math inline">\(G_m(x)\)</span>系数<span class="math inline">\(\alpha_m\)</span>时，<span class="math inline">\(e_m\leq\frac12\)</span>时，<span class="math inline">\(\alpha_m\geq0\)</span>，并且<span class="math inline">\(\alpha_m\)</span>关于<span class="math inline">\(e_m\)</span>递减，所以分类误差率越小的基本分类器，在最终分类器中的作用越大。</p>
+<p>更新权值时，可以写成如下形式： <span class="math display">\[
+\begin{align}
+w_{m+1,i}=\begin{cases}\frac{w_{mi}}{Z_m}e^{-\alpha_m},\quad &amp;G_m(x_i)=y_i\\\frac{w_{mi}}{Z_m}e^{\alpha_m},\quad &amp;G_m(x_i)\neq y_i\end{cases}
+\end{align}
+\]</span> 所以误分类样本的权值得以扩大，在下一轮学习中起更大的作用。不改变训练数据，而不断改变训练数据权值的分布，这是AdaBoost的一个特点。</p>
+<blockquote>
+<p>注意，<span class="math inline">\(\sum\alpha_m\neq1\)</span>$</p>
+</blockquote>
+<h2 id="adaboost算法的训练误差分析">8.2 AdaBoost算法的训练误差分析</h2>
+<p><strong>定理 8.1</strong> AdaBoost算法最终分类器的训练误差界为 <span class="math display">\[
+\frac1N\sum_{i=1}^NI(G(x_i)\neq y_i)\leq\frac1N\sum_i\exp(-y_if(x_i))\neq y_i)=\prod_mZ_m
+\]</span> <strong>定理8.2</strong> 二分类问题中，AdaBoost的训练误差界为 <span class="math display">\[
+\begin{align}
+\prod_{m=1}^MZ_m&amp;=\prod_{m=1}^M[2\sqrt{e_m(1-e_m)}]\\
+&amp;=\prod_{m=1}^M\sqrt{(1-4\gamma_m^2)}\\
+&amp;\leq\exp(-2\sum_{m=1}^M\gamma_m^2)
+\end{align}
+\]</span> 其中，<span class="math inline">\(\gamma_m=\frac12-e_m\)</span>$</p>
+<h2 id="adaboost算法的解释">8.3 AdaBoost算法的解释</h2>
+<h3 id="前向分步算法">前向分步算法</h3>
+<p>考虑加法模型 <span class="math display">\[
+f(x)=\sum_{m=1}^M\beta_mb(x;\gamma_m)
+\]</span> 其中，<span class="math inline">\(b(x;\gamma_m)\)</span>为基函数，<span class="math inline">\(\gamma_m\)</span>为函数的参数。</p>
+<p>给定训练集及损失函数<span class="math inline">\(L(y,f(x))\)</span>的条件下，学习加法模型即为损失函数极小化问题 <span class="math display">\[
+\min_{\beta_m,\gamma_m}\sum_{i=1}^NL(y_i,\sum_{m=1}^M\beta_mb(x_i;\gamma_m))
+\]</span> 通常这是一个复杂的优化问题，前向分步算法的想法是：因为学习的是加法模型，如果能够从前向后，每步只学习一个基函数与系数，逐步逼近，就可以简化复杂度，即每步只考虑优化如下函数 <span class="math display">\[
+\min_{\beta,\gamma}\sum_{i=1}^NL(y_i,\beta b(x_i;\gamma))
+\]</span></p>
+<h3 id="前向分步与adaboost">前向分步与AdaBoost</h3>
+<p><strong>定理8.3</strong> AdaBoost是前向分步算法的特例。这时，模型是由基本分类器组成的加法模型，损失函数是指数函数。</p>
+<h2 id="提升树">8.4 提升树</h2>
+<h3 id="提升树模型">提升树模型</h3>
+<p>提升方法实际采用加法模型与前向分步算法，以决策树为基函数的提升方法就称为提升树。</p>
+<p>提升树模型可以表示为决策树的加法模型 <span class="math display">\[
+f_M(x)=\sum_{m=1}^MT(x;\Theta_m)
+\]</span> 其中，<span class="math inline">\(T(x;\Theta_m)\)</span>表示决策树，<span class="math inline">\(M\)</span>表示树的个数。</p>
+<h3 id="提升树算法">提升树算法</h3>
+<p>首先初始化提升树<span class="math inline">\(f_0(x)=0\)</span>，第m步的模型是 <span class="math display">\[
+f_m(x)=f_{m-1}(x)+T(x;\Theta_m)
+\]</span> 通过经验风险最小化确定下一棵决策树的参数 <span class="math display">\[
+\hat\Theta_m=\arg\min_{\Theta_m}\sum_{i=1}^NL(y_i,f_{m-1}(x_i)+T(x_i;\Theta_m))
+\]</span> 对于二分类问题，提升树算法只需要将AdaBoost的基本分类器限制为二类分类树即可，此时的提升树算法是AdaBoost的特殊情况。</p>
+<h3 id="梯度提升">梯度提升</h3>
+<p>对于提升树算法，当损失函数是平方损失和指数损失函数时，每一步优化是很简单的。</p>
+<p>对于一般损失函数，Freidman提出了梯度提升算法，利用损失函数的负梯度值 <span class="math display">\[
+-[\frac{\partial L(y,f(x_i))}{\partial f(x_i)}]_{f(x)=f_{m-1}(x)}
+\]</span> 作为回归问题中残差的近似值，拟合回归树。</p>
+<h2 id="scikit-learn">Scikit-learn</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line"></span><br><span class="line">clf = AdaBoostClassifier(n_estimators=<span class="number">100</span>, learning_rate=<span class="number">0.5</span>)</span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>统计学习方法</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>提升方法</tag>
       </tags>
   </entry>
   <entry>
@@ -5230,97 +5345,6 @@ f^\#(x,y) = \sum_{i=1}^nf_i(x,y)
       <tags>
         <tag>机器学习</tag>
         <tag>Logistic回归</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>统计学习方法（八）提升方法</title>
-    <url>/2020/08/25/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AB%EF%BC%89%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>提升方法，在分类问题中通过改变训练样本的权重，学习多个分类器，并将分类器线性组合，提高分类的性能。</p>
-<a id="more"></a>
-<h2 id="adaboost算法">8.1 AdaBoost算法</h2>
-<p>提升方法的思想是，对于一个复杂任务来说，综合多个专家的判断得出的判断效果更好。</p>
-<ul>
-<li><strong>强可学习</strong>：在概率近似正确学习（PAC）的框架中，一个概念（一个类），如果存在一个多项式的学习算法 能够学习它，并且正确率很高，那么就称这个概念是强可学习的-</li>
-<li><strong>弱可学习</strong>：一个概念，如果存在一个多项式的学习算法能够学习它，学习的正确率仅比随机猜测略好，那么就称这个概念是弱可学习的。</li>
-</ul>
-<p>Schapire后来证明强可学习与弱可学习是等价的，也即在PAC学习的框架下，一个概念是强可学习的充要条件是这个概念是弱可学习的。</p>
-<p>利用这个前提，如果在学习中发现了”弱学习算法“，可以将其提升为”强学习算法“。对于分类问题而言，给定训练集，从弱学习算法出发，反复学习，得到一系列弱分类器，组合这些弱分类器构成一个强分类器。</p>
-<p>给定一个二分类训练集 <span class="math display">\[
-T = \{(x_1,y_1),(x_2,y_2),\cdots,(x_N,y_N)\} \\
-x\in{\cal X}\subset{\mathbb R}^n,\quad y_i\in{\cal Y}=\{-1.+1\}
-\]</span> 初始化训练数据的权值分布 <span class="math display">\[
-D_1=(w_{11},\cdots,w_{1i},\cdots,w_{1N}),\quad w_{1i}=\frac1N,\quad i=1,2,\cdots,N
-\]</span> 使用权值分布为<span class="math inline">\(D_m\)</span>的训练集学习，得到基本分类器 <span class="math display">\[
-G_m(x):{\cal X}\rightarrow\{-1,+1\}
-\]</span> 计算分类器在训练集上的分类误差率 <span class="math display">\[
-e_m=\sum_{i=1}^NP(G_m(x_i)\neq y_i)=\sum_{i=1}^Nw_{mi}I(G_m(x_i)\neq y_i)
-\]</span> 计算分类器的系数，取自然对数 <span class="math display">\[
-\alpha_m=\frac12\log\frac{1-e_m}{e_m}
-\]</span> 更新训练集的权值分布 <span class="math display">\[
-D_{m+1}=(w_{m+1.1},\cdots,w_{m+1,i},\cdots,w_{m+1,N})\\
-w_{m+1,i}=\frac{w_{mi}}{Z_m}\exp(-\alpha_my_iG_m(x_i)),\quad i=1,2,\cdots,N
-\]</span> 其中，<span class="math inline">\(Z_m\)</span>是规范化因子，使得<span class="math inline">\(D_{m+1}\)</span>成为一个概率分布。 <span class="math display">\[
-Z_m = \sum_{i=1}^N{w_{mi}}\exp(-\alpha_my_iG_m(x_i))
-\]</span> 根据基本分类器，构造线性组合，得到最终分类器 <span class="math display">\[
-f(x)=\sum_{m=1}^M\alpha_mG_m(x) \\
-G(x)=sign(f(x))
-\]</span> 计算<span class="math inline">\(G_m(x)\)</span>系数<span class="math inline">\(\alpha_m\)</span>时，<span class="math inline">\(e_m\leq\frac12\)</span>时，<span class="math inline">\(\alpha_m\geq0\)</span>，并且<span class="math inline">\(\alpha_m\)</span>关于<span class="math inline">\(e_m\)</span>递减，所以分类误差率越小的基本分类器，在最终分类器中的作用越大。</p>
-<p>更新权值时，可以写成如下形式： <span class="math display">\[
-\begin{align}
-w_{m+1,i}=\begin{cases}\frac{w_{mi}}{Z_m}e^{-\alpha_m},\quad &amp;G_m(x_i)=y_i\\\frac{w_{mi}}{Z_m}e^{\alpha_m},\quad &amp;G_m(x_i)\neq y_i\end{cases}
-\end{align}
-\]</span> 所以误分类样本的权值得以扩大，在下一轮学习中起更大的作用。不改变训练数据，而不断改变训练数据权值的分布，这是AdaBoost的一个特点。</p>
-<blockquote>
-<p>注意，<span class="math inline">\(\sum\alpha_m\neq1\)</span>$</p>
-</blockquote>
-<h2 id="adaboost算法的训练误差分析">8.2 AdaBoost算法的训练误差分析</h2>
-<p><strong>定理 8.1</strong> AdaBoost算法最终分类器的训练误差界为 <span class="math display">\[
-\frac1N\sum_{i=1}^NI(G(x_i)\neq y_i)\leq\frac1N\sum_i\exp(-y_if(x_i))\neq y_i)=\prod_mZ_m
-\]</span> <strong>定理8.2</strong> 二分类问题中，AdaBoost的训练误差界为 <span class="math display">\[
-\begin{align}
-\prod_{m=1}^MZ_m&amp;=\prod_{m=1}^M[2\sqrt{e_m(1-e_m)}]\\
-&amp;=\prod_{m=1}^M\sqrt{(1-4\gamma_m^2)}\\
-&amp;\leq\exp(-2\sum_{m=1}^M\gamma_m^2)
-\end{align}
-\]</span> 其中，<span class="math inline">\(\gamma_m=\frac12-e_m\)</span>$</p>
-<h2 id="adaboost算法的解释">8.3 AdaBoost算法的解释</h2>
-<h3 id="前向分步算法">前向分步算法</h3>
-<p>考虑加法模型 <span class="math display">\[
-f(x)=\sum_{m=1}^M\beta_mb(x;\gamma_m)
-\]</span> 其中，<span class="math inline">\(b(x;\gamma_m)\)</span>为基函数，<span class="math inline">\(\gamma_m\)</span>为函数的参数。</p>
-<p>给定训练集及损失函数<span class="math inline">\(L(y,f(x))\)</span>的条件下，学习加法模型即为损失函数极小化问题 <span class="math display">\[
-\min_{\beta_m,\gamma_m}\sum_{i=1}^NL(y_i,\sum_{m=1}^M\beta_mb(x_i;\gamma_m))
-\]</span> 通常这是一个复杂的优化问题，前向分步算法的想法是：因为学习的是加法模型，如果能够从前向后，每步只学习一个基函数与系数，逐步逼近，就可以简化复杂度，即每步只考虑优化如下函数 <span class="math display">\[
-\min_{\beta,\gamma}\sum_{i=1}^NL(y_i,\beta b(x_i;\gamma))
-\]</span></p>
-<h3 id="前向分步与adaboost">前向分步与AdaBoost</h3>
-<p><strong>定理8.3</strong> AdaBoost是前向分步算法的特例。这时，模型是由基本分类器组成的加法模型，损失函数是指数函数。</p>
-<h2 id="提升树">8.4 提升树</h2>
-<h3 id="提升树模型">提升树模型</h3>
-<p>提升方法实际采用加法模型与前向分步算法，以决策树为基函数的提升方法就称为提升树。</p>
-<p>提升树模型可以表示为决策树的加法模型 <span class="math display">\[
-f_M(x)=\sum_{m=1}^MT(x;\Theta_m)
-\]</span> 其中，<span class="math inline">\(T(x;\Theta_m)\)</span>表示决策树，<span class="math inline">\(M\)</span>表示树的个数。</p>
-<h3 id="提升树算法">提升树算法</h3>
-<p>首先初始化提升树<span class="math inline">\(f_0(x)=0\)</span>，第m步的模型是 <span class="math display">\[
-f_m(x)=f_{m-1}(x)+T(x;\Theta_m)
-\]</span> 通过经验风险最小化确定下一棵决策树的参数 <span class="math display">\[
-\hat\Theta_m=\arg\min_{\Theta_m}\sum_{i=1}^NL(y_i,f_{m-1}(x_i)+T(x_i;\Theta_m))
-\]</span> 对于二分类问题，提升树算法只需要将AdaBoost的基本分类器限制为二类分类树即可，此时的提升树算法是AdaBoost的特殊情况。</p>
-<h3 id="梯度提升">梯度提升</h3>
-<p>对于提升树算法，当损失函数是平方损失和指数损失函数时，每一步优化是很简单的。</p>
-<p>对于一般损失函数，Freidman提出了梯度提升算法，利用损失函数的负梯度值 <span class="math display">\[
--[\frac{\partial L(y,f(x_i))}{\partial f(x_i)}]_{f(x)=f_{m-1}(x)}
-\]</span> 作为回归问题中残差的近似值，拟合回归树。</p>
-<h2 id="scikit-learn">Scikit-learn</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line"></span><br><span class="line">clf = AdaBoostClassifier(n_estimators=<span class="number">100</span>, learning_rate=<span class="number">0.5</span>)</span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>统计学习方法</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-        <tag>提升方法</tag>
       </tags>
   </entry>
   <entry>
