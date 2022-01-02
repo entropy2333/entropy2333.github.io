@@ -32,13 +32,13 @@ category:
 
 在桌面预先建立一个文件夹（如Passport）
 
-```shell
+```bash
 mkdir ~/Desktop/Passport
 ```
 
 查看当前磁盘是否被挂载
 
-```shell
+```bash
 diskutil list
 ```
 
@@ -48,13 +48,13 @@ diskutil list
 
 如果已经挂载需要先卸载
 
-```shel
+```bash
 sudo umount /dev/disk4s1
 ```
 
 否则以NTFS格式挂载到桌面建立的文件夹
 
-```she
+```bash
 sudo mount_ntfs -o rw,nobrowse /dev/disk4s1 ~/Desktop/Passport
 ```
 
