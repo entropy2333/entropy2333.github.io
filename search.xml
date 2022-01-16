@@ -63,160 +63,6 @@
       </tags>
   </entry>
   <entry>
-    <title>C++ Primer Chapter 3 字符串、向量和数组</title>
-    <url>/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/</url>
-    <content><![CDATA[<p>介绍标准库string和vector，以及迭代器和数组的使用。</p>
-<a id="more"></a>
-<h3 id="命名空间的using声明">命名空间的using声明</h3>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span>::name;</span><br></pre></td></tr></table></figure>
-<p>头文件不应该包含using声明。</p>
-<h2 id="标准库类型string">标准库类型string</h2>
-<p>string定义在命名空间std中。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;string&gt;</span><br><span class="line">using namespace std::string;</span><br></pre></td></tr></table></figure>
-<h3 id="定义和初始化">定义和初始化</h3>
-<p>如果使用等号，实际上执行的是拷贝初始化。反之，执行的是直接初始化。</p>
-<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133107639.png" alt="image-20201130133107639" style="zoom: 50%;"></p>
-<h3 id="string对象上的操作">string对象上的操作</h3>
-<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125844111.png" alt="image-20201130125844111" style="zoom:50%;"></p>
-<h4 id="读写">读写</h4>
-<p>执行读取操作时，会自动忽略开头的空白字符，直至遇到下一处空白。</p>
-<p>输入" Hello World! "，输出则为"Hello"。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> s;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; s;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以用getline读取一整行。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> <span class="built_in">line</span>;</span><br><span class="line">    <span class="keyword">while</span> (getline(<span class="built_in">cin</span>, <span class="built_in">line</span>))</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="built_in">line</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="emptysize">empty&amp;size</h4>
-<p>empty判断string对象是否为空，返回bool。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (getline(<span class="built_in">cin</span>, <span class="built_in">line</span>))</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">line</span>.empty())</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="built_in">line</span> &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
-<p>size返回string对象的长度，类型为string::size_type。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (getline(<span class="built_in">cin</span>, <span class="built_in">line</span>))</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">line</span>.empty())</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="built_in">line</span>.<span class="built_in">size</span>() &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>此时，空字符也会计数。</p>
-</blockquote>
-<p>当使用size_type进行比较时，注意不要与int混用，因为负值的带符号数会转化为大整数的无符号数。</p>
-<h4 id="比较加法">比较&amp;加法</h4>
-<p>string对象逐字符比较，按字典序比较。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s1 = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line"><span class="built_in">string</span> s2 = <span class="string">&quot;abc def&quot;</span>;</span><br><span class="line"><span class="built_in">string</span> s3 = <span class="string">&quot;abdef&quot;</span>;</span><br><span class="line"><span class="comment">// res: s1 &lt; s2 &lt; s3</span></span><br></pre></td></tr></table></figure>
-<p>两个string对象可以相加，字面值也可以和string对象相加。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s1 = <span class="string">&quot;hello&quot;</span>, s2 = <span class="string">&quot;world&quot;</span>。</span><br><span class="line"><span class="built_in">string</span> s3 = s1 + s2。</span><br><span class="line"><span class="built_in">string</span> s4 = s1 + <span class="string">&quot; &quot;</span> + s2 + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="built_in">string</span> s5 = <span class="string">&quot;hello&quot;</span> + <span class="string">&quot; &quot;</span> + s2; <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>运算时，应保证+两侧的运算对象至少有一个是string。</p>
-</blockquote>
-<h3 id="处理string中的字符">处理string中的字符</h3>
-<p>下表给出了一些关于字符属性的函数。</p>
-<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125720977.png" alt="image-20201130125720977" style="zoom:50%;"></p>
-<blockquote>
-<p>C++标准库为了兼容C，将C的头文件如name.h，命名为cname。</p>
-<p>C++程序应该使用cname形式的头文件，以区分从C继承的头文件。</p>
-</blockquote>
-<p>为了遍历string对象，可以使用下标，也可以使用范围for语句（推荐）。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> c : s)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; c &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
-<p>如果想要改变字符，需要把循环变量定义为引用类型。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;c : s)</span><br><span class="line">    c = <span class="built_in">toupper</span>(c);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s;</span><br></pre></td></tr></table></figure>
-<p>有时候只需要处理部分字符，可以使用下标，也可以使用迭代器（后续介绍）。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 实现单词首字母大写</span></span><br><span class="line"><span class="built_in">string</span> s = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">decltype</span>(s.<span class="built_in">size</span>()) index = <span class="number">0</span>;</span><br><span class="line">     index != s.<span class="built_in">size</span>(); ++index) &#123;</span><br><span class="line">    <span class="keyword">if</span> (index == <span class="number">0</span> &amp;&amp; <span class="built_in">isalpha</span>(s[index])) &#123;</span><br><span class="line">        s[index] = <span class="built_in">toupper</span>(s[index]);</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">isalpha</span>(s[index]) &amp;&amp; !<span class="built_in">isalpha</span>(s[index<span class="number">-1</span>]))</span><br><span class="line">        s[index] = <span class="built_in">toupper</span>(s[index]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s; <span class="comment">// output: &quot;Hello world&quot;</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>使用下标时，切忌下标越界，应该时刻检查下标的合法性。</p>
-</blockquote>
-<h2 id="标准库类型vector">标准库类型vector</h2>
-<p>vector表示相同类型对象的集合，每个对象都有一个索引用于访问对象。因此vector也被称为容器，vector同时也是一个类模板（距离还比较遥远）。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">vector</span>;</span><br></pre></td></tr></table></figure>
-<p>模板实例化时，需要提供对象类型。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;              <span class="comment">// 元素是int</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; file;  <span class="comment">// 元素是存放string的vector</span></span><br></pre></td></tr></table></figure>
-<p>vector作为类模板，不是类型。</p>
-<p>引用不是对象，不存在包含引用的vector。</p>
-<h3 id="定义和初始化vector对象">定义和初始化vector对象</h3>
-<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133133358.png" alt="image-20201130133133358" style="zoom:50%;"></p>
-<p>注意区分列表初始化和元素数量。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v1&#123;<span class="number">10</span>&#125;; <span class="comment">// 列表初始化，v1有1个元素，值为10。</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v2</span><span class="params">(<span class="number">10</span>)</span></span>; <span class="comment">// v2有10个元素，值为0。</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v3&#123;<span class="number">10</span>, <span class="number">1</span>&#125;; <span class="comment">// 列表初始化，v3有2个元素，值为10和1。</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v4</span><span class="params">(<span class="number">10</span>, <span class="number">1</span>)</span></span>; <span class="comment">// v4有10个元素，值为1。</span></span><br></pre></td></tr></table></figure>
-<h3 id="向vector对象添加元素">向vector对象添加元素</h3>
-<p>可以用vector的成员函数push_back添加元素。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != <span class="number">10</span>; ++i)</span><br><span class="line">    v.push_back(i);</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>与C不同，C++推荐先定义一个空的vector对象，运行时向其中添加具体值。</p>
-</blockquote>
-<h3 id="其他vector操作">其他vector操作</h3>
-<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133935086.png" alt="image-20201130133935086" style="zoom:50%;"></p>
-<p>vector同样支持范围for语句。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : v)   <span class="comment">// 使用引用对vector的元素赋值</span></span><br><span class="line">    i *= <span class="number">2</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> i : v)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br></pre></td></tr></table></figure>
-<p>与string类似，vector的size函数返回类型为vector<T>::size_type。</T></p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 统计各分数段内的人数</span></span><br><span class="line"><span class="comment">// input: 42 65 95 100 39 67 95 76 88 76 83 92 76 93 101</span></span><br><span class="line"><span class="comment">// output: 0 0 0 1 1 0 2 3 2 4 1</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span>&gt; <span class="title">scores</span><span class="params">(<span class="number">11</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="keyword">unsigned</span> grade = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; grade) &#123;</span><br><span class="line">    <span class="keyword">if</span> (grade &lt;= <span class="number">100</span>)</span><br><span class="line">        ++scores[grade/<span class="number">10</span>];</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> i : scores)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="迭代器介绍">迭代器介绍</h2>
-<h3 id="使用迭代器">使用迭代器</h3>
-<p>有迭代器的类型拥有名为begin和end的成员。</p>
-<p>begin成员返回指向第一个元素的迭代器，end成员返回指向容器“尾后”元素的迭代器，通常被称作尾后迭代器。</p>
-<p>如果容器为空，begin和end返回的是同一个迭代器，都是尾后迭代器。</p>
-<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135012221.png" alt="image-20201130135012221" style="zoom:50%;"></p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> it = s.<span class="built_in">begin</span>(); it != s.<span class="built_in">end</span>(); ++it)</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">isalpha</span>(*it))</span><br><span class="line">        *it = <span class="built_in">toupper</span>(*it);</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>C++习惯在for循环中使用!=进行判断，因为大多数迭代器都没有定义&lt;运算符。</p>
-</blockquote>
-<p>迭代器也有const类型，能读取但不能修改vector。</p>
-<p>为了便捷，C++11引入了两个新函数cbegin和cend。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v1;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v2;</span><br><span class="line"><span class="keyword">auto</span> it1 = v1.<span class="built_in">begin</span>();   <span class="comment">// type: vector&lt;int&gt;::iterator</span></span><br><span class="line"><span class="keyword">auto</span> it2 = v2.<span class="built_in">begin</span>();  <span class="comment">// type: vector&lt;int&gt;::const_iterator</span></span><br><span class="line"><span class="keyword">auto</span> it3 = v1.cbegin(); <span class="comment">// type: vector&lt;int&gt;::const_iterator</span></span><br></pre></td></tr></table></figure>
-<p>为了简化解引用和成员访问操作一起使用，C++定义了箭头运算符。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">*it.empty;   <span class="comment">// error</span></span><br><span class="line">(*it).empty;</span><br><span class="line">it-&gt;empty;</span><br></pre></td></tr></table></figure>
-<h3 id="迭代器运算">迭代器运算</h3>
-<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135031052.png" alt="image-20201130135031052" style="zoom:50%;"></p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 得到最接近中间元素的迭代器</span></span><br><span class="line"><span class="keyword">auto</span> mid = v.<span class="built_in">begin</span>() + v.<span class="built_in">size</span>() / <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
-<p>C++定义了迭代器的差值，类型为difference_type。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 二分搜索</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="built_in">text</span>;</span><br><span class="line"><span class="built_in">string</span> sought;</span><br><span class="line"><span class="keyword">auto</span> beg = <span class="built_in">text</span>.<span class="built_in">begin</span>(), <span class="built_in">end</span> = <span class="built_in">text</span>.<span class="built_in">end</span>();</span><br><span class="line"><span class="keyword">auto</span> mid = <span class="built_in">text</span>.<span class="built_in">begin</span>() + (<span class="built_in">end</span> - beg) / <span class="number">2</span>;</span><br><span class="line"><span class="keyword">while</span> (mid != <span class="built_in">end</span> &amp;&amp; *mid != sought) &#123;</span><br><span class="line">    <span class="keyword">if</span> (sought &lt; *mid) <span class="comment">// 在前半部分则忽略后半部分</span></span><br><span class="line">        <span class="built_in">end</span> = mid;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        beg = mid + <span class="number">1</span>; <span class="comment">// 否则忽略前半部分</span></span><br><span class="line">    mid = beg + (<span class="built_in">end</span> - beg) /<span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="数组">数组</h2>
-<p>与vector不同，数组的大小确定不变，不能随意增加元素。</p>
-<h3 id="定义和初始化-1">定义和初始化</h3>
-<p>数组的长度在编译时必须已知，所以维度必须是常量表达式。</p>
-<p>定义数组时，必须指定类型，不能使用auto。和vector一样，不存在引用的数组。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> cnt = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="keyword">unsigned</span> sz = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">int</span> arr[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> *parr[sz];  <span class="comment">// 包含42个整型指针的数组</span></span><br><span class="line"><span class="built_in">string</span> bad[cnt]; <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
-<p>数组也支持列表初始化，此时可以不指明长度，编译器会自动计算。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">unsigned</span> sz = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">int</span> ial[sz] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> a2[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> a3[<span class="number">5</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;    <span class="comment">// a3[] = &#123;0, 1, 2, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
-<p>值得注意的是，在使用字符数组时，会在结尾添加一个空字符。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">char</span> a1[] = &#123;<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;+&#x27;</span>, <span class="string">&#x27;+&#x27;</span>&#125;;</span><br><span class="line"><span class="keyword">char</span> a2[] = &#123;<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;+&#x27;</span>, <span class="string">&#x27;+&#x27;</span>, <span class="string">&#x27;\0&#x27;</span>&#125;;  <span class="comment">// 显式添加空字符</span></span><br><span class="line"><span class="keyword">char</span> a3[] = <span class="string">&quot;C++&quot;</span>;  <span class="comment">// 自动添加空字符</span></span><br><span class="line"><span class="keyword">char</span> a4[<span class="number">6</span>] = <span class="string">&quot;Daniel&quot;</span>; <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
-<p>上述表达式中，a1长度为3，a2和a3的长度都是4，a4长度应改为7。</p>
-<p>数组不允许拷贝和赋值。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> a2[] = a; <span class="comment">// error</span></span><br><span class="line">a2 = a; <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
-<p>为了理解复杂的数组声明，可以从内向外阅读。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> *ptrs[<span class="number">10</span>]; <span class="comment">// 含有10个整型指针的数组</span></span><br><span class="line"><span class="keyword">int</span> &amp;refs[<span class="number">10</span>]; <span class="comment">// 不存在引用的数组</span></span><br><span class="line"><span class="keyword">int</span> (*Parray)[<span class="number">10</span>] = &amp;arr; <span class="comment">// Parray指向一个含有10个整数的数组</span></span><br><span class="line"><span class="keyword">int</span> (&amp;arrRef)[<span class="number">10</span>] = arr;  <span class="comment">// arrRef引用一个含有10个整数的数组</span></span><br><span class="line"><span class="keyword">int</span> *(&amp;arry)[<span class="number">10</span>] = ptrs;  <span class="comment">// arry是数组的引用，该数组含有10个指针</span></span><br></pre></td></tr></table></figure>
-<h3 id="访问数组元素">访问数组元素</h3>
-<p>数组也可以用范围for语句或下标运算符访问。</p>
-<p>数组下标被定义为size_t类型，定义在cstddef头文件中。</p>
-<h3 id="指针和数组">指针和数组</h3>
-<p>使用数组的时候，编译器一般会把它转换成指针。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> nums[] = &#123;<span class="string">&quot;one&quot;</span>, <span class="string">&quot;two&quot;</span>, <span class="string">&quot;three&quot;</span>&#125;;</span><br><span class="line"><span class="built_in">string</span> *p1 = &amp;nums[<span class="number">0</span>]; <span class="comment">// p1指向nums的第一个元素</span></span><br><span class="line"><span class="built_in">string</span> *p2 = &amp;nums;      <span class="comment">// p2和p1等价</span></span><br></pre></td></tr></table></figure>
-<p>尽管能计算得到数组的尾后指针，但容易出错。C++11引入两个函数begin和end，与容器的同名成员功能类似。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> ia[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> *beg = <span class="built_in">begin</span>(ia);</span><br><span class="line"><span class="keyword">int</span> *last = <span class="built_in">end</span>(ia);</span><br></pre></td></tr></table></figure>
-<p>与容器相似，指针相减的类型名为ptrdiff_t，也定义在cstddef中。</p>
-<h4 id="c风格字符串">C风格字符串</h4>
-<blockquote>
-<p>尽管C++支持，但最好不好使用。</p>
-</blockquote>
-<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130144349734.png" alt="image-20201130144349734" style="zoom:50%;"></p>
-<h4 id="与旧代码的接口">与旧代码的接口</h4>
-<p>允许使用字符串字面值初始化string对象，反过来则不行，需要使用c_str函数。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">&quot;hello world&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">char</span> *str = s; <span class="comment">// error</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *str = s.c_str();</span><br></pre></td></tr></table></figure>
-<p>可以使用数组初始化vector对象</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> int_arr[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">ivec</span><span class="params">(<span class="built_in">begin</span>(int_arr), <span class="built_in">end</span>(int_arr))</span></span>;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>C++应当尽量使用vector和迭代器，而非内置数组和指针；应当尽量使用string，而非C风格字符串。</p>
-</blockquote>
-<h2 id="多维数组">多维数组</h2>
-<p>多维数组实际上就是数组的数组。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> ia1[<span class="number">3</span>][<span class="number">4</span>] = &#123;</span><br><span class="line">    &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;,</span><br><span class="line">    &#123;<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>&#125;,</span><br><span class="line">    &#123;<span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">int</span> ia2[<span class="number">3</span>][<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> ia3[<span class="number">3</span>][<span class="number">4</span>] = &#123;&#123; <span class="number">0</span> &#125;, &#123; <span class="number">1</span> &#125;, &#123; <span class="number">2</span> &#125;&#125;; <span class="comment">// 初始化每行的第一个元素</span></span><br><span class="line"><span class="keyword">int</span> ia4[<span class="number">3</span>][<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span>&#125;; <span class="comment">// 初始化第一行</span></span><br></pre></td></tr></table></figure>
-<p>可以通过下标运算符访问多维数组的元素。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">size_t</span> rowCnt = <span class="number">3</span>, colCnt = <span class="number">4</span>;</span><br><span class="line"><span class="keyword">int</span> ia[rowCnt][colCnt];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i != rowCnt; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> j = <span class="number">0</span>; j != colCnt; ++j) &#123;</span><br><span class="line">        ia[i][j] = i * colCnt + j;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>也可以用范围for语句访问，实现同样的效果。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">size_t</span> cnt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;row : ia) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;col : row) &#123;</span><br><span class="line">        col = cnt;</span><br><span class="line">        ++cnt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>因为循环中要赋值，所以选用引用类型。其实除了内层循环，其他所有循环的控制变量都应该是引用类型。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> row : ia)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> col : row)</span><br></pre></td></tr></table></figure>
-<p>上面这段语句将无法通过编译，因为row不是引用类型，所以row的类型是int*。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> *ip[<span class="number">4</span>];   <span class="comment">// 整形指针的数组</span></span><br><span class="line"><span class="keyword">int</span> (*ip)[<span class="number">4</span>]; <span class="comment">// 指向含有4个整数的数组</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>C++ Primer</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>C++ Primer Chapter 2 变量和基本类型</title>
     <url>/2020/11/23/C++-Primer-Chapter2-%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/</url>
     <content><![CDATA[<p>介绍C++的基本内置类型和复合类型，包括引用和指针的声明，以及const限定符的使用方法。</p>
@@ -347,96 +193,6 @@
       <tags>
         <tag>C++</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>CSAPP Chap5: 优化程序性能</title>
-    <url>/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
-    <title>CV入门（一）安装detectron2</title>
-    <url>/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/</url>
-    <content><![CDATA[<p>在windows 10系统上安装detectron2。</p>
-<a id="more"></a>
-<h2 id="环境依赖">环境依赖</h2>
-<p>给出自己的环境，低版本未测试。</p>
-<ul>
-<li>Python 3.7.2</li>
-<li>Pytorch 1.6</li>
-<li>pycocotools 2.0</li>
-<li>CUDA 10.2</li>
-<li>VS 2019 Community</li>
-</ul>
-<h3 id="安装-cuda">安装 CUDA</h3>
-<p>进入<a href="https://developer.nvidia.com/cuda-downloads">官网</a>，按部就班安装，<a href="https://blog.csdn.net/qq_37296487/article/details/83028394">参考教程</a>。</p>
-<p>cmd输入如下命令，测试CUDA是否安装成功。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvcc -V</span><br></pre></td></tr></table></figure>
-<h3 id="安装-pytorch">安装 Pytorch</h3>
-<p>python和git这些基本的就不提了，介绍一下pytorch的安装。</p>
-<p>进入<a href="https://pytorch.org/">pytorch官网</a>，选择相对应的版本，使用pip直接安装。</p>
-<p><img src="/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/1.png"></p>
-<p>测试Pytorch是否安装成功。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch, torchvision</span><br><span class="line">print(torch.__version__, torch.cuda.is_available())</span><br></pre></td></tr></table></figure>
-<h3 id="安装-vs-2019">安装 VS 2019</h3>
-<p>进入<a href="https://visualstudio.microsoft.com/zh-hans/downloads/">vs官网</a>，选择community版本进行下载。</p>
-<p>下载完成后，先不着急运行安装程序，按<a href="https://www.loongten.com/2019/06/18/vs2019/">博客</a>将安装目录迁移到非系统盘（C盘实在是装不下了）。</p>
-<p>完成后，运行安装程序，选择C++组件即可，其他组件看个人需求选择。</p>
-<h3 id="安装-pycocotools">安装 pycocotools</h3>
-<p><a href="https://github.com/cocodataset/cocoapi">原版</a>的pycocotools不支持windows，需要使用<a href="https://github.com/philferriere/cocoapi">修改版</a>。</p>
-<p>可通过如下命令安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/philferriere/cocoapi.git</span><br><span class="line"><span class="built_in">cd</span> PythonAPI</span><br><span class="line">python setup.py build_ext --inplace</span><br><span class="line">python setup.py build_ext install</span><br></pre></td></tr></table></figure>
-<p>或者直接</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install git+https://github.com/philferriere/cocoapi.git<span class="comment">#subdirectory=PythonAPI</span></span><br></pre></td></tr></table></figure>
-<p>出现Successfully installed pycocotools-2.0即为安装成功。</p>
-<h3 id="安装-detectron2">安装 detectron2</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/facebookresearch/detectron2.git</span><br></pre></td></tr></table></figure>
-<p>修改文件 setup.py，注释掉</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;pycocotools&gt;=2.0.1&quot;</span>,</span><br></pre></td></tr></table></figure>
-<p>开始安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python setup.py build develop</span><br></pre></td></tr></table></figure>
-<p>安装过程无报错即可。</p>
-<h4 id="目标检测">目标检测</h4>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_b275ba.pkl</span><br></pre></td></tr></table></figure>
-<h4 id="实例分割">实例分割</h4>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_f10217.pkl</span><br></pre></td></tr></table></figure>
-<h2 id="可能出现的问题">可能出现的问题</h2>
-<p><a href="https://github.com/conansherry/detectron2/issues/2">github issue</a></p>
-<p>安装时提示缺少什么包，直接pip install即可，出问题可以查stackoverflow。</p>
-<h3 id="cl.exe出错">cl.exe出错</h3>
-<p><a href="https://blog.csdn.net/qq_35067322/article/details/105835311">解决方法</a></p>
-<p>添加环境变量</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\bin\Hostx64\x64</span><br></pre></td></tr></table></figure>
-<p>如下即可</p>
-<p><img src="/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/2.png"></p>
-<h3 id="cocoeval出错">cocoeval出错</h3>
-<p>修改文件 detectron2.cpp</p>
-<p>添加</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br></pre></td></tr></table></figure>
-<p>修改</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">localtime_r(&amp;rawtime, &amp;local_time);</span><br></pre></td></tr></table></figure>
-<p>为</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">localtime_s(&amp;local_time, &amp;rawtime);</span><br></pre></td></tr></table></figure>
-<h3 id="nvcc.exe出错">nvcc.exe出错</h3>
-<p>修改文件 detectron2/detectron2/layers/csrc/nms_rotated/nms_rotated_cuda.cu</p>
-<p>在11行</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> WITH_HIP</span></span><br></pre></td></tr></table></figure>
-<p>之前添加</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WITH_HIP</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>CV入门</category>
-      </categories>
-      <tags>
-        <tag>CV</tag>
-        <tag>detectron2</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CSAPP Chap7: 链接</title>
-    <url>/2021/04/26/CSAPP-Chap7-%E9%93%BE%E6%8E%A5/</url>
-    <content><![CDATA[
-]]></content>
   </entry>
   <entry>
     <title>CSAPP Chap3: 程序的机器级表示</title>
@@ -781,6 +537,326 @@
       </tags>
   </entry>
   <entry>
+    <title>C++ Primer Chapter 3 字符串、向量和数组</title>
+    <url>/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/</url>
+    <content><![CDATA[<p>介绍标准库string和vector，以及迭代器和数组的使用。</p>
+<a id="more"></a>
+<h3 id="命名空间的using声明">命名空间的using声明</h3>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span>::name;</span><br></pre></td></tr></table></figure>
+<p>头文件不应该包含using声明。</p>
+<h2 id="标准库类型string">标准库类型string</h2>
+<p>string定义在命名空间std中。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;string&gt;</span><br><span class="line">using namespace std::string;</span><br></pre></td></tr></table></figure>
+<h3 id="定义和初始化">定义和初始化</h3>
+<p>如果使用等号，实际上执行的是拷贝初始化。反之，执行的是直接初始化。</p>
+<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133107639.png" alt="image-20201130133107639" style="zoom: 50%;"></p>
+<h3 id="string对象上的操作">string对象上的操作</h3>
+<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125844111.png" alt="image-20201130125844111" style="zoom:50%;"></p>
+<h4 id="读写">读写</h4>
+<p>执行读取操作时，会自动忽略开头的空白字符，直至遇到下一处空白。</p>
+<p>输入" Hello World! "，输出则为"Hello"。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> s;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; s;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以用getline读取一整行。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> <span class="built_in">line</span>;</span><br><span class="line">    <span class="keyword">while</span> (getline(<span class="built_in">cin</span>, <span class="built_in">line</span>))</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="built_in">line</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="emptysize">empty&amp;size</h4>
+<p>empty判断string对象是否为空，返回bool。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (getline(<span class="built_in">cin</span>, <span class="built_in">line</span>))</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">line</span>.empty())</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="built_in">line</span> &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>size返回string对象的长度，类型为string::size_type。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (getline(<span class="built_in">cin</span>, <span class="built_in">line</span>))</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">line</span>.empty())</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="built_in">line</span>.<span class="built_in">size</span>() &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此时，空字符也会计数。</p>
+</blockquote>
+<p>当使用size_type进行比较时，注意不要与int混用，因为负值的带符号数会转化为大整数的无符号数。</p>
+<h4 id="比较加法">比较&amp;加法</h4>
+<p>string对象逐字符比较，按字典序比较。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s1 = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line"><span class="built_in">string</span> s2 = <span class="string">&quot;abc def&quot;</span>;</span><br><span class="line"><span class="built_in">string</span> s3 = <span class="string">&quot;abdef&quot;</span>;</span><br><span class="line"><span class="comment">// res: s1 &lt; s2 &lt; s3</span></span><br></pre></td></tr></table></figure>
+<p>两个string对象可以相加，字面值也可以和string对象相加。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s1 = <span class="string">&quot;hello&quot;</span>, s2 = <span class="string">&quot;world&quot;</span>。</span><br><span class="line"><span class="built_in">string</span> s3 = s1 + s2。</span><br><span class="line"><span class="built_in">string</span> s4 = s1 + <span class="string">&quot; &quot;</span> + s2 + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="built_in">string</span> s5 = <span class="string">&quot;hello&quot;</span> + <span class="string">&quot; &quot;</span> + s2; <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>运算时，应保证+两侧的运算对象至少有一个是string。</p>
+</blockquote>
+<h3 id="处理string中的字符">处理string中的字符</h3>
+<p>下表给出了一些关于字符属性的函数。</p>
+<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130125720977.png" alt="image-20201130125720977" style="zoom:50%;"></p>
+<blockquote>
+<p>C++标准库为了兼容C，将C的头文件如name.h，命名为cname。</p>
+<p>C++程序应该使用cname形式的头文件，以区分从C继承的头文件。</p>
+</blockquote>
+<p>为了遍历string对象，可以使用下标，也可以使用范围for语句（推荐）。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> c : s)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; c &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>如果想要改变字符，需要把循环变量定义为引用类型。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;c : s)</span><br><span class="line">    c = <span class="built_in">toupper</span>(c);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s;</span><br></pre></td></tr></table></figure>
+<p>有时候只需要处理部分字符，可以使用下标，也可以使用迭代器（后续介绍）。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 实现单词首字母大写</span></span><br><span class="line"><span class="built_in">string</span> s = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">decltype</span>(s.<span class="built_in">size</span>()) index = <span class="number">0</span>;</span><br><span class="line">     index != s.<span class="built_in">size</span>(); ++index) &#123;</span><br><span class="line">    <span class="keyword">if</span> (index == <span class="number">0</span> &amp;&amp; <span class="built_in">isalpha</span>(s[index])) &#123;</span><br><span class="line">        s[index] = <span class="built_in">toupper</span>(s[index]);</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">isalpha</span>(s[index]) &amp;&amp; !<span class="built_in">isalpha</span>(s[index<span class="number">-1</span>]))</span><br><span class="line">        s[index] = <span class="built_in">toupper</span>(s[index]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s; <span class="comment">// output: &quot;Hello world&quot;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用下标时，切忌下标越界，应该时刻检查下标的合法性。</p>
+</blockquote>
+<h2 id="标准库类型vector">标准库类型vector</h2>
+<p>vector表示相同类型对象的集合，每个对象都有一个索引用于访问对象。因此vector也被称为容器，vector同时也是一个类模板（距离还比较遥远）。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">vector</span>;</span><br></pre></td></tr></table></figure>
+<p>模板实例化时，需要提供对象类型。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;              <span class="comment">// 元素是int</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; file;  <span class="comment">// 元素是存放string的vector</span></span><br></pre></td></tr></table></figure>
+<p>vector作为类模板，不是类型。</p>
+<p>引用不是对象，不存在包含引用的vector。</p>
+<h3 id="定义和初始化vector对象">定义和初始化vector对象</h3>
+<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133133358.png" alt="image-20201130133133358" style="zoom:50%;"></p>
+<p>注意区分列表初始化和元素数量。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v1&#123;<span class="number">10</span>&#125;; <span class="comment">// 列表初始化，v1有1个元素，值为10。</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v2</span><span class="params">(<span class="number">10</span>)</span></span>; <span class="comment">// v2有10个元素，值为0。</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v3&#123;<span class="number">10</span>, <span class="number">1</span>&#125;; <span class="comment">// 列表初始化，v3有2个元素，值为10和1。</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v4</span><span class="params">(<span class="number">10</span>, <span class="number">1</span>)</span></span>; <span class="comment">// v4有10个元素，值为1。</span></span><br></pre></td></tr></table></figure>
+<h3 id="向vector对象添加元素">向vector对象添加元素</h3>
+<p>可以用vector的成员函数push_back添加元素。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != <span class="number">10</span>; ++i)</span><br><span class="line">    v.push_back(i);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>与C不同，C++推荐先定义一个空的vector对象，运行时向其中添加具体值。</p>
+</blockquote>
+<h3 id="其他vector操作">其他vector操作</h3>
+<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133935086.png" alt="image-20201130133935086" style="zoom:50%;"></p>
+<p>vector同样支持范围for语句。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : v)   <span class="comment">// 使用引用对vector的元素赋值</span></span><br><span class="line">    i *= <span class="number">2</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> i : v)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br></pre></td></tr></table></figure>
+<p>与string类似，vector的size函数返回类型为vector<T>::size_type。</T></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 统计各分数段内的人数</span></span><br><span class="line"><span class="comment">// input: 42 65 95 100 39 67 95 76 88 76 83 92 76 93 101</span></span><br><span class="line"><span class="comment">// output: 0 0 0 1 1 0 2 3 2 4 1</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span>&gt; <span class="title">scores</span><span class="params">(<span class="number">11</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="keyword">unsigned</span> grade = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; grade) &#123;</span><br><span class="line">    <span class="keyword">if</span> (grade &lt;= <span class="number">100</span>)</span><br><span class="line">        ++scores[grade/<span class="number">10</span>];</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> i : scores)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="迭代器介绍">迭代器介绍</h2>
+<h3 id="使用迭代器">使用迭代器</h3>
+<p>有迭代器的类型拥有名为begin和end的成员。</p>
+<p>begin成员返回指向第一个元素的迭代器，end成员返回指向容器“尾后”元素的迭代器，通常被称作尾后迭代器。</p>
+<p>如果容器为空，begin和end返回的是同一个迭代器，都是尾后迭代器。</p>
+<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135012221.png" alt="image-20201130135012221" style="zoom:50%;"></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> it = s.<span class="built_in">begin</span>(); it != s.<span class="built_in">end</span>(); ++it)</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">isalpha</span>(*it))</span><br><span class="line">        *it = <span class="built_in">toupper</span>(*it);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>C++习惯在for循环中使用!=进行判断，因为大多数迭代器都没有定义&lt;运算符。</p>
+</blockquote>
+<p>迭代器也有const类型，能读取但不能修改vector。</p>
+<p>为了便捷，C++11引入了两个新函数cbegin和cend。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v1;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v2;</span><br><span class="line"><span class="keyword">auto</span> it1 = v1.<span class="built_in">begin</span>();   <span class="comment">// type: vector&lt;int&gt;::iterator</span></span><br><span class="line"><span class="keyword">auto</span> it2 = v2.<span class="built_in">begin</span>();  <span class="comment">// type: vector&lt;int&gt;::const_iterator</span></span><br><span class="line"><span class="keyword">auto</span> it3 = v1.cbegin(); <span class="comment">// type: vector&lt;int&gt;::const_iterator</span></span><br></pre></td></tr></table></figure>
+<p>为了简化解引用和成员访问操作一起使用，C++定义了箭头运算符。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">*it.empty;   <span class="comment">// error</span></span><br><span class="line">(*it).empty;</span><br><span class="line">it-&gt;empty;</span><br></pre></td></tr></table></figure>
+<h3 id="迭代器运算">迭代器运算</h3>
+<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135031052.png" alt="image-20201130135031052" style="zoom:50%;"></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 得到最接近中间元素的迭代器</span></span><br><span class="line"><span class="keyword">auto</span> mid = v.<span class="built_in">begin</span>() + v.<span class="built_in">size</span>() / <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<p>C++定义了迭代器的差值，类型为difference_type。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 二分搜索</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="built_in">text</span>;</span><br><span class="line"><span class="built_in">string</span> sought;</span><br><span class="line"><span class="keyword">auto</span> beg = <span class="built_in">text</span>.<span class="built_in">begin</span>(), <span class="built_in">end</span> = <span class="built_in">text</span>.<span class="built_in">end</span>();</span><br><span class="line"><span class="keyword">auto</span> mid = <span class="built_in">text</span>.<span class="built_in">begin</span>() + (<span class="built_in">end</span> - beg) / <span class="number">2</span>;</span><br><span class="line"><span class="keyword">while</span> (mid != <span class="built_in">end</span> &amp;&amp; *mid != sought) &#123;</span><br><span class="line">    <span class="keyword">if</span> (sought &lt; *mid) <span class="comment">// 在前半部分则忽略后半部分</span></span><br><span class="line">        <span class="built_in">end</span> = mid;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        beg = mid + <span class="number">1</span>; <span class="comment">// 否则忽略前半部分</span></span><br><span class="line">    mid = beg + (<span class="built_in">end</span> - beg) /<span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="数组">数组</h2>
+<p>与vector不同，数组的大小确定不变，不能随意增加元素。</p>
+<h3 id="定义和初始化-1">定义和初始化</h3>
+<p>数组的长度在编译时必须已知，所以维度必须是常量表达式。</p>
+<p>定义数组时，必须指定类型，不能使用auto。和vector一样，不存在引用的数组。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> cnt = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="keyword">unsigned</span> sz = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">int</span> arr[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> *parr[sz];  <span class="comment">// 包含42个整型指针的数组</span></span><br><span class="line"><span class="built_in">string</span> bad[cnt]; <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+<p>数组也支持列表初始化，此时可以不指明长度，编译器会自动计算。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">unsigned</span> sz = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">int</span> ial[sz] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> a2[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> a3[<span class="number">5</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;    <span class="comment">// a3[] = &#123;0, 1, 2, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
+<p>值得注意的是，在使用字符数组时，会在结尾添加一个空字符。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">char</span> a1[] = &#123;<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;+&#x27;</span>, <span class="string">&#x27;+&#x27;</span>&#125;;</span><br><span class="line"><span class="keyword">char</span> a2[] = &#123;<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;+&#x27;</span>, <span class="string">&#x27;+&#x27;</span>, <span class="string">&#x27;\0&#x27;</span>&#125;;  <span class="comment">// 显式添加空字符</span></span><br><span class="line"><span class="keyword">char</span> a3[] = <span class="string">&quot;C++&quot;</span>;  <span class="comment">// 自动添加空字符</span></span><br><span class="line"><span class="keyword">char</span> a4[<span class="number">6</span>] = <span class="string">&quot;Daniel&quot;</span>; <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+<p>上述表达式中，a1长度为3，a2和a3的长度都是4，a4长度应改为7。</p>
+<p>数组不允许拷贝和赋值。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> a2[] = a; <span class="comment">// error</span></span><br><span class="line">a2 = a; <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+<p>为了理解复杂的数组声明，可以从内向外阅读。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> *ptrs[<span class="number">10</span>]; <span class="comment">// 含有10个整型指针的数组</span></span><br><span class="line"><span class="keyword">int</span> &amp;refs[<span class="number">10</span>]; <span class="comment">// 不存在引用的数组</span></span><br><span class="line"><span class="keyword">int</span> (*Parray)[<span class="number">10</span>] = &amp;arr; <span class="comment">// Parray指向一个含有10个整数的数组</span></span><br><span class="line"><span class="keyword">int</span> (&amp;arrRef)[<span class="number">10</span>] = arr;  <span class="comment">// arrRef引用一个含有10个整数的数组</span></span><br><span class="line"><span class="keyword">int</span> *(&amp;arry)[<span class="number">10</span>] = ptrs;  <span class="comment">// arry是数组的引用，该数组含有10个指针</span></span><br></pre></td></tr></table></figure>
+<h3 id="访问数组元素">访问数组元素</h3>
+<p>数组也可以用范围for语句或下标运算符访问。</p>
+<p>数组下标被定义为size_t类型，定义在cstddef头文件中。</p>
+<h3 id="指针和数组">指针和数组</h3>
+<p>使用数组的时候，编译器一般会把它转换成指针。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> nums[] = &#123;<span class="string">&quot;one&quot;</span>, <span class="string">&quot;two&quot;</span>, <span class="string">&quot;three&quot;</span>&#125;;</span><br><span class="line"><span class="built_in">string</span> *p1 = &amp;nums[<span class="number">0</span>]; <span class="comment">// p1指向nums的第一个元素</span></span><br><span class="line"><span class="built_in">string</span> *p2 = &amp;nums;      <span class="comment">// p2和p1等价</span></span><br></pre></td></tr></table></figure>
+<p>尽管能计算得到数组的尾后指针，但容易出错。C++11引入两个函数begin和end，与容器的同名成员功能类似。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> ia[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> *beg = <span class="built_in">begin</span>(ia);</span><br><span class="line"><span class="keyword">int</span> *last = <span class="built_in">end</span>(ia);</span><br></pre></td></tr></table></figure>
+<p>与容器相似，指针相减的类型名为ptrdiff_t，也定义在cstddef中。</p>
+<h4 id="c风格字符串">C风格字符串</h4>
+<blockquote>
+<p>尽管C++支持，但最好不好使用。</p>
+</blockquote>
+<p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130144349734.png" alt="image-20201130144349734" style="zoom:50%;"></p>
+<h4 id="与旧代码的接口">与旧代码的接口</h4>
+<p>允许使用字符串字面值初始化string对象，反过来则不行，需要使用c_str函数。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">&quot;hello world&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">char</span> *str = s; <span class="comment">// error</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *str = s.c_str();</span><br></pre></td></tr></table></figure>
+<p>可以使用数组初始化vector对象</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> int_arr[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">ivec</span><span class="params">(<span class="built_in">begin</span>(int_arr), <span class="built_in">end</span>(int_arr))</span></span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>C++应当尽量使用vector和迭代器，而非内置数组和指针；应当尽量使用string，而非C风格字符串。</p>
+</blockquote>
+<h2 id="多维数组">多维数组</h2>
+<p>多维数组实际上就是数组的数组。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> ia1[<span class="number">3</span>][<span class="number">4</span>] = &#123;</span><br><span class="line">    &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;,</span><br><span class="line">    &#123;<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>&#125;,</span><br><span class="line">    &#123;<span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">int</span> ia2[<span class="number">3</span>][<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> ia3[<span class="number">3</span>][<span class="number">4</span>] = &#123;&#123; <span class="number">0</span> &#125;, &#123; <span class="number">1</span> &#125;, &#123; <span class="number">2</span> &#125;&#125;; <span class="comment">// 初始化每行的第一个元素</span></span><br><span class="line"><span class="keyword">int</span> ia4[<span class="number">3</span>][<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span>&#125;; <span class="comment">// 初始化第一行</span></span><br></pre></td></tr></table></figure>
+<p>可以通过下标运算符访问多维数组的元素。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">size_t</span> rowCnt = <span class="number">3</span>, colCnt = <span class="number">4</span>;</span><br><span class="line"><span class="keyword">int</span> ia[rowCnt][colCnt];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i != rowCnt; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> j = <span class="number">0</span>; j != colCnt; ++j) &#123;</span><br><span class="line">        ia[i][j] = i * colCnt + j;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也可以用范围for语句访问，实现同样的效果。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">size_t</span> cnt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;row : ia) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;col : row) &#123;</span><br><span class="line">        col = cnt;</span><br><span class="line">        ++cnt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为循环中要赋值，所以选用引用类型。其实除了内层循环，其他所有循环的控制变量都应该是引用类型。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> row : ia)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> col : row)</span><br></pre></td></tr></table></figure>
+<p>上面这段语句将无法通过编译，因为row不是引用类型，所以row的类型是int*。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> *ip[<span class="number">4</span>];   <span class="comment">// 整形指针的数组</span></span><br><span class="line"><span class="keyword">int</span> (*ip)[<span class="number">4</span>]; <span class="comment">// 指向含有4个整数的数组</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>C++ Primer</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CSAPP Chap5: 优化程序性能</title>
+    <url>/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>CSAPP Chap6: 存储器层次结构</title>
+    <url>/2021/04/26/CSAPP-Chap6-%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>CSAPP Chap7: 链接</title>
+    <url>/2021/04/26/CSAPP-Chap7-%E9%93%BE%E6%8E%A5/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>Enhancing Label Correlation Feedback in Multi-Label Text Classification via Multi-Task Learning</title>
+    <url>/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/</url>
+    <content><![CDATA[<p>ACL Findings 2021，使用多任务学习加强标签相关性的反馈，设计了标签对共现预测（Pairwise Label Co-occurrence Prediction, PLCP）和条件标签共现预测（Conditional Label Co-occurrence Prediction, CLCP）两个任务。</p>
+<p><img src="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116141322468.png" alt="image-20220116141322468" style="zoom:50%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116141805499.png" alt="image-20220116141805499" style="zoom:50%;"></p>
+<ul>
+<li>paper: <a href="https://arxiv.org/pdf/2106.03103.pdf" class="uri">https://arxiv.org/pdf/2106.03103.pdf</a></li>
+<li>code (tensorflow): <a href="https://github.com/EiraZhang/LACO" class="uri">https://github.com/EiraZhang/LACO</a></li>
+</ul>
+<h2 id="background">Background</h2>
+<p>在多标签文本文类任务中，利用标签相关性的模型可以更好地泛化，有利于建模低频标签。基于Seq2Seq的方法可以有效捕获标签相关性，但也有几点不足：</p>
+<ul>
+<li>依赖预先定义的标签顺序，模型对此十分敏感。</li>
+<li>容易在训练集上过拟合，难以泛化至没有见过的标签组合。</li>
+<li>存在错误传播的问题。</li>
+</ul>
+<p>本文采用多任务学习的框架，基于Transformer引入joint embedding机制。通过self-attention和cross-attention，将文本信息和标签信息深度交互。并设计两个标签共现的预测任务，用于捕获标签之间的相关性。</p>
+<ul>
+<li>标签对共现预测PLCP：通过两两组合，判断标签是否相关，捕获二阶相关性。</li>
+<li>条件标签共现预测CLCP：给定部分相关标签集合，预测其他位置标签的相关性，可以捕获高阶相关性。</li>
+</ul>
+<h2 id="method">Method</h2>
+<h3 id="document-label-joint-embedding-je">Document-Label Joint Embedding (JE)</h3>
+<p>将文本序列和标签序列通过[SEP]拼接作为输入序列，表示为<span class="math inline">\(\{[CLS],x_1,\cdots,x_m,[SEP],y_1,\cdots,y_n,[SEP]\}\)</span>，进入BERT后得到隐层表示<span class="math inline">\(\{h_{[CLS]},h_{x_1},\cdots,h_{x_m},h_{[SEP]},h_{y_1},\cdots,h_{y_n},h_{[SEP]}\}\)</span>。</p>
+<p>联合embedding的方式既兼顾了文本与标签的相关性，也考虑到了标签内部的相关性（但这种方法在标签数目过多时显然不适用）。</p>
+<p>作者还显式地引入了cross-attention计算，称为Document-Label Cross Attention： <span class="math display">\[
+M = H_DH_Y^T
+\]</span> 其中<span class="math inline">\(H_D = [h_{x_1},\cdots,h_{x_m}]\)</span>为文本序列的embedding，<span class="math inline">\(H_Y=[h_{y_1},\cdots,h_{y_n}]\)</span>为标签序列的embedding，<span class="math inline">\(M\in\mathbb{R}^{m\times n}\)</span>。对于长为<span class="math inline">\(2r+1\)</span>的文本，<span class="math inline">\(M_{i-r;i+r}\)</span>衡量了标签-短语对的相关性。</p>
+<p>为了提升稀疏正则化的有效性（？？？），作者还使用了CNN，结合max-pooling得到最终的文本表示<span class="math inline">\(\mathop{c}^{\rightarrow}\)</span>。 <span class="math display">\[
+\mathop{c}^{\rightarrow} = \Omega(M_{i-r;i+r})·H_D
+\]</span> 对文本表示接全连接层得到预测结果，采用BCE损失函数即可。</p>
+<h3 id="plcp-task">PLCP Task</h3>
+<p>作者将标签集分为<span class="math inline">\(Y^+\)</span>和<span class="math inline">\(Y^-\)</span>两类，<span class="math inline">\(Y^+\)</span>表示相关的标签（共同出现过），<span class="math inline">\(Y^-\)</span>表示不相关的标签。</p>
+<p>标签对一部分从<span class="math inline">\(Y^+\)</span>中挑选，标记为IsCo-occur，另一部分从<span class="math inline">\(Y^+\)</span>和<span class="math inline">\(Y^-\)</span>中挑选，标记为NotCo-occur，比例设为<span class="math inline">\(\gamma\)</span>。将两个标签的embedding拼接<span class="math inline">\([y_i, y_j]\)</span>作为输入，采用交叉熵计算损失。 <span class="math display">\[
+\mathcal{L}_{plcp} = -[q_{ij}\ln p_{ij} + (1-q_{ij})\ln(1-p_{ij})]
+\]</span></p>
+<p>构造标签集</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">label_list = example.label.split(<span class="string">&quot; &quot;</span>)</span><br><span class="line">label_ids = _predicate_label_to_id(label_list, label_map)</span><br><span class="line">right_labels = []</span><br><span class="line">wrong_labels = []</span><br><span class="line"><span class="keyword">for</span> label_id <span class="keyword">in</span> range(<span class="number">0</span>,len(label_ids)):</span><br><span class="line">    <span class="keyword">if</span> label_ids[label_id]==<span class="number">1</span>:</span><br><span class="line">        right_labels.append(label_id)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            wrong_labels.append(label_id)</span><br><span class="line"></span><br><span class="line">right_pair = list(itertools.combinations(right_labels, <span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">contrast_dict = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> pair <span class="keyword">in</span> right_pair:</span><br><span class="line">    contrast_dict[pair]=[<span class="number">0</span>,<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,int(len(right_pair)*<span class="number">2</span>)):</span><br><span class="line">        r = random.sample(right_labels,<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">        w =random.sample(wrong_labels,<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">        contrast_dict[(r,w)]=[<span class="number">1</span>,<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<p>构造feature并采样</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">feature_list=[]</span><br><span class="line"><span class="keyword">for</span> pair <span class="keyword">in</span> contrast_dict.keys():</span><br><span class="line">    feature = InputFeatures(</span><br><span class="line">      input_ids=input_ids,</span><br><span class="line">      input_mask=input_mask,</span><br><span class="line">      segment_ids=segment_ids,</span><br><span class="line">      token_label_ids=token_label_ids,</span><br><span class="line">      label_ids=label_ids,</span><br><span class="line">      fit_labelspace_positions=fit_labelspace_positions,</span><br><span class="line">      fit_docspace_positions=fit_docspace_positions,</span><br><span class="line">      pair = list(pair),</span><br><span class="line">      pair_target=list(contrast_dict[pair]),</span><br><span class="line">      <span class="comment">#    pair = list([0,1]),</span></span><br><span class="line">      <span class="comment">#    pair_target= list([0,1]),</span></span><br><span class="line">      is_real_example=<span class="literal">True</span>)</span><br><span class="line">    feature_list.append(feature)</span><br><span class="line">a = random.sample(feature_list, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="clcp-task">CLCP Task</h3>
+<p>从<span class="math inline">\(Y^+\)</span>中随机采样<span class="math inline">\(s\)</span>个标签，形成<span class="math inline">\(Y^G\)</span>，然后判断剩余的标签是否与其相关。为此引入了一个额外的位置向量<span class="math inline">\(E_Y = [e_{y_1},\cdots,e_{y_n}]\)</span>，<span class="math inline">\(e_{y_i}=0\)</span>就表示标签被采样了，也即<span class="math inline">\(y_i\in Y^G\)</span>，反之则<span class="math inline">\(y_i\in Y-Y^G\)</span>。</p>
+<p>将所有被采样的标签表示做平均得到<span class="math inline">\(h_{y^G}\)</span>，将其拼接到所有未被采样的标签表示，作为输入特征。同样采用交叉熵作为损失函数。 <span class="math display">\[
+\mathcal{L}_{clcp} = -\sum_{i=1}^{n-s}[q_{i}\ln p_{i} + (1-q_{i})\ln(1-p_{i})]
+\]</span> 其中<span class="math inline">\(q_i\in\{0,1\}\)</span>表示标签<span class="math inline">\(y_i\)</span>是否与<span class="math inline">\(Y^G\)</span>中的标签共同出现。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">right_mask_labels = random.sample(right_labels,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> num_label <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">54</span>) :</span><br><span class="line">    <span class="keyword">if</span> num_label <span class="keyword">not</span> <span class="keyword">in</span> right_mask_labels:</span><br><span class="line">        fit_labelspace_mask_positions.append(num_label)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        fit_labelspace_given_positions.append(num_label)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> mask_position <span class="keyword">in</span> fit_labelspace_mask_positions:</span><br><span class="line">    <span class="keyword">if</span> mask_position <span class="keyword">in</span> right_labels:</span><br><span class="line">        mask_lm_ids.append(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        mask_lm_ids.append(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="experiment">Experiment</h2>
+<p>在AAPD和RCV1-V2上进行了实验，实验设置为bert-base-uncased，batch size为32，最大长度320，学习率为5e-5，<span class="math inline">\(\gamma\)</span>为0.5。</p>
+<p><img src="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116153829791.png" alt="image-20220116153829791" style="zoom:50%;"></p>
+<h3 id="ablation">Ablation</h3>
+<p><img src="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116154505265.png" alt="image-20220116154505265" style="zoom:50%;"></p>
+<p>LACO在低频标签上能够取得更好的性能（提高召回，但准确率可能下降？）。</p>
+<p><img src="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116154644944.png" alt="image-20220116154644944" style="zoom:50%;"></p>
+<p>LACO预测出了更多样的标签组合。</p>
+<p><img src="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116154804271.png" alt="image-20220116154804271" style="zoom:50%;"></p>
+<p>LACO相比于BERT类模型，得益于多任务之间的特征交互，可以获得更快的收敛速度。</p>
+<p><img src="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116154205871.png" alt="image-20220116154205871" style="zoom:50%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>NLP</tag>
+        <tag>Multi-Label</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CV入门（一）安装detectron2</title>
+    <url>/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/</url>
+    <content><![CDATA[<p>在windows 10系统上安装detectron2。</p>
+<a id="more"></a>
+<h2 id="环境依赖">环境依赖</h2>
+<p>给出自己的环境，低版本未测试。</p>
+<ul>
+<li>Python 3.7.2</li>
+<li>Pytorch 1.6</li>
+<li>pycocotools 2.0</li>
+<li>CUDA 10.2</li>
+<li>VS 2019 Community</li>
+</ul>
+<h3 id="安装-cuda">安装 CUDA</h3>
+<p>进入<a href="https://developer.nvidia.com/cuda-downloads">官网</a>，按部就班安装，<a href="https://blog.csdn.net/qq_37296487/article/details/83028394">参考教程</a>。</p>
+<p>cmd输入如下命令，测试CUDA是否安装成功。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvcc -V</span><br></pre></td></tr></table></figure>
+<h3 id="安装-pytorch">安装 Pytorch</h3>
+<p>python和git这些基本的就不提了，介绍一下pytorch的安装。</p>
+<p>进入<a href="https://pytorch.org/">pytorch官网</a>，选择相对应的版本，使用pip直接安装。</p>
+<p><img src="/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/1.png"></p>
+<p>测试Pytorch是否安装成功。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch, torchvision</span><br><span class="line">print(torch.__version__, torch.cuda.is_available())</span><br></pre></td></tr></table></figure>
+<h3 id="安装-vs-2019">安装 VS 2019</h3>
+<p>进入<a href="https://visualstudio.microsoft.com/zh-hans/downloads/">vs官网</a>，选择community版本进行下载。</p>
+<p>下载完成后，先不着急运行安装程序，按<a href="https://www.loongten.com/2019/06/18/vs2019/">博客</a>将安装目录迁移到非系统盘（C盘实在是装不下了）。</p>
+<p>完成后，运行安装程序，选择C++组件即可，其他组件看个人需求选择。</p>
+<h3 id="安装-pycocotools">安装 pycocotools</h3>
+<p><a href="https://github.com/cocodataset/cocoapi">原版</a>的pycocotools不支持windows，需要使用<a href="https://github.com/philferriere/cocoapi">修改版</a>。</p>
+<p>可通过如下命令安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/philferriere/cocoapi.git</span><br><span class="line"><span class="built_in">cd</span> PythonAPI</span><br><span class="line">python setup.py build_ext --inplace</span><br><span class="line">python setup.py build_ext install</span><br></pre></td></tr></table></figure>
+<p>或者直接</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install git+https://github.com/philferriere/cocoapi.git<span class="comment">#subdirectory=PythonAPI</span></span><br></pre></td></tr></table></figure>
+<p>出现Successfully installed pycocotools-2.0即为安装成功。</p>
+<h3 id="安装-detectron2">安装 detectron2</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/facebookresearch/detectron2.git</span><br></pre></td></tr></table></figure>
+<p>修改文件 setup.py，注释掉</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;pycocotools&gt;=2.0.1&quot;</span>,</span><br></pre></td></tr></table></figure>
+<p>开始安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python setup.py build develop</span><br></pre></td></tr></table></figure>
+<p>安装过程无报错即可。</p>
+<h4 id="目标检测">目标检测</h4>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_b275ba.pkl</span><br></pre></td></tr></table></figure>
+<h4 id="实例分割">实例分割</h4>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_f10217.pkl</span><br></pre></td></tr></table></figure>
+<h2 id="可能出现的问题">可能出现的问题</h2>
+<p><a href="https://github.com/conansherry/detectron2/issues/2">github issue</a></p>
+<p>安装时提示缺少什么包，直接pip install即可，出问题可以查stackoverflow。</p>
+<h3 id="cl.exe出错">cl.exe出错</h3>
+<p><a href="https://blog.csdn.net/qq_35067322/article/details/105835311">解决方法</a></p>
+<p>添加环境变量</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\bin\Hostx64\x64</span><br></pre></td></tr></table></figure>
+<p>如下即可</p>
+<p><img src="/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/2.png"></p>
+<h3 id="cocoeval出错">cocoeval出错</h3>
+<p>修改文件 detectron2.cpp</p>
+<p>添加</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>修改</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">localtime_r(&amp;rawtime, &amp;local_time);</span><br></pre></td></tr></table></figure>
+<p>为</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">localtime_s(&amp;local_time, &amp;rawtime);</span><br></pre></td></tr></table></figure>
+<h3 id="nvcc.exe出错">nvcc.exe出错</h3>
+<p>修改文件 detectron2/detectron2/layers/csrc/nms_rotated/nms_rotated_cuda.cu</p>
+<p>在11行</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> WITH_HIP</span></span><br></pre></td></tr></table></figure>
+<p>之前添加</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WITH_HIP</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>CV入门</category>
+      </categories>
+      <tags>
+        <tag>CV</tag>
+        <tag>detectron2</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Do Transformers Really Perform Bad for Graph Representation?</title>
     <url>/2021/06/20/Do-Transformers-Really-Perform-Bad-for-Graph-Representation/</url>
     <content><![CDATA[<p>Graphormer：KDD Cup2021 OGB-LSC赛道的冠军方案</p>
@@ -851,156 +927,6 @@ A_{ij} = \frac{(h_iW_Q)(h_jW_K)^T}{\sqrt{d}}+b_{\phi(v_i,v_j)} + c_{ij}
       </categories>
       <tags>
         <tag>Transformer</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CSAPP Chap6: 存储器层次结构</title>
-    <url>/2021/04/26/CSAPP-Chap6-%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
-    <title>Entity Enhanced BERT Pre-training for Chinese NER</title>
-    <url>/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/</url>
-    <content><![CDATA[<p>张岳老师的文章，关注如何更充分利用实体信息以增强预训练语言模型在中文NER上的表现（EMNLP 2020）。</p>
-<p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422192212061.png" alt="image-20210422192212061" style="zoom:80%;"></p>
-<a id="more"></a>
-<h2 id="overview">Overview</h2>
-<ul>
-<li>arxiv: https://www.aclweb.org/anthology/2020.emnlp-main.518.pdf</li>
-<li>code: 暂无</li>
-</ul>
-<h2 id="background">Background</h2>
-<p>在中文NER中引入词典已经被证明是一个有效的方法，但是将实体信息融入BERT这类预训练模型的研究还很少。</p>
-<p>论文首先基于互信息的计算，用新词发现策略来识别文档中的entity；然后设计了char-entity自注意力机制来捕捉中文字与实体之间的关系，将字符隐层状态和实体向量组合。</p>
-<h2 id="methodology">Methodology</h2>
-<h3 id="new-word-discovery">New-Word Discovery</h3>
-<p>采用了<a href="https://svn.spraakdata.gu.se/repos/gerlof/pub/www/Docs/npmi-pfd.pdf">Bouma（2009）</a>提出的方法，用互信息计算，不予赘述。</p>
-<h3 id="char-entity-transformer">Char-Entity-Transformer</h3>
-<p>经典的Transformer计算Q、K、V三个矩阵 <span class="math display">\[
-\{Q^l,K^l,V^l\} = \{h^{l-1}W_q^l,h^{l-1}W_k^l,h^{l-1}W_v^l\} \\
-Atten(Q^l,K^l,V^l) = {\rm softmax}(\frac{Q^l {K^l}^T}{\sqrt{d_k}})
-\]</span> 本文也是先对给定的字符序列<span class="math inline">\({\mathcal C} = \{c_1,\dots,c_T\}\)</span>，给定词典<span class="math inline">\(\mathcal E_{ent}\)</span>，匹配得到对应的实体序列<span class="math inline">\(\mathcal E = \{e_1,\dots,e_T\}\)</span>。</p>
-<p>给定<span class="math inline">\((l-1)\)</span>层的隐层状态<span class="math inline">\(\{h_1^{l-1},\dots,h_T^{l-1}\}\)</span>，QKV的计算如下 <span class="math display">\[
-\begin{align}
-q_t^l &amp;= h_t^{l-1}W_{h,q}^l; \\
-k_t^l &amp;= \begin{cases}{
-            {h_t^{l-1}}^T W_{h,k}^l}\quad &amp;{\rm if}\space e_t = 0,\\
-            \frac12({h_t^{l-1}}^T W_{h,k}^l + E_{ent}^T[e_t]W_{e,k}^l)\quad &amp;else;
-         \end{cases} \\
-v_t^l &amp;= \begin{cases}
-            {h_t^{l-1}}^T W_{h,v}^l\quad &amp;{\rm if}\space e_t = 0,\\
-            \frac12({h_t^{l-1}}^T W_{h,v}^l + E_{ent}^T[e_t]W_{e,v}^l)\quad &amp;else;
-         \end{cases}
-\end{align}
-\]</span> 其中<span class="math inline">\(E_{ent}\)</span>表示实体embedding，<span class="math inline">\(W\)</span>表示可学习的参数。</p>
-<p>如果字符没有匹配到实体，那么计算退化为原始的self-attention。</p>
-<h3 id="ner任务">NER任务</h3>
-<p>针对NER任务，模型使用softmax解码，采用BIO标注方式。</p>
-<h2 id="experiment">Experiment</h2>
-<p>论文的实验使用了一个公开数据集CLUENER-2020，和两个自己标注的数据集。</p>
-<p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422200804396.png" alt="image-20210422200804396" style="zoom:67%;"></p>
-<p>本文还和ERNIE（百度）、Lattice进行了比较，采用的词典和ERNIE一样。</p>
-<p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422200849220.png" alt="image-20210422200849220" style="zoom: 67%;"></p>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>BERT</tag>
-        <tag>NER</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hierarchy-Aware T5 with Path-Adaptive Mask Mechanism for Hierarchical Text Classification</title>
-    <url>/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/</url>
-    <content><![CDATA[<p>本文提出了一种层次感知的T5模型以及一种路径适应的掩码机制，称为PAMM-HiA-T5，不仅将上层标签的信息融入了下层标签，同时在标签预测时也引入了路径依赖信息。本文的模型在RCV1-V2、NYT和WOS上取得了SOTA。</p>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123135058290.png" alt="image-20211123135058290" style="zoom:67%;"></p>
-<a id="more"></a>
-<h2 id="overview">Overview</h2>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123134904566.png" alt="image-20211123134904566" style="zoom:67%;"></p>
-<ul>
-<li>arxiv: https://arxiv.org/pdf/2109.08585.pdf</li>
-<li>code: 暂无</li>
-</ul>
-<h2 id="background">Background</h2>
-<p>标签依赖性在层次化文本分类中很重要，作者认为主要可以分为层次依赖和路径依赖两种：</p>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123140332274.png" alt="image-20211123140332274" style="zoom:67%;"></p>
-<p>本文提出的模型不仅可以在生成模型中捕获父子标签的依赖关系，也可以识别特定路径中的层次依赖。在预测阶段，下一个标签取决于文本序列和当前路径上已经生成的标签。</p>
-<h3 id="t5">T5</h3>
-<p>T5模型是一种编码器-解码器架构，模型结构如下图所示：</p>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123140806474.png" alt="image-20211123140806474" style="zoom: 67%;"></p>
-<p>在解码器部分，有一个额外的sublayer用于处理解码器的输出，被称为Casual Self-Attention Sublayer。 <span class="math display">\[
-\begin{align}
-\mathrm{Block}_{Decoder}(Q_d,K_d,V_d,O_e)
-&amp;= \text{FFN}(\text{Multi-Head}(\text{Multi-Head}(Q_d, K_d, V_d), O_e, O_e)) \\
-\text{Decoder}(Q_d, K_d, V_d, O_e)
-&amp;= \text{stack}(\text{Block}_{Decoder}(Q_d, K_d, V_d, O_e))
-\end{align}
-\]</span></p>
-<h2 id="method">Method</h2>
-<h3 id="hierarchy-aware-t5">Hierarchy-Aware T5</h3>
-<p>首先将标签集转化为multi-level的标签序列 <span class="math display">\[
-\begin{align}
-L_i &amp;= \{l_1, l_2, l_3, l_5, l_5\} \\ 
-\Rightarrow ML_i &amp;= [l_1,\_,l_3,/,l_2,\_,l_4,/,l_5,EOS]
-\end{align}
-\]</span> 其中“_”表示intra-level关系，“/”表示inter-level关系。</p>
-<p>对于文本序列，直接送入T5编码器： <span class="math display">\[
-O_{text} = \text{Encoder}(Q_{text},K_{text},V_{text})
-\]</span> 对于标签序列，送入T5的解码器： <span class="math display">\[
-O_{hierarchy} = \text{Decoder}(Q_{label},K_{label},V_{label},O_{text})
-\]</span> 由此得到了level dependency信息 <span class="math display">\[
-A_{label} = \text{Multi-Head}(Q_{label},K_{label},V_{label})
-\]</span> 并通过cross-attention融合文本和标签信息 <span class="math display">\[
-A_{cross} = \text{Multi-Head}(A_{label}, O_{text}, O_{text})
-\]</span> 预测时是n个时间戳的结果（n表示文本长度） <span class="math display">\[
-\text{Pred} = \text{softmax}(O_{hierarchy}W_3+b_3)\in\mathbb{R}^{n\times K}
-\]</span></p>
-<h3 id="path-adaptive-mask-mechanism">Path-Adaptive Mask Mechanism</h3>
-<p>掩码矩阵是一个下三角矩阵，通常由0和1组成</p>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123144409350.png" alt="image-20211123144409350" style="zoom:67%;"></p>
-<p>掩码矩阵的定义如下 <span class="math display">\[
-m_{i,j}=\left\{
-\begin{array}
-    {rl}
-    1  &amp; {\{I_i\in L, I_j\in \text{ancestor}(I_i), 1\leq j&lt;i\}} \\
-    &amp;  \cup{\{I_i\in S, j=i-1\}} \\
-    &amp;  \cup{\{I_i\in S, I_j\in \text{ancestor}(I_{i-1}), 1\leq j&lt;i\}} \\
-    0  &amp; {else}
-\end{array} \right.
-\]</span> 并定义了掩码损失 <span class="math display">\[
-\begin{aligned}
-\text{Loss}_{\text{PAMM}}=\sum_{b=1}^{B}(\frac{\sum_{h=1}^{H}(\sum_{i=1}^{n}(1-\sum_{j\in C}s_{i,j}))}{H})
-\end{aligned}
-\]</span></p>
-<p><span class="math display">\[
-\begin{aligned}
-    \text{Loss}=&amp;\text{Loss}_{\text{HiA-T5}}+\rho \text{Loss}_{\text{PAMM}}
-\end{aligned}
-\]</span></p>
-<h2 id="experiment">Experiment</h2>
-<p>数据集选取RCV1-V2、NTY和WOS</p>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141604818.png" alt="image-20211123141604818" style="zoom:67%;"></p>
-<p>并统计了数据集内不同层次标签的数量：</p>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141625514.png" alt="image-20211123141625514" style="zoom:67%;"></p>
-<p>选用T5-base作为backbone，有220M参数，12个注意力头。编码器输入的最大长度为300，解码器的最大输出长度为60。采用Adam优化器，batch size为10，学习率为3e-4，微调3个epoch。</p>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141847051.png" alt="image-20211123141847051" style="zoom:67%;"></p>
-<center>
-RCV1-V2实验结果
-</center>
-<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141920675.png" alt="image-20211123141920675" style="zoom:67%;"></p>
-<center>
-NYT和WOS的实验结果
-</center>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>T5</tag>
-        <tag>HTC</tag>
       </tags>
   </entry>
   <entry>
@@ -1105,6 +1031,97 @@ p_i^{\mathrm{RWPE}} = [\mathrm{RW}_{ii}, \mathrm{RW}_{ii}^2, \cdots,\mathrm{RW}_
       </tags>
   </entry>
   <entry>
+    <title>Hierarchy-Aware T5 with Path-Adaptive Mask Mechanism for Hierarchical Text Classification</title>
+    <url>/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/</url>
+    <content><![CDATA[<p>本文提出了一种层次感知的T5模型以及一种路径适应的掩码机制，称为PAMM-HiA-T5，不仅将上层标签的信息融入了下层标签，同时在标签预测时也引入了路径依赖信息。本文的模型在RCV1-V2、NYT和WOS上取得了SOTA。</p>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123135058290.png" alt="image-20211123135058290" style="zoom:67%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123134904566.png" alt="image-20211123134904566" style="zoom:67%;"></p>
+<ul>
+<li>arxiv: https://arxiv.org/pdf/2109.08585.pdf</li>
+<li>code: 暂无</li>
+</ul>
+<h2 id="background">Background</h2>
+<p>标签依赖性在层次化文本分类中很重要，作者认为主要可以分为层次依赖和路径依赖两种：</p>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123140332274.png" alt="image-20211123140332274" style="zoom:67%;"></p>
+<p>本文提出的模型不仅可以在生成模型中捕获父子标签的依赖关系，也可以识别特定路径中的层次依赖。在预测阶段，下一个标签取决于文本序列和当前路径上已经生成的标签。</p>
+<h3 id="t5">T5</h3>
+<p>T5模型是一种编码器-解码器架构，模型结构如下图所示：</p>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123140806474.png" alt="image-20211123140806474" style="zoom: 67%;"></p>
+<p>在解码器部分，有一个额外的sublayer用于处理解码器的输出，被称为Casual Self-Attention Sublayer。 <span class="math display">\[
+\begin{align}
+\mathrm{Block}_{Decoder}(Q_d,K_d,V_d,O_e)
+&amp;= \text{FFN}(\text{Multi-Head}(\text{Multi-Head}(Q_d, K_d, V_d), O_e, O_e)) \\
+\text{Decoder}(Q_d, K_d, V_d, O_e)
+&amp;= \text{stack}(\text{Block}_{Decoder}(Q_d, K_d, V_d, O_e))
+\end{align}
+\]</span></p>
+<h2 id="method">Method</h2>
+<h3 id="hierarchy-aware-t5">Hierarchy-Aware T5</h3>
+<p>首先将标签集转化为multi-level的标签序列 <span class="math display">\[
+\begin{align}
+L_i &amp;= \{l_1, l_2, l_3, l_5, l_5\} \\ 
+\Rightarrow ML_i &amp;= [l_1,\_,l_3,/,l_2,\_,l_4,/,l_5,EOS]
+\end{align}
+\]</span> 其中“_”表示intra-level关系，“/”表示inter-level关系。</p>
+<p>对于文本序列，直接送入T5编码器： <span class="math display">\[
+O_{text} = \text{Encoder}(Q_{text},K_{text},V_{text})
+\]</span> 对于标签序列，送入T5的解码器： <span class="math display">\[
+O_{hierarchy} = \text{Decoder}(Q_{label},K_{label},V_{label},O_{text})
+\]</span> 由此得到了level dependency信息 <span class="math display">\[
+A_{label} = \text{Multi-Head}(Q_{label},K_{label},V_{label})
+\]</span> 并通过cross-attention融合文本和标签信息 <span class="math display">\[
+A_{cross} = \text{Multi-Head}(A_{label}, O_{text}, O_{text})
+\]</span> 预测时是n个时间戳的结果（n表示文本长度） <span class="math display">\[
+\text{Pred} = \text{softmax}(O_{hierarchy}W_3+b_3)\in\mathbb{R}^{n\times K}
+\]</span></p>
+<h3 id="path-adaptive-mask-mechanism">Path-Adaptive Mask Mechanism</h3>
+<p>掩码矩阵是一个下三角矩阵，通常由0和1组成</p>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123144409350.png" alt="image-20211123144409350" style="zoom:67%;"></p>
+<p>掩码矩阵的定义如下 <span class="math display">\[
+m_{i,j}=\left\{
+\begin{array}
+    {rl}
+    1  &amp; {\{I_i\in L, I_j\in \text{ancestor}(I_i), 1\leq j&lt;i\}} \\
+    &amp;  \cup{\{I_i\in S, j=i-1\}} \\
+    &amp;  \cup{\{I_i\in S, I_j\in \text{ancestor}(I_{i-1}), 1\leq j&lt;i\}} \\
+    0  &amp; {else}
+\end{array} \right.
+\]</span> 并定义了掩码损失 <span class="math display">\[
+\begin{aligned}
+\text{Loss}_{\text{PAMM}}=\sum_{b=1}^{B}(\frac{\sum_{h=1}^{H}(\sum_{i=1}^{n}(1-\sum_{j\in C}s_{i,j}))}{H})
+\end{aligned}
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+    \text{Loss}=&amp;\text{Loss}_{\text{HiA-T5}}+\rho \text{Loss}_{\text{PAMM}}
+\end{aligned}
+\]</span></p>
+<h2 id="experiment">Experiment</h2>
+<p>数据集选取RCV1-V2、NTY和WOS</p>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141604818.png" alt="image-20211123141604818" style="zoom:67%;"></p>
+<p>并统计了数据集内不同层次标签的数量：</p>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141625514.png" alt="image-20211123141625514" style="zoom:67%;"></p>
+<p>选用T5-base作为backbone，有220M参数，12个注意力头。编码器输入的最大长度为300，解码器的最大输出长度为60。采用Adam优化器，batch size为10，学习率为3e-4，微调3个epoch。</p>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141847051.png" alt="image-20211123141847051" style="zoom:67%;"></p>
+<center>
+RCV1-V2实验结果
+</center>
+<p><img src="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141920675.png" alt="image-20211123141920675" style="zoom:67%;"></p>
+<center>
+NYT和WOS的实验结果
+</center>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>T5</tag>
+        <tag>HTC</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Internet安全协议与分析（七）CSP</title>
     <url>/2020/10/25/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%83%EF%BC%89CSP/</url>
     <content><![CDATA[<p>介绍攻击结构性方法。</p>
@@ -1176,163 +1193,56 @@ p_i^{\mathrm{RWPE}} = [\mathrm{RW}_{ii}, \mathrm{RW}_{ii}^2, \cdots,\mathrm{RW}_
       </tags>
   </entry>
   <entry>
-    <title>Internet安全协议与分析（一）IPSec</title>
-    <url>/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/</url>
-    <content><![CDATA[<p>介绍IPSec协议与IKE协议 。 <a id="more"></a></p>
-<h2 id="ip安全问题">IP安全问题</h2>
-<p>IP协议从本质上就是不安全的，仅仅依靠IP头部的校验和字段无法保证IP包的安全。</p>
-<figure>
-<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160509665.png" alt="image-20201027160509665"><figcaption aria-hidden="true">image-20201027160509665</figcaption>
-</figure>
-<h2 id="ipsec">IPSec</h2>
-<h3 id="概述">概述</h3>
-<p>IPSec旨在把安全机制引入IP协议，使用密码学方法支持机密性和认证性服务，确保公网上数据通信的可靠性和完整性。</p>
-<p>IPSec对IPV4可选，对IPV6必须，由三种机制共同保障</p>
+    <title>Entity Enhanced BERT Pre-training for Chinese NER</title>
+    <url>/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/</url>
+    <content><![CDATA[<p>张岳老师的文章，关注如何更充分利用实体信息以增强预训练语言模型在中文NER上的表现（EMNLP 2020）。</p>
+<p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422192212061.png" alt="image-20210422192212061" style="zoom:80%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
 <ul>
-<li>认证</li>
-<li>信息机密性</li>
-<li>密钥管理</li>
+<li>arxiv: https://www.aclweb.org/anthology/2020.emnlp-main.518.pdf</li>
+<li>code: 暂无</li>
 </ul>
-<h3 id="体系结构">体系结构</h3>
-<figure>
-<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160857942.png" alt="image-20201027160857942"><figcaption aria-hidden="true">image-20201027160857942</figcaption>
-</figure>
-<figure>
-<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160944599.png" alt="image-20201027160944599"><figcaption aria-hidden="true">image-20201027160944599</figcaption>
-</figure>
-<figure>
-<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160958769.png" alt="image-20201027160958769"><figcaption aria-hidden="true">image-20201027160958769</figcaption>
-</figure>
-<figure>
-<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027161058344.png" alt="image-20201027161058344"><figcaption aria-hidden="true">image-20201027161058344</figcaption>
-</figure>
-<h3 id="基本概念">基本概念</h3>
-<h4 id="安全联盟sa">安全联盟（SA）</h4>
-<ul>
-<li>Secure Association</li>
-<li>是两个通信实体之间建立的一个简单单向协定</li>
-<li>由SPI（Security Parameter Index）和目标地址组成</li>
-<li>单个IPSec连接至少需要两个SA</li>
-</ul>
-<h4 id="安全关联数据库sad">安全关联数据库（SAD）</h4>
-<ul>
-<li>Secure Association Database</li>
-<li>SAD包含了所有活跃的SA的所有参数信息</li>
-<li>流出数据：会有一个SPD数据项包含指向某个SAD数据项的指针，SPD决定了一个给定的数据包究竟使用哪一个SA。</li>
-<li>流入数据：由SAD决定如何对给定数据包做处理。</li>
-</ul>
-<h4 id="安全策略库spd">安全策略库（SPD）</h4>
-<ul>
-<li>Secure Policy Database</li>
-<li>SPD用于为IPSec实现提供安全策略配置，指定哪些数据流必须经过IPSec的处理。</li>
-</ul>
-<h3 id="ah协议">AH协议</h3>
-<ul>
-<li>Authentication Header</li>
-<li>在每一个数据包上添加一个身份验证报头，包含一个带密钥的hash，提供了完整性保护。</li>
-<li>不提供机密性保护。</li>
-</ul>
-<h4 id="传输模式">传输模式</h4>
-<ul>
-<li>如果传送过程中经过NAT网关，源/目的IP将被改变，导致完整性验证失败。AH在传输模式下与NAT冲突。</li>
-</ul>
-<figure>
-<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162241877.png" alt="image-20201027162241877"><figcaption aria-hidden="true">image-20201027162241877</figcaption>
-</figure>
-<h4 id="隧道模式">隧道模式</h4>
-<ul>
-<li>依旧与NAT冲突。</li>
-</ul>
-<figure>
-<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162746567.png" alt="image-20201027162746567"><figcaption aria-hidden="true">image-20201027162746567</figcaption>
-</figure>
-<h3 id="esp协议">ESP协议</h3>
-<ul>
-<li>将需要保护的数据加密后，封装在IP包中。</li>
-</ul>
-<h4 id="传输模式-1">传输模式</h4>
-<figure>
-<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162920657.png" alt="image-20201027162920657"><figcaption aria-hidden="true">image-20201027162920657</figcaption>
-</figure>
-<h4 id="隧道模式-1">隧道模式</h4>
-<figure>
-<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162952118.png" alt="image-20201027162952118"><figcaption aria-hidden="true">image-20201027162952118</figcaption>
-</figure>
-<h3 id="ah-vs-esp">AH vs ESP</h3>
-<figure>
-<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027163130692.png" alt="image-20201027163130692"><figcaption aria-hidden="true">image-20201027163130692</figcaption>
-</figure>
-<h2 id="ike">IKE</h2>
-<p>​ IKE（Internet Key Exchange）因特网密钥交换协议，是IPSec的信令协议，为IPSec提供了自动协商交换密钥、建立安全联盟的服务，能够简化IPSec的使用和管理，大大简化IPSec的配置和维护工作。</p>
-<h3 id="ike与ipsec关系">IKE与IPSec关系</h3>
-<ul>
-<li>IKE位于UDP之上，属于应用层协议。</li>
-<li>IKE为IPSec协商建立SA，并将参数与密钥交给IPSec。</li>
-<li>IPSec使用IKE建立的SA对IP报文加密或验证处理。</li>
-<li>AH和ESP的协议号是51和50。</li>
-</ul>
-<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010110531559.png" alt="image-20201010110531559" style="zoom:67%;"></p>
-<h3 id="ike的作用">IKE的作用</h3>
-<ul>
-<li>降低手工配置的复杂度</li>
-<li>SA和密钥定时更新</li>
-<li>允许IPSec提供反重放服务</li>
-<li>允许在端与端之间动态认证</li>
-</ul>
-<h3 id="ike的协商过程">IKE的协商过程</h3>
-<h4 id="两个阶段">两个阶段</h4>
-<ul>
-<li>阶段一：在网络上建立IKE SA，为阶段二提供保护和快速协商。通过协商创建一个通信信道，并对其进行认证，为通信提供机密性、消息完整性以及消息源认证服务。</li>
-<li>阶段二：在IKE SA的保护下完成IPSec的协商。</li>
-</ul>
-<h4 id="交换信息">交换信息</h4>
-<ul>
-<li>SA交换，协商确认有关安全策略的过程。</li>
-<li>密钥交换，交换Diffie-Hellman公共值和辅助数据，产生加密物。</li>
-<li>ID交换和验证数据交换，进行身份验证和对整个SA交换进行验证。</li>
-</ul>
-<h4 id="阶段一协商过程">阶段一协商过程</h4>
-<p>双方建立了一个已通过身份验证和安全保护的通道，此阶段建立了一个ISAKMP。</p>
-<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010111251530.png" alt="image-20201010111251530" style="zoom: 80%;"></p>
-<ul>
-<li><p>两种协商模式</p>
-<ul>
-<li>主模式协商
-<ul>
-<li>适合两设备的公网IP固定，实现设备之间点对点的环境。</li>
-</ul></li>
-</ul>
-<figure>
-<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010111946997.png" alt="image-20201010111946997"><figcaption aria-hidden="true">image-20201010111946997</figcaption>
-</figure>
-<ul>
-<li>野蛮模式协商</li>
-</ul>
-<figure>
-<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010111956705.png" alt="image-20201010111956705"><figcaption aria-hidden="true">image-20201010111956705</figcaption>
-</figure></li>
-</ul>
-<figure>
-<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010112010405.png" alt="image-20201010112010405"><figcaption aria-hidden="true">image-20201010112010405</figcaption>
-</figure>
-<h4 id="阶段二协商过程">阶段二协商过程</h4>
-<ul>
-<li>使用“快速模式”交换，实现两个主要功能
-<ul>
-<li>协商安全参数保护数据连接</li>
-<li>周期性地更新密钥信息</li>
-</ul></li>
-<li>协商出IPSec单向SA，保护数据流。</li>
-<li>协商过程受第一阶段ISAKMP/IKE SA保护。</li>
-</ul>
-<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010112031723.png" alt="image-20201010112031723" style="zoom:80%;"></p>
+<h2 id="background">Background</h2>
+<p>在中文NER中引入词典已经被证明是一个有效的方法，但是将实体信息融入BERT这类预训练模型的研究还很少。</p>
+<p>论文首先基于互信息的计算，用新词发现策略来识别文档中的entity；然后设计了char-entity自注意力机制来捕捉中文字与实体之间的关系，将字符隐层状态和实体向量组合。</p>
+<h2 id="methodology">Methodology</h2>
+<h3 id="new-word-discovery">New-Word Discovery</h3>
+<p>采用了<a href="https://svn.spraakdata.gu.se/repos/gerlof/pub/www/Docs/npmi-pfd.pdf">Bouma（2009）</a>提出的方法，用互信息计算，不予赘述。</p>
+<h3 id="char-entity-transformer">Char-Entity-Transformer</h3>
+<p>经典的Transformer计算Q、K、V三个矩阵 <span class="math display">\[
+\{Q^l,K^l,V^l\} = \{h^{l-1}W_q^l,h^{l-1}W_k^l,h^{l-1}W_v^l\} \\
+Atten(Q^l,K^l,V^l) = {\rm softmax}(\frac{Q^l {K^l}^T}{\sqrt{d_k}})
+\]</span> 本文也是先对给定的字符序列<span class="math inline">\({\mathcal C} = \{c_1,\dots,c_T\}\)</span>，给定词典<span class="math inline">\(\mathcal E_{ent}\)</span>，匹配得到对应的实体序列<span class="math inline">\(\mathcal E = \{e_1,\dots,e_T\}\)</span>。</p>
+<p>给定<span class="math inline">\((l-1)\)</span>层的隐层状态<span class="math inline">\(\{h_1^{l-1},\dots,h_T^{l-1}\}\)</span>，QKV的计算如下 <span class="math display">\[
+\begin{align}
+q_t^l &amp;= h_t^{l-1}W_{h,q}^l; \\
+k_t^l &amp;= \begin{cases}{
+            {h_t^{l-1}}^T W_{h,k}^l}\quad &amp;{\rm if}\space e_t = 0,\\
+            \frac12({h_t^{l-1}}^T W_{h,k}^l + E_{ent}^T[e_t]W_{e,k}^l)\quad &amp;else;
+         \end{cases} \\
+v_t^l &amp;= \begin{cases}
+            {h_t^{l-1}}^T W_{h,v}^l\quad &amp;{\rm if}\space e_t = 0,\\
+            \frac12({h_t^{l-1}}^T W_{h,v}^l + E_{ent}^T[e_t]W_{e,v}^l)\quad &amp;else;
+         \end{cases}
+\end{align}
+\]</span> 其中<span class="math inline">\(E_{ent}\)</span>表示实体embedding，<span class="math inline">\(W\)</span>表示可学习的参数。</p>
+<p>如果字符没有匹配到实体，那么计算退化为原始的self-attention。</p>
+<h3 id="ner任务">NER任务</h3>
+<p>针对NER任务，模型使用softmax解码，采用BIO标注方式。</p>
+<h2 id="experiment">Experiment</h2>
+<p>论文的实验使用了一个公开数据集CLUENER-2020，和两个自己标注的数据集。</p>
+<p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422200804396.png" alt="image-20210422200804396" style="zoom:67%;"></p>
+<p>本文还和ERNIE（百度）、Lattice进行了比较，采用的词典和ERNIE一样。</p>
+<p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422200849220.png" alt="image-20210422200849220" style="zoom: 67%;"></p>
 ]]></content>
       <categories>
-        <category>Internet安全协议与分析</category>
+        <category>Paper</category>
       </categories>
       <tags>
-        <tag>IPSec</tag>
-        <tag>IKE</tag>
+        <tag>NLP</tag>
+        <tag>BERT</tag>
+        <tag>NER</tag>
       </tags>
   </entry>
   <entry>
@@ -1742,6 +1652,166 @@ p_i^{\mathrm{RWPE}} = [\mathrm{RW}_{ii}, \mathrm{RW}_{ii}^2, \cdots,\mathrm{RW}_
       <tags>
         <tag>SSL</tag>
         <tag>WTLS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Internet安全协议与分析（一）IPSec</title>
+    <url>/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/</url>
+    <content><![CDATA[<p>介绍IPSec协议与IKE协议 。 <a id="more"></a></p>
+<h2 id="ip安全问题">IP安全问题</h2>
+<p>IP协议从本质上就是不安全的，仅仅依靠IP头部的校验和字段无法保证IP包的安全。</p>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160509665.png" alt="image-20201027160509665"><figcaption aria-hidden="true">image-20201027160509665</figcaption>
+</figure>
+<h2 id="ipsec">IPSec</h2>
+<h3 id="概述">概述</h3>
+<p>IPSec旨在把安全机制引入IP协议，使用密码学方法支持机密性和认证性服务，确保公网上数据通信的可靠性和完整性。</p>
+<p>IPSec对IPV4可选，对IPV6必须，由三种机制共同保障</p>
+<ul>
+<li>认证</li>
+<li>信息机密性</li>
+<li>密钥管理</li>
+</ul>
+<h3 id="体系结构">体系结构</h3>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160857942.png" alt="image-20201027160857942"><figcaption aria-hidden="true">image-20201027160857942</figcaption>
+</figure>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160944599.png" alt="image-20201027160944599"><figcaption aria-hidden="true">image-20201027160944599</figcaption>
+</figure>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027160958769.png" alt="image-20201027160958769"><figcaption aria-hidden="true">image-20201027160958769</figcaption>
+</figure>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027161058344.png" alt="image-20201027161058344"><figcaption aria-hidden="true">image-20201027161058344</figcaption>
+</figure>
+<h3 id="基本概念">基本概念</h3>
+<h4 id="安全联盟sa">安全联盟（SA）</h4>
+<ul>
+<li>Secure Association</li>
+<li>是两个通信实体之间建立的一个简单单向协定</li>
+<li>由SPI（Security Parameter Index）和目标地址组成</li>
+<li>单个IPSec连接至少需要两个SA</li>
+</ul>
+<h4 id="安全关联数据库sad">安全关联数据库（SAD）</h4>
+<ul>
+<li>Secure Association Database</li>
+<li>SAD包含了所有活跃的SA的所有参数信息</li>
+<li>流出数据：会有一个SPD数据项包含指向某个SAD数据项的指针，SPD决定了一个给定的数据包究竟使用哪一个SA。</li>
+<li>流入数据：由SAD决定如何对给定数据包做处理。</li>
+</ul>
+<h4 id="安全策略库spd">安全策略库（SPD）</h4>
+<ul>
+<li>Secure Policy Database</li>
+<li>SPD用于为IPSec实现提供安全策略配置，指定哪些数据流必须经过IPSec的处理。</li>
+</ul>
+<h3 id="ah协议">AH协议</h3>
+<ul>
+<li>Authentication Header</li>
+<li>在每一个数据包上添加一个身份验证报头，包含一个带密钥的hash，提供了完整性保护。</li>
+<li>不提供机密性保护。</li>
+</ul>
+<h4 id="传输模式">传输模式</h4>
+<ul>
+<li>如果传送过程中经过NAT网关，源/目的IP将被改变，导致完整性验证失败。AH在传输模式下与NAT冲突。</li>
+</ul>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162241877.png" alt="image-20201027162241877"><figcaption aria-hidden="true">image-20201027162241877</figcaption>
+</figure>
+<h4 id="隧道模式">隧道模式</h4>
+<ul>
+<li>依旧与NAT冲突。</li>
+</ul>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162746567.png" alt="image-20201027162746567"><figcaption aria-hidden="true">image-20201027162746567</figcaption>
+</figure>
+<h3 id="esp协议">ESP协议</h3>
+<ul>
+<li>将需要保护的数据加密后，封装在IP包中。</li>
+</ul>
+<h4 id="传输模式-1">传输模式</h4>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162920657.png" alt="image-20201027162920657"><figcaption aria-hidden="true">image-20201027162920657</figcaption>
+</figure>
+<h4 id="隧道模式-1">隧道模式</h4>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027162952118.png" alt="image-20201027162952118"><figcaption aria-hidden="true">image-20201027162952118</figcaption>
+</figure>
+<h3 id="ah-vs-esp">AH vs ESP</h3>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201027163130692.png" alt="image-20201027163130692"><figcaption aria-hidden="true">image-20201027163130692</figcaption>
+</figure>
+<h2 id="ike">IKE</h2>
+<p>​ IKE（Internet Key Exchange）因特网密钥交换协议，是IPSec的信令协议，为IPSec提供了自动协商交换密钥、建立安全联盟的服务，能够简化IPSec的使用和管理，大大简化IPSec的配置和维护工作。</p>
+<h3 id="ike与ipsec关系">IKE与IPSec关系</h3>
+<ul>
+<li>IKE位于UDP之上，属于应用层协议。</li>
+<li>IKE为IPSec协商建立SA，并将参数与密钥交给IPSec。</li>
+<li>IPSec使用IKE建立的SA对IP报文加密或验证处理。</li>
+<li>AH和ESP的协议号是51和50。</li>
+</ul>
+<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010110531559.png" alt="image-20201010110531559" style="zoom:67%;"></p>
+<h3 id="ike的作用">IKE的作用</h3>
+<ul>
+<li>降低手工配置的复杂度</li>
+<li>SA和密钥定时更新</li>
+<li>允许IPSec提供反重放服务</li>
+<li>允许在端与端之间动态认证</li>
+</ul>
+<h3 id="ike的协商过程">IKE的协商过程</h3>
+<h4 id="两个阶段">两个阶段</h4>
+<ul>
+<li>阶段一：在网络上建立IKE SA，为阶段二提供保护和快速协商。通过协商创建一个通信信道，并对其进行认证，为通信提供机密性、消息完整性以及消息源认证服务。</li>
+<li>阶段二：在IKE SA的保护下完成IPSec的协商。</li>
+</ul>
+<h4 id="交换信息">交换信息</h4>
+<ul>
+<li>SA交换，协商确认有关安全策略的过程。</li>
+<li>密钥交换，交换Diffie-Hellman公共值和辅助数据，产生加密物。</li>
+<li>ID交换和验证数据交换，进行身份验证和对整个SA交换进行验证。</li>
+</ul>
+<h4 id="阶段一协商过程">阶段一协商过程</h4>
+<p>双方建立了一个已通过身份验证和安全保护的通道，此阶段建立了一个ISAKMP。</p>
+<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010111251530.png" alt="image-20201010111251530" style="zoom: 80%;"></p>
+<ul>
+<li><p>两种协商模式</p>
+<ul>
+<li>主模式协商
+<ul>
+<li>适合两设备的公网IP固定，实现设备之间点对点的环境。</li>
+</ul></li>
+</ul>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010111946997.png" alt="image-20201010111946997"><figcaption aria-hidden="true">image-20201010111946997</figcaption>
+</figure>
+<ul>
+<li>野蛮模式协商</li>
+</ul>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010111956705.png" alt="image-20201010111956705"><figcaption aria-hidden="true">image-20201010111956705</figcaption>
+</figure></li>
+</ul>
+<figure>
+<img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010112010405.png" alt="image-20201010112010405"><figcaption aria-hidden="true">image-20201010112010405</figcaption>
+</figure>
+<h4 id="阶段二协商过程">阶段二协商过程</h4>
+<ul>
+<li>使用“快速模式”交换，实现两个主要功能
+<ul>
+<li>协商安全参数保护数据连接</li>
+<li>周期性地更新密钥信息</li>
+</ul></li>
+<li>协商出IPSec单向SA，保护数据流。</li>
+<li>协商过程受第一阶段ISAKMP/IKE SA保护。</li>
+</ul>
+<p><img src="/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/image-20201010112031723.png" alt="image-20201010112031723" style="zoom:80%;"></p>
+]]></content>
+      <categories>
+        <category>Internet安全协议与分析</category>
+      </categories>
+      <tags>
+        <tag>IPSec</tag>
+        <tag>IKE</tag>
       </tags>
   </entry>
   <entry>
@@ -2404,49 +2474,6 @@ bel(B, fresh(N_b))
       </tags>
   </entry>
   <entry>
-    <title>K-BERT: Enabling Language Representation with Knowledge Graph</title>
-    <url>/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/</url>
-    <content><![CDATA[<p>介绍K-BERT模型（AAAI 2020）</p>
-<a id="more"></a>
-<h2 id="概述">概述</h2>
-<ul>
-<li>arxiv：https://arxiv.org/abs/1909.07606v1</li>
-<li>code：https://github.com/autoliuweijie/K-BERT</li>
-</ul>
-<h2 id="细节">细节</h2>
-<p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
-<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003741712.png" alt="image-20210225003741712" style="zoom:67%;"></p>
-<p>具体来说，算法分为以下几步。</p>
-<ul>
-<li>预先准备KG，建立查找表（关键词表）。</li>
-<li>对于给定的输入文本，利用工具分词（pkuseg）。</li>
-<li>将分词得到的结果去表中查询，得到对应的实体。</li>
-<li>计算实体位置，得到位置编码，也即论文中的soft-position index。</li>
-<li>计算可见矩阵，控制每个词受哪些词影响（如Cook不会被Beijing关联的China影响）。</li>
-</ul>
-<figure>
-<img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"><figcaption aria-hidden="true">image-20210225003844098</figcaption>
-</figure>
-<p>K-BERT并不算预训练模型，嵌入层依旧是使用的BERT模型，应该算基于BERT的fine-tuning网络，可以用于分类和序列标注。同时，K-BERT也可以加载其他BERT类模型，如ERNIE、RoBERTa等。</p>
-<p>创新点在于使用可见矩阵控制了Self-Attention的计算（如下图）。</p>
-<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225005229317.png" alt="image-20210225005229317" style="zoom: 67%;"></p>
-<h2 id="不足">不足</h2>
-<ul>
-<li>模型的鲁棒性受限于知识图谱的质量，取自于开放领域图谱中的信息，其实BERT通过大语料学习也能获得，可以考虑特定领域的知识。</li>
-<li>关联的三元组没有筛选，一词多义会引入错误的实体关联。</li>
-<li>对于非知识驱动的任务，引入知识反而会效果下降。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>KG</tag>
-        <tag>AAAI</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Internet安全协议与分析（零）安全协议基础</title>
     <url>/2020/10/27/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E9%9B%B6%EF%BC%89%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<p>介绍密码学的基础知识，包括公钥体制、数字签名、密钥分配等。</p>
@@ -2661,6 +2688,49 @@ D_{PK_B}(E_{SK_B}(X)) = D_{SK_B}(E_{PK_B}(X)) = X
         <tag>公钥体制</tag>
         <tag>Hash鉴别</tag>
         <tag>密钥分配</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>K-BERT: Enabling Language Representation with Knowledge Graph</title>
+    <url>/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/</url>
+    <content><![CDATA[<p>介绍K-BERT模型（AAAI 2020）</p>
+<a id="more"></a>
+<h2 id="概述">概述</h2>
+<ul>
+<li>arxiv：https://arxiv.org/abs/1909.07606v1</li>
+<li>code：https://github.com/autoliuweijie/K-BERT</li>
+</ul>
+<h2 id="细节">细节</h2>
+<p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003741712.png" alt="image-20210225003741712" style="zoom:67%;"></p>
+<p>具体来说，算法分为以下几步。</p>
+<ul>
+<li>预先准备KG，建立查找表（关键词表）。</li>
+<li>对于给定的输入文本，利用工具分词（pkuseg）。</li>
+<li>将分词得到的结果去表中查询，得到对应的实体。</li>
+<li>计算实体位置，得到位置编码，也即论文中的soft-position index。</li>
+<li>计算可见矩阵，控制每个词受哪些词影响（如Cook不会被Beijing关联的China影响）。</li>
+</ul>
+<figure>
+<img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"><figcaption aria-hidden="true">image-20210225003844098</figcaption>
+</figure>
+<p>K-BERT并不算预训练模型，嵌入层依旧是使用的BERT模型，应该算基于BERT的fine-tuning网络，可以用于分类和序列标注。同时，K-BERT也可以加载其他BERT类模型，如ERNIE、RoBERTa等。</p>
+<p>创新点在于使用可见矩阵控制了Self-Attention的计算（如下图）。</p>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225005229317.png" alt="image-20210225005229317" style="zoom: 67%;"></p>
+<h2 id="不足">不足</h2>
+<ul>
+<li>模型的鲁棒性受限于知识图谱的质量，取自于开放领域图谱中的信息，其实BERT通过大语料学习也能获得，可以考虑特定领域的知识。</li>
+<li>关联的三元组没有筛选，一词多义会引入错误的实体关联。</li>
+<li>对于非知识驱动的任务，引入知识反而会效果下降。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>KG</tag>
+        <tag>AAAI</tag>
       </tags>
   </entry>
   <entry>
@@ -2993,9 +3063,9 @@ g
         <category>Paper</category>
       </categories>
       <tags>
-        <tag>CV</tag>
         <tag>Transformer</tag>
         <tag>Multi-Label</tag>
+        <tag>CV</tag>
       </tags>
   </entry>
   <entry>
@@ -3077,50 +3147,6 @@ p_k = \mathrm{Sigmoid}(W_k^T\mathcal{Q}_{L,k}+b_k)
       </tags>
   </entry>
   <entry>
-    <title>SimCSE: Simple Contrastive Learning of Sentence Embeddings</title>
-    <url>/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/</url>
-    <content><![CDATA[<p>来自陈丹琦（<a href="https://github.com/danqi" class="uri">https://github.com/danqi</a>）组的文章，利用Dropout作为数据增强，进行对比学习得到句子向量表示，在无监督和有监督的语义表示上刷新SOTA。</p>
-<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210706175923388.png" alt="image-20210706175923388" style="zoom: 80%;"></p>
-<a id="more"></a>
-<h2 id="overview">Overview</h2>
-<ul>
-<li>Arxiv: https://arxiv.org/pdf/2104.08821v1.pdf</li>
-<li>Code: https://github.com/princeton-nlp/SimCSE</li>
-</ul>
-<h2 id="background-contrastive-learning">Background: Contrastive Learning</h2>
-<p>对比学习希望通过拉近语义相关的样本，拉远不相关的样本学习有效的向量表示。</p>
-<p>对于样本对集合<span class="math inline">\(D=\{(x_i,x_i^+)\}_{i=1}^m\)</span>，假设<span class="math inline">\(({\bf h_i},{\bf h_i^+})\)</span>为样本的向量表示，则训练的目标为： <span class="math display">\[
-l_i = \log \frac {e^{ {\rm sim} ({\bf h_i},{\bf h_i^+})}/\tau} {\sum_{j=1}^N e^{ {\rm sim}( {\bf h_i},{\bf h_j})/\tau}}
-\]</span> 其中，<span class="math inline">\(\tau\)</span>是一个温度超参数，<span class="math inline">\({\rm sim}({\bf h_i},{\bf h_i^+})\)</span>为余弦相似度<span class="math inline">\(\rm\bf\frac{h_1^Th_2}{\|h_1\|·\|h2\|}\)</span>，本文选择的backbone是BERT或RoBERTa。</p>
-<p>其实上述的训练目标就是交叉熵： <span class="math display">\[
-{\rm let}\ z_{i,j} = {\rm sim} ({\bf h_i},{\bf h_j}) \\
-{\rm then}\ loss_i = -\sum_{j=1}^N y_{j}\log z_{i, j}
-\]</span></p>
-<h3 id="positive-instances">Positive instances</h3>
-<p>对比学习的关键问题是如何构造样本对<span class="math inline">\((x_i,x_i^+)\)</span>，在CV中可以用裁剪、旋转等方法对图像进行数据增强，NLP中也有删词、替换、重排等方法。但对于NLP的离散结构来说，这些增强手段作用有限。本文采用了dropout作为数据增强手段，取得了更好的结果。</p>
-<p>本文采用了两个度量align和uniform用于衡量表示的质量。</p>
-<p>align描述了样本对之间的距离 <span class="math display">\[
-l_{\rm align} \triangleq \mathop{\mathbb{E}}_{(x,x^+)\sim p_{pos}}\|f(x)-f(x^+)\|^2
-\]</span> uniform描述了样本是否分布均匀 <span class="math display">\[
-l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(x)-f(y)\|^2}
-\]</span></p>
-<p>从实验结果上看，采用dropout的SimCSE效果更好。</p>
-<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111255916.png" alt="image-20210823111255916" style="zoom:67%;"></p>
-<h2 id="experiment">Experiment</h2>
-<p>在语义相似度任务上大幅度刷新SOTA，无监督就可以超越之前的有监督方法。</p>
-<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111528036.png" alt="image-20210823111528036" style="zoom: 67%;"></p>
-<p>在迁移任务上表现一般，说明sentence embedding并不一定有益于下游训练。</p>
-<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111700869.png" alt="image-20210823111700869" style="zoom: 80%;"></p>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>Contrastive Learning</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Rethinking Positional Encoding In Language Pre-Training</title>
     <url>/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/</url>
     <content><![CDATA[<p><img src="/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417211502265.png" alt="image-20210417211502265" style="zoom:67%;"></p>
@@ -3178,24 +3204,115 @@ l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2021/12/08/hello-world/</url>
-    <content><![CDATA[<p>Hello, world! <a id="more"></a></p>
-<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="quick-start">Quick Start</h2>
-<h3 id="create-a-new-post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="run-server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="generate-static-files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    <title>SimCSE: Simple Contrastive Learning of Sentence Embeddings</title>
+    <url>/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/</url>
+    <content><![CDATA[<p>来自陈丹琦（<a href="https://github.com/danqi" class="uri">https://github.com/danqi</a>）组的文章，利用Dropout作为数据增强，进行对比学习得到句子向量表示，在无监督和有监督的语义表示上刷新SOTA。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210706175923388.png" alt="image-20210706175923388" style="zoom: 80%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<ul>
+<li>Arxiv: https://arxiv.org/pdf/2104.08821v1.pdf</li>
+<li>Code: https://github.com/princeton-nlp/SimCSE</li>
+</ul>
+<h2 id="background-contrastive-learning">Background: Contrastive Learning</h2>
+<p>对比学习希望通过拉近语义相关的样本，拉远不相关的样本学习有效的向量表示。</p>
+<p>对于样本对集合<span class="math inline">\(D=\{(x_i,x_i^+)\}_{i=1}^m\)</span>，假设<span class="math inline">\(({\bf h_i},{\bf h_i^+})\)</span>为样本的向量表示，则训练的目标为： <span class="math display">\[
+l_i = \log \frac {e^{ {\rm sim} ({\bf h_i},{\bf h_i^+})}/\tau} {\sum_{j=1}^N e^{ {\rm sim}( {\bf h_i},{\bf h_j})/\tau}}
+\]</span> 其中，<span class="math inline">\(\tau\)</span>是一个温度超参数，<span class="math inline">\({\rm sim}({\bf h_i},{\bf h_i^+})\)</span>为余弦相似度<span class="math inline">\(\rm\bf\frac{h_1^Th_2}{\|h_1\|·\|h2\|}\)</span>，本文选择的backbone是BERT或RoBERTa。</p>
+<p>其实上述的训练目标就是交叉熵： <span class="math display">\[
+{\rm let}\ z_{i,j} = {\rm sim} ({\bf h_i},{\bf h_j}) \\
+{\rm then}\ loss_i = -\sum_{j=1}^N y_{j}\log z_{i, j}
+\]</span></p>
+<h3 id="positive-instances">Positive instances</h3>
+<p>对比学习的关键问题是如何构造样本对<span class="math inline">\((x_i,x_i^+)\)</span>，在CV中可以用裁剪、旋转等方法对图像进行数据增强，NLP中也有删词、替换、重排等方法。但对于NLP的离散结构来说，这些增强手段作用有限。本文采用了dropout作为数据增强手段，取得了更好的结果。</p>
+<p>本文采用了两个度量align和uniform用于衡量表示的质量。</p>
+<p>align描述了样本对之间的距离 <span class="math display">\[
+l_{\rm align} \triangleq \mathop{\mathbb{E}}_{(x,x^+)\sim p_{pos}}\|f(x)-f(x^+)\|^2
+\]</span> uniform描述了样本是否分布均匀 <span class="math display">\[
+l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(x)-f(y)\|^2}
+\]</span></p>
+<p>从实验结果上看，采用dropout的SimCSE效果更好。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111255916.png" alt="image-20210823111255916" style="zoom:67%;"></p>
+<h2 id="experiment">Experiment</h2>
+<p>在语义相似度任务上大幅度刷新SOTA，无监督就可以超越之前的有监督方法。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111528036.png" alt="image-20210823111528036" style="zoom: 67%;"></p>
+<p>在迁移任务上表现一般，说明sentence embedding并不一定有益于下游训练。</p>
+<p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111700869.png" alt="image-20210823111700869" style="zoom: 80%;"></p>
 ]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>Contrastive Learning</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Simplify the Usage of Lexicon in Chinese NER</title>
+    <url>/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/</url>
+    <content><![CDATA[<p>介绍如何在中文NER模型中更好地结合词典信息（ACL 2020）</p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<ul>
+<li><p>arxiv: https://arxiv.org/pdf/1908.05969v2.pdf</p></li>
+<li><p>code: https://github.com/v-mipeng/LexiconAugmentedNER</p></li>
+</ul>
+<h2 id="background">Background</h2>
+<p>ref：https://zhuanlan.zhihu.com/p/142615620</p>
+<p>近几年，在中文NER模型中融合词典信息的工作有许多，这主要得益于Lattice-LSTM的工作。但是Lattice-LSTM有几个缺点：</p>
+<ul>
+<li>计算性能低下，采用RNN结构，不能batch并行化。</li>
+<li>存在信息损失，每个字符只能获取以它为结尾的词汇信息。</li>
+<li>可迁移性差，只适用于LSTM。</li>
+</ul>
+<p>本篇论文提出了一种简单的方法，在embedding层利用词典信息，避免了复杂的模型结构，易于迁移。</p>
+<h2 id="approach">Approach</h2>
+<p>本文比较了三种不同的融合方式</p>
+<h3 id="softword">Softword</h3>
+<p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/v2-8924bacd6f5e4b98a1aea8ad51c01bfa_720w.jpg" alt="img" style="zoom:80%;"></p>
+<p>Softword先对句子分词，然后对每个字符嵌入BMESO的embedding。这种方法存在分词造成的误差传播，也无法引入词汇对应的信息。</p>
+<h3 id="exsoftword">ExSoftword</h3>
+<p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/image-20210227130546383.png" alt="image-20210227130546383" style="zoom:80%;"></p>
+<p>ExSoftword在Softword的基础上，将所有匹配的词汇对字符进行编码，按照BMESO编码构建5维向量。比如山表示为[1, 1, 1, 0, 0] <span class="math display">\[
+x_j^c \leftarrow [x_j^c; e^{seg}(segs(c_j))]
+\]</span> ExSoftword虽然引入了标注信息，但仍然没有引入词汇的embedding信息。并且这种方法无法恢复词汇匹配结果，从而导致信息损失。</p>
+<h3 id="softlexicon">SoftLexicon</h3>
+<p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/image-20210227130555211.png" alt="image-20210227130555211" style="zoom:80%;"></p>
+<p>为了解决上述问题，SoftLexicon对每个字符依次获取BMES对应所有的词汇集合，然后再编码表示。</p>
+<p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/image-20210227131612177.png" alt="image-20210227131612177" style="zoom:80%;"></p>
+<p>之后将词汇的embedding与词向量拼接作为输入 <span class="math display">\[
+e^s(B,M,E,S) = [v^s(B)\oplus v^s(M)\oplus v^s(E)\oplus v^s(S)]
+\]</span> <span class="math display">\[
+x^c \leftarrow [x^c;e^s(B,M,E,S)]
+\]</span> 对于词汇集合编码，采取词频加权进行计算 <span class="math display">\[
+v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)
+\]</span></p>
+<h2 id="detail">Detail</h2>
+<p>模型主要基于Lattice-LSTM，所以后续的模型结构依旧是BiLSTM-CRF，但因为只在embedding层修改，所以可以迁移到其他模型（CNN、BERT等）。</p>
+<p>与Lattice-LSTM类似，采用了预训练的char+bichar embedding，还有一个word embedding文件（词典）。代码中中的预处理也主要分为三类：word、biword和gaz。</p>
+<p>首先根据预训练embedding建立alphabet，存储字符到id的映射以及对应的embedding向量。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">data_initialization</span>(<span class="params">data, gaz_file, train_file, dev_file, test_file</span>):</span></span><br><span class="line">    data.build_alphabet(train_file)</span><br><span class="line">    data.build_alphabet(dev_file)</span><br><span class="line">    data.build_alphabet(test_file)</span><br><span class="line">    data.build_gaz_file(gaz_file)</span><br><span class="line">    data.build_gaz_alphabet(train_file,count=<span class="literal">True</span>)</span><br><span class="line">    data.build_gaz_alphabet(dev_file,count=<span class="literal">True</span>)</span><br><span class="line">    data.build_gaz_alphabet(test_file,count=<span class="literal">True</span>)</span><br><span class="line">    data.fix_alphabet()</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line">data = data_initialization(data, gaz_file, train_file, dev_file, test_file)</span><br></pre></td></tr></table></figure>
+<p>代码中也提供了相应的接口查看数据信息</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">data.show_data_summary()</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">显示部分信息</span></span><br><span class="line"><span class="string">DATA SUMMARY START:</span></span><br><span class="line"><span class="string">     Tag          scheme: BMES</span></span><br><span class="line"><span class="string">     MAX SENTENCE LENGTH: 250</span></span><br><span class="line"><span class="string">     Use          bigram: False</span></span><br><span class="line"><span class="string">     Word  alphabet size: 1895</span></span><br><span class="line"><span class="string">     Biword alphabet size: 21408</span></span><br><span class="line"><span class="string">     Char  alphabet size: 1895</span></span><br><span class="line"><span class="string">     Gaz   alphabet size: 12583</span></span><br><span class="line"><span class="string">     Label alphabet size: 29</span></span><br><span class="line"><span class="string">     Word embedding size: 50</span></span><br><span class="line"><span class="string">     Biword embedding size: 50</span></span><br><span class="line"><span class="string">     Char embedding size: 30</span></span><br><span class="line"><span class="string">     Gaz embedding size: 50</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># print(data.gaz_alphabet.get_index(&#x27;国籍&#x27;))</span></span><br></pre></td></tr></table></figure>
+<p>随后预处理训练集和测试集，根据现有的词典产生对应格式的数据。</p>
+<p>具体来说，对于给定的一句话，依次遍历每个字符，如果遇到B，则开始匹配词典</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">words = []</span><br><span class="line">biwords = []</span><br><span class="line">chars = []</span><br><span class="line">labels = []</span><br><span class="line">word, label = lines[idx]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> len(label) &gt; <span class="number">2</span>:</span><br><span class="line">    <span class="comment"># label != O</span></span><br><span class="line">    <span class="keyword">if</span> idx &lt; len(lines) - <span class="number">1</span> <span class="keyword">and</span> len(lines[idx + <span class="number">1</span>][<span class="number">1</span>]) &gt; <span class="number">2</span>:</span><br><span class="line">        biword = word + lines[idx + <span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            biword = word + <span class="string">&quot;-null-&quot;</span></span><br><span class="line">            words.append(word)</span><br><span class="line">            biwords.append(biword)</span><br><span class="line">            labels.append(label)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># label == O</span></span><br><span class="line">    <span class="keyword">if</span> (len(words) &gt; <span class="number">0</span>):</span><br><span class="line">        w_length = len(words)</span><br><span class="line">        gazs = [ [[] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(w_length)]</span><br><span class="line">        <span class="comment"># gazs: [c1,c2,...,cn]  ci:[B,M,E,S]  B/M/E/S :[w_id1,w_id2,...]  None:0</span></span><br><span class="line">        gazs_count = [ [[] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(w_length)]</span><br><span class="line"></span><br><span class="line">        gaz_char_Id = [ [[] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(w_length)]</span><br><span class="line">        <span class="comment">## gaz_char_Id: [c1,c2,...,cn]  ci:[B,M,E,S]  B/M/E/S :[[w1c1,w1c2,...],[],...]</span></span><br></pre></td></tr></table></figure>
+<p>词典在内存中以Trie树的形式存在，所以对于实体中的每个字符都判断是否有到达叶子节点的路径，从而匹配词典中的词汇。</p>
+<p>以下面这句话为例，高勇的标签不为O，词典会匹配到“高勇”和“高”两个词，那么结果就是长度为2的向量。其中的元素又是一个四维向量[B, M, E, S]，分为存储单词对应的Id，这样就可以存储词汇的信息。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">text = [<span class="string">&#x27;高&#x27;</span>, <span class="string">&#x27;勇&#x27;</span>, <span class="string">&#x27;：&#x27;</span>, <span class="string">&#x27;男&#x27;</span>, <span class="string">&#x27;，&#x27;</span>, <span class="string">&#x27;中&#x27;</span>, <span class="string">&#x27;国&#x27;</span>, <span class="string">&#x27;国&#x27;</span>, <span class="string">&#x27;籍&#x27;</span>, <span class="string">&#x27;，&#x27;</span>, <span class="string">&#x27;无&#x27;</span>, <span class="string">&#x27;境&#x27;</span>, <span class="string">&#x27;外&#x27;</span>, <span class="string">&#x27;居&#x27;</span>, <span class="string">&#x27;留&#x27;</span>, <span class="string">&#x27;权&#x27;</span>, <span class="string">&#x27;，&#x27;</span>]</span><br><span class="line">labels = [<span class="string">&#x27;B-NAME&#x27;</span>, <span class="string">&#x27;E-NAME&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;B-CONT&#x27;</span>, <span class="string">&#x27;M-CONT&#x27;</span>, <span class="string">&#x27;M-CONT&#x27;</span>, <span class="string">&#x27;E-CONT&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>]</span><br><span class="line">print(<span class="string">&quot;&quot;</span>.join(text))</span><br><span class="line"><span class="comment"># input: 高勇：男，中国国籍，无境外居留权，</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># gazs: [[[2], [0], [0], [3]], [[0], [0], [2], [4]]]</span></span><br><span class="line"><span class="comment"># gaz_char_Id: [[[[2, 3]], [0], [0], [0]], [[0], [0], [[2, 3]], [0]]]</span></span><br><span class="line">result = [[[<span class="string">&#x27;&#x27;</span>.join([word_alphabet.get_instance(idx) <span class="keyword">if</span> word_alphabet.get_instance(idx) <span class="keyword">else</span> <span class="string">&#x27;&#x27;</span> <span class="keyword">for</span> idx <span class="keyword">in</span> ___ ]) <span class="keyword">for</span> ___ <span class="keyword">in</span> __ ]<span class="keyword">for</span> __ <span class="keyword">in</span> _] <span class="keyword">for</span> _ <span class="keyword">in</span> gaz_char_Id]</span><br><span class="line"><span class="comment"># result: [[[&#x27;高勇&#x27;], [], [], [&#x27;高&#x27;]], [[], [], [&#x27;高勇&#x27;], []]]</span></span><br></pre></td></tr></table></figure>
+<p>在得到了词汇信息后，还要引入mask，以标出哪些是有效信息</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># gazchar_masks: [[[[0, 0]], [[0, 1]], [[0, 1]], [[0, 1]]], [[[0, 1]], [[0, 1]], [[0, 0]], [[0, 1]]]]</span></span><br></pre></td></tr></table></figure>
+<p>最后，读取词典获取对应的embedding送入模型</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model = SeqModel(data)</span><br><span class="line">print(model)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">build batched crf...</span></span><br><span class="line"><span class="string">GazLSTM(</span></span><br><span class="line"><span class="string">  (gaz_embedding): Embedding(12583, 50)</span></span><br><span class="line"><span class="string">  (word_embedding): Embedding(1895, 50)</span></span><br><span class="line"><span class="string">  (NERmodel): NERmodel(</span></span><br><span class="line"><span class="string">    (lstm): LSTM(250, 300, batch_first=True, bidirectional=True)</span></span><br><span class="line"><span class="string">    (drop): Dropout(p=0.5)</span></span><br><span class="line"><span class="string">  )</span></span><br><span class="line"><span class="string">  (drop): Dropout(p=0.5)</span></span><br><span class="line"><span class="string">  (hidden2tag): Linear(in_features=600, out_features=31, bias=True)</span></span><br><span class="line"><span class="string">  (crf): CRF()</span></span><br><span class="line"><span class="string">)</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>LSTM</tag>
+        <tag>ACL</tag>
+      </tags>
   </entry>
   <entry>
     <title>WantWords: An Open-source Online Reverse Dictionary System</title>
@@ -3283,6 +3400,26 @@ WantWords工作流
       <tags>
         <tag>NLP</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/12/08/hello-world/</url>
+    <content><![CDATA[<p>Hello, world! <a id="more"></a></p>
+<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="create-a-new-post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="run-server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="generate-static-files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>macOS挂载NTFS硬盘</title>
@@ -3394,73 +3531,6 @@ WantWords工作流
       </categories>
       <tags>
         <tag>coding</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Simplify the Usage of Lexicon in Chinese NER</title>
-    <url>/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/</url>
-    <content><![CDATA[<p>介绍如何在中文NER模型中更好地结合词典信息（ACL 2020）</p>
-<a id="more"></a>
-<h2 id="overview">Overview</h2>
-<ul>
-<li><p>arxiv: https://arxiv.org/pdf/1908.05969v2.pdf</p></li>
-<li><p>code: https://github.com/v-mipeng/LexiconAugmentedNER</p></li>
-</ul>
-<h2 id="background">Background</h2>
-<p>ref：https://zhuanlan.zhihu.com/p/142615620</p>
-<p>近几年，在中文NER模型中融合词典信息的工作有许多，这主要得益于Lattice-LSTM的工作。但是Lattice-LSTM有几个缺点：</p>
-<ul>
-<li>计算性能低下，采用RNN结构，不能batch并行化。</li>
-<li>存在信息损失，每个字符只能获取以它为结尾的词汇信息。</li>
-<li>可迁移性差，只适用于LSTM。</li>
-</ul>
-<p>本篇论文提出了一种简单的方法，在embedding层利用词典信息，避免了复杂的模型结构，易于迁移。</p>
-<h2 id="approach">Approach</h2>
-<p>本文比较了三种不同的融合方式</p>
-<h3 id="softword">Softword</h3>
-<p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/v2-8924bacd6f5e4b98a1aea8ad51c01bfa_720w.jpg" alt="img" style="zoom:80%;"></p>
-<p>Softword先对句子分词，然后对每个字符嵌入BMESO的embedding。这种方法存在分词造成的误差传播，也无法引入词汇对应的信息。</p>
-<h3 id="exsoftword">ExSoftword</h3>
-<p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/image-20210227130546383.png" alt="image-20210227130546383" style="zoom:80%;"></p>
-<p>ExSoftword在Softword的基础上，将所有匹配的词汇对字符进行编码，按照BMESO编码构建5维向量。比如山表示为[1, 1, 1, 0, 0] <span class="math display">\[
-x_j^c \leftarrow [x_j^c; e^{seg}(segs(c_j))]
-\]</span> ExSoftword虽然引入了标注信息，但仍然没有引入词汇的embedding信息。并且这种方法无法恢复词汇匹配结果，从而导致信息损失。</p>
-<h3 id="softlexicon">SoftLexicon</h3>
-<p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/image-20210227130555211.png" alt="image-20210227130555211" style="zoom:80%;"></p>
-<p>为了解决上述问题，SoftLexicon对每个字符依次获取BMES对应所有的词汇集合，然后再编码表示。</p>
-<p><img src="/2021/02/27/Simplify-the-Usage-of-Lexicon-in-Chinese-NER/image-20210227131612177.png" alt="image-20210227131612177" style="zoom:80%;"></p>
-<p>之后将词汇的embedding与词向量拼接作为输入 <span class="math display">\[
-e^s(B,M,E,S) = [v^s(B)\oplus v^s(M)\oplus v^s(E)\oplus v^s(S)]
-\]</span> <span class="math display">\[
-x^c \leftarrow [x^c;e^s(B,M,E,S)]
-\]</span> 对于词汇集合编码，采取词频加权进行计算 <span class="math display">\[
-v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)
-\]</span></p>
-<h2 id="detail">Detail</h2>
-<p>模型主要基于Lattice-LSTM，所以后续的模型结构依旧是BiLSTM-CRF，但因为只在embedding层修改，所以可以迁移到其他模型（CNN、BERT等）。</p>
-<p>与Lattice-LSTM类似，采用了预训练的char+bichar embedding，还有一个word embedding文件（词典）。代码中中的预处理也主要分为三类：word、biword和gaz。</p>
-<p>首先根据预训练embedding建立alphabet，存储字符到id的映射以及对应的embedding向量。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">data_initialization</span>(<span class="params">data, gaz_file, train_file, dev_file, test_file</span>):</span></span><br><span class="line">    data.build_alphabet(train_file)</span><br><span class="line">    data.build_alphabet(dev_file)</span><br><span class="line">    data.build_alphabet(test_file)</span><br><span class="line">    data.build_gaz_file(gaz_file)</span><br><span class="line">    data.build_gaz_alphabet(train_file,count=<span class="literal">True</span>)</span><br><span class="line">    data.build_gaz_alphabet(dev_file,count=<span class="literal">True</span>)</span><br><span class="line">    data.build_gaz_alphabet(test_file,count=<span class="literal">True</span>)</span><br><span class="line">    data.fix_alphabet()</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line">data = data_initialization(data, gaz_file, train_file, dev_file, test_file)</span><br></pre></td></tr></table></figure>
-<p>代码中也提供了相应的接口查看数据信息</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">data.show_data_summary()</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">显示部分信息</span></span><br><span class="line"><span class="string">DATA SUMMARY START:</span></span><br><span class="line"><span class="string">     Tag          scheme: BMES</span></span><br><span class="line"><span class="string">     MAX SENTENCE LENGTH: 250</span></span><br><span class="line"><span class="string">     Use          bigram: False</span></span><br><span class="line"><span class="string">     Word  alphabet size: 1895</span></span><br><span class="line"><span class="string">     Biword alphabet size: 21408</span></span><br><span class="line"><span class="string">     Char  alphabet size: 1895</span></span><br><span class="line"><span class="string">     Gaz   alphabet size: 12583</span></span><br><span class="line"><span class="string">     Label alphabet size: 29</span></span><br><span class="line"><span class="string">     Word embedding size: 50</span></span><br><span class="line"><span class="string">     Biword embedding size: 50</span></span><br><span class="line"><span class="string">     Char embedding size: 30</span></span><br><span class="line"><span class="string">     Gaz embedding size: 50</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># print(data.gaz_alphabet.get_index(&#x27;国籍&#x27;))</span></span><br></pre></td></tr></table></figure>
-<p>随后预处理训练集和测试集，根据现有的词典产生对应格式的数据。</p>
-<p>具体来说，对于给定的一句话，依次遍历每个字符，如果遇到B，则开始匹配词典</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">words = []</span><br><span class="line">biwords = []</span><br><span class="line">chars = []</span><br><span class="line">labels = []</span><br><span class="line">word, label = lines[idx]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> len(label) &gt; <span class="number">2</span>:</span><br><span class="line">    <span class="comment"># label != O</span></span><br><span class="line">    <span class="keyword">if</span> idx &lt; len(lines) - <span class="number">1</span> <span class="keyword">and</span> len(lines[idx + <span class="number">1</span>][<span class="number">1</span>]) &gt; <span class="number">2</span>:</span><br><span class="line">        biword = word + lines[idx + <span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            biword = word + <span class="string">&quot;-null-&quot;</span></span><br><span class="line">            words.append(word)</span><br><span class="line">            biwords.append(biword)</span><br><span class="line">            labels.append(label)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># label == O</span></span><br><span class="line">    <span class="keyword">if</span> (len(words) &gt; <span class="number">0</span>):</span><br><span class="line">        w_length = len(words)</span><br><span class="line">        gazs = [ [[] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(w_length)]</span><br><span class="line">        <span class="comment"># gazs: [c1,c2,...,cn]  ci:[B,M,E,S]  B/M/E/S :[w_id1,w_id2,...]  None:0</span></span><br><span class="line">        gazs_count = [ [[] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(w_length)]</span><br><span class="line"></span><br><span class="line">        gaz_char_Id = [ [[] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(w_length)]</span><br><span class="line">        <span class="comment">## gaz_char_Id: [c1,c2,...,cn]  ci:[B,M,E,S]  B/M/E/S :[[w1c1,w1c2,...],[],...]</span></span><br></pre></td></tr></table></figure>
-<p>词典在内存中以Trie树的形式存在，所以对于实体中的每个字符都判断是否有到达叶子节点的路径，从而匹配词典中的词汇。</p>
-<p>以下面这句话为例，高勇的标签不为O，词典会匹配到“高勇”和“高”两个词，那么结果就是长度为2的向量。其中的元素又是一个四维向量[B, M, E, S]，分为存储单词对应的Id，这样就可以存储词汇的信息。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">text = [<span class="string">&#x27;高&#x27;</span>, <span class="string">&#x27;勇&#x27;</span>, <span class="string">&#x27;：&#x27;</span>, <span class="string">&#x27;男&#x27;</span>, <span class="string">&#x27;，&#x27;</span>, <span class="string">&#x27;中&#x27;</span>, <span class="string">&#x27;国&#x27;</span>, <span class="string">&#x27;国&#x27;</span>, <span class="string">&#x27;籍&#x27;</span>, <span class="string">&#x27;，&#x27;</span>, <span class="string">&#x27;无&#x27;</span>, <span class="string">&#x27;境&#x27;</span>, <span class="string">&#x27;外&#x27;</span>, <span class="string">&#x27;居&#x27;</span>, <span class="string">&#x27;留&#x27;</span>, <span class="string">&#x27;权&#x27;</span>, <span class="string">&#x27;，&#x27;</span>]</span><br><span class="line">labels = [<span class="string">&#x27;B-NAME&#x27;</span>, <span class="string">&#x27;E-NAME&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;B-CONT&#x27;</span>, <span class="string">&#x27;M-CONT&#x27;</span>, <span class="string">&#x27;M-CONT&#x27;</span>, <span class="string">&#x27;E-CONT&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;O&#x27;</span>]</span><br><span class="line">print(<span class="string">&quot;&quot;</span>.join(text))</span><br><span class="line"><span class="comment"># input: 高勇：男，中国国籍，无境外居留权，</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># gazs: [[[2], [0], [0], [3]], [[0], [0], [2], [4]]]</span></span><br><span class="line"><span class="comment"># gaz_char_Id: [[[[2, 3]], [0], [0], [0]], [[0], [0], [[2, 3]], [0]]]</span></span><br><span class="line">result = [[[<span class="string">&#x27;&#x27;</span>.join([word_alphabet.get_instance(idx) <span class="keyword">if</span> word_alphabet.get_instance(idx) <span class="keyword">else</span> <span class="string">&#x27;&#x27;</span> <span class="keyword">for</span> idx <span class="keyword">in</span> ___ ]) <span class="keyword">for</span> ___ <span class="keyword">in</span> __ ]<span class="keyword">for</span> __ <span class="keyword">in</span> _] <span class="keyword">for</span> _ <span class="keyword">in</span> gaz_char_Id]</span><br><span class="line"><span class="comment"># result: [[[&#x27;高勇&#x27;], [], [], [&#x27;高&#x27;]], [[], [], [&#x27;高勇&#x27;], []]]</span></span><br></pre></td></tr></table></figure>
-<p>在得到了词汇信息后，还要引入mask，以标出哪些是有效信息</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># gazchar_masks: [[[[0, 0]], [[0, 1]], [[0, 1]], [[0, 1]]], [[[0, 1]], [[0, 1]], [[0, 0]], [[0, 1]]]]</span></span><br></pre></td></tr></table></figure>
-<p>最后，读取词典获取对应的embedding送入模型</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model = SeqModel(data)</span><br><span class="line">print(model)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">build batched crf...</span></span><br><span class="line"><span class="string">GazLSTM(</span></span><br><span class="line"><span class="string">  (gaz_embedding): Embedding(12583, 50)</span></span><br><span class="line"><span class="string">  (word_embedding): Embedding(1895, 50)</span></span><br><span class="line"><span class="string">  (NERmodel): NERmodel(</span></span><br><span class="line"><span class="string">    (lstm): LSTM(250, 300, batch_first=True, bidirectional=True)</span></span><br><span class="line"><span class="string">    (drop): Dropout(p=0.5)</span></span><br><span class="line"><span class="string">  )</span></span><br><span class="line"><span class="string">  (drop): Dropout(p=0.5)</span></span><br><span class="line"><span class="string">  (hidden2tag): Linear(in_features=600, out_features=31, bias=True)</span></span><br><span class="line"><span class="string">  (crf): CRF()</span></span><br><span class="line"><span class="string">)</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>LSTM</tag>
-        <tag>ACL</tag>
       </tags>
   </entry>
   <entry>
@@ -4196,143 +4266,6 @@ P(365, k) = 1 - \frac {365!} {(365-k)365^k}
       </tags>
   </entry>
   <entry>
-    <title>统计学习方法（一）概论</title>
-    <url>/2020/08/11/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%AE%BA/</url>
-    <content><![CDATA[<p>开始学习李航老师的《统计学习方法》。</p>
-<a id="more"></a>
-<h2 id="统计学习">1.1 统计学习</h2>
-<h3 id="定义">定义</h3>
-<p>统计学习也称为统计机器学习，计算机系统通过运用数据及统计方法提高系统性能的机器学习。</p>
-<h3 id="方法">方法</h3>
-<ul>
-<li>从给定的、有限的、用于学习的<strong>训练数据</strong>集合出发</li>
-<li>假设数据独立同分布，要学习的模型属于某个函数的集合（<strong>假设空间</strong>）</li>
-<li>应用某个<strong>评价准则</strong>，从假设空间中选取一个最优模型，使其对训练数据与<strong>测试数据</strong>有最优的预测</li>
-<li>最优模型的选取由算法实现</li>
-</ul>
-<h3 id="三要素">三要素</h3>
-<ul>
-<li>模型 model</li>
-<li>策略 strategy</li>
-<li>算法 algorithm</li>
-</ul>
-<h3 id="步骤">步骤</h3>
-<ul>
-<li>得到一个有限的训练数据集合</li>
-<li>确定所有可能模型的假设空间，即学习模型的集合</li>
-<li>确定模型选择的准则，即学习的策略</li>
-<li>实现求解最优模型的算法，即学习的算法</li>
-<li>通过学习方法选择最优模型</li>
-<li>利用学习的最优模型对新数据进行预测或分析</li>
-</ul>
-<h2 id="监督学习">1.2 监督学习</h2>
-<h3 id="基本概念">基本概念</h3>
-<ul>
-<li>输入空间&amp;输出空间：输入与输出所有可能取值的集合</li>
-<li>特征空间：所有特征向量存在的空间
-<ul>
-<li>每个具体的输入是一个实例，通常由特征向量表示。</li>
-<li>特征控件的每一维对应于每一个特征。</li>
-</ul></li>
-<li>样本：输入与输出对 <span class="math display">\[
-T = \{(x_1, y_1), (x_2, y_2), ..., (x_N, y_N)\}
-\]</span></li>
-<li>回归问题：X与Y均为连续变量</li>
-<li>分类问题：Y为有限个离散变量</li>
-<li>标注问题：X与Y均为变量序列</li>
-</ul>
-<h3 id="统计学习三要素">1.3 统计学习三要素</h3>
-<p><span class="math display">\[
-方法 = 模型+策略+算法
-\]</span></p>
-<h3 id="模型">模型</h3>
-<p>X和Y是定义在输入空间与输出空间上的变量，F通常是由一个参数向量决定的函数组，此时为非概率模型。 <span class="math display">\[
-{\cal F} = \{f|Y = f_\theta(X), \theta\in R^n\}
-\]</span> 假设空间也可以定义为条件概率的集合，此时表示的模型为概率模型。 <span class="math display">\[
-{\cal F} = \{P|P_\theta(Y|X), \theta\in R^n\}
-\]</span></p>
-<h3 id="策略">策略</h3>
-<h4 id="损失函数">损失函数</h4>
-<p>损失函数（loss function）或代价函数（cost function），度量预测错误的程度，是f(X)和Y的非负实值函数，记作L(Y, f(X))。</p>
-<p>常用的损失函数： <span class="math display">\[
-\begin{align}
-0-1: L(Y, f(X)) &amp;=&amp; \begin{cases} 1, Y\neq f(X) \\ 0, Y= f(X) \end{cases} \\
-quadratic: L(Y, f(X)) &amp;=&amp; {(Y - f(X))}^2 \\
-absolute: L(Y, f(X)) &amp;=&amp; |Y - f(X)| \\
-logarithmic: L(Y, f(X)) &amp;=&amp; -logP(Y|X) \\
-\end{align}
-\]</span></p>
-<h4 id="风险函数">风险函数</h4>
-<p>风险函数，表示理论上模型关于联合分布平均意义下的损失。 <span class="math display">\[
-R_{exp}(f) = E_p[L(Y, f(X))] = \int _{x\times y} L(y, f(x))P(x, y)dxdy
-\]</span> 学习的目标是选择期望风险最小的模型，实际上P(X, Y)未知，所以才需要学习。</p>
-<p>经验风险（empirical risk）定义为模型关于训练数据集的平均损失。 <span class="math display">\[
-R_{emp}(f) = \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i))
-\]</span> 现实中训练样本数目有限，用经验风险估计并不理想，所以需要制定策略。</p>
-<h4 id="风险最小化">风险最小化</h4>
-<ul>
-<li>经验风险最小化（ERM）
-<ul>
-<li>极大似然估计</li>
-<li>容易产生过拟合</li>
-</ul></li>
-<li>结构风险最小化（SRM）
-<ul>
-<li>等价于正则化，在经验风险上加上正则化项或罚项</li>
-<li>最大后验概率估计</li>
-</ul></li>
-</ul>
-<h2 id="模型评估与模型选择">1.4 模型评估与模型选择</h2>
-<h3 id="训练误差测试误差">训练误差&amp;测试误差</h3>
-<p>训练误差是模型关于训练集的平均损失 <span class="math display">\[
-R_{emp}(f) = \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i))
-\]</span> 测试误差是模型关于测试集的平均损失 <span class="math display">\[
-R_{test}(f) = \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i))
-\]</span></p>
-<h2 id="正则化与交叉验证">1.5 正则化与交叉验证</h2>
-<h3 id="正则化">正则化</h3>
-<p>正则化是结构风险最小化策略的实现，在经验风险上加一个正则化项或罚项。</p>
-<p>正则化项一般是模型复杂度的单调递增函数，模型越复杂，正则化值越大。 <span class="math display">\[
-\min _{f\in {\cal F}} \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i)) + \lambda J(f)， \lambda \geq 0
-\]</span></p>
-<p><span class="math display">\[
-L1: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \frac \lambda 2 \Vert w\Vert ^2 \\
-L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert
-\]</span></p>
-<blockquote>
-<p>奥卡姆剃刀：在所有可能选择的模型中，能够很好解释已知数据并十分简单才是最好的模型。</p>
-</blockquote>
-<h3 id="交叉验证">交叉验证</h3>
-<ul>
-<li>简单交叉验证
-<ul>
-<li>将数据分为训练集与测试集</li>
-</ul></li>
-<li>S折交叉验证
-<ul>
-<li>首先随机切分数据，分为S个大小相同的不相交子集。</li>
-<li>用S-1个子集的数据训练模型，用余下的测试。</li>
-<li>对S种选择重复进行，选出平均测试误差最小的模型。</li>
-</ul></li>
-<li>留一交叉验证</li>
-</ul>
-<h2 id="泛化能力">1.6 泛化能力</h2>
-<p>泛化能力，是指该方法学习到的模型对未知数据的预测能力。 <span class="math display">\[
-泛化误差 \ \ R_{exp}(\hat f) = E_P[L(Y, \hat f(X))] = \int _{x\times y} L(y, \hat f(x))P(x,y)dxdy
-\]</span></p>
-<h2 id="生成模型与判别模型">1.7 生成模型与判别模型</h2>
-<h2 id="分类问题">1.8 分类问题</h2>
-<h2 id="标注问题">1.9 标注问题</h2>
-<h2 id="回归问题">1.10 回归问题</h2>
-]]></content>
-      <categories>
-        <category>统计学习方法</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>现代密码学（五）公钥密码</title>
     <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%94%EF%BC%89%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/</url>
     <content><![CDATA[<p>介绍公钥密码学。</p>
@@ -4502,75 +4435,140 @@ a_3 = a_1 \oplus a_2
       </tags>
   </entry>
   <entry>
-    <title>统计学习方法（三）k近邻法</title>
-    <url>/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/</url>
-    <content><![CDATA[<p>k近邻法，是一种基本分类与回归方法。输入为特征向量，输出为类别。</p>
+    <title>统计学习方法（一）概论</title>
+    <url>/2020/08/11/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%AE%BA/</url>
+    <content><![CDATA[<p>开始学习李航老师的《统计学习方法》。</p>
 <a id="more"></a>
-<h2 id="k近邻算法">3.1 k近邻算法</h2>
-<p>给定一个训练集，对新的输入实例，在训练集中找到最邻近的k个实例，将输入实例分为多数类。</p>
+<h2 id="统计学习">1.1 统计学习</h2>
+<h3 id="定义">定义</h3>
+<p>统计学习也称为统计机器学习，计算机系统通过运用数据及统计方法提高系统性能的机器学习。</p>
+<h3 id="方法">方法</h3>
 <ul>
-<li>输入：训练数据集T，实例特征向量x。</li>
-<li>输出：实例x所属的类y。</li>
-<li>根据给定的距离度量，在T中找出与x最邻近的k个点。</li>
-<li>在邻域中根据分类决策规则（如多数表决）决定x的类别y。</li>
-<li>k=1时，称为最近邻算法，将与x最邻近点的类作为x的类。</li>
+<li>从给定的、有限的、用于学习的<strong>训练数据</strong>集合出发</li>
+<li>假设数据独立同分布，要学习的模型属于某个函数的集合（<strong>假设空间</strong>）</li>
+<li>应用某个<strong>评价准则</strong>，从假设空间中选取一个最优模型，使其对训练数据与<strong>测试数据</strong>有最优的预测</li>
+<li>最优模型的选取由算法实现</li>
 </ul>
-<h2 id="k近邻模型">3.2 k近邻模型</h2>
-<h3 id="距离度量">距离度量</h3>
-<p><span class="math inline">\(L_p\)</span>距离定义为 <span class="math display">\[
-L_p(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^p)^{\frac 1 p}
-\]</span> p=1时，称为曼哈顿距离 <span class="math display">\[
-L_1(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|)
-\]</span> p=2时，即为欧式距离 <span class="math display">\[
-L_2(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^2)^{\frac 1 2}
-\]</span> p=∞时，称为切比雪夫距离，为各个坐标距离的最大值 <span class="math display">\[
-L_\infty(x_i, x_j) = \max_l |x_i^{(l)}-x_j^{(l)}|
-\]</span> 下图给出了与原点距离为1的图形</p>
-<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/1.png"></p>
-<h3 id="分类决策规则">分类决策规则</h3>
-<p>k近邻法中的分类决策规则往往是多数表决，即由k个临近点的多数类决定输入类。</p>
-<p>如果分类的损失函数为0-1损失函数，分类函数为 <span class="math display">\[
-f: \mathbf R^n \rightarrow \{c_1, c_2, ..., c_K\}
-\]</span> 那么误分类的概率为 <span class="math display">\[
-P(Y\neq f(X)) = 1- P(Y=f(X)) \\
-\Leftrightarrow \frac 1 k \sum _{x_i\in N_k(x)} I(y_i\neq c_j) = 1 - \frac 1 k \sum _{x_i\in N_k(x)} I(y_i= c_j)
-\]</span> ## 3.3 k近邻法的实现：kd树</p>
-<h3 id="构造kd树">构造kd树</h3>
-<p>kd树是二叉树，表示对k维空间的一个划分。</p>
-<p>构造kd树相当于不断地用超平面切分k维空间，构成一系列的k维超矩形区域，kd树的每个节点对应于一个k维超矩形区域。</p>
-<p>构造算法如下</p>
-<ol type="1">
-<li>开始：构造根节点，对应于包含T的k维空间的超矩形区域。
+<h3 id="三要素">三要素</h3>
 <ul>
-<li>选择<span class="math inline">\(x^{(1)}\)</span>为坐标轴，以T中所有实例的<span class="math inline">\(x^{(1)}\)</span>坐标的中位数为切分点，将根节点对应的超矩形区域切分为两个子区域。</li>
-<li>由此生成深度为一的左右子节点，左子节点对应于坐标<span class="math inline">\(x^{(1)}\)</span>小于切分点的子区域。</li>
-</ul></li>
-<li>重复：对深度为j的节点，选择<span class="math inline">\(x^{(l)}\)</span>为切分的坐标轴，其中<span class="math inline">\(l=j(mod k)+1\)</span>，以坐标的中位数为切分点。
-<ul>
-<li>由此生成深度为j+1的左右子节点，左子节点对应于坐标<span class="math inline">\(x^{(l)}\)</span>小于切分点的子区域。</li>
-</ul></li>
-<li>直到两个子区域没有实例存在时停止，形成kd树的区域划分。</li>
-</ol>
-<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png"></p>
-<h3 id="搜索kd树">搜索kd树</h3>
-<p>给定一个目标点，搜索其最近邻，首先找到包含目标点的叶节点。从叶节点出发，依次回退到父节点，不断查找与目标点最邻近的节点。</p>
-<p>给定如图所示的kd树，根节点为A，子节点为B、C等，输入实例点为S，求S的最近邻。</p>
-<ul>
-<li>首先找到包含S的叶结点D，以D作为近似最近邻。</li>
-<li>返回D的父节点B，在B的另一子节点F的区域内搜索。</li>
-<li>继续返回上一级父节点A，在A的另一子节点C的区域内搜索。</li>
-<li>点E比点D更近，成为最近邻。</li>
+<li>模型 model</li>
+<li>策略 strategy</li>
+<li>算法 algorithm</li>
 </ul>
-<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png"></p>
-<h2 id="scikit-learn">Scikit-learn</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">clf_sk = KNeighborsClassifier()</span><br><span class="line">clf_sk.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf_sk.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+<h3 id="步骤">步骤</h3>
+<ul>
+<li>得到一个有限的训练数据集合</li>
+<li>确定所有可能模型的假设空间，即学习模型的集合</li>
+<li>确定模型选择的准则，即学习的策略</li>
+<li>实现求解最优模型的算法，即学习的算法</li>
+<li>通过学习方法选择最优模型</li>
+<li>利用学习的最优模型对新数据进行预测或分析</li>
+</ul>
+<h2 id="监督学习">1.2 监督学习</h2>
+<h3 id="基本概念">基本概念</h3>
+<ul>
+<li>输入空间&amp;输出空间：输入与输出所有可能取值的集合</li>
+<li>特征空间：所有特征向量存在的空间
+<ul>
+<li>每个具体的输入是一个实例，通常由特征向量表示。</li>
+<li>特征控件的每一维对应于每一个特征。</li>
+</ul></li>
+<li>样本：输入与输出对 <span class="math display">\[
+T = \{(x_1, y_1), (x_2, y_2), ..., (x_N, y_N)\}
+\]</span></li>
+<li>回归问题：X与Y均为连续变量</li>
+<li>分类问题：Y为有限个离散变量</li>
+<li>标注问题：X与Y均为变量序列</li>
+</ul>
+<h3 id="统计学习三要素">1.3 统计学习三要素</h3>
+<p><span class="math display">\[
+方法 = 模型+策略+算法
+\]</span></p>
+<h3 id="模型">模型</h3>
+<p>X和Y是定义在输入空间与输出空间上的变量，F通常是由一个参数向量决定的函数组，此时为非概率模型。 <span class="math display">\[
+{\cal F} = \{f|Y = f_\theta(X), \theta\in R^n\}
+\]</span> 假设空间也可以定义为条件概率的集合，此时表示的模型为概率模型。 <span class="math display">\[
+{\cal F} = \{P|P_\theta(Y|X), \theta\in R^n\}
+\]</span></p>
+<h3 id="策略">策略</h3>
+<h4 id="损失函数">损失函数</h4>
+<p>损失函数（loss function）或代价函数（cost function），度量预测错误的程度，是f(X)和Y的非负实值函数，记作L(Y, f(X))。</p>
+<p>常用的损失函数： <span class="math display">\[
+\begin{align}
+0-1: L(Y, f(X)) &amp;=&amp; \begin{cases} 1, Y\neq f(X) \\ 0, Y= f(X) \end{cases} \\
+quadratic: L(Y, f(X)) &amp;=&amp; {(Y - f(X))}^2 \\
+absolute: L(Y, f(X)) &amp;=&amp; |Y - f(X)| \\
+logarithmic: L(Y, f(X)) &amp;=&amp; -logP(Y|X) \\
+\end{align}
+\]</span></p>
+<h4 id="风险函数">风险函数</h4>
+<p>风险函数，表示理论上模型关于联合分布平均意义下的损失。 <span class="math display">\[
+R_{exp}(f) = E_p[L(Y, f(X))] = \int _{x\times y} L(y, f(x))P(x, y)dxdy
+\]</span> 学习的目标是选择期望风险最小的模型，实际上P(X, Y)未知，所以才需要学习。</p>
+<p>经验风险（empirical risk）定义为模型关于训练数据集的平均损失。 <span class="math display">\[
+R_{emp}(f) = \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i))
+\]</span> 现实中训练样本数目有限，用经验风险估计并不理想，所以需要制定策略。</p>
+<h4 id="风险最小化">风险最小化</h4>
+<ul>
+<li>经验风险最小化（ERM）
+<ul>
+<li>极大似然估计</li>
+<li>容易产生过拟合</li>
+</ul></li>
+<li>结构风险最小化（SRM）
+<ul>
+<li>等价于正则化，在经验风险上加上正则化项或罚项</li>
+<li>最大后验概率估计</li>
+</ul></li>
+</ul>
+<h2 id="模型评估与模型选择">1.4 模型评估与模型选择</h2>
+<h3 id="训练误差测试误差">训练误差&amp;测试误差</h3>
+<p>训练误差是模型关于训练集的平均损失 <span class="math display">\[
+R_{emp}(f) = \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i))
+\]</span> 测试误差是模型关于测试集的平均损失 <span class="math display">\[
+R_{test}(f) = \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i))
+\]</span></p>
+<h2 id="正则化与交叉验证">1.5 正则化与交叉验证</h2>
+<h3 id="正则化">正则化</h3>
+<p>正则化是结构风险最小化策略的实现，在经验风险上加一个正则化项或罚项。</p>
+<p>正则化项一般是模型复杂度的单调递增函数，模型越复杂，正则化值越大。 <span class="math display">\[
+\min _{f\in {\cal F}} \frac 1 N \sum _{i=1} ^N L(y_i, f(x_i)) + \lambda J(f)， \lambda \geq 0
+\]</span></p>
+<p><span class="math display">\[
+L1: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \frac \lambda 2 \Vert w\Vert ^2 \\
+L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert
+\]</span></p>
+<blockquote>
+<p>奥卡姆剃刀：在所有可能选择的模型中，能够很好解释已知数据并十分简单才是最好的模型。</p>
+</blockquote>
+<h3 id="交叉验证">交叉验证</h3>
+<ul>
+<li>简单交叉验证
+<ul>
+<li>将数据分为训练集与测试集</li>
+</ul></li>
+<li>S折交叉验证
+<ul>
+<li>首先随机切分数据，分为S个大小相同的不相交子集。</li>
+<li>用S-1个子集的数据训练模型，用余下的测试。</li>
+<li>对S种选择重复进行，选出平均测试误差最小的模型。</li>
+</ul></li>
+<li>留一交叉验证</li>
+</ul>
+<h2 id="泛化能力">1.6 泛化能力</h2>
+<p>泛化能力，是指该方法学习到的模型对未知数据的预测能力。 <span class="math display">\[
+泛化误差 \ \ R_{exp}(\hat f) = E_P[L(Y, \hat f(X))] = \int _{x\times y} L(y, \hat f(x))P(x,y)dxdy
+\]</span></p>
+<h2 id="生成模型与判别模型">1.7 生成模型与判别模型</h2>
+<h2 id="分类问题">1.8 分类问题</h2>
+<h2 id="标注问题">1.9 标注问题</h2>
+<h2 id="回归问题">1.10 回归问题</h2>
 ]]></content>
       <categories>
         <category>统计学习方法</category>
       </categories>
       <tags>
         <tag>机器学习</tag>
-        <tag>KNN</tag>
       </tags>
   </entry>
   <entry>
@@ -4808,6 +4806,78 @@ s.t. \quad&amp; \sum_{i=1}^N\alpha_iy_i=0\\
       </tags>
   </entry>
   <entry>
+    <title>统计学习方法（三）k近邻法</title>
+    <url>/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/</url>
+    <content><![CDATA[<p>k近邻法，是一种基本分类与回归方法。输入为特征向量，输出为类别。</p>
+<a id="more"></a>
+<h2 id="k近邻算法">3.1 k近邻算法</h2>
+<p>给定一个训练集，对新的输入实例，在训练集中找到最邻近的k个实例，将输入实例分为多数类。</p>
+<ul>
+<li>输入：训练数据集T，实例特征向量x。</li>
+<li>输出：实例x所属的类y。</li>
+<li>根据给定的距离度量，在T中找出与x最邻近的k个点。</li>
+<li>在邻域中根据分类决策规则（如多数表决）决定x的类别y。</li>
+<li>k=1时，称为最近邻算法，将与x最邻近点的类作为x的类。</li>
+</ul>
+<h2 id="k近邻模型">3.2 k近邻模型</h2>
+<h3 id="距离度量">距离度量</h3>
+<p><span class="math inline">\(L_p\)</span>距离定义为 <span class="math display">\[
+L_p(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^p)^{\frac 1 p}
+\]</span> p=1时，称为曼哈顿距离 <span class="math display">\[
+L_1(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|)
+\]</span> p=2时，即为欧式距离 <span class="math display">\[
+L_2(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^2)^{\frac 1 2}
+\]</span> p=∞时，称为切比雪夫距离，为各个坐标距离的最大值 <span class="math display">\[
+L_\infty(x_i, x_j) = \max_l |x_i^{(l)}-x_j^{(l)}|
+\]</span> 下图给出了与原点距离为1的图形</p>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/1.png"></p>
+<h3 id="分类决策规则">分类决策规则</h3>
+<p>k近邻法中的分类决策规则往往是多数表决，即由k个临近点的多数类决定输入类。</p>
+<p>如果分类的损失函数为0-1损失函数，分类函数为 <span class="math display">\[
+f: \mathbf R^n \rightarrow \{c_1, c_2, ..., c_K\}
+\]</span> 那么误分类的概率为 <span class="math display">\[
+P(Y\neq f(X)) = 1- P(Y=f(X)) \\
+\Leftrightarrow \frac 1 k \sum _{x_i\in N_k(x)} I(y_i\neq c_j) = 1 - \frac 1 k \sum _{x_i\in N_k(x)} I(y_i= c_j)
+\]</span> ## 3.3 k近邻法的实现：kd树</p>
+<h3 id="构造kd树">构造kd树</h3>
+<p>kd树是二叉树，表示对k维空间的一个划分。</p>
+<p>构造kd树相当于不断地用超平面切分k维空间，构成一系列的k维超矩形区域，kd树的每个节点对应于一个k维超矩形区域。</p>
+<p>构造算法如下</p>
+<ol type="1">
+<li>开始：构造根节点，对应于包含T的k维空间的超矩形区域。
+<ul>
+<li>选择<span class="math inline">\(x^{(1)}\)</span>为坐标轴，以T中所有实例的<span class="math inline">\(x^{(1)}\)</span>坐标的中位数为切分点，将根节点对应的超矩形区域切分为两个子区域。</li>
+<li>由此生成深度为一的左右子节点，左子节点对应于坐标<span class="math inline">\(x^{(1)}\)</span>小于切分点的子区域。</li>
+</ul></li>
+<li>重复：对深度为j的节点，选择<span class="math inline">\(x^{(l)}\)</span>为切分的坐标轴，其中<span class="math inline">\(l=j(mod k)+1\)</span>，以坐标的中位数为切分点。
+<ul>
+<li>由此生成深度为j+1的左右子节点，左子节点对应于坐标<span class="math inline">\(x^{(l)}\)</span>小于切分点的子区域。</li>
+</ul></li>
+<li>直到两个子区域没有实例存在时停止，形成kd树的区域划分。</li>
+</ol>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png"></p>
+<h3 id="搜索kd树">搜索kd树</h3>
+<p>给定一个目标点，搜索其最近邻，首先找到包含目标点的叶节点。从叶节点出发，依次回退到父节点，不断查找与目标点最邻近的节点。</p>
+<p>给定如图所示的kd树，根节点为A，子节点为B、C等，输入实例点为S，求S的最近邻。</p>
+<ul>
+<li>首先找到包含S的叶结点D，以D作为近似最近邻。</li>
+<li>返回D的父节点B，在B的另一子节点F的区域内搜索。</li>
+<li>继续返回上一级父节点A，在A的另一子节点C的区域内搜索。</li>
+<li>点E比点D更近，成为最近邻。</li>
+</ul>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png"></p>
+<h2 id="scikit-learn">Scikit-learn</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">clf_sk = KNeighborsClassifier()</span><br><span class="line">clf_sk.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf_sk.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>统计学习方法</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>KNN</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>统计学习方法（九）EM算法及其推广</title>
     <url>/2020/08/26/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B9%9D%EF%BC%89EM%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E6%8E%A8%E5%B9%BF/</url>
     <content><![CDATA[<p>EM算法是一种迭代算法，用于含隐变量的概率模型参数的极大似然估计，或极大后验概率估计。</p>
@@ -4960,103 +5030,6 @@ Q(\theta,\theta^{(i)})=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\hat\gamma_{jk}
       </tags>
   </entry>
   <entry>
-    <title>统计学习方法（二）感知机</title>
-    <url>/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/</url>
-    <content><![CDATA[<p>感知机，是二分类的线性分类模型。输入为实例的特征向量，输出为±1，旨在求出将训练数据进行线性划分的分离超平面，是神经网络与SVM的基础。</p>
-<a id="more"></a>
-<h2 id="感知机模型">2.1 感知机模型</h2>
-<h3 id="定义">定义</h3>
-<p><span class="math display">\[
-f(x) = sign(w·x + b) \\
-{\cal X} \subset R^n, \quad {\cal Y} = \{-1, +1\}
-\]</span></p>
-<p>其中w和b为感知机模型参数，w称为权值（向量），b称为偏置（bias）。 <span class="math display">\[
-sign(x) = \begin{cases} +1, \quad x\geq 0 \\ -1, \quad x &lt; 0\end{cases}
-\]</span></p>
-<h3 id="几何解释">几何解释</h3>
-<p>线性方程 <span class="math display">\[
-w·x + b = 0
-\]</span> 对应于特征空间中的一个超平面S，w表示超平面的法向量，b为超平面的截距。</p>
-<p><img src="/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/perc1.png"></p>
-<h2 id="感知机学习策略">2.2 感知机学习策略</h2>
-<h3 id="数据集的线性可分性">数据集的线性可分性</h3>
-<p>给定一个数据集，如果存在超平面S，能够将数据集的正实例点和负实例点完全正确划分，则称数据及为线性可分数据集。</p>
-<h4 id="损失函数">损失函数</h4>
-<p>损失函数的一个自然选择是误分类点的总数，但这样不是参数的连续可导函数，不易优化。</p>
-<p>感知机选择的损失函数是误分类点到超平面S的总距离，输入空间任一点到超平面S的距离为 <span class="math display">\[
-\frac 1 {\|w\|} |w·x_0+b|,其中\|w\|为w的L_2范数
-\]</span> 对于误分类的数据来说，始终有 <span class="math display">\[
--y_i(w·x_i+b) &gt; 0
-\]</span> 所以距离为 <span class="math display">\[
-- \frac 1 {\|w\|}y_i(w·x_i+b)
-\]</span> 假设误分类点集合为M，求和即得 <span class="math display">\[
-- \frac 1 {\|w\|}\sum _{x_i\in M}y_i(w·x_i+b)
-\]</span> 不考虑系数，损失函数即为 <span class="math display">\[
-L(w, b) = - \sum _{x_i\in M}y_i(w·x_i+b)
-\]</span> 误分类点越少，损失函数值越小，如果没有误分类点，损失函数值为0。</p>
-<h2 id="感知机学习算法">2.3 感知机学习算法</h2>
-<h3 id="形式化">形式化</h3>
-<p>给定训练集 <span class="math display">\[
-T = \{(x_1, y_1), (x_2, y_2), ... , (x_N, y_N)\} \\
-x_i\in {\cal X} = R^n, y_i \in {\cal Y} = \{-1, +1\}
-\]</span> 求参数w和b，使得损失函数极小化 <span class="math display">\[
-\min_{w,b} L(w,b) = - \sum _{x_i\in M}y_i(w·x_i+b)
-\]</span> 学习算法是误分类驱动的，具体采用随机梯度下降法，首先任意选取一个超平面，之后用梯度下降法不断极小化目标函数。</p>
-<p>损失函数的梯度为 <span class="math display">\[
-\nabla_w L(w,b) = -\sum _{x_i\in M} y_ix_i \\
-\nabla_b L(w,b) = -\sum _{x_i\in M} y_i
-\]</span> 随机选取一个误分类点，对参数进行更新 <span class="math display">\[
-w \leftarrow w + \eta y_ix_i \\
-b \leftarrow b + \eta y_i \\
-\eta \in (0, 1]
-\]</span></p>
-<h3 id="原始形式">原始形式</h3>
-<ol type="1">
-<li><p>选取参数初值<span class="math inline">\(w_0,b_0\)</span>$</p></li>
-<li><p>在训练集中选取数据<span class="math inline">\((x_i, y_i)\)</span>$</p></li>
-<li><p>如果<span class="math inline">\(y_i(wx_i+b)\leq 0\)</span>，则更新参数 <span class="math display">\[
-w \leftarrow w + \eta y_ix_i \\
-b \leftarrow b + \eta y_i
-\]</span></p></li>
-<li><p>转至2直至没有误分类点</p></li>
-</ol>
-<h3 id="收敛性">收敛性</h3>
-<p>(<strong>Novikoff</strong>) 存在满足条件的超平面，且感知机算法的误分类次数k满足不等式 <span class="math display">\[
-k \leq (\frac R \gamma)^2
-\]</span></p>
-<h3 id="对偶形式">对偶形式</h3>
-<p>基本想法是，将w和b表示为实例x与标记y的线性组合，通过求解系数求得w和b。</p>
-<p>最后学习到的w和b可表示为 <span class="math display">\[
-w = \sum _{i=1} ^N \alpha_iy_ix_i \\
-b = \sum _{i=1} ^N \alpha_iy_i
-\]</span> 训练过程</p>
-<ol type="1">
-<li><p>选取α和b为0,</p></li>
-<li><p>在训练集中选取数据</p></li>
-<li><p>若<span class="math inline">\(y_i(\sum _{j=1} ^N \alpha_jy_jx_j\cdot x_i+b)\leq 0\)</span>，则更新参数</p></li>
-</ol>
-<p><span class="math display">\[
-\alpha_i \leftarrow \alpha_i + \eta \\
-b \leftarrow b + \eta y_i
-\]</span></p>
-<ol start="4" type="1">
-<li>转至2直至没有误分类数据</li>
-</ol>
-<blockquote>
-<p>Gram矩阵？</p>
-</blockquote>
-<h2 id="scikit-learn">Scikit-learn</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Perceptron</span><br><span class="line"></span><br><span class="line">clf = Perceptron(fit_intercept=<span class="literal">True</span>,</span><br><span class="line">                 max_iter=<span class="number">1000</span>,</span><br><span class="line">                 shuffle=<span class="literal">True</span>)</span><br><span class="line">clf.fit(X, y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Weights assigned to the features.</span></span><br><span class="line">print(clf.coef_)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Constants in decision function.</span></span><br><span class="line">print(clf.intercept_)</span><br><span class="line"></span><br><span class="line">y_ = -(clf.coef_[<span class="number">0</span>][<span class="number">0</span>]*x_ponits + clf.intercept_)/clf.coef_[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">plt.plot(x_ponits, y_)</span><br><span class="line">plt.plot(x_ponits, y_)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>统计学习方法</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-        <tag>感知机</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>统计学习方法（五）决策树</title>
     <url>/2020/08/15/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%94%EF%BC%89%E5%86%B3%E7%AD%96%E6%A0%91/</url>
     <content><![CDATA[<p>决策树是一种基本的分类与回归方法，在分类问题中，用树形结构表示基于特征对实例进行分类的过程。</p>
@@ -5190,94 +5163,100 @@ g(t) = \frac {C(t) - C(T_t)} {|T_t|-1}
       </tags>
   </entry>
   <entry>
-    <title>统计学习方法（八）提升方法</title>
-    <url>/2020/08/25/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AB%EF%BC%89%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>提升方法，在分类问题中通过改变训练样本的权重，学习多个分类器，并将分类器线性组合，提高分类的性能。</p>
+    <title>统计学习方法（二）感知机</title>
+    <url>/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/</url>
+    <content><![CDATA[<p>感知机，是二分类的线性分类模型。输入为实例的特征向量，输出为±1，旨在求出将训练数据进行线性划分的分离超平面，是神经网络与SVM的基础。</p>
 <a id="more"></a>
-<h2 id="adaboost算法">8.1 AdaBoost算法</h2>
-<p>提升方法的思想是，对于一个复杂任务来说，综合多个专家的判断得出的判断效果更好。</p>
-<ul>
-<li><strong>强可学习</strong>：在概率近似正确学习（PAC）的框架中，一个概念（一个类），如果存在一个多项式的学习算法 能够学习它，并且正确率很高，那么就称这个概念是强可学习的-</li>
-<li><strong>弱可学习</strong>：一个概念，如果存在一个多项式的学习算法能够学习它，学习的正确率仅比随机猜测略好，那么就称这个概念是弱可学习的。</li>
-</ul>
-<p>Schapire后来证明强可学习与弱可学习是等价的，也即在PAC学习的框架下，一个概念是强可学习的充要条件是这个概念是弱可学习的。</p>
-<p>利用这个前提，如果在学习中发现了”弱学习算法“，可以将其提升为”强学习算法“。对于分类问题而言，给定训练集，从弱学习算法出发，反复学习，得到一系列弱分类器，组合这些弱分类器构成一个强分类器。</p>
-<p>给定一个二分类训练集 <span class="math display">\[
-T = \{(x_1,y_1),(x_2,y_2),\cdots,(x_N,y_N)\} \\
-x\in{\cal X}\subset{\mathbb R}^n,\quad y_i\in{\cal Y}=\{-1.+1\}
-\]</span> 初始化训练数据的权值分布 <span class="math display">\[
-D_1=(w_{11},\cdots,w_{1i},\cdots,w_{1N}),\quad w_{1i}=\frac1N,\quad i=1,2,\cdots,N
-\]</span> 使用权值分布为<span class="math inline">\(D_m\)</span>的训练集学习，得到基本分类器 <span class="math display">\[
-G_m(x):{\cal X}\rightarrow\{-1,+1\}
-\]</span> 计算分类器在训练集上的分类误差率 <span class="math display">\[
-e_m=\sum_{i=1}^NP(G_m(x_i)\neq y_i)=\sum_{i=1}^Nw_{mi}I(G_m(x_i)\neq y_i)
-\]</span> 计算分类器的系数，取自然对数 <span class="math display">\[
-\alpha_m=\frac12\log\frac{1-e_m}{e_m}
-\]</span> 更新训练集的权值分布 <span class="math display">\[
-D_{m+1}=(w_{m+1.1},\cdots,w_{m+1,i},\cdots,w_{m+1,N})\\
-w_{m+1,i}=\frac{w_{mi}}{Z_m}\exp(-\alpha_my_iG_m(x_i)),\quad i=1,2,\cdots,N
-\]</span> 其中，<span class="math inline">\(Z_m\)</span>是规范化因子，使得<span class="math inline">\(D_{m+1}\)</span>成为一个概率分布。 <span class="math display">\[
-Z_m = \sum_{i=1}^N{w_{mi}}\exp(-\alpha_my_iG_m(x_i))
-\]</span> 根据基本分类器，构造线性组合，得到最终分类器 <span class="math display">\[
-f(x)=\sum_{m=1}^M\alpha_mG_m(x) \\
-G(x)=sign(f(x))
-\]</span> 计算<span class="math inline">\(G_m(x)\)</span>系数<span class="math inline">\(\alpha_m\)</span>时，<span class="math inline">\(e_m\leq\frac12\)</span>时，<span class="math inline">\(\alpha_m\geq0\)</span>，并且<span class="math inline">\(\alpha_m\)</span>关于<span class="math inline">\(e_m\)</span>递减，所以分类误差率越小的基本分类器，在最终分类器中的作用越大。</p>
-<p>更新权值时，可以写成如下形式： <span class="math display">\[
-\begin{align}
-w_{m+1,i}=\begin{cases}\frac{w_{mi}}{Z_m}e^{-\alpha_m},\quad &amp;G_m(x_i)=y_i\\\frac{w_{mi}}{Z_m}e^{\alpha_m},\quad &amp;G_m(x_i)\neq y_i\end{cases}
-\end{align}
-\]</span> 所以误分类样本的权值得以扩大，在下一轮学习中起更大的作用。不改变训练数据，而不断改变训练数据权值的分布，这是AdaBoost的一个特点。</p>
-<blockquote>
-<p>注意，<span class="math inline">\(\sum\alpha_m\neq1\)</span>$</p>
-</blockquote>
-<h2 id="adaboost算法的训练误差分析">8.2 AdaBoost算法的训练误差分析</h2>
-<p><strong>定理 8.1</strong> AdaBoost算法最终分类器的训练误差界为 <span class="math display">\[
-\frac1N\sum_{i=1}^NI(G(x_i)\neq y_i)\leq\frac1N\sum_i\exp(-y_if(x_i))\neq y_i)=\prod_mZ_m
-\]</span> <strong>定理8.2</strong> 二分类问题中，AdaBoost的训练误差界为 <span class="math display">\[
-\begin{align}
-\prod_{m=1}^MZ_m&amp;=\prod_{m=1}^M[2\sqrt{e_m(1-e_m)}]\\
-&amp;=\prod_{m=1}^M\sqrt{(1-4\gamma_m^2)}\\
-&amp;\leq\exp(-2\sum_{m=1}^M\gamma_m^2)
-\end{align}
-\]</span> 其中，<span class="math inline">\(\gamma_m=\frac12-e_m\)</span>$</p>
-<h2 id="adaboost算法的解释">8.3 AdaBoost算法的解释</h2>
-<h3 id="前向分步算法">前向分步算法</h3>
-<p>考虑加法模型 <span class="math display">\[
-f(x)=\sum_{m=1}^M\beta_mb(x;\gamma_m)
-\]</span> 其中，<span class="math inline">\(b(x;\gamma_m)\)</span>为基函数，<span class="math inline">\(\gamma_m\)</span>为函数的参数。</p>
-<p>给定训练集及损失函数<span class="math inline">\(L(y,f(x))\)</span>的条件下，学习加法模型即为损失函数极小化问题 <span class="math display">\[
-\min_{\beta_m,\gamma_m}\sum_{i=1}^NL(y_i,\sum_{m=1}^M\beta_mb(x_i;\gamma_m))
-\]</span> 通常这是一个复杂的优化问题，前向分步算法的想法是：因为学习的是加法模型，如果能够从前向后，每步只学习一个基函数与系数，逐步逼近，就可以简化复杂度，即每步只考虑优化如下函数 <span class="math display">\[
-\min_{\beta,\gamma}\sum_{i=1}^NL(y_i,\beta b(x_i;\gamma))
+<h2 id="感知机模型">2.1 感知机模型</h2>
+<h3 id="定义">定义</h3>
+<p><span class="math display">\[
+f(x) = sign(w·x + b) \\
+{\cal X} \subset R^n, \quad {\cal Y} = \{-1, +1\}
 \]</span></p>
-<h3 id="前向分步与adaboost">前向分步与AdaBoost</h3>
-<p><strong>定理8.3</strong> AdaBoost是前向分步算法的特例。这时，模型是由基本分类器组成的加法模型，损失函数是指数函数。</p>
-<h2 id="提升树">8.4 提升树</h2>
-<h3 id="提升树模型">提升树模型</h3>
-<p>提升方法实际采用加法模型与前向分步算法，以决策树为基函数的提升方法就称为提升树。</p>
-<p>提升树模型可以表示为决策树的加法模型 <span class="math display">\[
-f_M(x)=\sum_{m=1}^MT(x;\Theta_m)
-\]</span> 其中，<span class="math inline">\(T(x;\Theta_m)\)</span>表示决策树，<span class="math inline">\(M\)</span>表示树的个数。</p>
-<h3 id="提升树算法">提升树算法</h3>
-<p>首先初始化提升树<span class="math inline">\(f_0(x)=0\)</span>，第m步的模型是 <span class="math display">\[
-f_m(x)=f_{m-1}(x)+T(x;\Theta_m)
-\]</span> 通过经验风险最小化确定下一棵决策树的参数 <span class="math display">\[
-\hat\Theta_m=\arg\min_{\Theta_m}\sum_{i=1}^NL(y_i,f_{m-1}(x_i)+T(x_i;\Theta_m))
-\]</span> 对于二分类问题，提升树算法只需要将AdaBoost的基本分类器限制为二类分类树即可，此时的提升树算法是AdaBoost的特殊情况。</p>
-<h3 id="梯度提升">梯度提升</h3>
-<p>对于提升树算法，当损失函数是平方损失和指数损失函数时，每一步优化是很简单的。</p>
-<p>对于一般损失函数，Freidman提出了梯度提升算法，利用损失函数的负梯度值 <span class="math display">\[
--[\frac{\partial L(y,f(x_i))}{\partial f(x_i)}]_{f(x)=f_{m-1}(x)}
-\]</span> 作为回归问题中残差的近似值，拟合回归树。</p>
+<p>其中w和b为感知机模型参数，w称为权值（向量），b称为偏置（bias）。 <span class="math display">\[
+sign(x) = \begin{cases} +1, \quad x\geq 0 \\ -1, \quad x &lt; 0\end{cases}
+\]</span></p>
+<h3 id="几何解释">几何解释</h3>
+<p>线性方程 <span class="math display">\[
+w·x + b = 0
+\]</span> 对应于特征空间中的一个超平面S，w表示超平面的法向量，b为超平面的截距。</p>
+<p><img src="/2020/08/12/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%BA%8C%EF%BC%89%E6%84%9F%E7%9F%A5%E6%9C%BA/perc1.png"></p>
+<h2 id="感知机学习策略">2.2 感知机学习策略</h2>
+<h3 id="数据集的线性可分性">数据集的线性可分性</h3>
+<p>给定一个数据集，如果存在超平面S，能够将数据集的正实例点和负实例点完全正确划分，则称数据及为线性可分数据集。</p>
+<h4 id="损失函数">损失函数</h4>
+<p>损失函数的一个自然选择是误分类点的总数，但这样不是参数的连续可导函数，不易优化。</p>
+<p>感知机选择的损失函数是误分类点到超平面S的总距离，输入空间任一点到超平面S的距离为 <span class="math display">\[
+\frac 1 {\|w\|} |w·x_0+b|,其中\|w\|为w的L_2范数
+\]</span> 对于误分类的数据来说，始终有 <span class="math display">\[
+-y_i(w·x_i+b) &gt; 0
+\]</span> 所以距离为 <span class="math display">\[
+- \frac 1 {\|w\|}y_i(w·x_i+b)
+\]</span> 假设误分类点集合为M，求和即得 <span class="math display">\[
+- \frac 1 {\|w\|}\sum _{x_i\in M}y_i(w·x_i+b)
+\]</span> 不考虑系数，损失函数即为 <span class="math display">\[
+L(w, b) = - \sum _{x_i\in M}y_i(w·x_i+b)
+\]</span> 误分类点越少，损失函数值越小，如果没有误分类点，损失函数值为0。</p>
+<h2 id="感知机学习算法">2.3 感知机学习算法</h2>
+<h3 id="形式化">形式化</h3>
+<p>给定训练集 <span class="math display">\[
+T = \{(x_1, y_1), (x_2, y_2), ... , (x_N, y_N)\} \\
+x_i\in {\cal X} = R^n, y_i \in {\cal Y} = \{-1, +1\}
+\]</span> 求参数w和b，使得损失函数极小化 <span class="math display">\[
+\min_{w,b} L(w,b) = - \sum _{x_i\in M}y_i(w·x_i+b)
+\]</span> 学习算法是误分类驱动的，具体采用随机梯度下降法，首先任意选取一个超平面，之后用梯度下降法不断极小化目标函数。</p>
+<p>损失函数的梯度为 <span class="math display">\[
+\nabla_w L(w,b) = -\sum _{x_i\in M} y_ix_i \\
+\nabla_b L(w,b) = -\sum _{x_i\in M} y_i
+\]</span> 随机选取一个误分类点，对参数进行更新 <span class="math display">\[
+w \leftarrow w + \eta y_ix_i \\
+b \leftarrow b + \eta y_i \\
+\eta \in (0, 1]
+\]</span></p>
+<h3 id="原始形式">原始形式</h3>
+<ol type="1">
+<li><p>选取参数初值<span class="math inline">\(w_0,b_0\)</span>$</p></li>
+<li><p>在训练集中选取数据<span class="math inline">\((x_i, y_i)\)</span>$</p></li>
+<li><p>如果<span class="math inline">\(y_i(wx_i+b)\leq 0\)</span>，则更新参数 <span class="math display">\[
+w \leftarrow w + \eta y_ix_i \\
+b \leftarrow b + \eta y_i
+\]</span></p></li>
+<li><p>转至2直至没有误分类点</p></li>
+</ol>
+<h3 id="收敛性">收敛性</h3>
+<p>(<strong>Novikoff</strong>) 存在满足条件的超平面，且感知机算法的误分类次数k满足不等式 <span class="math display">\[
+k \leq (\frac R \gamma)^2
+\]</span></p>
+<h3 id="对偶形式">对偶形式</h3>
+<p>基本想法是，将w和b表示为实例x与标记y的线性组合，通过求解系数求得w和b。</p>
+<p>最后学习到的w和b可表示为 <span class="math display">\[
+w = \sum _{i=1} ^N \alpha_iy_ix_i \\
+b = \sum _{i=1} ^N \alpha_iy_i
+\]</span> 训练过程</p>
+<ol type="1">
+<li><p>选取α和b为0,</p></li>
+<li><p>在训练集中选取数据</p></li>
+<li><p>若<span class="math inline">\(y_i(\sum _{j=1} ^N \alpha_jy_jx_j\cdot x_i+b)\leq 0\)</span>，则更新参数</p></li>
+</ol>
+<p><span class="math display">\[
+\alpha_i \leftarrow \alpha_i + \eta \\
+b \leftarrow b + \eta y_i
+\]</span></p>
+<ol start="4" type="1">
+<li>转至2直至没有误分类数据</li>
+</ol>
+<blockquote>
+<p>Gram矩阵？</p>
+</blockquote>
 <h2 id="scikit-learn">Scikit-learn</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line"></span><br><span class="line">clf = AdaBoostClassifier(n_estimators=<span class="number">100</span>, learning_rate=<span class="number">0.5</span>)</span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Perceptron</span><br><span class="line"></span><br><span class="line">clf = Perceptron(fit_intercept=<span class="literal">True</span>,</span><br><span class="line">                 max_iter=<span class="number">1000</span>,</span><br><span class="line">                 shuffle=<span class="literal">True</span>)</span><br><span class="line">clf.fit(X, y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Weights assigned to the features.</span></span><br><span class="line">print(clf.coef_)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Constants in decision function.</span></span><br><span class="line">print(clf.intercept_)</span><br><span class="line"></span><br><span class="line">y_ = -(clf.coef_[<span class="number">0</span>][<span class="number">0</span>]*x_ponits + clf.intercept_)/clf.coef_[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">plt.plot(x_ponits, y_)</span><br><span class="line">plt.plot(x_ponits, y_)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>统计学习方法</category>
       </categories>
       <tags>
         <tag>机器学习</tag>
-        <tag>提升方法</tag>
+        <tag>感知机</tag>
       </tags>
   </entry>
   <entry>
@@ -5426,6 +5405,97 @@ f^\#(x,y) = \sum_{i=1}^nf_i(x,y)
       <tags>
         <tag>机器学习</tag>
         <tag>Logistic回归</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>统计学习方法（八）提升方法</title>
+    <url>/2020/08/25/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%AB%EF%BC%89%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>提升方法，在分类问题中通过改变训练样本的权重，学习多个分类器，并将分类器线性组合，提高分类的性能。</p>
+<a id="more"></a>
+<h2 id="adaboost算法">8.1 AdaBoost算法</h2>
+<p>提升方法的思想是，对于一个复杂任务来说，综合多个专家的判断得出的判断效果更好。</p>
+<ul>
+<li><strong>强可学习</strong>：在概率近似正确学习（PAC）的框架中，一个概念（一个类），如果存在一个多项式的学习算法 能够学习它，并且正确率很高，那么就称这个概念是强可学习的-</li>
+<li><strong>弱可学习</strong>：一个概念，如果存在一个多项式的学习算法能够学习它，学习的正确率仅比随机猜测略好，那么就称这个概念是弱可学习的。</li>
+</ul>
+<p>Schapire后来证明强可学习与弱可学习是等价的，也即在PAC学习的框架下，一个概念是强可学习的充要条件是这个概念是弱可学习的。</p>
+<p>利用这个前提，如果在学习中发现了”弱学习算法“，可以将其提升为”强学习算法“。对于分类问题而言，给定训练集，从弱学习算法出发，反复学习，得到一系列弱分类器，组合这些弱分类器构成一个强分类器。</p>
+<p>给定一个二分类训练集 <span class="math display">\[
+T = \{(x_1,y_1),(x_2,y_2),\cdots,(x_N,y_N)\} \\
+x\in{\cal X}\subset{\mathbb R}^n,\quad y_i\in{\cal Y}=\{-1.+1\}
+\]</span> 初始化训练数据的权值分布 <span class="math display">\[
+D_1=(w_{11},\cdots,w_{1i},\cdots,w_{1N}),\quad w_{1i}=\frac1N,\quad i=1,2,\cdots,N
+\]</span> 使用权值分布为<span class="math inline">\(D_m\)</span>的训练集学习，得到基本分类器 <span class="math display">\[
+G_m(x):{\cal X}\rightarrow\{-1,+1\}
+\]</span> 计算分类器在训练集上的分类误差率 <span class="math display">\[
+e_m=\sum_{i=1}^NP(G_m(x_i)\neq y_i)=\sum_{i=1}^Nw_{mi}I(G_m(x_i)\neq y_i)
+\]</span> 计算分类器的系数，取自然对数 <span class="math display">\[
+\alpha_m=\frac12\log\frac{1-e_m}{e_m}
+\]</span> 更新训练集的权值分布 <span class="math display">\[
+D_{m+1}=(w_{m+1.1},\cdots,w_{m+1,i},\cdots,w_{m+1,N})\\
+w_{m+1,i}=\frac{w_{mi}}{Z_m}\exp(-\alpha_my_iG_m(x_i)),\quad i=1,2,\cdots,N
+\]</span> 其中，<span class="math inline">\(Z_m\)</span>是规范化因子，使得<span class="math inline">\(D_{m+1}\)</span>成为一个概率分布。 <span class="math display">\[
+Z_m = \sum_{i=1}^N{w_{mi}}\exp(-\alpha_my_iG_m(x_i))
+\]</span> 根据基本分类器，构造线性组合，得到最终分类器 <span class="math display">\[
+f(x)=\sum_{m=1}^M\alpha_mG_m(x) \\
+G(x)=sign(f(x))
+\]</span> 计算<span class="math inline">\(G_m(x)\)</span>系数<span class="math inline">\(\alpha_m\)</span>时，<span class="math inline">\(e_m\leq\frac12\)</span>时，<span class="math inline">\(\alpha_m\geq0\)</span>，并且<span class="math inline">\(\alpha_m\)</span>关于<span class="math inline">\(e_m\)</span>递减，所以分类误差率越小的基本分类器，在最终分类器中的作用越大。</p>
+<p>更新权值时，可以写成如下形式： <span class="math display">\[
+\begin{align}
+w_{m+1,i}=\begin{cases}\frac{w_{mi}}{Z_m}e^{-\alpha_m},\quad &amp;G_m(x_i)=y_i\\\frac{w_{mi}}{Z_m}e^{\alpha_m},\quad &amp;G_m(x_i)\neq y_i\end{cases}
+\end{align}
+\]</span> 所以误分类样本的权值得以扩大，在下一轮学习中起更大的作用。不改变训练数据，而不断改变训练数据权值的分布，这是AdaBoost的一个特点。</p>
+<blockquote>
+<p>注意，<span class="math inline">\(\sum\alpha_m\neq1\)</span>$</p>
+</blockquote>
+<h2 id="adaboost算法的训练误差分析">8.2 AdaBoost算法的训练误差分析</h2>
+<p><strong>定理 8.1</strong> AdaBoost算法最终分类器的训练误差界为 <span class="math display">\[
+\frac1N\sum_{i=1}^NI(G(x_i)\neq y_i)\leq\frac1N\sum_i\exp(-y_if(x_i))\neq y_i)=\prod_mZ_m
+\]</span> <strong>定理8.2</strong> 二分类问题中，AdaBoost的训练误差界为 <span class="math display">\[
+\begin{align}
+\prod_{m=1}^MZ_m&amp;=\prod_{m=1}^M[2\sqrt{e_m(1-e_m)}]\\
+&amp;=\prod_{m=1}^M\sqrt{(1-4\gamma_m^2)}\\
+&amp;\leq\exp(-2\sum_{m=1}^M\gamma_m^2)
+\end{align}
+\]</span> 其中，<span class="math inline">\(\gamma_m=\frac12-e_m\)</span>$</p>
+<h2 id="adaboost算法的解释">8.3 AdaBoost算法的解释</h2>
+<h3 id="前向分步算法">前向分步算法</h3>
+<p>考虑加法模型 <span class="math display">\[
+f(x)=\sum_{m=1}^M\beta_mb(x;\gamma_m)
+\]</span> 其中，<span class="math inline">\(b(x;\gamma_m)\)</span>为基函数，<span class="math inline">\(\gamma_m\)</span>为函数的参数。</p>
+<p>给定训练集及损失函数<span class="math inline">\(L(y,f(x))\)</span>的条件下，学习加法模型即为损失函数极小化问题 <span class="math display">\[
+\min_{\beta_m,\gamma_m}\sum_{i=1}^NL(y_i,\sum_{m=1}^M\beta_mb(x_i;\gamma_m))
+\]</span> 通常这是一个复杂的优化问题，前向分步算法的想法是：因为学习的是加法模型，如果能够从前向后，每步只学习一个基函数与系数，逐步逼近，就可以简化复杂度，即每步只考虑优化如下函数 <span class="math display">\[
+\min_{\beta,\gamma}\sum_{i=1}^NL(y_i,\beta b(x_i;\gamma))
+\]</span></p>
+<h3 id="前向分步与adaboost">前向分步与AdaBoost</h3>
+<p><strong>定理8.3</strong> AdaBoost是前向分步算法的特例。这时，模型是由基本分类器组成的加法模型，损失函数是指数函数。</p>
+<h2 id="提升树">8.4 提升树</h2>
+<h3 id="提升树模型">提升树模型</h3>
+<p>提升方法实际采用加法模型与前向分步算法，以决策树为基函数的提升方法就称为提升树。</p>
+<p>提升树模型可以表示为决策树的加法模型 <span class="math display">\[
+f_M(x)=\sum_{m=1}^MT(x;\Theta_m)
+\]</span> 其中，<span class="math inline">\(T(x;\Theta_m)\)</span>表示决策树，<span class="math inline">\(M\)</span>表示树的个数。</p>
+<h3 id="提升树算法">提升树算法</h3>
+<p>首先初始化提升树<span class="math inline">\(f_0(x)=0\)</span>，第m步的模型是 <span class="math display">\[
+f_m(x)=f_{m-1}(x)+T(x;\Theta_m)
+\]</span> 通过经验风险最小化确定下一棵决策树的参数 <span class="math display">\[
+\hat\Theta_m=\arg\min_{\Theta_m}\sum_{i=1}^NL(y_i,f_{m-1}(x_i)+T(x_i;\Theta_m))
+\]</span> 对于二分类问题，提升树算法只需要将AdaBoost的基本分类器限制为二类分类树即可，此时的提升树算法是AdaBoost的特殊情况。</p>
+<h3 id="梯度提升">梯度提升</h3>
+<p>对于提升树算法，当损失函数是平方损失和指数损失函数时，每一步优化是很简单的。</p>
+<p>对于一般损失函数，Freidman提出了梯度提升算法，利用损失函数的负梯度值 <span class="math display">\[
+-[\frac{\partial L(y,f(x_i))}{\partial f(x_i)}]_{f(x)=f_{m-1}(x)}
+\]</span> 作为回归问题中残差的近似值，拟合回归树。</p>
+<h2 id="scikit-learn">Scikit-learn</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line"></span><br><span class="line">clf = AdaBoostClassifier(n_estimators=<span class="number">100</span>, learning_rate=<span class="number">0.5</span>)</span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>统计学习方法</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>提升方法</tag>
       </tags>
   </entry>
   <entry>

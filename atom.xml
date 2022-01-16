@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://entropy2333.github.io/"/>
-  <updated>2022-01-15T09:51:26.191Z</updated>
+  <updated>2022-01-16T07:50:18.995Z</updated>
   <id>https://entropy2333.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Enhancing Label Correlation Feedback in Multi-Label Text Classification via Multi-Task Learning</title>
+    <link href="https://entropy2333.github.io/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/"/>
+    <id>https://entropy2333.github.io/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/</id>
+    <published>2022-01-16T06:12:18.000Z</published>
+    <updated>2022-01-16T07:50:18.995Z</updated>
+    
+    <content type="html"><![CDATA[<p>ACL Findings 2021，使用多任务学习加强标签相关性的反馈，设计了标签对共现预测（Pairwise Label Co-occurrence Prediction, PLCP）和条件标签共现预测（Conditional Label Co-occurrence Prediction, CLCP）两个任务。</p><p><img src="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116141322468.png" alt="image-20220116141322468" style="zoom:50%;"></p><a id="more"></a><h2 id="overview">Overview</h2><p><img src="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116141805499.png" alt="image-20220116141805499" style="zoom:50%;"></p><ul><li>paper: <a href="https://arxiv.org/pdf/2106.03103.pdf" class="uri">https://arxiv.org/pdf/2106.03103.pdf</a></li><li>code (tensorflow): <a href="https://github.com/EiraZhang/LACO" class="uri">https://github.com/EiraZhang/LACO</a></li></ul><h2 id="background">Background</h2><p>在多标签文本文类任务中，利用标签相关性的模型可以更好地泛化，有利于建模低频标签。基于Seq2Seq的方法可以有效捕获标签相关性，但也有几点不足：</p><ul><li>依赖预先定义的标签顺序，模型对此十分敏感。</li><li>容易在训练集上过拟合，难以泛化至没有见过的标签组合。</li><li>存在错误传播的问题。</li></ul><p>本文采用多任务学习的框架，基于Transformer引入joint embedding机制。通过self-attention和cross-attention，将文本信息和标签信息深度交互。并设计两个标签共现的预测任务，用于捕获标签之间的相关性。</p><ul><li>标签对共现预测PLCP：通过两两组合，判断标签是否相关，捕获二阶相关性。</li><li>条件标签共现预测CLCP：给定部分相关标签集合，预测其他位置标签的相关性，可以捕获高阶相关性。</li></ul><h2 id="method">Method</h2><h3 id="document-label-joint-embedding-je">Document-Label Joint Embedding (JE)</h3><p>将文本序列和标签序列通过[SEP]拼接作为输入序列，表示为<span class="math inline">\(\{[CLS],x_1,\cdots,x_m,[SEP],y_1,\cdots,y_n,[SEP]\}\)</span>，进入BERT后得到隐层表示<span class="math inline">\(\{h_{[CLS]},h_{x_1},\cdots,h_{x_m},h_{[SEP]},h_{y_1},\cdots,h_{y_n},h_{[SEP]}\}\)</span>。</p><p>联合embedding的方式既兼顾了文本与标签的相关性，也考虑到了标签内部的相关性（但这种方法在标签数目过多时显然不适用）。</p><p>作者还显式地引入了cross-attention计算，称为Document-Label Cross Attention： <span class="math display">\[M = H_DH_Y^T\]</span> 其中<span class="math inline">\(H_D = [h_{x_1},\cdots,h_{x_m}]\)</span>为文本序列的embedding，<span class="math inline">\(H_Y=[h_{y_1},\cdots,h_{y_n}]\)</span>为标签序列的embedding，<span class="math inline">\(M\in\mathbb{R}^{m\times n}\)</span>。对于长为<span class="math inline">\(2r+1\)</span>的文本，<span class="math inline">\(M_{i-r;i+r}\)</span>衡量了标签-短语对的相关性。</p><p>为了提升稀疏正则化的有效性（？？？），作者还使用了CNN，结合max-pooling得到最终的文本表示<span class="math inline">\(\mathop{c}^{\rightarrow}\)</span>。 <span class="math display">\[\mathop{c}^{\rightarrow} = \Omega(M_{i-r;i+r})·H_D\]</span> 对文本表示接全连接层得到预测结果，采用BCE损失函数即可。</p><h3 id="plcp-task">PLCP Task</h3><p>作者将标签集分为<span class="math inline">\(Y^+\)</span>和<span class="math inline">\(Y^-\)</span>两类，<span class="math inline">\(Y^+\)</span>表示相关的标签（共同出现过），<span class="math inline">\(Y^-\)</span>表示不相关的标签。</p><p>标签对一部分从<span class="math inline">\(Y^+\)</span>中挑选，标记为IsCo-occur，另一部分从<span class="math inline">\(Y^+\)</span>和<span class="math inline">\(Y^-\)</span>中挑选，标记为NotCo-occur，比例设为<span class="math inline">\(\gamma\)</span>。将两个标签的embedding拼接<span class="math inline">\([y_i, y_j]\)</span>作为输入，采用交叉熵计算损失。 <span class="math display">\[\mathcal{L}_{plcp} = -[q_{ij}\ln p_{ij} + (1-q_{ij})\ln(1-p_{ij})]\]</span></p><p>构造标签集</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">label_list = example.label.split(<span class="string">&quot; &quot;</span>)</span><br><span class="line">label_ids = _predicate_label_to_id(label_list, label_map)</span><br><span class="line">right_labels = []</span><br><span class="line">wrong_labels = []</span><br><span class="line"><span class="keyword">for</span> label_id <span class="keyword">in</span> range(<span class="number">0</span>,len(label_ids)):</span><br><span class="line">    <span class="keyword">if</span> label_ids[label_id]==<span class="number">1</span>:</span><br><span class="line">        right_labels.append(label_id)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            wrong_labels.append(label_id)</span><br><span class="line"></span><br><span class="line">right_pair = list(itertools.combinations(right_labels, <span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">contrast_dict = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> pair <span class="keyword">in</span> right_pair:</span><br><span class="line">    contrast_dict[pair]=[<span class="number">0</span>,<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,int(len(right_pair)*<span class="number">2</span>)):</span><br><span class="line">        r = random.sample(right_labels,<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">        w =random.sample(wrong_labels,<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">        contrast_dict[(r,w)]=[<span class="number">1</span>,<span class="number">0</span>]</span><br></pre></td></tr></table></figure><p>构造feature并采样</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">feature_list=[]</span><br><span class="line"><span class="keyword">for</span> pair <span class="keyword">in</span> contrast_dict.keys():</span><br><span class="line">    feature = InputFeatures(</span><br><span class="line">      input_ids=input_ids,</span><br><span class="line">      input_mask=input_mask,</span><br><span class="line">      segment_ids=segment_ids,</span><br><span class="line">      token_label_ids=token_label_ids,</span><br><span class="line">      label_ids=label_ids,</span><br><span class="line">      fit_labelspace_positions=fit_labelspace_positions,</span><br><span class="line">      fit_docspace_positions=fit_docspace_positions,</span><br><span class="line">      pair = list(pair),</span><br><span class="line">      pair_target=list(contrast_dict[pair]),</span><br><span class="line">      <span class="comment">#    pair = list([0,1]),</span></span><br><span class="line">      <span class="comment">#    pair_target= list([0,1]),</span></span><br><span class="line">      is_real_example=<span class="literal">True</span>)</span><br><span class="line">    feature_list.append(feature)</span><br><span class="line">a = random.sample(feature_list, <span class="number">1</span>)</span><br></pre></td></tr></table></figure><h3 id="clcp-task">CLCP Task</h3><p>从<span class="math inline">\(Y^+\)</span>中随机采样<span class="math inline">\(s\)</span>个标签，形成<span class="math inline">\(Y^G\)</span>，然后判断剩余的标签是否与其相关。为此引入了一个额外的位置向量<span class="math inline">\(E_Y = [e_{y_1},\cdots,e_{y_n}]\)</span>，<span class="math inline">\(e_{y_i}=0\)</span>就表示标签被采样了，也即<span class="math inline">\(y_i\in Y^G\)</span>，反之则<span class="math inline">\(y_i\in Y-Y^G\)</span>。</p><p>将所有被采样的标签表示做平均得到<span class="math inline">\(h_{y^G}\)</span>，将其拼接到所有未被采样的标签表示，作为输入特征。同样采用交叉熵作为损失函数。 <span class="math display">\[\mathcal{L}_{clcp} = -\sum_{i=1}^{n-s}[q_{i}\ln p_{i} + (1-q_{i})\ln(1-p_{i})]\]</span> 其中<span class="math inline">\(q_i\in\{0,1\}\)</span>表示标签<span class="math inline">\(y_i\)</span>是否与<span class="math inline">\(Y^G\)</span>中的标签共同出现。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">right_mask_labels = random.sample(right_labels,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> num_label <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">54</span>) :</span><br><span class="line">    <span class="keyword">if</span> num_label <span class="keyword">not</span> <span class="keyword">in</span> right_mask_labels:</span><br><span class="line">        fit_labelspace_mask_positions.append(num_label)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        fit_labelspace_given_positions.append(num_label)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> mask_position <span class="keyword">in</span> fit_labelspace_mask_positions:</span><br><span class="line">    <span class="keyword">if</span> mask_position <span class="keyword">in</span> right_labels:</span><br><span class="line">        mask_lm_ids.append(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        mask_lm_ids.append(<span class="number">0</span>)</span><br></pre></td></tr></table></figure><h2 id="experiment">Experiment</h2><p>在AAPD和RCV1-V2上进行了实验，实验设置为bert-base-uncased，batch size为32，最大长度320，学习率为5e-5，<span class="math inline">\(\gamma\)</span>为0.5。</p><p><img src="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116153829791.png" alt="image-20220116153829791" style="zoom:50%;"></p><h3 id="ablation">Ablation</h3><p><img src="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116154505265.png" alt="image-20220116154505265" style="zoom:50%;"></p><p>LACO在低频标签上能够取得更好的性能（提高召回，但准确率可能下降？）。</p><p><img src="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116154644944.png" alt="image-20220116154644944" style="zoom:50%;"></p><p>LACO预测出了更多样的标签组合。</p><p><img src="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116154804271.png" alt="image-20220116154804271" style="zoom:50%;"></p><p>LACO相比于BERT类模型，得益于多任务之间的特征交互，可以获得更快的收敛速度。</p><p><img src="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116154205871.png" alt="image-20220116154205871" style="zoom:50%;"></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;ACL Findings 2021，使用多任务学习加强标签相关性的反馈，设计了标签对共现预测（Pairwise Label Co-occurrence Prediction, PLCP）和条件标签共现预测（Conditional Label Co-occurrence Prediction, CLCP）两个任务。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116141322468.png&quot; alt=&quot;image-20220116141322468&quot; style=&quot;zoom:50%;&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
+    
+    
+      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
+    
+      <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
+    
+      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+  </entry>
   
   <entry>
     <title>ML-Decoder: Scalable and Versatile Classification Head</title>
@@ -36,11 +64,11 @@
       <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
     
     
-      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
-    
       <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
     
   </entry>
   
@@ -481,32 +509,6 @@
     
     
       <category term="CSAPP" scheme="https://entropy2333.github.io/tags/CSAPP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Rethinking Positional Encoding In Language Pre-Training</title>
-    <link href="https://entropy2333.github.io/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/"/>
-    <id>https://entropy2333.github.io/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/</id>
-    <published>2021-04-17T12:55:44.000Z</published>
-    <updated>2021-12-08T13:44:07.996Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417211502265.png" alt="image-20210417211502265" style="zoom:67%;"></p><p>重新思考预训练语言模型中的位置编码（ICLR2021）</p><a id="more"></a><h2 id="overview">Overview</h2><ul><li>arxiv: https://arxiv.org/pdf/2006.15595v4.pdf</li><li>code: https://github.com/guolinke/TUPE</li></ul><h2 id="background">Background</h2><p>Transformer自提出以来，在语言表示学习领域大行其道。在Transformer中，位置编码是模型的关键部分，原始的Transformer使用绝对位置编码，将位置编码与词向量以相加的方式处理。后来还有其他研究者提出相对位置编码，在self-attention模块中加入一些精心设计的偏移项，以编码两个位置之间的距离信息。</p><p>本文主要针对两个问题进行研究</p><ul><li>绝对位置编码与词向量采用相加的方式是否合理，两者是明显异质（heterogenous）的，相加运算可能带来一些冗余的关联信息。</li><li>BERT中采用[CLS]这样一个特殊的token来编码句子的语义信息，但是它的位置却和其他token采用一样的位置编码，这种方式是否合理且有效？</li></ul><p>为了解决这两个问题，本文提出了采用结构位置编码的Transformer（TUPE）。</p><ul><li>将position embedding和word embedding分开计算</li><li>使用一个不同的函数计算[CLS]的语义</li></ul><h2 id="methodology">Methodology</h2><h3 id="解耦word和position的计算">解耦word和position的计算</h3><p><img src="/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417212824320.png" alt="image-20210417212824320" style="zoom: 67%;"></p><p>如上图，改进之处在于分别计算attention后再相加，而不是先相加再计算attention。</p><p>绝对位置编码： <span class="math display">\[\alpha^{Abs}_{ij} = \frac1{\sqrt d}((w_i+p_i)W^{Q})((w_i+p_i)W^{K})^T\]</span> 改进之后，对word和position计算不同的投影矩阵 <span class="math display">\[\alpha_{ij} = \frac1{\sqrt{2d}}(x_i^lW^{Q})(x_j^lW^{K})^T + \frac1{\sqrt{2d}}(p_iU^{Q})(p_jU^{K})^T\]</span> 针对相对位置，只需要添加一个距离项 <span class="math display">\[\alpha_{ij} = \frac1{\sqrt{2d}}(x_i^lW^{Q})(x_j^lW^{K})^T + \frac1{\sqrt{2d}}(p_iU^{Q})(p_jU^{K})^T + b_{j-i}\]</span></p><h3 id="计算cls">计算[CLS]</h3><p>BERT中[CLS]作为输入语句的第一个字符，以捕获整个语句的全局信息。将这样一个特殊token和其他字符相提并论可能并不是一种好的选择，有一些可视化工作表明attention可能会出现只专注局部字符的现象（local concentration）。</p><p>为此，本文作了如下修改</p><p><img src="/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417214551502.png" alt="image-20210417214551502" style="zoom:67%;"></p><p>其中，<span class="math inline">\(\theta_1\)</span>和<span class="math inline">\(\theta_2\)</span>是可学习的参数，计算方式的变化如下图。</p><p><img src="/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417212900647.png" alt="image-20210417212900647" style="zoom:80%;"></p><h2 id="experiment">Experiment</h2><p>TUPE针对绝对和相对位置编码都做了实验，与BERT进行了比较，采用了GLUE数据集。</p><p><img src="/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417215306237.png" alt="image-20210417215306237" style="zoom: 67%;"></p><p><img src="/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417215048814.png" alt="image-20210417215048814" style="zoom:67%;"></p><blockquote><p>-A表示绝对位置编码，-R表示相对位置编码。</p></blockquote><p>总体来看，在GLUE上取得了更好的成绩，不过计算量相比之下多了30%（因为多算了一次attention）。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;img src=&quot;/2021/04/17/Rethinking-Positional-Encoding-In-Language-Pre-Training/image-20210417211502265.png&quot; alt=&quot;image-20210417211502265&quot; style=&quot;zoom:67%;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;重新思考预训练语言模型中的位置编码（ICLR2021）&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
-    
-    
-      <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
-    
-      <category term="BERT" scheme="https://entropy2333.github.io/tags/BERT/"/>
     
   </entry>
   
