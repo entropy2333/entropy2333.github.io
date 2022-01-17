@@ -50,9 +50,9 @@ M = H_DH_Y^T
 $$
 其中$H_D = [h_{x_1},\cdots,h_{x_m}]$为文本序列的embedding，$H_Y=[h_{y_1},\cdots,h_{y_n}]$为标签序列的embedding，$M\in\mathbb{R}^{m\times n}$。对于长为$2r+1$的文本，$M_{i-r;i+r}$衡量了标签-短语对的相关性。
 
-为了提升稀疏正则化的有效性（？？？），作者还使用了CNN，结合max-pooling得到最终的文本表示$\mathop{c}^{\rightarrow}$。
+为了提升稀疏正则化的有效性（？？？），作者还使用了CNN，结合max-pooling得到最终的文本表示$\vec{c}$。
 $$
-\mathop{c}^{\rightarrow} = \Omega(M_{i-r;i+r})·H_D
+\vec{c} = \Omega(M_{i-r;i+r})·H_D
 $$
 对文本表示接全连接层得到预测结果，采用BCE损失函数即可。
 
