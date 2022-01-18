@@ -3,7 +3,7 @@ title: Rethinking Positional Encoding In Language Pre-Training
 date: 2021-04-17 20:55:44
 tags:
 - NLP
-- BERT
+- Transformer
 category:
 - Paper
 ---

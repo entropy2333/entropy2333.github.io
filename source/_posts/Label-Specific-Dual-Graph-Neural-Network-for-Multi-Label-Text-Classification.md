@@ -3,7 +3,8 @@ title: 'Label-Specific Dual Graph Neural Network for Multi-Label Text Classifica
 date: 2021-08-23 10:10:01
 tags:
 - NLP
-- MLTC
+- Multi-Label
+- GNN
 category:
 - Paper
 ---

@@ -3,6 +3,7 @@ title: Do Transformers Really Perform Bad for Graph Representation?
 date: 2021-06-20 13:39:37
 tags:
 - Transformer
+- GNN
 category:
 - Paper
 ---

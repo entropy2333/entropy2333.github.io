@@ -4,8 +4,8 @@ title: >-
   Classification
 date: 2021-11-23 13:46:57
 tags:
-- T5
-- HTC
+- Transformer
+- Multi-Label
 category:
 - Paper
 ---

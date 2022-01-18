@@ -2,7 +2,7 @@
 title: 'Query2Label: A Simple Transformer Way to Multi-Label Classification'
 date: 2021-10-10 11:25:22
 tags:
-- NLP
+- CV
 - Multi-Label
 - Transformer
 category:

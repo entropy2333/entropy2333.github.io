@@ -3,7 +3,7 @@ title: 'Lawformer: A Pre-trained Language Model for Chinese Legal Long Documents
 date: 2021-08-25 15:02:46
 tags:
 - NLP
-- PLM
+- Transformer
 category:
 - Paper
 ---

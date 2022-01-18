@@ -3,7 +3,7 @@ title: Lattice-BERT
 date: 2021-04-16 15:28:11
 tags:
 - NLP
-- BERT
+- Transformer
 category:
 - Paper
 ---

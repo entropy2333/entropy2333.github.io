@@ -3,7 +3,7 @@ title: Entity Enhanced BERT Pre-training for Chinese NER
 date: 2021-04-22 19:16:55
 tags:
 - NLP
-- BERT
+- Transformer
 - NER
 category:
 - Paper
