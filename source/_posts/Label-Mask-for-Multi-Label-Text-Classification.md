@@ -20,7 +20,7 @@ category:
 <img src="Label-Mask-for-Multi-Label-Text-Classification/image-20220118125611230.png" alt="image-20220118125611230" style="zoom:33%;" />
 
 - paper: <https://arxiv.org/pdf/2106.10076.pdf>
-- code:
+- code: <https://github.com/DunZhang/LM-MLC>
 
 ## Background
 
@@ -36,7 +36,7 @@ $$
 [LS-2][No-2][LE-2] \\
 [LS-3][MASK-3][LE-3]
 $$
-其中$LS$代表标签开始，$LE$代表标签结束。
+其中$LS$代表标签开始，$LE$代表标签结束。若$N$表示标签数，那么最终的输入序列长度为$3N+L$，。
 
 模型训练主要有两个目标：
 
