@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://entropy2333.github.io/"/>
-  <updated>2022-01-23T06:58:39.673Z</updated>
+  <updated>2022-01-25T06:53:15.546Z</updated>
   <id>https://entropy2333.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Balancing Methods for Multi-label Text Classification with Long-Tailed Class Distribution</title>
+    <link href="https://entropy2333.github.io/2022/01/25/Balancing-Methods-for-Multi-label-Text-Classification-with-Long-Tailed-Class-Distribution/"/>
+    <id>https://entropy2333.github.io/2022/01/25/Balancing-Methods-for-Multi-label-Text-Classification-with-Long-Tailed-Class-Distribution/</id>
+    <published>2022-01-25T06:06:28.000Z</published>
+    <updated>2022-01-25T06:53:15.546Z</updated>
+    
+    <content type="html"><![CDATA[<p>EMNLP 2021，损失函数大杂烩。</p><a id="more"></a><h2 id="overview">Overview</h2><p><img src="/2022/01/25/Balancing-Methods-for-Multi-label-Text-Classification-with-Long-Tailed-Class-Distribution/image-20220125140829255.png" alt="image-20220125140829255" style="zoom: 33%;"></p><ul><li>paper: <a href="https://aclanthology.org/2021.emnlp-main.643.pdf" class="uri">https://aclanthology.org/2021.emnlp-main.643.pdf</a></li><li>code: <a href="https://github.com/Roche/BalancedLossNLP" class="uri">https://github.com/Roche/BalancedLossNLP</a></li></ul><h2 id="background">Background</h2><p>多标签分类通常面对长尾分布的问题，只有一小部分标签频繁出现，大部分标签的样本都很少。</p><p>本文介绍了多标签分类中的一些平衡损失函数，在Reuters-21578和PubMed上进行了实验。</p><h2 id="method">Method</h2><h3 id="binary-cross-entropy-bce">Binary Cross Entropy (BCE)</h3><p>BCE是最基础的损失函数，其中<span class="math inline">\(p_i^k = \sigma(z_i^k)\)</span>。 <span class="math display">\[L_{BCE} = \begin{cases}-\log(p_i^k) &amp; \text{if}\ y_i^k = 1 \\-\log(1-p_i^k) &amp; \text{otherwise}\end{cases}\]</span></p><h3 id="focal-loss-fl">Focal Loss (FL)</h3><p>Focal Loss由恺明大神提出，在更难分类的样本上增加了损失权重。 <span class="math display">\[L_{FL} = \begin{cases}-(1-p_i^k)^\gamma\log(p_i^k) &amp; \text{if}\ y_i^k = 1 \\-(p_i^k)^\gamma\log(1-p_i^k) &amp; \text{otherwise}\end{cases}\]</span></p><h3 id="class-balanced-focal-loss-cb">Class-Balanced focal loss (CB)</h3><p>类别平衡的损失函数对Focal Loss进一步加权，以捕获数据的边际递减效应，减少了头部样本的冗余信息。</p><p>对于每个标签，出现频率为<span class="math inline">\(n_i\)</span>，则有平衡项 <span class="math display">\[r_{CB} = \frac{1-\beta}{1-\beta^{n_i}}\]</span> 其中<span class="math inline">\(\beta\in[0,1)\)</span>，控制了有效样本的增长速度。 <span class="math display">\[L_{FL} = \begin{cases}-r_{CB}(1-p_i^k)^\gamma\log(p_i^k) &amp; \text{if}\ y_i^k = 1 \\-r_{CB}(p_i^k)^\gamma\log(1-p_i^k) &amp; \text{otherwise}\end{cases}\]</span></p><h3 id="distribution-balanced-loss-db">Distribution-Balanced loss (DB)</h3><p>通过整合再平衡权重以及negative tolerant regularization（NTR），分布平衡函数减少了标签共现的冗余信息，并且对“容易分类的”样本分配较低的权重</p><p>首先，为了重新平衡权重，在单标签的情况下，一个样本可以通过重采样概率<span class="math inline">\(P_i^C=\frac1C\frac1{n_i}\)</span> 来加权，但是在多标签的情况下，如果采用同样的策略<span class="math inline">\(P^I = \frac1C\sum_{y_i^k}\frac1{n_i}\)</span>，样本会被过采样。</p><p>因此，需要引入权重归一化<span class="math inline">\(r_{DB} = P_i^C/P^I\)</span>，可以采用平滑函数<span class="math inline">\(\hat{r}_{DB} = \alpha+\sigma(\beta\times(r_{DB}-\mu))\)</span>，将<span class="math inline">\(r_{DB}\)</span>映射到区间<span class="math inline">\([\alpha,\alpha+1]\)</span>，从而重平衡的Focal Loss定义如下。 <span class="math display">\[L_{R-FL} = \begin{cases}-\hat{r}_{DB}(1-p_i^k)^\gamma\log(p_i^k) &amp; \text{if}\ y_i^k = 1 \\-\hat{r}_{DB}(p_i^k)^\gamma\log(1-p_i^k) &amp; \text{otherwise}\end{cases}\]</span> NTR机制将正负样本区别对待，引入了一个缩放因子<span class="math inline">\(\lambda\)</span>和一个内在的类别偏差，以降低尾部类别的门限，避免过度抑制。 <span class="math display">\[L_{NTR-FL} = \begin{cases}-(1-q_i^k)^\gamma\log(q_i^k) &amp; \text{if}\ y_i^k = 1 \\-\frac1\lambda(q_i^k)^\gamma\log(1-q_i^k) &amp; \text{otherwise}\end{cases}\]</span> 其中对于正例<span class="math inline">\(q_i^k=\sigma(z_i^k-v_i)\)</span>，对于负例<span class="math inline">\(q_i^k=\sigma(\lambda(z_i^k-v_i))\)</span>。<span class="math inline">\(v_i\)</span>可以在训练开始时最小化损失函数估计，缩放因子为<span class="math inline">\(\kappa\)</span>，类别先验为<span class="math inline">\(p_i=n_i/N\)</span>。 <span class="math display">\[\hat{b}_i = -\log(\frac1{p_i}-1),v_i=-\kappa\times\hat{b}_i\]</span> 从而最终的损失函数为 <span class="math display">\[L_{DB} = \begin{cases}-\hat{r}_{DB}(1-q_i^k)^\gamma\log(q_i^k) &amp; \text{if}\ y_i^k = 1 \\-\hat{r}_{DB}\frac1\lambda(q_i^k)^\gamma\log(1-q_i^k) &amp; \text{otherwise}\end{cases}\]</span></p><h2 id="experiment">Experiment</h2><p>选取Reuters-21578和PubMed数据集，采用SVM（？？？）作为baseline。</p><p>直接使用了transformers中的BertForSequenceClassification，Reuters-21578选用了bert-base-cased，PubMed使用了biobert-base-cased。最大长度512，batch size为32。</p><p><img src="/2022/01/25/Balancing-Methods-for-Multi-label-Text-Classification-with-Long-Tailed-Class-Distribution/image-20220125144343060.png" alt="image-20220125144343060" style="zoom:50%;"></p><p><img src="/2022/01/25/Balancing-Methods-for-Multi-label-Text-Classification-with-Long-Tailed-Class-Distribution/image-20220125144324460.png" alt="image-20220125144324460" style="zoom:50%;"></p><p><img src="/2022/01/25/Balancing-Methods-for-Multi-label-Text-Classification-with-Long-Tailed-Class-Distribution/image-20220125144905312.png" alt="image-20220125144905312" style="zoom:50%;"></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;EMNLP 2021，损失函数大杂烩。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
+    
+    
+      <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
+    
+      <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
+    
+      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+  </entry>
   
   <entry>
     <title>Transformer-based Dual Relation Graph for Multi-label Image Recognition</title>
@@ -36,11 +63,11 @@
       <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
     
     
-      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
+      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
       <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
-      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
     
   </entry>
   
@@ -92,11 +119,11 @@
       <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
     
     
-      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
-    
       <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
     
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
   </entry>
   
@@ -120,11 +147,11 @@
       <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
     
     
-      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
-    
       <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
     
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
   </entry>
   
@@ -148,11 +175,11 @@
       <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
     
     
-      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
+      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
       <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
-      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
     
   </entry>
   
@@ -248,9 +275,9 @@
       <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
     
     
-      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
-    
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
   </entry>
   
@@ -347,11 +374,11 @@
       <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
     
     
-      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
+      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
       <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
-      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
     
   </entry>
   
@@ -375,9 +402,9 @@
       <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
     
     
-      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
-    
       <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
+    
+      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
   </entry>
   
@@ -401,11 +428,11 @@
       <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
     
     
-      <category term="GNN" scheme="https://entropy2333.github.io/tags/GNN/"/>
-    
       <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
     
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+      <category term="GNN" scheme="https://entropy2333.github.io/tags/GNN/"/>
     
   </entry>
   
@@ -490,29 +517,6 @@
     <id>https://entropy2333.github.io/2021/04/26/CSAPP-Chap6-%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84/</id>
     <published>2021-04-26T13:26:27.000Z</published>
     <updated>2022-01-23T06:58:39.505Z</updated>
-    
-    <content type="html"><![CDATA[]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        
-
-      
-    
-    </summary>
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>CSAPP Chap5: 优化程序性能</title>
-    <link href="https://entropy2333.github.io/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/"/>
-    <id>https://entropy2333.github.io/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/</id>
-    <published>2021-04-26T13:25:58.000Z</published>
-    <updated>2022-01-23T06:58:39.504Z</updated>
     
     <content type="html"><![CDATA[]]></content>
     
