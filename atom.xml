@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://entropy2333.github.io/"/>
-  <updated>2022-01-25T06:53:15.546Z</updated>
+  <updated>2022-01-27T12:19:45.243Z</updated>
   <id>https://entropy2333.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>A novel reasoning mechanism for multi-label text classification</title>
+    <link href="https://entropy2333.github.io/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/"/>
+    <id>https://entropy2333.github.io/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/</id>
+    <published>2022-01-27T04:37:03.000Z</published>
+    <updated>2022-01-27T12:19:45.243Z</updated>
+    
+    <content type="html"><![CDATA[<p>Information Processing and Management 2021（CCF-B）</p><p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133117985.png" alt="image-20220127133117985" style="zoom:50%;"></p><a id="more"></a><h2 id="overview">Overview</h2><p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127125300482.png" alt="image-20220127125300482" style="zoom:50%;"></p><ul><li>paper: <a href="https://www.sciencedirect.com/science/article/pii/S0306457320309341" class="uri">https://www.sciencedirect.com/science/article/pii/S0306457320309341</a></li><li>code:</li></ul><h2 id="background">Background</h2><p>多标签分类中，考虑标签内部的相关性非常有必要。自SGM等工作开始，许多人采用Seq2Seq的方法处理MLC问题。但是这种方法依赖于标签的顺序，为此本文提出了Multi-Label Reasoner（ML-Reasoner）的方法，为每个标签单独二分类以满足标签本质上的无序性。</p><p>为了利用标签相关性，作者设计了一种新颖的迭代式推理机制，将先前预测的标签概率作为推理时的额外特征。</p><h2 id="method">Method</h2><p>数据集<span class="math inline">\(D=\{(x_i,y_i)\}_{i=1}^N\)</span>，样本<span class="math inline">\(x_i = \{w_1,\cdots,w_p,\cdots,w_n\}\)</span>。推理的迭代算法如下所示。</p><p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133330467.png" alt="image-20220127133330467" style="zoom:50%;"></p><p>通过将前一轮所有标签的预测结果作为下一轮的额外输入，在迭代轮次中传递了标签信息，使得ML-Reasoner可以捕获标签相关性。相比之下CC或SGM等方法，只利用了部分的标签信息。</p><p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133936519.png" alt="image-20220127133936519" style="zoom:50%;"></p><p>Reasoner模块有点像Transformer的Decoder部分，分别对text和label进行embedding，并计算attention后分类。</p><p>作者这里使用的是TextCNN提取文本特征<span class="math inline">\(\vec{x}\in\mathbb{R^{D_2}}\)</span>，并接一个全连接层得到<span class="math inline">\(\vec{x}_{\text{encoded}}\in\mathbb{R^{D_3}}\)</span>。对文本和标签特征计算注意力权重： <span class="math display">\[\begin{align}s_j &amp;= W_2\left[\vec{x}_{\text{encoded}};\vec{l}_{j_{\text{encoded}}}\right] + b_2 \\\alpha_j &amp;= \frac{\exp(s_j)}{\sum_{i=1}^k\exp(s_i)} \\\vec{l}_{\text{attention}} &amp;= \sum_{j=1}^k\alpha_j\vec{l}_{j_{\text{encoded}}} \in \mathbb{R}^{D_4}\end{align}\]</span> 从而得到组合特征 <span class="math display">\[\vec{x}_{\text{combined}} = [\vec{x}_{\text{encoded}};\vec{l}_{\text{attention}}] \in\mathbb{R}^{D_3+D_4}\]</span> 然后使用全连接+sigmoid分类即可，采用BCE Loss。</p><h2 id="experiment">Experiment</h2><p>选择AAPD和RCV1-V2数据集。</p><p>使用了AllenNLP库实现，BERT选用bert-base-uncased，学习率5e-5。基线ML-Reasoner采用GLove 300维初始化，label embedding为300维随机初始化，采用Adamax优化器，学习率2e-3。</p><p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127135231895.png" alt="image-20220127135231895" style="zoom:50%;"></p><p>实验结果上，相比BERT有2%以上的提升。</p><p>作者也验证了标签顺序对于模型性能没有影响。</p><p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127140128405.png" alt="image-20220127140128405" style="zoom:50%;"></p><p>作者探讨了迭代轮次的影响，<span class="math inline">\(T=2\)</span>时最佳。</p><p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127135745941.png" alt="image-20220127135745941" style="zoom:50%;"></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Information Processing and Management 2021（CCF-B）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133117985.png&quot; alt=&quot;image-20220127133117985&quot; style=&quot;zoom:50%;&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
+    
+    
+      <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
+    
+      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+  </entry>
   
   <entry>
     <title>Balancing Methods for Multi-label Text Classification with Long-Tailed Class Distribution</title>
@@ -37,9 +63,9 @@
     
       <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
     
-      <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
-    
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+      <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
     
   </entry>
   
@@ -65,9 +91,9 @@
     
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
-      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
-    
       <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
+    
+      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
   </entry>
   
@@ -177,9 +203,9 @@
     
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
-      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
-    
       <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
+    
+      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
   </entry>
   
@@ -376,9 +402,9 @@
     
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
-      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
-    
       <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
+    
+      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
   </entry>
   
@@ -493,29 +519,6 @@
     <link href="https://entropy2333.github.io/2021/04/26/CSAPP-Chap7-%E9%93%BE%E6%8E%A5/"/>
     <id>https://entropy2333.github.io/2021/04/26/CSAPP-Chap7-%E9%93%BE%E6%8E%A5/</id>
     <published>2021-04-26T13:26:46.000Z</published>
-    <updated>2022-01-23T06:58:39.505Z</updated>
-    
-    <content type="html"><![CDATA[]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        
-
-      
-    
-    </summary>
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>CSAPP Chap6: 存储器层次结构</title>
-    <link href="https://entropy2333.github.io/2021/04/26/CSAPP-Chap6-%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84/"/>
-    <id>https://entropy2333.github.io/2021/04/26/CSAPP-Chap6-%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84/</id>
-    <published>2021-04-26T13:26:27.000Z</published>
     <updated>2022-01-23T06:58:39.505Z</updated>
     
     <content type="html"><![CDATA[]]></content>
