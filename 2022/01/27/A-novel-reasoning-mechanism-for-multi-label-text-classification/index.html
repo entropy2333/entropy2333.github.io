@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://entropy2333.github.io/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127140128405.png">
 <meta property="og:image" content="https://entropy2333.github.io/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127135745941.png">
 <meta property="article:published_time" content="2022-01-27T04:37:03.000Z">
-<meta property="article:modified_time" content="2022-01-27T12:19:45.243Z">
+<meta property="article:modified_time" content="2022-01-28T04:53:18.481Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="NLP">
 <meta property="article:tag" content="Multi-Label">
@@ -308,7 +308,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>1.6k</span>
     </span>
 </div>
 
@@ -334,10 +334,15 @@
 <h2 id="method">Method</h2>
 <p>数据集<span class="math inline">\(D=\{(x_i,y_i)\}_{i=1}^N\)</span>，样本<span class="math inline">\(x_i = \{w_1,\cdots,w_p,\cdots,w_n\}\)</span>。推理的迭代算法如下所示。</p>
 <p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133330467.png" alt="image-20220127133330467" style="zoom:50%;"></p>
-<p>通过将前一轮所有标签的预测结果作为下一轮的额外输入，在迭代轮次中传递了标签信息，使得ML-Reasoner可以捕获标签相关性。相比之下CC或SGM等方法，只利用了部分的标签信息。</p>
+<p>通过将前一轮所有标签的预测结果<span class="math inline">\(z_{t-1} = (z_{t-1,1}\cdots,z_{t-1,k})\)</span>作为下一轮的额外输入（看作权重），在迭代轮次中传递了标签信息，使得ML-Reasoner可以捕获标签相关性。相比之下CC或SGM等方法，只利用了部分的标签信息。</p>
 <p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133936519.png" alt="image-20220127133936519" style="zoom:50%;"></p>
 <p>Reasoner模块有点像Transformer的Decoder部分，分别对text和label进行embedding，并计算attention后分类。</p>
-<p>作者这里使用的是TextCNN提取文本特征<span class="math inline">\(\vec{x}\in\mathbb{R^{D_2}}\)</span>，并接一个全连接层得到<span class="math inline">\(\vec{x}_{\text{encoded}}\in\mathbb{R^{D_3}}\)</span>。对文本和标签特征计算注意力权重： <span class="math display">\[
+<p>层间传递时，将上一轮的概率看作权重，对label embedding加权。 <span class="math display">\[
+\begin{align}
+\vec{l}_j &amp;= \text{LabelEmbedding}(l_j)\in\mathbb{R}^{D_4} \\
+\vec{l}_{j_{\text{encoded}}} &amp;= z_{t-1,j}\vec{l}_j\in\mathbb{R}^{D_4}
+\end{align}
+\]</span> 作者这里使用的是TextCNN提取文本特征<span class="math inline">\(\vec{x}\in\mathbb{R^{D_2}}\)</span>，并接一个全连接层得到<span class="math inline">\(\vec{x}_{\text{encoded}}\in\mathbb{R^{D_3}}\)</span>。对文本和标签特征计算注意力权重： <span class="math display">\[
 \begin{align}
 s_j &amp;= W_2\left[\vec{x}_{\text{encoded}};\vec{l}_{j_{\text{encoded}}}\right] + b_2 \\
 \alpha_j &amp;= \frac{\exp(s_j)}{\sum_{i=1}^k\exp(s_i)} \\
