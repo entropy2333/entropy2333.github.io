@@ -1,6 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>A novel reasoning mechanism for multi-label text classification</title>
+    <url>/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/</url>
+    <content><![CDATA[<p>Information Processing and Management 2021（CCF-B）</p>
+<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133117985.png" alt="image-20220127133117985" style="zoom:50%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127125300482.png" alt="image-20220127125300482" style="zoom:50%;"></p>
+<ul>
+<li>paper: <a href="https://www.sciencedirect.com/science/article/pii/S0306457320309341" class="uri">https://www.sciencedirect.com/science/article/pii/S0306457320309341</a></li>
+<li>code:</li>
+</ul>
+<h2 id="background">Background</h2>
+<p>多标签分类中，考虑标签内部的相关性非常有必要。自SGM等工作开始，许多人采用Seq2Seq的方法处理MLC问题。但是这种方法依赖于标签的顺序，为此本文提出了Multi-Label Reasoner（ML-Reasoner）的方法，为每个标签单独二分类以满足标签本质上的无序性。</p>
+<p>为了利用标签相关性，作者设计了一种新颖的迭代式推理机制，将先前预测的标签概率作为推理时的额外特征。</p>
+<h2 id="method">Method</h2>
+<p>数据集<span class="math inline">\(D=\{(x_i,y_i)\}_{i=1}^N\)</span>，样本<span class="math inline">\(x_i = \{w_1,\cdots,w_p,\cdots,w_n\}\)</span>。推理的迭代算法如下所示。</p>
+<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133330467.png" alt="image-20220127133330467" style="zoom:50%;"></p>
+<p>通过将前一轮所有标签的预测结果<span class="math inline">\(z_{t-1} = (z_{t-1,1}\cdots,z_{t-1,k})\)</span>作为下一轮的额外输入（看作权重），在迭代轮次中传递了标签信息，使得ML-Reasoner可以捕获标签相关性。相比之下CC或SGM等方法，只利用了部分的标签信息。</p>
+<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133936519.png" alt="image-20220127133936519" style="zoom:50%;"></p>
+<p>Reasoner模块有点像Transformer的Decoder部分，分别对text和label进行embedding，并计算attention后分类。</p>
+<p>层间传递时，将上一轮的概率看作权重，对label embedding加权。 <span class="math display">\[
+\begin{align}
+\vec{l}_j &amp;= \text{LabelEmbedding}(l_j)\in\mathbb{R}^{D_4} \\
+\vec{l}_{j_{\text{encoded}}} &amp;= z_{t-1,j}\vec{l}_j\in\mathbb{R}^{D_4}
+\end{align}
+\]</span> 作者这里使用的是TextCNN提取文本特征<span class="math inline">\(\vec{x}\in\mathbb{R^{D_2}}\)</span>，并接一个全连接层得到<span class="math inline">\(\vec{x}_{\text{encoded}}\in\mathbb{R^{D_3}}\)</span>。对文本和标签特征计算注意力权重： <span class="math display">\[
+\begin{align}
+s_j &amp;= W_2\left[\vec{x}_{\text{encoded}};\vec{l}_{j_{\text{encoded}}}\right] + b_2 \\
+\alpha_j &amp;= \frac{\exp(s_j)}{\sum_{i=1}^k\exp(s_i)} \\
+\vec{l}_{\text{attention}} &amp;= \sum_{j=1}^k\alpha_j\vec{l}_{j_{\text{encoded}}} \in \mathbb{R}^{D_4}
+\end{align}
+\]</span> 从而得到组合特征 <span class="math display">\[
+\vec{x}_{\text{combined}} = [\vec{x}_{\text{encoded}};\vec{l}_{\text{attention}}] \in\mathbb{R}^{D_3+D_4}
+\]</span> 然后使用全连接+sigmoid分类即可，采用BCE Loss。</p>
+<h2 id="experiment">Experiment</h2>
+<p>选择AAPD和RCV1-V2数据集。</p>
+<p>使用了AllenNLP库实现，BERT选用bert-base-uncased，学习率5e-5。基线ML-Reasoner采用GLove 300维初始化，label embedding为300维随机初始化，采用Adamax优化器，学习率2e-3。</p>
+<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127135231895.png" alt="image-20220127135231895" style="zoom:50%;"></p>
+<p>实验结果上，相比BERT有2%以上的提升。</p>
+<p>作者也验证了标签顺序对于模型性能没有影响。</p>
+<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127140128405.png" alt="image-20220127140128405" style="zoom:50%;"></p>
+<p>作者探讨了迭代轮次的影响，<span class="math inline">\(T=2\)</span>时最佳。</p>
+<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127135745941.png" alt="image-20220127135745941" style="zoom:50%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>Multi-Label</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Balancing Methods for Multi-label Text Classification with Long-Tailed Class Distribution</title>
     <url>/2022/01/25/Balancing-Methods-for-Multi-label-Text-Classification-with-Long-Tailed-Class-Distribution/</url>
     <content><![CDATA[<p>EMNLP 2021，损失函数大杂烩。</p>
@@ -72,61 +125,8 @@ L_{DB} = \begin{cases}
       </categories>
       <tags>
         <tag>NLP</tag>
+        <tag>Multi-Label</tag>
         <tag>Loss</tag>
-        <tag>Multi-Label</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>A novel reasoning mechanism for multi-label text classification</title>
-    <url>/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/</url>
-    <content><![CDATA[<p>Information Processing and Management 2021（CCF-B）</p>
-<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133117985.png" alt="image-20220127133117985" style="zoom:50%;"></p>
-<a id="more"></a>
-<h2 id="overview">Overview</h2>
-<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127125300482.png" alt="image-20220127125300482" style="zoom:50%;"></p>
-<ul>
-<li>paper: <a href="https://www.sciencedirect.com/science/article/pii/S0306457320309341" class="uri">https://www.sciencedirect.com/science/article/pii/S0306457320309341</a></li>
-<li>code:</li>
-</ul>
-<h2 id="background">Background</h2>
-<p>多标签分类中，考虑标签内部的相关性非常有必要。自SGM等工作开始，许多人采用Seq2Seq的方法处理MLC问题。但是这种方法依赖于标签的顺序，为此本文提出了Multi-Label Reasoner（ML-Reasoner）的方法，为每个标签单独二分类以满足标签本质上的无序性。</p>
-<p>为了利用标签相关性，作者设计了一种新颖的迭代式推理机制，将先前预测的标签概率作为推理时的额外特征。</p>
-<h2 id="method">Method</h2>
-<p>数据集<span class="math inline">\(D=\{(x_i,y_i)\}_{i=1}^N\)</span>，样本<span class="math inline">\(x_i = \{w_1,\cdots,w_p,\cdots,w_n\}\)</span>。推理的迭代算法如下所示。</p>
-<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133330467.png" alt="image-20220127133330467" style="zoom:50%;"></p>
-<p>通过将前一轮所有标签的预测结果<span class="math inline">\(z_{t-1} = (z_{t-1,1}\cdots,z_{t-1,k})\)</span>作为下一轮的额外输入（看作权重），在迭代轮次中传递了标签信息，使得ML-Reasoner可以捕获标签相关性。相比之下CC或SGM等方法，只利用了部分的标签信息。</p>
-<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133936519.png" alt="image-20220127133936519" style="zoom:50%;"></p>
-<p>Reasoner模块有点像Transformer的Decoder部分，分别对text和label进行embedding，并计算attention后分类。</p>
-<p>层间传递时，将上一轮的概率看作权重，对label embedding加权。 <span class="math display">\[
-\begin{align}
-\vec{l}_j &amp;= \text{LabelEmbedding}(l_j)\in\mathbb{R}^{D_4} \\
-\vec{l}_{j_{\text{encoded}}} &amp;= z_{t-1,j}\vec{l}_j\in\mathbb{R}^{D_4}
-\end{align}
-\]</span> 作者这里使用的是TextCNN提取文本特征<span class="math inline">\(\vec{x}\in\mathbb{R^{D_2}}\)</span>，并接一个全连接层得到<span class="math inline">\(\vec{x}_{\text{encoded}}\in\mathbb{R^{D_3}}\)</span>。对文本和标签特征计算注意力权重： <span class="math display">\[
-\begin{align}
-s_j &amp;= W_2\left[\vec{x}_{\text{encoded}};\vec{l}_{j_{\text{encoded}}}\right] + b_2 \\
-\alpha_j &amp;= \frac{\exp(s_j)}{\sum_{i=1}^k\exp(s_i)} \\
-\vec{l}_{\text{attention}} &amp;= \sum_{j=1}^k\alpha_j\vec{l}_{j_{\text{encoded}}} \in \mathbb{R}^{D_4}
-\end{align}
-\]</span> 从而得到组合特征 <span class="math display">\[
-\vec{x}_{\text{combined}} = [\vec{x}_{\text{encoded}};\vec{l}_{\text{attention}}] \in\mathbb{R}^{D_3+D_4}
-\]</span> 然后使用全连接+sigmoid分类即可，采用BCE Loss。</p>
-<h2 id="experiment">Experiment</h2>
-<p>选择AAPD和RCV1-V2数据集。</p>
-<p>使用了AllenNLP库实现，BERT选用bert-base-uncased，学习率5e-5。基线ML-Reasoner采用GLove 300维初始化，label embedding为300维随机初始化，采用Adamax优化器，学习率2e-3。</p>
-<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127135231895.png" alt="image-20220127135231895" style="zoom:50%;"></p>
-<p>实验结果上，相比BERT有2%以上的提升。</p>
-<p>作者也验证了标签顺序对于模型性能没有影响。</p>
-<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127140128405.png" alt="image-20220127140128405" style="zoom:50%;"></p>
-<p>作者探讨了迭代轮次的影响，<span class="math inline">\(T=2\)</span>时最佳。</p>
-<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127135745941.png" alt="image-20220127135745941" style="zoom:50%;"></p>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>Multi-Label</tag>
       </tags>
   </entry>
   <entry>
@@ -666,24 +666,6 @@ s_j &amp;= W_2\left[\vec{x}_{\text{encoded}};\vec{l}_{j_{\text{encoded}}}\right]
       </tags>
   </entry>
   <entry>
-    <title>CSAPP Chap6: 存储器层次结构</title>
-    <url>/2021/04/26/CSAPP-Chap6-%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
-    <title>CSAPP Chap5: 优化程序性能</title>
-    <url>/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
-    <title>CSAPP Chap7: 链接</title>
-    <url>/2021/04/26/CSAPP-Chap7-%E9%93%BE%E6%8E%A5/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>C++ Primer Chapter 3 字符串、向量和数组</title>
     <url>/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/</url>
     <content><![CDATA[<p>介绍标准库string和vector，以及迭代器和数组的使用。</p>
@@ -838,6 +820,18 @@ s_j &amp;= W_2\left[\vec{x}_{\text{encoded}};\vec{l}_{j_{\text{encoded}}}\right]
       </tags>
   </entry>
   <entry>
+    <title>CSAPP Chap5: 优化程序性能</title>
+    <url>/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>CSAPP Chap7: 链接</title>
+    <url>/2021/04/26/CSAPP-Chap7-%E9%93%BE%E6%8E%A5/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
     <title>CV入门（一）安装detectron2</title>
     <url>/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/</url>
     <content><![CDATA[<p>在windows 10系统上安装detectron2。</p>
@@ -987,6 +981,65 @@ A_{ij} = \frac{(h_iW_Q)(h_jW_K)^T}{\sqrt{d}}+b_{\phi(v_i,v_j)} + c_{ij}
       <tags>
         <tag>Transformer</tag>
         <tag>GNN</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CSAPP Chap6: 存储器层次结构</title>
+    <url>/2021/04/26/CSAPP-Chap6-%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>Entity Enhanced BERT Pre-training for Chinese NER</title>
+    <url>/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/</url>
+    <content><![CDATA[<p>张岳老师的文章，关注如何更充分利用实体信息以增强预训练语言模型在中文NER上的表现（EMNLP 2020）。</p>
+<p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422192212061.png" alt="image-20210422192212061" style="zoom:80%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<ul>
+<li>arxiv: https://www.aclweb.org/anthology/2020.emnlp-main.518.pdf</li>
+<li>code: 暂无</li>
+</ul>
+<h2 id="background">Background</h2>
+<p>在中文NER中引入词典已经被证明是一个有效的方法，但是将实体信息融入BERT这类预训练模型的研究还很少。</p>
+<p>论文首先基于互信息的计算，用新词发现策略来识别文档中的entity；然后设计了char-entity自注意力机制来捕捉中文字与实体之间的关系，将字符隐层状态和实体向量组合。</p>
+<h2 id="methodology">Methodology</h2>
+<h3 id="new-word-discovery">New-Word Discovery</h3>
+<p>采用了<a href="https://svn.spraakdata.gu.se/repos/gerlof/pub/www/Docs/npmi-pfd.pdf">Bouma（2009）</a>提出的方法，用互信息计算，不予赘述。</p>
+<h3 id="char-entity-transformer">Char-Entity-Transformer</h3>
+<p>经典的Transformer计算Q、K、V三个矩阵 <span class="math display">\[
+\{Q^l,K^l,V^l\} = \{h^{l-1}W_q^l,h^{l-1}W_k^l,h^{l-1}W_v^l\} \\
+Atten(Q^l,K^l,V^l) = {\rm softmax}(\frac{Q^l {K^l}^T}{\sqrt{d_k}})
+\]</span> 本文也是先对给定的字符序列<span class="math inline">\({\mathcal C} = \{c_1,\dots,c_T\}\)</span>，给定词典<span class="math inline">\(\mathcal E_{ent}\)</span>，匹配得到对应的实体序列<span class="math inline">\(\mathcal E = \{e_1,\dots,e_T\}\)</span>。</p>
+<p>给定<span class="math inline">\((l-1)\)</span>层的隐层状态<span class="math inline">\(\{h_1^{l-1},\dots,h_T^{l-1}\}\)</span>，QKV的计算如下 <span class="math display">\[
+\begin{align}
+q_t^l &amp;= h_t^{l-1}W_{h,q}^l; \\
+k_t^l &amp;= \begin{cases}{
+            {h_t^{l-1}}^T W_{h,k}^l}\quad &amp;{\rm if}\space e_t = 0,\\
+            \frac12({h_t^{l-1}}^T W_{h,k}^l + E_{ent}^T[e_t]W_{e,k}^l)\quad &amp;else;
+         \end{cases} \\
+v_t^l &amp;= \begin{cases}
+            {h_t^{l-1}}^T W_{h,v}^l\quad &amp;{\rm if}\space e_t = 0,\\
+            \frac12({h_t^{l-1}}^T W_{h,v}^l + E_{ent}^T[e_t]W_{e,v}^l)\quad &amp;else;
+         \end{cases}
+\end{align}
+\]</span> 其中<span class="math inline">\(E_{ent}\)</span>表示实体embedding，<span class="math inline">\(W\)</span>表示可学习的参数。</p>
+<p>如果字符没有匹配到实体，那么计算退化为原始的self-attention。</p>
+<h3 id="ner任务">NER任务</h3>
+<p>针对NER任务，模型使用softmax解码，采用BIO标注方式。</p>
+<h2 id="experiment">Experiment</h2>
+<p>论文的实验使用了一个公开数据集CLUENER-2020，和两个自己标注的数据集。</p>
+<p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422200804396.png" alt="image-20210422200804396" style="zoom:67%;"></p>
+<p>本文还和ERNIE（百度）、Lattice进行了比较，采用的词典和ERNIE一样。</p>
+<p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422200849220.png" alt="image-20210422200849220" style="zoom: 67%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>Transformer</tag>
+        <tag>NER</tag>
       </tags>
   </entry>
   <entry>
@@ -1148,59 +1201,6 @@ NYT和WOS的实验结果
       <tags>
         <tag>Multi-Label</tag>
         <tag>Transformer</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Entity Enhanced BERT Pre-training for Chinese NER</title>
-    <url>/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/</url>
-    <content><![CDATA[<p>张岳老师的文章，关注如何更充分利用实体信息以增强预训练语言模型在中文NER上的表现（EMNLP 2020）。</p>
-<p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422192212061.png" alt="image-20210422192212061" style="zoom:80%;"></p>
-<a id="more"></a>
-<h2 id="overview">Overview</h2>
-<ul>
-<li>arxiv: https://www.aclweb.org/anthology/2020.emnlp-main.518.pdf</li>
-<li>code: 暂无</li>
-</ul>
-<h2 id="background">Background</h2>
-<p>在中文NER中引入词典已经被证明是一个有效的方法，但是将实体信息融入BERT这类预训练模型的研究还很少。</p>
-<p>论文首先基于互信息的计算，用新词发现策略来识别文档中的entity；然后设计了char-entity自注意力机制来捕捉中文字与实体之间的关系，将字符隐层状态和实体向量组合。</p>
-<h2 id="methodology">Methodology</h2>
-<h3 id="new-word-discovery">New-Word Discovery</h3>
-<p>采用了<a href="https://svn.spraakdata.gu.se/repos/gerlof/pub/www/Docs/npmi-pfd.pdf">Bouma（2009）</a>提出的方法，用互信息计算，不予赘述。</p>
-<h3 id="char-entity-transformer">Char-Entity-Transformer</h3>
-<p>经典的Transformer计算Q、K、V三个矩阵 <span class="math display">\[
-\{Q^l,K^l,V^l\} = \{h^{l-1}W_q^l,h^{l-1}W_k^l,h^{l-1}W_v^l\} \\
-Atten(Q^l,K^l,V^l) = {\rm softmax}(\frac{Q^l {K^l}^T}{\sqrt{d_k}})
-\]</span> 本文也是先对给定的字符序列<span class="math inline">\({\mathcal C} = \{c_1,\dots,c_T\}\)</span>，给定词典<span class="math inline">\(\mathcal E_{ent}\)</span>，匹配得到对应的实体序列<span class="math inline">\(\mathcal E = \{e_1,\dots,e_T\}\)</span>。</p>
-<p>给定<span class="math inline">\((l-1)\)</span>层的隐层状态<span class="math inline">\(\{h_1^{l-1},\dots,h_T^{l-1}\}\)</span>，QKV的计算如下 <span class="math display">\[
-\begin{align}
-q_t^l &amp;= h_t^{l-1}W_{h,q}^l; \\
-k_t^l &amp;= \begin{cases}{
-            {h_t^{l-1}}^T W_{h,k}^l}\quad &amp;{\rm if}\space e_t = 0,\\
-            \frac12({h_t^{l-1}}^T W_{h,k}^l + E_{ent}^T[e_t]W_{e,k}^l)\quad &amp;else;
-         \end{cases} \\
-v_t^l &amp;= \begin{cases}
-            {h_t^{l-1}}^T W_{h,v}^l\quad &amp;{\rm if}\space e_t = 0,\\
-            \frac12({h_t^{l-1}}^T W_{h,v}^l + E_{ent}^T[e_t]W_{e,v}^l)\quad &amp;else;
-         \end{cases}
-\end{align}
-\]</span> 其中<span class="math inline">\(E_{ent}\)</span>表示实体embedding，<span class="math inline">\(W\)</span>表示可学习的参数。</p>
-<p>如果字符没有匹配到实体，那么计算退化为原始的self-attention。</p>
-<h3 id="ner任务">NER任务</h3>
-<p>针对NER任务，模型使用softmax解码，采用BIO标注方式。</p>
-<h2 id="experiment">Experiment</h2>
-<p>论文的实验使用了一个公开数据集CLUENER-2020，和两个自己标注的数据集。</p>
-<p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422200804396.png" alt="image-20210422200804396" style="zoom:67%;"></p>
-<p>本文还和ERNIE（百度）、Lattice进行了比较，采用的词典和ERNIE一样。</p>
-<p><img src="/2021/04/22/Entity-Enhanced-BERT-Pre-training-for-Chinese-NER/image-20210422200849220.png" alt="image-20210422200849220" style="zoom: 67%;"></p>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>Transformer</tag>
-        <tag>NER</tag>
       </tags>
   </entry>
   <entry>
@@ -2895,6 +2895,49 @@ D_{PK_B}(E_{SK_B}(X)) = D_{SK_B}(E_{PK_B}(X)) = X
       </tags>
   </entry>
   <entry>
+    <title>K-BERT: Enabling Language Representation with Knowledge Graph</title>
+    <url>/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/</url>
+    <content><![CDATA[<p>介绍K-BERT模型（AAAI 2020）</p>
+<a id="more"></a>
+<h2 id="概述">概述</h2>
+<ul>
+<li>arxiv：https://arxiv.org/abs/1909.07606v1</li>
+<li>code：https://github.com/autoliuweijie/K-BERT</li>
+</ul>
+<h2 id="细节">细节</h2>
+<p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003741712.png" alt="image-20210225003741712" style="zoom:67%;"></p>
+<p>具体来说，算法分为以下几步。</p>
+<ul>
+<li>预先准备KG，建立查找表（关键词表）。</li>
+<li>对于给定的输入文本，利用工具分词（pkuseg）。</li>
+<li>将分词得到的结果去表中查询，得到对应的实体。</li>
+<li>计算实体位置，得到位置编码，也即论文中的soft-position index。</li>
+<li>计算可见矩阵，控制每个词受哪些词影响（如Cook不会被Beijing关联的China影响）。</li>
+</ul>
+<figure>
+<img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"><figcaption aria-hidden="true">image-20210225003844098</figcaption>
+</figure>
+<p>K-BERT并不算预训练模型，嵌入层依旧是使用的BERT模型，应该算基于BERT的fine-tuning网络，可以用于分类和序列标注。同时，K-BERT也可以加载其他BERT类模型，如ERNIE、RoBERTa等。</p>
+<p>创新点在于使用可见矩阵控制了Self-Attention的计算（如下图）。</p>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225005229317.png" alt="image-20210225005229317" style="zoom: 67%;"></p>
+<h2 id="不足">不足</h2>
+<ul>
+<li>模型的鲁棒性受限于知识图谱的质量，取自于开放领域图谱中的信息，其实BERT通过大语料学习也能获得，可以考虑特定领域的知识。</li>
+<li>关联的三元组没有筛选，一词多义会引入错误的实体关联。</li>
+<li>对于非知识驱动的任务，引入知识反而会效果下降。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>KG</tag>
+        <tag>AAAI</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Label Mask for Multi-Label Text Classification</title>
     <url>/2022/01/18/Label-Mask-for-Multi-Label-Text-Classification/</url>
     <content><![CDATA[<p>采用Prompt方法做多标签分类，使用MLM提升模型的泛化性。</p>
@@ -2945,103 +2988,6 @@ D_{PK_B}(E_{SK_B}(X)) = D_{SK_B}(E_{PK_B}(X)) = X
         <tag>NLP</tag>
         <tag>Multi-Label</tag>
         <tag>Prompt</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>K-BERT: Enabling Language Representation with Knowledge Graph</title>
-    <url>/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/</url>
-    <content><![CDATA[<p>介绍K-BERT模型（AAAI 2020）</p>
-<a id="more"></a>
-<h2 id="概述">概述</h2>
-<ul>
-<li>arxiv：https://arxiv.org/abs/1909.07606v1</li>
-<li>code：https://github.com/autoliuweijie/K-BERT</li>
-</ul>
-<h2 id="细节">细节</h2>
-<p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
-<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003741712.png" alt="image-20210225003741712" style="zoom:67%;"></p>
-<p>具体来说，算法分为以下几步。</p>
-<ul>
-<li>预先准备KG，建立查找表（关键词表）。</li>
-<li>对于给定的输入文本，利用工具分词（pkuseg）。</li>
-<li>将分词得到的结果去表中查询，得到对应的实体。</li>
-<li>计算实体位置，得到位置编码，也即论文中的soft-position index。</li>
-<li>计算可见矩阵，控制每个词受哪些词影响（如Cook不会被Beijing关联的China影响）。</li>
-</ul>
-<figure>
-<img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"><figcaption aria-hidden="true">image-20210225003844098</figcaption>
-</figure>
-<p>K-BERT并不算预训练模型，嵌入层依旧是使用的BERT模型，应该算基于BERT的fine-tuning网络，可以用于分类和序列标注。同时，K-BERT也可以加载其他BERT类模型，如ERNIE、RoBERTa等。</p>
-<p>创新点在于使用可见矩阵控制了Self-Attention的计算（如下图）。</p>
-<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225005229317.png" alt="image-20210225005229317" style="zoom: 67%;"></p>
-<h2 id="不足">不足</h2>
-<ul>
-<li>模型的鲁棒性受限于知识图谱的质量，取自于开放领域图谱中的信息，其实BERT通过大语料学习也能获得，可以考虑特定领域的知识。</li>
-<li>关联的三元组没有筛选，一词多义会引入错误的实体关联。</li>
-<li>对于非知识驱动的任务，引入知识反而会效果下降。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>KG</tag>
-        <tag>AAAI</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Label-Specific Dual Graph Neural Network for Multi-Label Text Classification</title>
-    <url>/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/</url>
-    <content><![CDATA[<p>ACL2021，来自中国科学院大学。提出LDGN，融入类别信息，基于label occurrence和dynamic reconstruction使用GCN建模。</p>
-<p><img src="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823103052567.png" alt="image-20210823103052567" style="zoom:67%;"></p>
-<a id="more"></a>
-<h2 id="overview">Overview</h2>
-<ul>
-<li>pdf: https://aclanthology.org/2021.acl-long.298.pdf</li>
-</ul>
-<p>多标签文本分类（MLTC）有许多应用，如情感分析、网页标注等，但如何处理标签之间的复杂关系是一个困难的问题。</p>
-<p>现有方法主要关注建模增强的文本表示和标签依赖关系，这些模型考虑了标签的结构和语义信息，但不能很好地处理相似标签。作者提出他们忽略了标签和文本的关联，使得从不同标签学得的文本表示是相同的。</p>
-<p>最近有一些工作使用attention机制探索标签的语义联系，学习label-specific文本表示。在此基础上，可以进一步探索label-specific components之间的语义交互，这可以利用一些统计信息，比如使用类别间的统计互信息建立标签共现图，但统计信息也有不足之处。</p>
-<ul>
-<li>训练数据中的共现特征是不完整并且带有噪声的</li>
-<li>对于少样本的标签可能会有bias</li>
-<li>形成长尾分布，导致过拟合</li>
-</ul>
-<h2 id="model">Model</h2>
-<p>模型可以分为两部分：label-specific文本表示和用于语义交互学习的dual graph neural network。</p>
-<h3 id="label-specific-document-representation">Label-specific Document Representation</h3>
-<p>文章使用BiLSTM作为编码器，得到文本表示，采用随机初始化的label表示计算attention score。 <span class="math display">\[
-\begin{align}
-\alpha_{i,j} &amp;= \frac{\exp(\mathbf{h_jc_i^T})}{\sum_{j}\exp(\mathbf{h_jc_i^T})} \\
-\mathbf{u_i} &amp;= \sum_j{\alpha_{i, j}\mathbf{h_j}}
-\end{align}
-\]</span></p>
-<h3 id="dual-graph-neural-network">Dual Graph Neural Network</h3>
-<p>基于label co-occurrence的先验，建立label graph，随后采用一个两层的GCN进行学习。</p>
-<p>具体而言，对训练集中的所有标签对计算概率，得到转移矩阵<span class="math inline">\(\mathbf{A}^s\in R^{|C|\times|C|}\)</span>，其中<span class="math inline">\(\mathbf{A}^s_{ij}\)</span>表示样本属于第j类时，属于第i类的概率。</p>
-<p>GCN以<span class="math inline">\(\mathbf{U}\in R^{|C|\times D}\)</span>作为输入，输出<span class="math inline">\(\mathbf{H}^2\in R^{|C|\times D&#39;}\)</span>。</p>
-<p>label graph基于训练集建立，可能带有噪声并形成长尾分布，本文采用了re-learning的方法处理这个问题。</p>
-<p>采用1×1卷积和点积，得到动态重建之后的图。 <span class="math display">\[
-\mathbf{A}^D=f((\mathbf{W}_a*\mathbf{H}^2)^{\mathbf{T}}(\mathbf{W}_b*\mathbf{H}^2))
-\]</span> 其中激活函数采用sigmoid，随后归一化得到最终的邻接矩阵<span class="math inline">\(\hat{\mathbf{A}}^D\)</span>，再用一个两层的GCN学习，得到<span class="math inline">\(\mathbf{H}^4\in R^{|C|\times D&#39;}\)</span>。</p>
-<h3 id="multi-label-text-classification">Multi-label Text Classification</h3>
-<p>将两次GCN学习的节点表示拼接，作为最终的节点表示，送入全连接层中分类，采用BCE Loss。 <span class="math display">\[
-\mathbf{H^O = [H^2,H^4]} \\
-\hat{y} = \sigma(\mathbf{W_1H^O})
-\]</span></p>
-<h2 id="experiment">Experiment</h2>
-<p>刷新SOTA。</p>
-<p><img src="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823110708702.png" alt="image-20210823110708702" style="zoom: 50%;"></p>
-<p><img src="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823110727630.png" alt="image-20210823110727630" style="zoom: 50%;"></p>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>Multi-Label</tag>
-        <tag>GNN</tag>
       </tags>
   </entry>
   <entry>
@@ -3097,6 +3043,60 @@ b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{e
       <tags>
         <tag>NLP</tag>
         <tag>Transformer</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Label-Specific Dual Graph Neural Network for Multi-Label Text Classification</title>
+    <url>/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/</url>
+    <content><![CDATA[<p>ACL2021，来自中国科学院大学。提出LDGN，融入类别信息，基于label occurrence和dynamic reconstruction使用GCN建模。</p>
+<p><img src="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823103052567.png" alt="image-20210823103052567" style="zoom:67%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<ul>
+<li>pdf: https://aclanthology.org/2021.acl-long.298.pdf</li>
+</ul>
+<p>多标签文本分类（MLTC）有许多应用，如情感分析、网页标注等，但如何处理标签之间的复杂关系是一个困难的问题。</p>
+<p>现有方法主要关注建模增强的文本表示和标签依赖关系，这些模型考虑了标签的结构和语义信息，但不能很好地处理相似标签。作者提出他们忽略了标签和文本的关联，使得从不同标签学得的文本表示是相同的。</p>
+<p>最近有一些工作使用attention机制探索标签的语义联系，学习label-specific文本表示。在此基础上，可以进一步探索label-specific components之间的语义交互，这可以利用一些统计信息，比如使用类别间的统计互信息建立标签共现图，但统计信息也有不足之处。</p>
+<ul>
+<li>训练数据中的共现特征是不完整并且带有噪声的</li>
+<li>对于少样本的标签可能会有bias</li>
+<li>形成长尾分布，导致过拟合</li>
+</ul>
+<h2 id="model">Model</h2>
+<p>模型可以分为两部分：label-specific文本表示和用于语义交互学习的dual graph neural network。</p>
+<h3 id="label-specific-document-representation">Label-specific Document Representation</h3>
+<p>文章使用BiLSTM作为编码器，得到文本表示，采用随机初始化的label表示计算attention score。 <span class="math display">\[
+\begin{align}
+\alpha_{i,j} &amp;= \frac{\exp(\mathbf{h_jc_i^T})}{\sum_{j}\exp(\mathbf{h_jc_i^T})} \\
+\mathbf{u_i} &amp;= \sum_j{\alpha_{i, j}\mathbf{h_j}}
+\end{align}
+\]</span></p>
+<h3 id="dual-graph-neural-network">Dual Graph Neural Network</h3>
+<p>基于label co-occurrence的先验，建立label graph，随后采用一个两层的GCN进行学习。</p>
+<p>具体而言，对训练集中的所有标签对计算概率，得到转移矩阵<span class="math inline">\(\mathbf{A}^s\in R^{|C|\times|C|}\)</span>，其中<span class="math inline">\(\mathbf{A}^s_{ij}\)</span>表示样本属于第j类时，属于第i类的概率。</p>
+<p>GCN以<span class="math inline">\(\mathbf{U}\in R^{|C|\times D}\)</span>作为输入，输出<span class="math inline">\(\mathbf{H}^2\in R^{|C|\times D&#39;}\)</span>。</p>
+<p>label graph基于训练集建立，可能带有噪声并形成长尾分布，本文采用了re-learning的方法处理这个问题。</p>
+<p>采用1×1卷积和点积，得到动态重建之后的图。 <span class="math display">\[
+\mathbf{A}^D=f((\mathbf{W}_a*\mathbf{H}^2)^{\mathbf{T}}(\mathbf{W}_b*\mathbf{H}^2))
+\]</span> 其中激活函数采用sigmoid，随后归一化得到最终的邻接矩阵<span class="math inline">\(\hat{\mathbf{A}}^D\)</span>，再用一个两层的GCN学习，得到<span class="math inline">\(\mathbf{H}^4\in R^{|C|\times D&#39;}\)</span>。</p>
+<h3 id="multi-label-text-classification">Multi-label Text Classification</h3>
+<p>将两次GCN学习的节点表示拼接，作为最终的节点表示，送入全连接层中分类，采用BCE Loss。 <span class="math display">\[
+\mathbf{H^O = [H^2,H^4]} \\
+\hat{y} = \sigma(\mathbf{W_1H^O})
+\]</span></p>
+<h2 id="experiment">Experiment</h2>
+<p>刷新SOTA。</p>
+<p><img src="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823110708702.png" alt="image-20210823110708702" style="zoom: 50%;"></p>
+<p><img src="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/image-20210823110727630.png" alt="image-20210823110727630" style="zoom: 50%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>Multi-Label</tag>
+        <tag>GNN</tag>
       </tags>
   </entry>
   <entry>
@@ -3327,6 +3327,58 @@ g
       </tags>
   </entry>
   <entry>
+    <title>Perceiver: General Perception with Iterative Attention</title>
+    <url>/2022/02/02/Perceiver-General-Perception-with-Iterative-Attention/</url>
+    <content><![CDATA[<p>ICML 2021，来自DeepMind，目前大多数模型只能处理单模态，本文提出基于Transformer的Perceiver模型，适用于各种各样的输入，不需要过多的特定假设。模型利用非对称的注意力机制，将输入迭代地提取到一个很小的隐藏bottleneck，从而可以处理非常大的输入。</p>
+<p><img src="/2022/02/02/Perceiver-General-Perception-with-Iterative-Attention/image-20220202153941841.png" alt="image-20220202153941841" style="zoom: 50%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/02/02/Perceiver-General-Perception-with-Iterative-Attention/image-20220202153253240.png" alt="image-20220202153253240" style="zoom:50%;"></p>
+<ul>
+<li>paper: <a href="https://arxiv.org/pdf/2103.03206v2.pdf" class="uri">https://arxiv.org/pdf/2103.03206v2.pdf</a></li>
+<li>code:
+<ul>
+<li>official: https://github.com/deepmind/deepmind-research/tree/master/perceiver</li>
+<li><a href="https://github.com/lucidrains/perceiver-pytorch" class="uri">https://github.com/lucidrains/perceiver-pytorch</a></li>
+</ul></li>
+</ul>
+<h2 id="background">Background</h2>
+<p>归纳偏置（Inductive bias）例如早期CV里的空间局部性，是非常有价值的。但随着大规模数据集越来越多，依然在模型中选择类似的偏置未必正确。</p>
+<p>此外，大多数模型都只能处理特定模态。随着输入形式的改变，我们总得重新设计模型。</p>
+<p>本文提出的Perceiver，旨在使用Transformer架构处理任意不同模态。Transformer不需要很多输入的假设，但随着输入规模增加，计算代价呈平方增长。本文提出了一种机制可以处理高维输入，同时保持表达能力和灵活性。</p>
+<p>核心思想是引入一些潜在单元（latent units），形成注意力bottleneck，以消除Transformer的平方增长问题，并能够构建很深的网络。</p>
+<h2 id="method">Method</h2>
+<h3 id="the-perceiver-architecture">The Perceiver architecture</h3>
+<p>模型架构主要有两部分：</p>
+<ul>
+<li>一个cross-attention模块，将一个字节序列和潜在序列映射到一个潜在序列。</li>
+<li>一个Transformer tower，将一个潜在序列映射到一个潜在序列。</li>
+</ul>
+<p>字节序列的尺寸由输入决定，通常比较大（ImageNet上224分辨率对应50176个像素）。潜在序列的尺寸是一个超参数，通常比较小（ImageNet上为512）。</p>
+<p>模型将两个模块交替排布，先用cross-attention降维再通过Transformer，模型所有的注意力模块都不使用mask。</p>
+<p>cross-attention将注意力的复杂度由<span class="math inline">\(\mathcal{O}(M^2)\)</span>降低到了<span class="math inline">\(\mathcal{O}(MN)\)</span>，其中<span class="math inline">\(M\)</span>和<span class="math inline">\(N\)</span>分别表示<span class="math inline">\(Q\)</span>和<span class="math inline">\(K\)</span>的长度，一般情况下<span class="math inline">\(N\ll M\)</span>。从而在后续的Transformer中，计算代价由<span class="math inline">\(\mathcal{O}(LM^2)\)</span>降低到了<span class="math inline">\(\mathcal{O}(LN^2)\)</span>。</p>
+<p>Transformer使用了GPT-2架构，潜在序列使用可学习的位置编码进行初始化。</p>
+<p>也可以在相应的模块中共享权重，减小参数量的同时抑制过拟合。</p>
+<h3 id="position-encodings">Position encodings</h3>
+<p>注意力机制是一种permutation-invariant操作，交换输入的顺序不会影响输出结果，因此需要手动引入位置信息。</p>
+<p>本文选用了傅立叶特征位置编码（三角式），采用一种参数化的性质代表位置特征，形如<span class="math inline">\([\sin(f_k\pi x_d),\cos(f_k\pi x_d)]\)</span>。Transformer中的位置编码通常是相加的形式，本文采用了拼接的形式。</p>
+<h2 id="experiment">Experiment</h2>
+<p>在图像、音频和点云数据上进行了实验，选择了ImageNet、AudioSet和ModelNet40。</p>
+<p><img src="/2022/02/02/Perceiver-General-Perception-with-Iterative-Attention/image-20220202162520511.png" alt="image-20220202162520511" style="zoom:50%;"></p>
+<p><img src="/2022/02/02/Perceiver-General-Perception-with-Iterative-Attention/image-20220202162534295.png" alt="image-20220202162534295" style="zoom:50%;"></p>
+<p><img src="/2022/02/02/Perceiver-General-Perception-with-Iterative-Attention/image-20220202162553403.png" alt="image-20220202162553403" style="zoom:50%;"></p>
+<p><img src="/2022/02/02/Perceiver-General-Perception-with-Iterative-Attention/image-20220202162607438.png" alt="image-20220202162607438" style="zoom:50%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>Transformer</tag>
+        <tag>Perceiver</tag>
+        <tag>Multi-Modal</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Query2Label: A Simple Transformer Way to Multi-Label Classification</title>
     <url>/2021/10/10/Query2Label-A-Simple-Transformer-Way-to-Multi-Label-Classification/</url>
     <content><![CDATA[<p>来自清华-博世机器学习研究中心，将Transformer解码器用于多标签分类，将label embedding作为query，计算与feature map的cross-attention。在MS-COCO、PASCAL VOC、NUS-WIDE和Visual Genome上进行了实验，取得了SOTA结果。</p>
@@ -3402,6 +3454,48 @@ p_k = \mathrm{Sigmoid}(W_k^T\mathcal{Q}_{L,k}+b_k)
         <tag>Multi-Label</tag>
         <tag>CV</tag>
         <tag>Transformer</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Perceiver IO: A General Architecture for Structured Inputs &amp; Outputs</title>
+    <url>/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/</url>
+    <content><![CDATA[<p>来自DeepMind，Perceiver的续作，不再局限于分类任务，在NLP、CV、多模态甚至星际争霸二上取得了不错的成绩。</p>
+<p><img src="/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/image-20220202164605712.png" alt="image-20220202164605712" style="zoom:50%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/image-20220202163943738.png" alt="image-20220202163943738" style="zoom:50%;"></p>
+<ul>
+<li>paper: <a href="https://arxiv.org/pdf/2107.14795v2.pdf" class="uri">https://arxiv.org/pdf/2107.14795v2.pdf</a></li>
+<li>code:
+<ul>
+<li>official: https://github.com/deepmind/deepmind-research/tree/master/perceiver</li>
+<li><a href="https://github.com/krasserm/perceiver-io" class="uri">https://github.com/krasserm/perceiver-io</a></li>
+</ul></li>
+</ul>
+<h2 id="background">Background</h2>
+<p>Perceiver只能处理分类任务，本文提出了一种用于解码结构化输出的机制，使得模型能够处理大量新的任务而不需要领域特有的处理方法。</p>
+<p>Perceiver IO是一个纯注意力的架构，输入编码到潜在空间，潜在的表示通过多层处理，经过解码得到最终的输出。</p>
+<h2 id="method">Method</h2>
+<h3 id="encoding-processing-and-decoding">Encoding, processing, and decoding</h3>
+<p>编码将输入序列<span class="math inline">\(x\in\mathbb{R}^{M\times C}\)</span>映射到潜在序列<span class="math inline">\(z\in\mathbb{R}^{N\times D}\)</span>，采用一系列模块进行处理，最终用一个注意力模块将潜在序列映射到输出序列<span class="math inline">\(y\in\mathbb{R}^{O\times E}\)</span>。其中<span class="math inline">\(N\)</span>和<span class="math inline">\(D\)</span>为超参数，<span class="math inline">\(C\)</span>、<span class="math inline">\(O\)</span>和<span class="math inline">\(E\)</span>为任务数据的属性，通常非常大。</p>
+<p>如Perceiver一样，Perceiver IO没有平方复杂度，编码器和解码器随着输入规模线性增长，潜在注意力的代价取决于输入输出的尺寸。</p>
+<h3 id="decoding-with-a-query-array">Decoding with a query array</h3>
+<p>给定<span class="math inline">\(N\times D\)</span>维的潜在表示，需要得到最终<span class="math inline">\(O\times E\)</span>维的输出序列。</p>
+<p><img src="/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/image-20220202170433574.png" alt="image-20220202170433574" style="zoom:50%;"></p>
+<p>对于分类这样的简单任务，直接使用position encoding。对于多任务或多模态，为每个任务或模态学习query。</p>
+<h2 id="experiment">Experiment</h2>
+<p>选择了多种任务，如下表所示。</p>
+<p><img src="/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/image-20220202164856457.png" alt="image-20220202164856457" style="zoom:50%;"></p>
+<p><img src="/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/image-20220202170920626.png" alt="image-20220202170920626" style="zoom:50%;"></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>在Perceiver的基础上加了Decoder，从而可以处理多种任务。</p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>Perceiver</tag>
+        <tag>Multi-Modal</tag>
       </tags>
   </entry>
   <entry>
@@ -3824,6 +3918,107 @@ WantWords工作流
       </tags>
   </entry>
   <entry>
+    <title>《程序员的自我修养》——链接、装载与库</title>
+    <url>/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/</url>
+    <content><![CDATA[<p>《程序员的自我修养》——链接、装载与库思维导图</p>
+<a id="more"></a>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/1. 温故而知新.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/2. 静态链接.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/3. 目标文件里有什么.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/4. 静态链接.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/5. Windows PE.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/6. 可执行文件的装载与进程.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/7. 动态链接.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/8. Linux共享库的组织.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/9. Windows下的动态链接.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/10. 内存.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/11. 运行库.png" style="zoom:67%;"></p>
+]]></content>
+      <categories>
+        <category>思维导图</category>
+      </categories>
+      <tags>
+        <tag>coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>现代密码学（一）绪论</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%80%EF%BC%89%E7%BB%AA%E8%AE%BA/</url>
+    <content><![CDATA[<p>介绍密码学的基本概念。</p>
+<a id="more"></a>
+<h2 id="基本术语">基本术语</h2>
+<p>密码学是一门研究秘密信息隐写技术的学科。</p>
+<ul>
+<li>可以使消息的内容对所有人（除了发送者和接收者）保密</li>
+<li>可以使接收者验证消息的正确性</li>
+</ul>
+<p>常用的术语如下</p>
+<ul>
+<li>明文 plaintext</li>
+<li>密文 ciphertext</li>
+<li>密码算法 cipher</li>
+<li>密钥 key</li>
+<li>编码 encipher/encode</li>
+<li>译码 decipher/decode</li>
+<li>密码分析 cryptanalysis/codebreaking</li>
+<li>密码学 cryptology</li>
+</ul>
+<h3 id="符号记法">符号记法</h3>
+<p>加密 Encryption <span class="math display">\[
+C = EK(P)
+\]</span></p>
+<p>解密 Decryption <span class="math display">\[
+P = EK_{-1}(C)
+\]</span></p>
+<p>可以把密码系统理解为明文空间到密文空间的变换，其中密钥取自密钥空间。 <span class="math display">\[
+P\xrightarrow{EK}C \\
+C\xrightarrow{EK_{-1}}P
+\]</span></p>
+<h2 id="算法分类">算法分类</h2>
+<ul>
+<li>私钥加密算法
+<ul>
+<li>分组密码</li>
+<li>流密码（序列密码）</li>
+</ul></li>
+<li>公钥加密算法</li>
+<li>数字签名算法</li>
+<li>哈希函数</li>
+</ul>
+<h2 id="密码分析">密码分析</h2>
+<p>密码分析学是指在没有加密密钥的情况下，攻击密文的过程。</p>
+<ul>
+<li>唯密文攻击
+<ul>
+<li>只知道算法与一些密文</li>
+<li>利用统计方法</li>
+<li>需要能够识别明文</li>
+</ul></li>
+<li>已知明文攻击
+<ul>
+<li>知道一些明文/密文对</li>
+<li>利用已知的明文/密文对进行攻击</li>
+</ul></li>
+<li>选择明文攻击
+<ul>
+<li>能够选择明文并得到相应的密文</li>
+<li>利用算法的结构进行攻击</li>
+</ul></li>
+<li>选择密文攻击
+<ul>
+<li>能够选择密文并得到相应的明文</li>
+<li>利用对算法结构的知识进行攻击</li>
+</ul></li>
+</ul>
+]]></content>
+      <categories>
+        <category>现代密码学</category>
+      </categories>
+      <tags>
+        <tag>密码学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>搭建个人博客</title>
     <url>/2020/08/06/%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/</url>
     <content><![CDATA[<p>采用Hexo+Next搭建个人博客，并通过Github Pages部署。</p>
@@ -3944,116 +4139,6 @@ y^K\cdot K^S = (a^x)^K\cdot (a^k)^{k^{-1}(M-x\cdot K)} = a^M \bmod p
       </categories>
       <tags>
         <tag>数字签名</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>现代密码学（二）古典密码</title>
-    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/</url>
-    <content><![CDATA[<p>介绍古典代换密码和古典置换密码。</p>
-<a id="more"></a>
-<h2 id="古典密码">古典密码</h2>
-<p>古典密码只要有两种加密方式，替换和置换（substitution and transposition）。</p>
-<p>替换是用新的字符代替原字符，置换是不改变原文字母集，打乱字符顺序。</p>
-<h2 id="古典代换密码">古典代换密码</h2>
-<h3 id="caesar-cipher-恺撒密码">Caesar Cipher-恺撒密码</h3>
-<p>恺撒密码的替换方法是，每个字母用其后的第三个字母替换。 <span class="math display">\[
-\alpha\leftarrow\alpha+3
-\]</span> 恺撒密码可以表示为</p>
-<ul>
-<li>Plain: ABCDEFGHIJKLMNOPQRSTUVWXYZ</li>
-<li>Cipher: DEFGHIJKLMNOPQRSTUVWXYZABC</li>
-</ul>
-<p>如密文L FDPH L VDZ L FRQTXHUHG，对应的明文即为移位三位，I CAME I SAW CONQUERED。</p>
-<p>当然，恺撒密码也可以将移位的长度改成1-25的任一个，换言之，共有25种可能的密码算法（移位0不可用）。</p>
-<h3 id="混合单表替换密码">混合单表替换密码</h3>
-<p>单字母替换密码用一个字母代替另外一个字母，相当于构造了字母表到字母表的双射，密钥长度是26个字母。</p>
-<h3 id="vigenère-cipher">Vigenère Cipher</h3>
-<p>发明了多字母替换密码，一个字母可以被多个字母替换，通过密钥选择对每个字母使用哪个字母表。</p>
-<p>密钥的第i个字母表示使用第i个字母表。</p>
-<p>如下例，密钥为CIPHER，分别定义了六张字母表（六个双射）。</p>
-<figure>
-<img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227175332395.png" alt="image-20201227175332395"><figcaption aria-hidden="true">image-20201227175332395</figcaption>
-</figure>
-<p>对于明文，用密钥选择字母用哪个字母表，这里的效果相当于明文与密钥相加减一。</p>
-<figure>
-<img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227175322132.png" alt="image-20201227175322132"><figcaption aria-hidden="true">image-20201227175322132</figcaption>
-</figure>
-<h3 id="ciphers-machines">Ciphers Machines</h3>
-<ul>
-<li>Jefferson Cylinder</li>
-<li>Wheatstone disc</li>
-<li>the German Enigma</li>
-<li>the Swedish Hagelin</li>
-<li>the Janpanese Purple</li>
-</ul>
-<h2 id="古典置换密码">古典置换密码</h2>
-<p>置换密码的核心思想是，按一定规则写出明文，按另一规则读出密文。</p>
-<p>密钥就是用于读密文和写明文的方法。</p>
-<h3 id="scytale密码">Scytale密码</h3>
-<p>消息沿着圆柱横写，密钥是纸条和圆柱的宽度。</p>
-<figure>
-<img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180058573.png" alt="image-20201227180058573"><figcaption aria-hidden="true">image-20201227180058573</figcaption>
-</figure>
-<h3 id="rail-fence-cipher-轨道栅栏密码">Rail Fence Cipher-轨道栅栏密码</h3>
-<p>在不同行写下消息字母，按行读取消息。</p>
-<figure>
-<img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180208972.png" alt="image-20201227180208972"><figcaption aria-hidden="true">image-20201227180208972</figcaption>
-</figure>
-<h3 id="几何图形密码">几何图形密码</h3>
-<p>以一种形式写，用另一种形式读。</p>
-<figure>
-<img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180223935.png" alt="image-20201227180223935"><figcaption aria-hidden="true">image-20201227180223935</figcaption>
-</figure>
-<h3 id="行变换密码">行变换密码</h3>
-<p>按行写出字母，以密钥给出的顺序按行读出密文。</p>
-<figure>
-<img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180454135.png" alt="image-20201227180454135"><figcaption aria-hidden="true">image-20201227180454135</figcaption>
-</figure>
-<p>对上图的解释：</p>
-<ul>
-<li>给定明文，分组长度为5，按25413的顺序对字母重新编排，如THESI变成STIEH。</li>
-<li>给定密文，分组长度为5，按41532的顺序读取信息，如STIEH变成THESI。</li>
-</ul>
-<p>其实相当于定义了置换 <span class="math display">\[
-\sigma = \begin{pmatrix} 1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 \\ 2 &amp; 5 &amp; 4 &amp; 1 &amp; 3 \end{pmatrix}
-\]</span> 对应的逆置换即为 <span class="math display">\[
-\sigma^{-1} = \begin{pmatrix} 2 &amp; 5 &amp; 4 &amp; 1 &amp; 3 \\ 1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 \end{pmatrix} = \begin{pmatrix} 1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 \\ 4 &amp; 1 &amp; 5 &amp; 3 &amp; 2 \end{pmatrix}
-\]</span></p>
-<h4 id="密码分析">密码分析</h4>
-<p>我们希望猜测密钥周期，再对可能的行列变换进行猜测。</p>
-<figure>
-<img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227181407687.png" alt="image-20201227181407687"><figcaption aria-hidden="true">image-20201227181407687</figcaption>
-</figure>
-]]></content>
-      <categories>
-        <category>现代密码学</category>
-      </categories>
-      <tags>
-        <tag>古典密码</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>《程序员的自我修养》——链接、装载与库</title>
-    <url>/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/</url>
-    <content><![CDATA[<p>《程序员的自我修养》——链接、装载与库思维导图</p>
-<a id="more"></a>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/1. 温故而知新.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/2. 静态链接.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/3. 目标文件里有什么.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/4. 静态链接.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/5. Windows PE.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/6. 可执行文件的装载与进程.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/7. 动态链接.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/8. Linux共享库的组织.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/9. Windows下的动态链接.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/10. 内存.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/11. 运行库.png" style="zoom:67%;"></p>
-]]></content>
-      <categories>
-        <category>思维导图</category>
-      </categories>
-      <tags>
-        <tag>coding</tag>
       </tags>
   </entry>
   <entry>
@@ -4338,6 +4423,92 @@ C_{-1} = IV
       </tags>
   </entry>
   <entry>
+    <title>现代密码学（二）古典密码</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/</url>
+    <content><![CDATA[<p>介绍古典代换密码和古典置换密码。</p>
+<a id="more"></a>
+<h2 id="古典密码">古典密码</h2>
+<p>古典密码只要有两种加密方式，替换和置换（substitution and transposition）。</p>
+<p>替换是用新的字符代替原字符，置换是不改变原文字母集，打乱字符顺序。</p>
+<h2 id="古典代换密码">古典代换密码</h2>
+<h3 id="caesar-cipher-恺撒密码">Caesar Cipher-恺撒密码</h3>
+<p>恺撒密码的替换方法是，每个字母用其后的第三个字母替换。 <span class="math display">\[
+\alpha\leftarrow\alpha+3
+\]</span> 恺撒密码可以表示为</p>
+<ul>
+<li>Plain: ABCDEFGHIJKLMNOPQRSTUVWXYZ</li>
+<li>Cipher: DEFGHIJKLMNOPQRSTUVWXYZABC</li>
+</ul>
+<p>如密文L FDPH L VDZ L FRQTXHUHG，对应的明文即为移位三位，I CAME I SAW CONQUERED。</p>
+<p>当然，恺撒密码也可以将移位的长度改成1-25的任一个，换言之，共有25种可能的密码算法（移位0不可用）。</p>
+<h3 id="混合单表替换密码">混合单表替换密码</h3>
+<p>单字母替换密码用一个字母代替另外一个字母，相当于构造了字母表到字母表的双射，密钥长度是26个字母。</p>
+<h3 id="vigenère-cipher">Vigenère Cipher</h3>
+<p>发明了多字母替换密码，一个字母可以被多个字母替换，通过密钥选择对每个字母使用哪个字母表。</p>
+<p>密钥的第i个字母表示使用第i个字母表。</p>
+<p>如下例，密钥为CIPHER，分别定义了六张字母表（六个双射）。</p>
+<figure>
+<img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227175332395.png" alt="image-20201227175332395"><figcaption aria-hidden="true">image-20201227175332395</figcaption>
+</figure>
+<p>对于明文，用密钥选择字母用哪个字母表，这里的效果相当于明文与密钥相加减一。</p>
+<figure>
+<img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227175322132.png" alt="image-20201227175322132"><figcaption aria-hidden="true">image-20201227175322132</figcaption>
+</figure>
+<h3 id="ciphers-machines">Ciphers Machines</h3>
+<ul>
+<li>Jefferson Cylinder</li>
+<li>Wheatstone disc</li>
+<li>the German Enigma</li>
+<li>the Swedish Hagelin</li>
+<li>the Janpanese Purple</li>
+</ul>
+<h2 id="古典置换密码">古典置换密码</h2>
+<p>置换密码的核心思想是，按一定规则写出明文，按另一规则读出密文。</p>
+<p>密钥就是用于读密文和写明文的方法。</p>
+<h3 id="scytale密码">Scytale密码</h3>
+<p>消息沿着圆柱横写，密钥是纸条和圆柱的宽度。</p>
+<figure>
+<img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180058573.png" alt="image-20201227180058573"><figcaption aria-hidden="true">image-20201227180058573</figcaption>
+</figure>
+<h3 id="rail-fence-cipher-轨道栅栏密码">Rail Fence Cipher-轨道栅栏密码</h3>
+<p>在不同行写下消息字母，按行读取消息。</p>
+<figure>
+<img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180208972.png" alt="image-20201227180208972"><figcaption aria-hidden="true">image-20201227180208972</figcaption>
+</figure>
+<h3 id="几何图形密码">几何图形密码</h3>
+<p>以一种形式写，用另一种形式读。</p>
+<figure>
+<img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180223935.png" alt="image-20201227180223935"><figcaption aria-hidden="true">image-20201227180223935</figcaption>
+</figure>
+<h3 id="行变换密码">行变换密码</h3>
+<p>按行写出字母，以密钥给出的顺序按行读出密文。</p>
+<figure>
+<img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227180454135.png" alt="image-20201227180454135"><figcaption aria-hidden="true">image-20201227180454135</figcaption>
+</figure>
+<p>对上图的解释：</p>
+<ul>
+<li>给定明文，分组长度为5，按25413的顺序对字母重新编排，如THESI变成STIEH。</li>
+<li>给定密文，分组长度为5，按41532的顺序读取信息，如STIEH变成THESI。</li>
+</ul>
+<p>其实相当于定义了置换 <span class="math display">\[
+\sigma = \begin{pmatrix} 1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 \\ 2 &amp; 5 &amp; 4 &amp; 1 &amp; 3 \end{pmatrix}
+\]</span> 对应的逆置换即为 <span class="math display">\[
+\sigma^{-1} = \begin{pmatrix} 2 &amp; 5 &amp; 4 &amp; 1 &amp; 3 \\ 1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 \end{pmatrix} = \begin{pmatrix} 1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 \\ 4 &amp; 1 &amp; 5 &amp; 3 &amp; 2 \end{pmatrix}
+\]</span></p>
+<h4 id="密码分析">密码分析</h4>
+<p>我们希望猜测密钥周期，再对可能的行列变换进行猜测。</p>
+<figure>
+<img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/image-20201227181407687.png" alt="image-20201227181407687"><figcaption aria-hidden="true">image-20201227181407687</figcaption>
+</figure>
+]]></content>
+      <categories>
+        <category>现代密码学</category>
+      </categories>
+      <tags>
+        <tag>古典密码</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>现代密码学（五）公钥密码</title>
     <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%94%EF%BC%89%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81/</url>
     <content><![CDATA[<p>介绍公钥密码学。</p>
@@ -4441,83 +4612,6 @@ M &amp;= C_2\cdot K^{-1}\bmod p
         <tag>RSA</tag>
         <tag>Rabin</tag>
         <tag>El Gamal</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>现代密码学（一）绪论</title>
-    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%80%EF%BC%89%E7%BB%AA%E8%AE%BA/</url>
-    <content><![CDATA[<p>介绍密码学的基本概念。</p>
-<a id="more"></a>
-<h2 id="基本术语">基本术语</h2>
-<p>密码学是一门研究秘密信息隐写技术的学科。</p>
-<ul>
-<li>可以使消息的内容对所有人（除了发送者和接收者）保密</li>
-<li>可以使接收者验证消息的正确性</li>
-</ul>
-<p>常用的术语如下</p>
-<ul>
-<li>明文 plaintext</li>
-<li>密文 ciphertext</li>
-<li>密码算法 cipher</li>
-<li>密钥 key</li>
-<li>编码 encipher/encode</li>
-<li>译码 decipher/decode</li>
-<li>密码分析 cryptanalysis/codebreaking</li>
-<li>密码学 cryptology</li>
-</ul>
-<h3 id="符号记法">符号记法</h3>
-<p>加密 Encryption <span class="math display">\[
-C = EK(P)
-\]</span></p>
-<p>解密 Decryption <span class="math display">\[
-P = EK_{-1}(C)
-\]</span></p>
-<p>可以把密码系统理解为明文空间到密文空间的变换，其中密钥取自密钥空间。 <span class="math display">\[
-P\xrightarrow{EK}C \\
-C\xrightarrow{EK_{-1}}P
-\]</span></p>
-<h2 id="算法分类">算法分类</h2>
-<ul>
-<li>私钥加密算法
-<ul>
-<li>分组密码</li>
-<li>流密码（序列密码）</li>
-</ul></li>
-<li>公钥加密算法</li>
-<li>数字签名算法</li>
-<li>哈希函数</li>
-</ul>
-<h2 id="密码分析">密码分析</h2>
-<p>密码分析学是指在没有加密密钥的情况下，攻击密文的过程。</p>
-<ul>
-<li>唯密文攻击
-<ul>
-<li>只知道算法与一些密文</li>
-<li>利用统计方法</li>
-<li>需要能够识别明文</li>
-</ul></li>
-<li>已知明文攻击
-<ul>
-<li>知道一些明文/密文对</li>
-<li>利用已知的明文/密文对进行攻击</li>
-</ul></li>
-<li>选择明文攻击
-<ul>
-<li>能够选择明文并得到相应的密文</li>
-<li>利用算法的结构进行攻击</li>
-</ul></li>
-<li>选择密文攻击
-<ul>
-<li>能够选择密文并得到相应的明文</li>
-<li>利用对算法结构的知识进行攻击</li>
-</ul></li>
-</ul>
-]]></content>
-      <categories>
-        <category>现代密码学</category>
-      </categories>
-      <tags>
-        <tag>密码学</tag>
       </tags>
   </entry>
   <entry>
