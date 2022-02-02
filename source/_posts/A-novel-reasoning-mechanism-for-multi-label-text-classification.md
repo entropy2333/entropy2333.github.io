@@ -33,12 +33,19 @@ Information Processing and Management 2021（CCF-B）
 
 <img src="A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133330467.png" alt="image-20220127133330467" style="zoom:50%;" />
 
-通过将前一轮所有标签的预测结果作为下一轮的额外输入，在迭代轮次中传递了标签信息，使得ML-Reasoner可以捕获标签相关性。相比之下CC或SGM等方法，只利用了部分的标签信息。
+通过将前一轮所有标签的预测结果$z_{t-1} = (z_{t-1,1}\cdots,z_{t-1,k})$作为下一轮的额外输入（看作权重），在迭代轮次中传递了标签信息，使得ML-Reasoner可以捕获标签相关性。相比之下CC或SGM等方法，只利用了部分的标签信息。
 
 <img src="A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133936519.png" alt="image-20220127133936519" style="zoom:50%;" />
 
 Reasoner模块有点像Transformer的Decoder部分，分别对text和label进行embedding，并计算attention后分类。
 
+层间传递时，将上一轮的概率看作权重，对label embedding加权。
+$$
+\begin{align}
+\vec{l}_j &= \text{LabelEmbedding}(l_j)\in\mathbb{R}^{D_4} \\
+\vec{l}_{j_{\text{encoded}}} &= z_{t-1,j}\vec{l}_j\in\mathbb{R}^{D_4}
+\end{align}
+$$
 作者这里使用的是TextCNN提取文本特征$\vec{x}\in\mathbb{R^{D_2}}$，并接一个全连接层得到$\vec{x}_{\text{encoded}}\in\mathbb{R^{D_3}}$。对文本和标签特征计算注意力权重：
 $$
 \begin{align}

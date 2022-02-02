@@ -17,8 +17,8 @@ category:
 
 ## Overview
 
-- arxiv: https://arxiv.org/pdf/2107.10834.pdf
-- code: https://github.com/SlongLiu/query2labels
+- arxiv: <https://arxiv.org/pdf/2107.10834.pdf>
+- code: <https://github.com/SlongLiu/query2labels>
 
 ## Background
 
