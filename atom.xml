@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://entropy2333.github.io/"/>
-  <updated>2022-02-02T08:29:05.819Z</updated>
+  <updated>2022-02-06T06:30:53.801Z</updated>
   <id>https://entropy2333.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Modeling Diagnostic Label Correlation for Automatic ICD Coding</title>
+    <link href="https://entropy2333.github.io/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/"/>
+    <id>https://entropy2333.github.io/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/</id>
+    <published>2022-02-05T08:15:11.000Z</published>
+    <updated>2022-02-06T06:30:53.801Z</updated>
+    
+    <content type="html"><![CDATA[<p>NAACL 2021，提出了一个two-stage框架以捕获标签相关性，提升自动ICD编码的性能。</p><p><img src="/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220205161927097.png" alt="image-20220205161927097" style="zoom:50%;"></p><a id="more"></a><h2 id="overview">Overview</h2><p><img src="/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220205161734083.png" alt="image-20220205161734083" style="zoom:50%;"></p><ul><li>paper: <a href="https://aclanthology.org/2021.naacl-main.318.pdf" class="uri">https://aclanthology.org/2021.naacl-main.318.pdf</a></li><li>code: <a href="https://github.com/MiuLab/ICD-Correlation" class="uri">https://github.com/MiuLab/ICD-Correlation</a></li></ul><h2 id="background">Background</h2><p>国际疾病分类（International Classification of Disease, ICD），是根据疾病的某些特征，采用编码方法来表示的系统。自动ICD编码近年来是一个热点任务，一般将其当作多标签分类问题处理。ICD编码呈现层次结构，因此考虑标签相关性很重要。</p><p>本文受自动语音识别和依存分析中reranking技术的启发，本文为ICD编码提出了一个two-stage的reranking框架，不需要任何专家知识也可以捕获标签相关性。</p><h2 id="method">Method</h2><p>本文提出的框架分为两个阶段：</p><ol type="1"><li>标签候选集生成，采用基本的分类器得到标签概率。</li><li>标签候选集重排，利用标签相关性重排候选标签。</li></ol><h3 id="candidate-generation">Candidate Generation</h3><p>此阶段产生top-k的标签集合，给定标签概率<span class="math inline">\(P_{base}(y_i=1|\mathbf{x}, \theta_{base}),\ i=1,2,\cdots,|\mathcal{Y}|\)</span>，标签集合的概率为各标签的概率乘积： <span class="math display">\[P_{base}(\hat{\mathbf{y}}|\mathbf{x}, \theta_{base}) = \prod_{i=1}^{|\mathcal{Y}|}P_{base}(y_i=\hat{\mathbf{y}_i}|\mathbf{x}, \theta_{base})\]</span></p><p>虽然标签组合共有<span class="math inline">\(2^{|\mathcal{Y}|}\)</span>个子集，但可以采用动态规划的方式高效生成。</p><blockquote><p>[ICML 2016] Conditional bernoulli mixtures for multi-label classification <a href="http://proceedings.mlr.press/v48/lij16.pdf">[paper]</a></p></blockquote><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_n_best</span>(<span class="params">probs, n=<span class="number">10</span></span>):</span></span><br><span class="line">    flip_idx = np.argsort(np.abs(probs<span class="number">-0.5</span>))[:n]</span><br><span class="line">    labels = np.zeros(len(probs))</span><br><span class="line">    cum_prob = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">for</span> i, prob <span class="keyword">in</span> enumerate(probs):</span><br><span class="line">        <span class="keyword">if</span> i <span class="keyword">in</span> flip_idx:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> prob &gt;= <span class="number">0.5</span>:</span><br><span class="line">            labels[i] = <span class="number">1</span></span><br><span class="line">            cum_prob += np.log(prob)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            labels[i] = <span class="number">0</span></span><br><span class="line">            cum_prob += np.log(<span class="number">1</span>-prob)</span><br><span class="line"></span><br><span class="line">    last_queue = PriorityQueue()</span><br><span class="line">    last_queue.put((cum_prob, labels))</span><br><span class="line">    <span class="keyword">for</span> i, prob <span class="keyword">in</span> enumerate(probs):</span><br><span class="line">        <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> flip_idx:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        queue = PriorityQueue()</span><br><span class="line">        <span class="keyword">for</span> cum_prob, labels <span class="keyword">in</span> last_queue.queue:</span><br><span class="line">            labels2 = np.copy(labels)</span><br><span class="line">            labels[i] = <span class="number">1</span></span><br><span class="line">            queue.put((cum_prob + np.log(prob+<span class="number">1e-6</span>), labels))</span><br><span class="line">            labels2[i] = <span class="number">0</span></span><br><span class="line">            queue.put((cum_prob + np.log(<span class="number">1</span>-prob+<span class="number">1e-6</span>), labels2))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> len(queue.queue) &gt; n:</span><br><span class="line">            _ = queue.get()</span><br><span class="line"></span><br><span class="line">        last_queue = queue</span><br><span class="line"></span><br><span class="line">    n_best = []</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> queue.empty():</span><br><span class="line">        n_best.append(queue.get())</span><br><span class="line">    n_best = n_best[::<span class="number">-1</span>]</span><br><span class="line">    <span class="keyword">return</span> n_best</span><br></pre></td></tr></table></figure><h3 id="candidate-reranking">Candidate Reranking</h3><p>基本分类器假设标签是独立的，为此本文引入了标签集合的重排器（reranker），以捕获标签的共享性与共现性。</p><p>给定候选集<span class="math inline">\(\hat{\mathbf{y}}\)</span>，重排器计算得分<span class="math inline">\(R(\hat{\mathbf{y}})\)</span>，根据得分的加权和重排。 <span class="math display">\[\log P_{base}(\hat{\mathbf{y}}|\mathbf{x},\theta_{base})+\alpha\cdot R(\hat{\mathbf{y}})\]</span> 其中<span class="math inline">\(\alpha\)</span>为超参数。本文设计了两个reranker用于重排，分别是MADE和Mask-SA，如下图所示。</p><p><img src="/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220205170416236.png" alt="image-20220205170416236" style="zoom:50%;"></p><p>MADE采用了一个掩码自编码器估计密度，通过自回归的方式估计联合概率<span class="math inline">\(P(\hat{\mathrm{y}})\)</span>。 <span class="math display">\[P_{MADE}(\hat{\mathrm{y}})=\prod_{i=1}^{|\mathcal{Y}|}P_{MADE}(y_i=\hat{\mathrm{y}}_i|\hat{\mathrm{y}}_{o&lt;i},\theta_{MADE})\]</span> 其中<span class="math inline">\(o\)</span>表示<span class="math inline">\(\{1,2,\cdots,|\mathcal{Y}|\}\)</span>中的随机排列，<span class="math inline">\(o(i)\)</span>表示新的排序，<span class="math inline">\(\hat{\mathrm{y}}_{o&lt;i} = \{\hat{\mathrm{y}}_j|o(j)&lt;o(i)\}\)</span>表示新的排序中先于<span class="math inline">\(\hat{\mathrm{y}}_i\)</span>的所有元素集合。</p><p>给定候选集<span class="math inline">\(\hat{\mathrm{y}}\)</span>，MADE得分定义为 <span class="math display">\[R_{MADE}(\hat{\mathrm{y}}) = \frac{\log P_{MADE}(\hat{\mathrm{y}})}{|\hat{\mathrm{y}}|^{\beta}}\]</span> 其中<span class="math inline">\(|\hat{\mathrm{y}}|\)</span>表示子集的大小，作为一个长度惩罚项，作者发现不加这一项的话模型容易偏向更小的集合。</p><p>此外，受BERT的MLM启发，作者还提出了一个掩码自注意力重排器Mask-SA。将对角线的标签掩码，输入到BERT中做MLM。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">input_ids, attention_mask = build_masked_input(</span><br><span class="line">    token_ids, tokenizer, mask_positions=[i]</span><br><span class="line">)</span><br><span class="line">all_input_ids.append(input_ids)</span><br><span class="line">all_attention_mask.append(attention_mask)</span><br><span class="line"></span><br><span class="line">all_input_ids = torch.tensor(all_input_ids).cuda()</span><br><span class="line">all_attention_mask = torch.tensor(all_attention_mask).cuda()</span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    output = model(all_input_ids, all_attention_mask)</span><br><span class="line">prediction_scores = output[<span class="number">0</span>]</span><br><span class="line">log_prob = <span class="number">0.0</span></span><br><span class="line"><span class="keyword">for</span> i, token_id <span class="keyword">in</span> enumerate(token_ids):</span><br><span class="line">    log_prob += prediction_scores[i, i].detach().log_softmax(dim=<span class="number">-1</span>)[token_id].cpu().item()</span><br><span class="line">nbests_with_bert.append((<span class="number">0.0</span>, log_prob, len(token_ids), prob, labels))</span><br></pre></td></tr></table></figure><p>这实际上等价于预测其他标签的概率<span class="math inline">\(P_{MSA}(\hat{\mathrm{y}}_i|\hat{\mathrm{y}}-\{\hat{\mathrm{y}}_i\},\theta_{MSA})\)</span>，最终的得分定义为 <span class="math display">\[R_{RSA}(\hat{\mathrm{y}})=\frac{\log\prod_{i=1}^{|\hat{\mathrm{y}}|}P_{MSA}(\hat{\mathrm{y}}_i|\hat{\mathrm{y}}-\{\hat{\mathrm{y}}_i\},\theta_{MSA})}{|\hat{\mathrm{y}}|^{\beta}}\]</span></p><h2 id="experiment">Experiment</h2><p>选取MIMIC-2和MIMIC-3数据集，MIMIC-2有5031个标签，MIMIC-3有8922个标签。</p><p><img src="/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220206142652074.png" alt="image-20220206142652074" style="zoom:50%;"></p><p><img src="/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220206142954913.png" alt="image-20220206142954913" style="zoom:50%;"></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;NAACL 2021，提出了一个two-stage框架以捕获标签相关性，提升自动ICD编码的性能。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220205161927097.png&quot; alt=&quot;image-20220205161927097&quot; style=&quot;zoom:50%;&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
+    
+    
+      <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
+    
+      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+      <category term="ICD" scheme="https://entropy2333.github.io/tags/ICD/"/>
+    
+  </entry>
   
   <entry>
     <title>Perceiver: General Perception with Iterative Attention</title>
@@ -145,9 +173,9 @@
     
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
-      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
-    
       <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
+    
+      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
     
   </entry>
   
@@ -257,9 +285,9 @@
     
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
-      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
-    
       <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
+    
+      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
     
   </entry>
   
@@ -456,9 +484,9 @@
     
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
-      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
-    
       <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
+    
+      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
     
   </entry>
   
@@ -513,32 +541,6 @@
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
       <category term="GNN" scheme="https://entropy2333.github.io/tags/GNN/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SimCSE: Simple Contrastive Learning of Sentence Embeddings</title>
-    <link href="https://entropy2333.github.io/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/"/>
-    <id>https://entropy2333.github.io/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/</id>
-    <published>2021-07-06T08:51:46.000Z</published>
-    <updated>2022-01-23T06:58:39.667Z</updated>
-    
-    <content type="html"><![CDATA[<p>来自陈丹琦（<a href="https://github.com/danqi" class="uri">https://github.com/danqi</a>）组的文章，利用Dropout作为数据增强，进行对比学习得到句子向量表示，在无监督和有监督的语义表示上刷新SOTA。</p><p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210706175923388.png" alt="image-20210706175923388" style="zoom: 80%;"></p><a id="more"></a><h2 id="overview">Overview</h2><ul><li>Arxiv: https://arxiv.org/pdf/2104.08821v1.pdf</li><li>Code: https://github.com/princeton-nlp/SimCSE</li></ul><h2 id="background-contrastive-learning">Background: Contrastive Learning</h2><p>对比学习希望通过拉近语义相关的样本，拉远不相关的样本学习有效的向量表示。</p><p>对于样本对集合<span class="math inline">\(D=\{(x_i,x_i^+)\}_{i=1}^m\)</span>，假设<span class="math inline">\(({\bf h_i},{\bf h_i^+})\)</span>为样本的向量表示，则训练的目标为： <span class="math display">\[l_i = \log \frac {e^{ {\rm sim} ({\bf h_i},{\bf h_i^+})}/\tau} {\sum_{j=1}^N e^{ {\rm sim}( {\bf h_i},{\bf h_j})/\tau}}\]</span> 其中，<span class="math inline">\(\tau\)</span>是一个温度超参数，<span class="math inline">\({\rm sim}({\bf h_i},{\bf h_i^+})\)</span>为余弦相似度<span class="math inline">\(\rm\bf\frac{h_1^Th_2}{\|h_1\|·\|h2\|}\)</span>，本文选择的backbone是BERT或RoBERTa。</p><p>其实上述的训练目标就是交叉熵： <span class="math display">\[{\rm let}\ z_{i,j} = {\rm sim} ({\bf h_i},{\bf h_j}) \\{\rm then}\ loss_i = -\sum_{j=1}^N y_{j}\log z_{i, j}\]</span></p><h3 id="positive-instances">Positive instances</h3><p>对比学习的关键问题是如何构造样本对<span class="math inline">\((x_i,x_i^+)\)</span>，在CV中可以用裁剪、旋转等方法对图像进行数据增强，NLP中也有删词、替换、重排等方法。但对于NLP的离散结构来说，这些增强手段作用有限。本文采用了dropout作为数据增强手段，取得了更好的结果。</p><p>本文采用了两个度量align和uniform用于衡量表示的质量。</p><p>align描述了样本对之间的距离 <span class="math display">\[l_{\rm align} \triangleq \mathop{\mathbb{E}}_{(x,x^+)\sim p_{pos}}\|f(x)-f(x^+)\|^2\]</span> uniform描述了样本是否分布均匀 <span class="math display">\[l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(x)-f(y)\|^2}\]</span></p><p>从实验结果上看，采用dropout的SimCSE效果更好。</p><p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111255916.png" alt="image-20210823111255916" style="zoom:67%;"></p><h2 id="experiment">Experiment</h2><p>在语义相似度任务上大幅度刷新SOTA，无监督就可以超越之前的有监督方法。</p><p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111528036.png" alt="image-20210823111528036" style="zoom: 67%;"></p><p>在迁移任务上表现一般，说明sentence embedding并不一定有益于下游训练。</p><p><img src="/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210823111700869.png" alt="image-20210823111700869" style="zoom: 80%;"></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;来自陈丹琦（&lt;a href=&quot;https://github.com/danqi&quot; class=&quot;uri&quot;&gt;https://github.com/danqi&lt;/a&gt;）组的文章，利用Dropout作为数据增强，进行对比学习得到句子向量表示，在无监督和有监督的语义表示上刷新SOTA。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/image-20210706175923388.png&quot; alt=&quot;image-20210706175923388&quot; style=&quot;zoom: 80%;&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
-    
-    
-      <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
-    
-      <category term="Contrastive Learning" scheme="https://entropy2333.github.io/tags/Contrastive-Learning/"/>
     
   </entry>
   

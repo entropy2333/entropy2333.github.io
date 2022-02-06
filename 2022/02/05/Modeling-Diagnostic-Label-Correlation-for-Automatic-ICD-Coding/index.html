@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"entropy2333.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="NAACL 2021，提出了一个two-stage框架以捕获标签相关性，提升自动ICD编码的性能。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Modeling Diagnostic Label Correlation for Automatic ICD Coding">
+<meta property="og:url" content="https://entropy2333.github.io/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/index.html">
+<meta property="og:site_name" content="entropy2333">
+<meta property="og:description" content="NAACL 2021，提出了一个two-stage框架以捕获标签相关性，提升自动ICD编码的性能。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220205161927097.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220205161734083.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220205170416236.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220206142652074.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220206142954913.png">
+<meta property="article:published_time" content="2022-02-05T08:15:11.000Z">
+<meta property="article:modified_time" content="2022-02-06T06:30:53.801Z">
+<meta property="article:author" content="entropy2333">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="Multi-Label">
+<meta property="article:tag" content="ICD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://entropy2333.github.io/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220205161927097.png">
+
+
+<link rel="canonical" href="https://entropy2333.github.io/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://entropy2333.github.io/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/","path":"2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/","title":"Modeling Diagnostic Label Correlation for Automatic ICD Coding"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Modeling Diagnostic Label Correlation for Automatic ICD Coding | entropy2333</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">entropy2333</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method"><span class="nav-number">3.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#candidate-generation"><span class="nav-number">3.1.</span> <span class="nav-text">Candidate Generation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#candidate-reranking"><span class="nav-number">3.2.</span> <span class="nav-text">Candidate Reranking</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="entropy2333"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">entropy2333</p>
+  <div class="site-description" itemprop="description">Cyber Security, SJTU</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">59</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/entropy2333" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;entropy2333" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://ainevsia.github.io/" title="https:&#x2F;&#x2F;ainevsia.github.io&#x2F;" rel="noopener" target="_blank">ainevsia</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://entropy2333.gitee.io/" title="https:&#x2F;&#x2F;entropy2333.gitee.io" rel="noopener" target="_blank">entropy2333</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://rooki3ray.github.io/" title="https:&#x2F;&#x2F;rooki3ray.github.io" rel="noopener" target="_blank">rooki3ray</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://thomas-li-sjtu.github.io/" title="https:&#x2F;&#x2F;thomas-li-sjtu.github.io" rel="noopener" target="_blank">thomas-li</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://schenk75.github.io/" title="https:&#x2F;&#x2F;schenk75.github.io&#x2F;" rel="noopener" target="_blank">schenk</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/entropy2333" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="entropy2333">
+      <meta itemprop="description" content="Cyber Security, SJTU">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="entropy2333">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Modeling Diagnostic Label Correlation for Automatic ICD Coding
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-05 16:15:11" itemprop="dateCreated datePublished" datetime="2022-02-05T16:15:11+08:00">2022-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Paper/" itemprop="url" rel="index"><span itemprop="name">Paper</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.4k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>NAACL 2021，提出了一个two-stage框架以捕获标签相关性，提升自动ICD编码的性能。</p>
+<p><img src="/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220205161927097.png" alt="image-20220205161927097" style="zoom:50%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220205161734083.png" alt="image-20220205161734083" style="zoom:50%;"></p>
+<ul>
+<li>paper: <a target="_blank" rel="noopener" href="https://aclanthology.org/2021.naacl-main.318.pdf" class="uri">https://aclanthology.org/2021.naacl-main.318.pdf</a></li>
+<li>code: <a target="_blank" rel="noopener" href="https://github.com/MiuLab/ICD-Correlation" class="uri">https://github.com/MiuLab/ICD-Correlation</a></li>
+</ul>
+<h2 id="background">Background</h2>
+<p>国际疾病分类（International Classification of Disease, ICD），是根据疾病的某些特征，采用编码方法来表示的系统。自动ICD编码近年来是一个热点任务，一般将其当作多标签分类问题处理。ICD编码呈现层次结构，因此考虑标签相关性很重要。</p>
+<p>本文受自动语音识别和依存分析中reranking技术的启发，本文为ICD编码提出了一个two-stage的reranking框架，不需要任何专家知识也可以捕获标签相关性。</p>
+<h2 id="method">Method</h2>
+<p>本文提出的框架分为两个阶段：</p>
+<ol type="1">
+<li>标签候选集生成，采用基本的分类器得到标签概率。</li>
+<li>标签候选集重排，利用标签相关性重排候选标签。</li>
+</ol>
+<h3 id="candidate-generation">Candidate Generation</h3>
+<p>此阶段产生top-k的标签集合，给定标签概率<span class="math inline">\(P_{base}(y_i=1|\mathbf{x}, \theta_{base}),\ i=1,2,\cdots,|\mathcal{Y}|\)</span>，标签集合的概率为各标签的概率乘积： <span class="math display">\[
+P_{base}(\hat{\mathbf{y}}|\mathbf{x}, \theta_{base}) = \prod_{i=1}^{|\mathcal{Y}|}P_{base}(y_i=\hat{\mathbf{y}_i}|\mathbf{x}, \theta_{base})
+\]</span></p>
+<p>虽然标签组合共有<span class="math inline">\(2^{|\mathcal{Y}|}\)</span>个子集，但可以采用动态规划的方式高效生成。</p>
+<blockquote>
+<p>[ICML 2016] Conditional bernoulli mixtures for multi-label classification <a target="_blank" rel="noopener" href="http://proceedings.mlr.press/v48/lij16.pdf">[paper]</a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_n_best</span>(<span class="params">probs, n=<span class="number">10</span></span>):</span></span><br><span class="line">    flip_idx = np.argsort(np.abs(probs<span class="number">-0.5</span>))[:n]</span><br><span class="line">    labels = np.zeros(len(probs))</span><br><span class="line">    cum_prob = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">for</span> i, prob <span class="keyword">in</span> enumerate(probs):</span><br><span class="line">        <span class="keyword">if</span> i <span class="keyword">in</span> flip_idx:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> prob &gt;= <span class="number">0.5</span>:</span><br><span class="line">            labels[i] = <span class="number">1</span></span><br><span class="line">            cum_prob += np.log(prob)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            labels[i] = <span class="number">0</span></span><br><span class="line">            cum_prob += np.log(<span class="number">1</span>-prob)</span><br><span class="line"></span><br><span class="line">    last_queue = PriorityQueue()</span><br><span class="line">    last_queue.put((cum_prob, labels))</span><br><span class="line">    <span class="keyword">for</span> i, prob <span class="keyword">in</span> enumerate(probs):</span><br><span class="line">        <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> flip_idx:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        queue = PriorityQueue()</span><br><span class="line">        <span class="keyword">for</span> cum_prob, labels <span class="keyword">in</span> last_queue.queue:</span><br><span class="line">            labels2 = np.copy(labels)</span><br><span class="line">            labels[i] = <span class="number">1</span></span><br><span class="line">            queue.put((cum_prob + np.log(prob+<span class="number">1e-6</span>), labels))</span><br><span class="line">            labels2[i] = <span class="number">0</span></span><br><span class="line">            queue.put((cum_prob + np.log(<span class="number">1</span>-prob+<span class="number">1e-6</span>), labels2))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> len(queue.queue) &gt; n:</span><br><span class="line">            _ = queue.get()</span><br><span class="line"></span><br><span class="line">        last_queue = queue</span><br><span class="line"></span><br><span class="line">    n_best = []</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> queue.empty():</span><br><span class="line">        n_best.append(queue.get())</span><br><span class="line">    n_best = n_best[::<span class="number">-1</span>]</span><br><span class="line">    <span class="keyword">return</span> n_best</span><br></pre></td></tr></table></figure>
+<h3 id="candidate-reranking">Candidate Reranking</h3>
+<p>基本分类器假设标签是独立的，为此本文引入了标签集合的重排器（reranker），以捕获标签的共享性与共现性。</p>
+<p>给定候选集<span class="math inline">\(\hat{\mathbf{y}}\)</span>，重排器计算得分<span class="math inline">\(R(\hat{\mathbf{y}})\)</span>，根据得分的加权和重排。 <span class="math display">\[
+\log P_{base}(\hat{\mathbf{y}}|\mathbf{x},\theta_{base})+\alpha\cdot R(\hat{\mathbf{y}})
+\]</span> 其中<span class="math inline">\(\alpha\)</span>为超参数。本文设计了两个reranker用于重排，分别是MADE和Mask-SA，如下图所示。</p>
+<p><img src="/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220205170416236.png" alt="image-20220205170416236" style="zoom:50%;"></p>
+<p>MADE采用了一个掩码自编码器估计密度，通过自回归的方式估计联合概率<span class="math inline">\(P(\hat{\mathrm{y}})\)</span>。 <span class="math display">\[
+P_{MADE}(\hat{\mathrm{y}})=\prod_{i=1}^{|\mathcal{Y}|}P_{MADE}(y_i=\hat{\mathrm{y}}_i|\hat{\mathrm{y}}_{o&lt;i},\theta_{MADE})
+\]</span> 其中<span class="math inline">\(o\)</span>表示<span class="math inline">\(\{1,2,\cdots,|\mathcal{Y}|\}\)</span>中的随机排列，<span class="math inline">\(o(i)\)</span>表示新的排序，<span class="math inline">\(\hat{\mathrm{y}}_{o&lt;i} = \{\hat{\mathrm{y}}_j|o(j)&lt;o(i)\}\)</span>表示新的排序中先于<span class="math inline">\(\hat{\mathrm{y}}_i\)</span>的所有元素集合。</p>
+<p>给定候选集<span class="math inline">\(\hat{\mathrm{y}}\)</span>，MADE得分定义为 <span class="math display">\[
+R_{MADE}(\hat{\mathrm{y}}) = \frac{\log P_{MADE}(\hat{\mathrm{y}})}{|\hat{\mathrm{y}}|^{\beta}}
+\]</span> 其中<span class="math inline">\(|\hat{\mathrm{y}}|\)</span>表示子集的大小，作为一个长度惩罚项，作者发现不加这一项的话模型容易偏向更小的集合。</p>
+<p>此外，受BERT的MLM启发，作者还提出了一个掩码自注意力重排器Mask-SA。将对角线的标签掩码，输入到BERT中做MLM。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">input_ids, attention_mask = build_masked_input(</span><br><span class="line">    token_ids, tokenizer, mask_positions=[i]</span><br><span class="line">)</span><br><span class="line">all_input_ids.append(input_ids)</span><br><span class="line">all_attention_mask.append(attention_mask)</span><br><span class="line"></span><br><span class="line">all_input_ids = torch.tensor(all_input_ids).cuda()</span><br><span class="line">all_attention_mask = torch.tensor(all_attention_mask).cuda()</span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    output = model(all_input_ids, all_attention_mask)</span><br><span class="line">prediction_scores = output[<span class="number">0</span>]</span><br><span class="line">log_prob = <span class="number">0.0</span></span><br><span class="line"><span class="keyword">for</span> i, token_id <span class="keyword">in</span> enumerate(token_ids):</span><br><span class="line">    log_prob += prediction_scores[i, i].detach().log_softmax(dim=<span class="number">-1</span>)[token_id].cpu().item()</span><br><span class="line">nbests_with_bert.append((<span class="number">0.0</span>, log_prob, len(token_ids), prob, labels))</span><br></pre></td></tr></table></figure>
+<p>这实际上等价于预测其他标签的概率<span class="math inline">\(P_{MSA}(\hat{\mathrm{y}}_i|\hat{\mathrm{y}}-\{\hat{\mathrm{y}}_i\},\theta_{MSA})\)</span>，最终的得分定义为 <span class="math display">\[
+R_{RSA}(\hat{\mathrm{y}})=\frac{\log\prod_{i=1}^{|\hat{\mathrm{y}}|}P_{MSA}(\hat{\mathrm{y}}_i|\hat{\mathrm{y}}-\{\hat{\mathrm{y}}_i\},\theta_{MSA})}{|\hat{\mathrm{y}}|^{\beta}}
+\]</span></p>
+<h2 id="experiment">Experiment</h2>
+<p>选取MIMIC-2和MIMIC-3数据集，MIMIC-2有5031个标签，MIMIC-3有8922个标签。</p>
+<p><img src="/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220206142652074.png" alt="image-20220206142652074" style="zoom:50%;"></p>
+<p><img src="/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220206142954913.png" alt="image-20220206142954913" style="zoom:50%;"></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/" rel="bookmark">A novel reasoning mechanism for multi-label text classification</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/01/25/Balancing-Methods-for-Multi-label-Text-Classification-with-Long-Tailed-Class-Distribution/" rel="bookmark">Balancing Methods for Multi-label Text Classification with Long-Tailed Class Distribution</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/" rel="bookmark">Enhancing Label Correlation Feedback in Multi-Label Text Classification via Multi-Task Learning</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/" rel="bookmark">Hierarchy Decoder is All You Need To Text Classification</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/08/23/Label-Specific-Dual-Graph-Neural-Network-for-Multi-Label-Text-Classification/" rel="bookmark">Label-Specific Dual Graph Neural Network for Multi-Label Text Classification</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="entropy2333 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>entropy2333
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://entropy2333.github.io/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/" title="Modeling Diagnostic Label Correlation for Automatic ICD Coding">https://entropy2333.github.io/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+              <a href="/tags/Multi-Label/" rel="tag"># Multi-Label</a>
+              <a href="/tags/ICD/" rel="tag"># ICD</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/02/Perceiver-General-Perception-with-Iterative-Attention/" rel="prev" title="Perceiver: General Perception with Iterative Attention">
+                  <i class="fa fa-chevron-left"></i> Perceiver: General Perception with Iterative Attention
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">entropy2333</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">124k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
+<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>
