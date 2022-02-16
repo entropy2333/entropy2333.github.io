@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://entropy2333.github.io/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115174012989.png">
 <meta property="og:image" content="https://entropy2333.github.io/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115174714856.png">
 <meta property="article:published_time" content="2022-01-15T07:58:44.000Z">
-<meta property="article:modified_time" content="2022-01-23T06:58:39.636Z">
+<meta property="article:modified_time" content="2022-02-07T07:02:51.697Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="Multi-Label">
 <meta property="article:tag" content="Transformer">
@@ -180,7 +180,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -314,7 +314,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.5k</span>
+      <span>2.9k</span>
     </span>
 </div>
 
@@ -372,7 +372,9 @@ g
 \]</span></p>
 <p>其中<span class="math inline">\(g=\frac NK\)</span>，<span class="math inline">\(Q_k\in\mathbb{R}^{D}\)</span>表示第<span class="math inline">\(k\)</span>个query，<span class="math inline">\(W_k\in\mathbb{R}^{g\times D}\)</span>表示第<span class="math inline">\(k\)</span>个可学习的变换矩阵。计算过程示意如下图所示（<span class="math inline">\(g=4\)</span>）。</p>
 <p><img src="/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115171512804.png" alt="image-20220115171512804" style="zoom:50%;"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@torch.jit.script</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GroupFC</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, embed_len_decoder: int</span>):</span></span><br><span class="line">        self.embed_len_decoder = embed_len_decoder</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, h: torch.Tensor, duplicate_pooling: torch.Tensor, out_extrap: torch.Tensor</span>):</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(h.shape[<span class="number">1</span>]):</span><br><span class="line">            h_i = h[:, i, :]</span><br><span class="line">            <span class="keyword">if</span> len(duplicate_pooling.shape)==<span class="number">3</span>:</span><br><span class="line">                w_i = duplicate_pooling[i, :, :]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                w_i = duplicate_pooling</span><br><span class="line">            out_extrap[:, i, :] = torch.matmul(h_i, w_i)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@torch.jit.script</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GroupFC</span>(<span class="params">object</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, embed_len_decoder: int</span>):</span></span><br><span class="line">        self.embed_len_decoder = embed_len_decoder</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, h: Tensor, duplicate_pooling: Tensor,</span></span></span><br><span class="line"><span class="function"><span class="params">                 out_extrap: Tensor</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            h: [batch_size, embed_len_decoder, decoder_embedding]</span></span><br><span class="line"><span class="string">            duplicate_pooling: [embed_len_decoder, decoder_embedding, duplicate_factor]</span></span><br><span class="line"><span class="string">            out_extrap: [batch_size, embed_len_decoder, duplicate_factor]</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(h.shape[<span class="number">1</span>]):</span><br><span class="line">            h_i = h[:, i, :]  <span class="comment"># [batch_size, decoder_embedding]</span></span><br><span class="line">            <span class="keyword">if</span> len(duplicate_pooling.shape) == <span class="number">3</span>:</span><br><span class="line">                w_i = duplicate_pooling[</span><br><span class="line">                    i, :, :]  <span class="comment"># [decoder_embedding, duplicate_factor]</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                w_i = duplicate_pooling</span><br><span class="line">            out_extrap[:, i, :] = torch.matmul(h_i, w_i)</span><br></pre></td></tr></table></figure>
+<p>将输出展平截取即可得到结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">h_out = out_extrap.flatten(<span class="number">1</span>)[:, :self.decoder.num_classes]</span><br></pre></td></tr></table></figure>
 <p>此外，Query2Label中使用了可学习的query，本文认为全连接层可以变换到任意值，所以使用固定query也是可以的，这也使得ML-Decoder能做零样本学习。</p>
 <h3 id="ml-decoder-for-zsl">ML-Decoder for ZSL</h3>
 <p>对于零样本学习，ML-Decoder使用固定query。采用语言模型提取标签语义，得到embedding向量作为输入的query，共享其他参数。作者针对零样本修改了Group-decoding，细节在此就不赘述了。</p>
@@ -403,19 +405,19 @@ g
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/10/10/Query2Label-A-Simple-Transformer-Way-to-Multi-Label-Classification/" rel="bookmark">Query2Label: A Simple Transformer Way to Multi-Label Classification</a></div>
+      <div class="popular-posts-title"><a href="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/" rel="bookmark">Transformer-based Dual Relation Graph for Multi-label Image Recognition</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/" rel="bookmark">Transformer-based Dual Relation Graph for Multi-label Image Recognition</a></div>
+      <div class="popular-posts-title"><a href="/2021/10/10/Query2Label-A-Simple-Transformer-Way-to-Multi-Label-Classification/" rel="bookmark">Query2Label: A Simple Transformer Way to Multi-Label Classification</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/" rel="bookmark">Enhancing Label Correlation Feedback in Multi-Label Text Classification via Multi-Task Learning</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/" rel="bookmark">Hierarchy-Aware T5 with Path-Adaptive Mask Mechanism for Hierarchical Text Classification</a></div>
+      <div class="popular-posts-title"><a href="/2022/02/13/HCL-MTC-Hierarchical-Contrastive-Learning-for-Multi-label-Text-Classification/" rel="bookmark">HCL-MTC: Hierarchical Contrastive Learning for Multi-label Text Classification</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/" rel="bookmark">Hierarchy Decoder is All You Need To Text Classification</a></div>
+      <div class="popular-posts-title"><a href="/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/" rel="bookmark">Hierarchy-Aware T5 with Path-Adaptive Mask Mechanism for Hierarchical Text Classification</a></div>
     </li>
   </ul>
 
@@ -501,7 +503,7 @@ g
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">124k</span>
+    <span title="站点总字数">126k</span>
   </span>
 </div>
 <div class="busuanzi-count">
