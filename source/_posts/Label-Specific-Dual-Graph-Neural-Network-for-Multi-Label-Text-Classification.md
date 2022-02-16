@@ -17,7 +17,8 @@ ACL2021，来自中国科学院大学。提出LDGN，融入类别信息，基于
 
 ## Overview
 
-- pdf: https://aclanthology.org/2021.acl-long.298.pdf
+- paper: <https://aclanthology.org/2021.acl-long.298.pdf>
+- code: <https://github.com/Makwen1995/LDGN_MLTC>
 
 多标签文本分类（MLTC）有许多应用，如情感分析、网页标注等，但如何处理标签之间的复杂关系是一个困难的问题。
 

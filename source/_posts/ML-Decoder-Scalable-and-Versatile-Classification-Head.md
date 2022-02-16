@@ -77,17 +77,32 @@ $$
 ```python
 @torch.jit.script
 class GroupFC(object):
+
     def __init__(self, embed_len_decoder: int):
         self.embed_len_decoder = embed_len_decoder
 
-    def __call__(self, h: torch.Tensor, duplicate_pooling: torch.Tensor, out_extrap: torch.Tensor):
+    def __call__(self, h: Tensor, duplicate_pooling: Tensor,
+                 out_extrap: Tensor):
+        """
+        Args:
+            h: [batch_size, embed_len_decoder, decoder_embedding]
+            duplicate_pooling: [embed_len_decoder, decoder_embedding, duplicate_factor]
+            out_extrap: [batch_size, embed_len_decoder, duplicate_factor]
+        """
         for i in range(h.shape[1]):
-            h_i = h[:, i, :]
-            if len(duplicate_pooling.shape)==3:
-                w_i = duplicate_pooling[i, :, :]
+            h_i = h[:, i, :]  # [batch_size, decoder_embedding]
+            if len(duplicate_pooling.shape) == 3:
+                w_i = duplicate_pooling[
+                    i, :, :]  # [decoder_embedding, duplicate_factor]
             else:
                 w_i = duplicate_pooling
             out_extrap[:, i, :] = torch.matmul(h_i, w_i)
+```
+
+将输出展平截取即可得到结果
+
+```python
+h_out = out_extrap.flatten(1)[:, :self.decoder.num_classes]
 ```
 
 此外，Query2Label中使用了可学习的query，本文认为全连接层可以变换到任意值，所以使用固定query也是可以的，这也使得ML-Decoder能做零样本学习。
