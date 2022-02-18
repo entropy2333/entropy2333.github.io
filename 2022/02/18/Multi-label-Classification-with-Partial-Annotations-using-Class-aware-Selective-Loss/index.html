@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"entropy2333.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="分析了多标签分类中的部分标注问题，设计了Loss函数处理这个问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Multi-label Classification with Partial Annotations using Class-aware Selective Loss">
+<meta property="og:url" content="https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/index.html">
+<meta property="og:site_name" content="entropy2333">
+<meta property="og:description" content="分析了多标签分类中的部分标注问题，设计了Loss函数处理这个问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218142826882.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218135857801.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218140940917.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218151327653.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153013652.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153115301.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153237480.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153446623.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153457307.png">
+<meta property="article:published_time" content="2022-02-18T05:57:22.000Z">
+<meta property="article:modified_time" content="2022-02-18T07:35:29.484Z">
+<meta property="article:author" content="entropy2333">
+<meta property="article:tag" content="Multi-Label">
+<meta property="article:tag" content="Loss">
+<meta property="article:tag" content="CV">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218142826882.png">
+
+
+<link rel="canonical" href="https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/","path":"2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/","title":"Multi-label Classification with Partial Annotations using Class-aware Selective Loss"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Multi-label Classification with Partial Annotations using Class-aware Selective Loss | entropy2333</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">entropy2333</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method"><span class="nav-number">3.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#class-aware-selective-loss"><span class="nav-number">3.1.</span> <span class="nav-text">Class-aware Selective Loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#estimating-the-class-distribution"><span class="nav-number">3.2.</span> <span class="nav-text">Estimating the Class Distribution</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="entropy2333"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">entropy2333</p>
+  <div class="site-description" itemprop="description">Cyber Security, SJTU</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">59</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/entropy2333" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;entropy2333" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://ainevsia.github.io/" title="https:&#x2F;&#x2F;ainevsia.github.io&#x2F;" rel="noopener" target="_blank">ainevsia</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://entropy2333.gitee.io/" title="https:&#x2F;&#x2F;entropy2333.gitee.io" rel="noopener" target="_blank">entropy2333</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://rooki3ray.github.io/" title="https:&#x2F;&#x2F;rooki3ray.github.io" rel="noopener" target="_blank">rooki3ray</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://thomas-li-sjtu.github.io/" title="https:&#x2F;&#x2F;thomas-li-sjtu.github.io" rel="noopener" target="_blank">thomas-li</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://schenk75.github.io/" title="https:&#x2F;&#x2F;schenk75.github.io&#x2F;" rel="noopener" target="_blank">schenk</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/entropy2333" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="entropy2333">
+      <meta itemprop="description" content="Cyber Security, SJTU">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="entropy2333">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Multi-label Classification with Partial Annotations using Class-aware Selective Loss
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-18 13:57:22" itemprop="dateCreated datePublished" datetime="2022-02-18T13:57:22+08:00">2022-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Paper/" itemprop="url" rel="index"><span itemprop="name">Paper</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.9k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>分析了多标签分类中的部分标注问题，设计了Loss函数处理这个问题。</p>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218142826882.png" alt="image-20220218142826882" style="zoom:33%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218135857801.png" alt="image-20220218135857801" style="zoom:33%;"></p>
+<ul>
+<li>paper: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2110.10955v1.pdf" class="uri">https://arxiv.org/pdf/2110.10955v1.pdf</a></li>
+<li>code: <a target="_blank" rel="noopener" href="https://github.com/alibaba-miil/partiallabelingcsl" class="uri">https://github.com/alibaba-miil/partiallabelingcsl</a></li>
+<li>dataset: OpenImages LVIS MS-COCO</li>
+</ul>
+<h2 id="background">Background</h2>
+<p>近年来，对每张图像进行完整标注变得越来越困难。例如OpenImages的训练集有900万张图像，包含9600个类别。在现实的大规模多标签分类任务中，部分标注的数据是不可避免的，如何处理那些未标注的标签是一个问题。</p>
+<p>最简单的方法就是直接忽略未标注的标签，但这样只利用了数据的一部分。将其直接当作负标签也是一种方法，但会引入噪声，并加剧正负样本的不平衡。这两种方法分别对应于下图的b和c。</p>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218140940917.png" alt="image-20220218140940917" style="zoom:33%;"></p>
+<p>OpenImages中“黑色”标签只标注了1688个样本，占全体样本的0.02%，然而这是很可能频繁出现的标签。因此统计数据集中类别的频数往往不能反映真实的标签比例，需要从数据中估计类别的分布。</p>
+<p>本文提出了选择性（Selective）的方法，利用<strong>标签概率</strong>（Label likelihood）和<strong>标签先验</strong>（Label prior）两项判断每个标签的模式（Ignore还是Negative）。为了获得一个可靠的标签先验，还提出了一种估计类别分布的方法。</p>
+<h2 id="method">Method</h2>
+<p>给定部分标注的多标签数据集，类别标签<span class="math inline">\(y_c\in\{-1,0,1\}\)</span>，其中0表示缺失。用<span class="math inline">\(\mathcal{P}_{\mathbf{x}}=\{c|y_c=1\}\)</span>和<span class="math inline">\(\mathcal{N}_{\mathbf{x}}=\{c|y_c=-1\}\)</span>分别表示正负标签，用<span class="math inline">\(\mathcal{U}_{\mathbf{x}}=\{c|y_c=1\}\)</span>表示未标注的类别，通常有<span class="math inline">\(|\mathcal{P}_{\mathbf{x}}\cup \mathcal{P}_{\mathbf{x}}|\ll|\mathcal{U}_{\mathbf{x}}|\)</span>。损失函数的通用形式可以定义如下： <span class="math display">\[
+\mathcal{L}(x) =
+\sum_{c\in\mathcal{P}_{\mathbf{x}}}\mathcal{L}^+(\mathbf{x}) +
+\sum_{c\in\mathcal{N}_{\mathbf{x}}}\mathcal{L}^-(\mathbf{x}) +
+\sum_{c\in\mathcal{U}_{\mathbf{x}}}\mathcal{L}^u(\mathbf{x})
+\]</span> 对于常见的BCE，只考虑标注数据则有<span class="math inline">\(\mathcal{L}^+(\mathbf{x})=\log(p_c)\)</span>，<span class="math inline">\(\mathcal{L}^-(\mathbf{x})=\log(1-p_c)\)</span>，<span class="math inline">\(\mathcal{L}^u(\mathbf{x})=0\)</span>。</p>
+<p>对于Ignore模式，即有<span class="math inline">\(\mathcal{L}^u(\mathbf{x})=0\)</span>；对于Negtive模式，即有<span class="math inline">\(\mathcal{L}^u(\mathbf{x})=\mathcal{L}^-(\mathbf{x})\)</span>。</p>
+<p>本文采用非对称损失ASL（Asymmetric Loss）作为基准，其能够动态关注困难样本同时控制正负样本传播的比例。对于基本的Focal Loss，有 <span class="math display">\[
+\mathcal{L}_F(p_c,\gamma) = (1-p_c)^\gamma\log p_c
+\]</span> 部分非对称损失P-ASL定义为 <span class="math display">\[
+\begin{align}
+\mathcal{L}(x) =
+&amp;\sum_{c\in\mathcal{P}_{\mathbf{x}}}\mathcal{L}_F(p_c, \gamma^+)\\
++&amp;\sum_{c\in\mathcal{N}_{\mathbf{x}}}\mathcal{L}_F(1-p_c,\gamma^-)
++\sum_{c\in\mathcal{U}_{\mathbf{x}}}\omega_c\mathcal{L}_F(1-p_c, \gamma^u)
+\end{align}
+\]</span> 通常设置<span class="math inline">\(\gamma^+&lt;\gamma^-\)</span>，因为正样本更少见。同时有<span class="math inline">\(\gamma^-&lt;\gamma^u\)</span>，因为有标注的负样本更值得信赖。</p>
+<h3 id="class-aware-selective-loss">Class-aware Selective Loss</h3>
+<p>标签概率表示未标注标签<span class="math inline">\(c\)</span>的概率 <span class="math display">\[
+P(y_c=1|\mathbf{x};\mathbf{\theta});\quad\forall c\in\mathcal{U}_{\mathbf{x}}
+\]</span> 高置信度的标签可能出现在图像中，不能将其当作负样本，应该忽略。为此作者选了<span class="math inline">\(K\)</span>个最高概率的标签： <span class="math display">\[
+\Omega_L = \{c\in\mathcal{U}_{\mathbf{x}}|c\in\text{TopK}(\{p_c\})\}
+\]</span> <img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218151327653.png" alt="image-20220218151327653" style="zoom:33%;"></p>
+<p>标签先验可以看作数据中标签的出现频率 <span class="math display">\[
+P(y_c=1);\quad\forall c\in\mathcal{U}_{\mathbf{x}}
+\]</span> 用<span class="math inline">\(\hat{P}_r(c)\)</span>表示先验估计器，我们对于高先验值的标签感兴趣。 <span class="math display">\[
+\Omega_P = \{c\in\mathcal{U}_{\mathbf{x}}|\hat{P}_r(c)&gt;\eta\}
+\]</span> 其中<span class="math inline">\(\eta\in[0,1]\)</span>表示是否忽略的阈值。 <span class="math display">\[
+O_{\text{Ignore}} = \Omega_{L}\cup\Omega_P
+\]</span> 相应地，对应的权重定义为 <span class="math display">\[
+\omega_c = \begin{cases}
+0 &amp; c\in\Omega_{\textrm{Ignore}} \\
+1 &amp; c\notin\Omega_{\textrm{Ignore}}
+\end{cases}
+\]</span></p>
+<h3 id="estimating-the-class-distribution">Estimating the Class Distribution</h3>
+<p>在MS-COCO中，89%的类别出现在少于5%的样本中。标签先验可以通过下式估计 <span class="math display">\[
+P(y_c=1;\theta) = \frac{1}{|\mathcal{X}|}\sum_{\mathbf{x}\in\mathcal{X}}P(y_c=1|\mathbf{x};\mathbf{\theta})
+\]</span> 在Ignore模式下训练模型，此时则有<span class="math inline">\(\hat{P}_r(c) = P(y_c=1;\mathbf{\theta}_{\text{Ignore}})\)</span>。</p>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153013652.png" alt="image-20220218153013652" style="zoom: 33%;"></p>
+<h2 id="experiment">Experiment</h2>
+<p>采用完整标注的MS-COCO数据集，模拟部分标注进行实验。部分标注的模式有两种：</p>
+<ol type="1">
+<li>Fixed per class (FPC) 对于每个类别随机采样固定数目<span class="math inline">\(N_s\)</span>的正负标注，丢弃其余标注。</li>
+<li>Random per annotation (RPA) 按概率<span class="math inline">\(p\)</span>删除每个标注。</li>
+</ol>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153115301.png" alt="image-20220218153115301" style="zoom: 33%;"></p>
+<p>作者比较了估计的标签分布与实际分布的相似度，可以看出Ignore模式更适合。</p>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153237480.png" alt="image-20220218153237480" style="zoom:33%;"></p>
+<p>公开benchmark选择了OpenImages和LVIS，取得了SOTA结果。</p>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153446623.png" alt="image-20220218153446623" style="zoom:33%;"></p>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153457307.png" alt="image-20220218153457307" style="zoom:33%;"></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/01/25/Balancing-Methods-for-Multi-label-Text-Classification-with-Long-Tailed-Class-Distribution/" rel="bookmark">Balancing Methods for Multi-label Text Classification with Long-Tailed Class Distribution</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/" rel="bookmark">ML-Decoder: Scalable and Versatile Classification Head</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/10/10/Query2Label-A-Simple-Transformer-Way-to-Multi-Label-Classification/" rel="bookmark">Query2Label: A Simple Transformer Way to Multi-Label Classification</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/" rel="bookmark">Transformer-based Dual Relation Graph for Multi-label Image Recognition</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/" rel="bookmark">A novel reasoning mechanism for multi-label text classification</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="entropy2333 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>entropy2333
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/" title="Multi-label Classification with Partial Annotations using Class-aware Selective Loss">https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Multi-Label/" rel="tag"># Multi-Label</a>
+              <a href="/tags/Loss/" rel="tag"># Loss</a>
+              <a href="/tags/CV/" rel="tag"># CV</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/13/HCL-MTC-Hierarchical-Contrastive-Learning-for-Multi-label-Text-Classification/" rel="prev" title="HCL-MTC: Hierarchical Contrastive Learning for Multi-label Text Classification">
+                  <i class="fa fa-chevron-left"></i> HCL-MTC: Hierarchical Contrastive Learning for Multi-label Text Classification
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">entropy2333</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">129k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
+<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>

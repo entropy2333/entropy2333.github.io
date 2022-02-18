@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://entropy2333.github.io/"/>
-  <updated>2022-02-16T05:49:44.189Z</updated>
+  <updated>2022-02-18T07:35:29.484Z</updated>
   <id>https://entropy2333.github.io/</id>
   
   <author>
@@ -17,11 +17,39 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Multi-label Classification with Partial Annotations using Class-aware Selective Loss</title>
+    <link href="https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/"/>
+    <id>https://entropy2333.github.io/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/</id>
+    <published>2022-02-18T05:57:22.000Z</published>
+    <updated>2022-02-18T07:35:29.484Z</updated>
+    
+    <content type="html"><![CDATA[<p>分析了多标签分类中的部分标注问题，设计了Loss函数处理这个问题。</p><p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218142826882.png" alt="image-20220218142826882" style="zoom:33%;"></p><a id="more"></a><h2 id="overview">Overview</h2><p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218135857801.png" alt="image-20220218135857801" style="zoom:33%;"></p><ul><li>paper: <a href="https://arxiv.org/pdf/2110.10955v1.pdf" class="uri">https://arxiv.org/pdf/2110.10955v1.pdf</a></li><li>code: <a href="https://github.com/alibaba-miil/partiallabelingcsl" class="uri">https://github.com/alibaba-miil/partiallabelingcsl</a></li><li>dataset: OpenImages LVIS MS-COCO</li></ul><h2 id="background">Background</h2><p>近年来，对每张图像进行完整标注变得越来越困难。例如OpenImages的训练集有900万张图像，包含9600个类别。在现实的大规模多标签分类任务中，部分标注的数据是不可避免的，如何处理那些未标注的标签是一个问题。</p><p>最简单的方法就是直接忽略未标注的标签，但这样只利用了数据的一部分。将其直接当作负标签也是一种方法，但会引入噪声，并加剧正负样本的不平衡。这两种方法分别对应于下图的b和c。</p><p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218140940917.png" alt="image-20220218140940917" style="zoom:33%;"></p><p>OpenImages中“黑色”标签只标注了1688个样本，占全体样本的0.02%，然而这是很可能频繁出现的标签。因此统计数据集中类别的频数往往不能反映真实的标签比例，需要从数据中估计类别的分布。</p><p>本文提出了选择性（Selective）的方法，利用<strong>标签概率</strong>（Label likelihood）和<strong>标签先验</strong>（Label prior）两项判断每个标签的模式（Ignore还是Negative）。为了获得一个可靠的标签先验，还提出了一种估计类别分布的方法。</p><h2 id="method">Method</h2><p>给定部分标注的多标签数据集，类别标签<span class="math inline">\(y_c\in\{-1,0,1\}\)</span>，其中0表示缺失。用<span class="math inline">\(\mathcal{P}_{\mathbf{x}}=\{c|y_c=1\}\)</span>和<span class="math inline">\(\mathcal{N}_{\mathbf{x}}=\{c|y_c=-1\}\)</span>分别表示正负标签，用<span class="math inline">\(\mathcal{U}_{\mathbf{x}}=\{c|y_c=1\}\)</span>表示未标注的类别，通常有<span class="math inline">\(|\mathcal{P}_{\mathbf{x}}\cup \mathcal{P}_{\mathbf{x}}|\ll|\mathcal{U}_{\mathbf{x}}|\)</span>。损失函数的通用形式可以定义如下： <span class="math display">\[\mathcal{L}(x) =\sum_{c\in\mathcal{P}_{\mathbf{x}}}\mathcal{L}^+(\mathbf{x}) +\sum_{c\in\mathcal{N}_{\mathbf{x}}}\mathcal{L}^-(\mathbf{x}) +\sum_{c\in\mathcal{U}_{\mathbf{x}}}\mathcal{L}^u(\mathbf{x})\]</span> 对于常见的BCE，只考虑标注数据则有<span class="math inline">\(\mathcal{L}^+(\mathbf{x})=\log(p_c)\)</span>，<span class="math inline">\(\mathcal{L}^-(\mathbf{x})=\log(1-p_c)\)</span>，<span class="math inline">\(\mathcal{L}^u(\mathbf{x})=0\)</span>。</p><p>对于Ignore模式，即有<span class="math inline">\(\mathcal{L}^u(\mathbf{x})=0\)</span>；对于Negtive模式，即有<span class="math inline">\(\mathcal{L}^u(\mathbf{x})=\mathcal{L}^-(\mathbf{x})\)</span>。</p><p>本文采用非对称损失ASL（Asymmetric Loss）作为基准，其能够动态关注困难样本同时控制正负样本传播的比例。对于基本的Focal Loss，有 <span class="math display">\[\mathcal{L}_F(p_c,\gamma) = (1-p_c)^\gamma\log p_c\]</span> 部分非对称损失P-ASL定义为 <span class="math display">\[\begin{align}\mathcal{L}(x) =&amp;\sum_{c\in\mathcal{P}_{\mathbf{x}}}\mathcal{L}_F(p_c, \gamma^+)\\+&amp;\sum_{c\in\mathcal{N}_{\mathbf{x}}}\mathcal{L}_F(1-p_c,\gamma^-)+\sum_{c\in\mathcal{U}_{\mathbf{x}}}\omega_c\mathcal{L}_F(1-p_c, \gamma^u)\end{align}\]</span> 通常设置<span class="math inline">\(\gamma^+&lt;\gamma^-\)</span>，因为正样本更少见。同时有<span class="math inline">\(\gamma^-&lt;\gamma^u\)</span>，因为有标注的负样本更值得信赖。</p><h3 id="class-aware-selective-loss">Class-aware Selective Loss</h3><p>标签概率表示未标注标签<span class="math inline">\(c\)</span>的概率 <span class="math display">\[P(y_c=1|\mathbf{x};\mathbf{\theta});\quad\forall c\in\mathcal{U}_{\mathbf{x}}\]</span> 高置信度的标签可能出现在图像中，不能将其当作负样本，应该忽略。为此作者选了<span class="math inline">\(K\)</span>个最高概率的标签： <span class="math display">\[\Omega_L = \{c\in\mathcal{U}_{\mathbf{x}}|c\in\text{TopK}(\{p_c\})\}\]</span> <img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218151327653.png" alt="image-20220218151327653" style="zoom:33%;"></p><p>标签先验可以看作数据中标签的出现频率 <span class="math display">\[P(y_c=1);\quad\forall c\in\mathcal{U}_{\mathbf{x}}\]</span> 用<span class="math inline">\(\hat{P}_r(c)\)</span>表示先验估计器，我们对于高先验值的标签感兴趣。 <span class="math display">\[\Omega_P = \{c\in\mathcal{U}_{\mathbf{x}}|\hat{P}_r(c)&gt;\eta\}\]</span> 其中<span class="math inline">\(\eta\in[0,1]\)</span>表示是否忽略的阈值。 <span class="math display">\[O_{\text{Ignore}} = \Omega_{L}\cup\Omega_P\]</span> 相应地，对应的权重定义为 <span class="math display">\[\omega_c = \begin{cases}0 &amp; c\in\Omega_{\textrm{Ignore}} \\1 &amp; c\notin\Omega_{\textrm{Ignore}}\end{cases}\]</span></p><h3 id="estimating-the-class-distribution">Estimating the Class Distribution</h3><p>在MS-COCO中，89%的类别出现在少于5%的样本中。标签先验可以通过下式估计 <span class="math display">\[P(y_c=1;\theta) = \frac{1}{|\mathcal{X}|}\sum_{\mathbf{x}\in\mathcal{X}}P(y_c=1|\mathbf{x};\mathbf{\theta})\]</span> 在Ignore模式下训练模型，此时则有<span class="math inline">\(\hat{P}_r(c) = P(y_c=1;\mathbf{\theta}_{\text{Ignore}})\)</span>。</p><p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153013652.png" alt="image-20220218153013652" style="zoom: 33%;"></p><h2 id="experiment">Experiment</h2><p>采用完整标注的MS-COCO数据集，模拟部分标注进行实验。部分标注的模式有两种：</p><ol type="1"><li>Fixed per class (FPC) 对于每个类别随机采样固定数目<span class="math inline">\(N_s\)</span>的正负标注，丢弃其余标注。</li><li>Random per annotation (RPA) 按概率<span class="math inline">\(p\)</span>删除每个标注。</li></ol><p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153115301.png" alt="image-20220218153115301" style="zoom: 33%;"></p><p>作者比较了估计的标签分布与实际分布的相似度，可以看出Ignore模式更适合。</p><p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153237480.png" alt="image-20220218153237480" style="zoom:33%;"></p><p>公开benchmark选择了OpenImages和LVIS，取得了SOTA结果。</p><p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153446623.png" alt="image-20220218153446623" style="zoom:33%;"></p><p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153457307.png" alt="image-20220218153457307" style="zoom:33%;"></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;分析了多标签分类中的部分标注问题，设计了Loss函数处理这个问题。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218142826882.png&quot; alt=&quot;image-20220218142826882&quot; style=&quot;zoom:33%;&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
+    
+    
+      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+      <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
+    
+      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
+    
+  </entry>
+  
+  <entry>
     <title>HCL-MTC: Hierarchical Contrastive Learning for Multi-label Text Classification</title>
     <link href="https://entropy2333.github.io/2022/02/13/HCL-MTC-Hierarchical-Contrastive-Learning-for-Multi-label-Text-Classification/"/>
     <id>https://entropy2333.github.io/2022/02/13/HCL-MTC-Hierarchical-Contrastive-Learning-for-Multi-label-Text-Classification/</id>
     <published>2022-02-13T10:50:01.000Z</published>
-    <updated>2022-02-16T05:49:44.189Z</updated>
+    <updated>2022-02-18T06:21:35.845Z</updated>
     
     <content type="html"><![CDATA[<p>ACL ARR 2022，提出层次对比学习，学习标签间的区别信息。</p><p><img src="/2022/02/13/HCL-MTC-Hierarchical-Contrastive-Learning-for-Multi-label-Text-Classification/image-20220216130823448.png" alt="image-20220216130823448" style="zoom: 33%;"></p><a id="more"></a><h2 id="overview">Overview</h2><ul><li>paper: <a href="https://openreview.net/pdf?id=R1BifFIieBP" class="uri">https://openreview.net/pdf?id=R1BifFIieBP</a></li><li>code:</li><li>dataset: RCV1-V2 Wos</li></ul><h2 id="background">Background</h2><p>MLTC任务可以分为两种方法：直接从文本信息预测以及从文本标签的混合信息中预测。前者忽略了标签间的信息，后者可以学习标签的层次信息。</p><p>作者认为现有方法没有充分利用标签信息，只考虑了相关信息（correlative information），忽略标签的区别信息（distinctive information）。</p><p><img src="/2022/02/13/HCL-MTC-Hierarchical-Contrastive-Learning-for-Multi-label-Text-Classification/image-20220216125742229.png" alt="image-20220216125742229" style="zoom: 33%;"></p><p>例如上图中的<span class="math inline">\(s_{23}\)</span>就是区别信息（同层节点之间），<span class="math inline">\(s_{26}\)</span>表示相关信息（父子节点之间）。</p><h2 id="method">Method</h2><p>本文选用了Bi-GRU作为文本编码器，采用CNN提取N-Gram特征。对于文本<span class="math inline">\(T=\{x_1,x_2,\cdots,x_n\}\)</span>，卷积核输出特征<span class="math inline">\(O=\{P^1,P^2,\cdots,P^K\}\)</span>。</p><p>之后接一个线性Transformer（全连接层） <span class="math display">\[V=Reshape(MO)\]</span> 其中<span class="math inline">\(M\in\mathbb{R}^{d_w\times d_c}\)</span>，<span class="math inline">\(O\in\mathbb{R}^{d_c}\)</span>为文本特征，<span class="math inline">\(V\in\mathbb{R}^{m\times d_n}\)</span>。</p><p>本文采用了HiAGM中的Hierarchy-GCN框架，节点可以聚合父子节点的信息。对于<span class="math inline">\(\mathcal{G}=(\mathcal{V},\mathcal{E})\)</span>，<span class="math inline">\(v_k\in\mathbb{R}^{d_n}\)</span>表示节点k的特征，<span class="math inline">\(N(k)=\{n_k,child(k),parent(k)\}\)</span>表示节点的邻居。节点k的隐层状态通过下式计算： <span class="math display">\[\begin{align}a_{j,k} &amp;= \left|\frac{v_j\cdot v_k}{\lVert v_j\rVert\cdot \lVert v_k\rVert}\right|, \\\mu_{j,k} &amp;= a_{j,k}v_j + b_l^k, \\g_{j,k} &amp;= \sigma(W_g^{d(j,k)}v_j+b_g^k), \\h_k &amp;= ReLU(\sum_{j\in N(k)}g_{j,k}\cdot \mu_{j,k})\end{align}\]</span> 其中<span class="math inline">\(W_g^{d(j,k)}\in\mathbb{R}^n\)</span>表示节点j到节点k的门控权重。</p><p>作者定义了采样层次对比损失（Sampling Hierarchical Contrastive Loss），用<span class="math inline">\(s(v_{p_i}, v_{p_j})\)</span>表示父节点之间的相似度，用<span class="math inline">\(s(v_{p_i}, v_{c_k})\)</span>表示父子节点的相似度。</p><p>在标签树中，父子标签对能够双向传递信息，但父节点之间不能传递信息。从而优化目标是最大化区别信息<span class="math inline">\(s(v_{p_i}, v_{p_j})\)</span>，最小化相关信息<span class="math inline">\(s(v_{p_i}, v_{c_k})\)</span>，损失函数定义如下 <span class="math display">\[\begin{align}&amp;s(v_{p_i}, v_{p_j}) = \left|\frac{v_{p_i}\cdot v_{p_j}}{\lVert v_{p_i}\rVert\cdot \lVert v_{p_j}\rVert}\right| \\&amp;s(v_{p_i}, v_{c_k}) = \left|\frac{v_{p_i}\cdot v_{c_k}}{\lVert v_{p_i}\rVert\cdot \lVert v_{c_k}\rVert}\right| \\&amp;L_d = \sum_{p_i\in\mathcal{V}}\sum_{p_j\in\mathcal{V}}\sum_{c_k\in child(i)}\exp(s(v_{p_i}, v_{p_j}) - s(v_{p_i}, v_{c_k}))\end{align}\]</span> 因为枚举所有节点对时间代价大，为此需要采样，每一层只随机选取两个父节点和一个子节点参与计算。</p><p>最终的损失函数是BCE、递归正则化损失和采样层次距离损失的加权。</p><blockquote><p>Recursive Regularization for Large-scale Classification with Hierarchical and Graphical Dependencies, KDD 2013 <a href="http://nyc.lti.cs.cmu.edu/yiming/Publications/gopal-kdd13.pdf">[paper]</a></p></blockquote><p><span class="math display">\[\begin{align}L_c &amp;= -\sum_{i=1}^m[y_i\log(y_i&#39;)+(1-y_i)\log(1-y_i&#39;)] \\L_r &amp;= \sum_{i\in\mathcal{V}}\sum_{j\in child(i)}\frac12\lVert w_i-w_j\rVert^2 \\L &amp;= L_c + \lambda_1L_r + \lambda_2L_d\end{align}\]</span></p><h2 id="experiment">Experiment</h2><p>选择RCV1-V2和WoS数据集。</p><p><img src="/2022/02/13/HCL-MTC-Hierarchical-Contrastive-Learning-for-Multi-label-Text-Classification/image-20220216134723394.png" alt="image-20220216134723394" style="zoom:33%;"></p><p><img src="/2022/02/13/HCL-MTC-Hierarchical-Contrastive-Learning-for-Multi-label-Text-Classification/image-20220216134756726.png" alt="image-20220216134756726" style="zoom:33%;"></p><p><img src="/2022/02/13/HCL-MTC-Hierarchical-Contrastive-Learning-for-Multi-label-Text-Classification/image-20220216134832562.png" alt="image-20220216134832562" style="zoom:33%;"></p>]]></content>
     
@@ -201,9 +229,9 @@
     
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
-      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
-    
       <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
+    
+      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
   </entry>
   
@@ -313,9 +341,9 @@
     
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
-      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
-    
       <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
+    
+      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
   </entry>
   
@@ -512,33 +540,7 @@
     
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
-      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
-    
       <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Lawformer: A Pre-trained Language Model for Chinese Legal Long Documents</title>
-    <link href="https://entropy2333.github.io/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/"/>
-    <id>https://entropy2333.github.io/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/</id>
-    <published>2021-08-25T07:02:46.000Z</published>
-    <updated>2022-01-23T06:58:39.635Z</updated>
-    
-    <content type="html"><![CDATA[<p>来自清华刘知远老师组，release了针对法律长文件的预训练语言模型。</p><p><img src="/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/image-20210825160718281.png" alt="image-20210825160718281" style="zoom: 67%;"></p><a id="more"></a><h2 id="overview">Overview</h2><ul><li>code: https://github.com/thunlp/LegalPLMs</li><li>arxiv: https://arxiv.org/pdf/2105.03887v1.pdf</li></ul><h2 id="background">Background</h2><p>法律领域有许多长文件，刑事案件的平均长度为1260.2，远远超过了主流预训练模型的最大长度（BERT、RoBerta等）。如果对于这样长的序列采用注意力机制，会带来很大的计算复杂度，也很容易爆显存。</p><p>本文提出了Lawformer模型，在大规模的中文法律长文本上预训练得到。Lawformer基于Longformer，可以处理上千个token。并且Lawformer并没有采用标准的self-attention，而是结合局部滑窗和全局attention机制来捕获长程依赖。</p><h3 id="contribution">Contribution</h3><ul><li>发布了第一个中文法律预训练模型Lawformer，可以处理上千个字符的法律长文本。</li><li>在典型的LegalAI任务上评估了Lawformer，并为刑事和民事案件提出了一个新的法律诉讼判决数据集。</li><li>大量实验结果表明，Lawformer在长文本任务上能取得很好的表现。对于短文本，在法律领域也可以媲美RoBerta。</li></ul><h2 id="approach">Approach</h2><p>采用Longformer作为编码器，其结合了三种注意力机制来编码长序列：</p><ul><li>Sliding Window attention<ul><li>每个token只计算周围w/2的的attention，随着层数增加，全局信息也可以被整合进隐层表示。</li></ul></li><li>Dilated Sliding Window Attention<ul><li>类似于dilated CNN，窗口增大但之间有间隔。在多头注意力中，间隔可以不同，可以促进模型性能。</li></ul></li><li>Global Attention<ul><li>对于选定的token，关注整个序列产生隐层表示。</li></ul></li></ul><h3 id="data-processing">Data Processing</h3><p>从中国裁判文书网上搜集了千万份的法律文书，只保留了刑事和民事案件。将每份文书分为四个部分：当事人信息、事实描述、法院意见和判决结果，只保留了事实描述长于50的文书。</p><p><img src="/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/image-20210825161233449.png" alt="image-20210825161233449" style="zoom: 80%;"></p><h3 id="pre-training-details">Pre-training Details</h3><p>基于RoBERTa-wwm-ext的checkpoint训练，以MLM为任务。学习率为5e-5，序列长度4096，batch_size为32。为充分利用长序列，将一些短文书拼接。优化器为Adam，模型采用8块32G V100训练。</p><h2 id="experiment">Experiment</h2><p>选了BERT、RoBERTa和Legal-RoBERTa作为基线，在多个法律任务上进行比较，包括判决预测、案例检索、阅读理解和问答。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;来自清华刘知远老师组，release了针对法律长文件的预训练语言模型。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/2021/08/25/Lawformer-A-Pre-trained-Language-Model-for-Chinese-Legal-Long-Documents/image-20210825160718281.png&quot; alt=&quot;image-20210825160718281&quot; style=&quot;zoom: 67%;&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
-    
-    
-      <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
     
       <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
