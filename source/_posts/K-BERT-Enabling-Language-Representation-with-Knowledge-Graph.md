@@ -4,19 +4,19 @@ date: 2021-02-25 00:32:01
 tags:
 - NLP
 - KG
-- AAAI
+- Transformer
 category:
 - Paper
 ---
 
-介绍K-BERT模型（AAAI 2020）
+AAAI 2020, 介绍K-BERT模型。
 
 <!--more-->
 
 ## 概述
 
-- arxiv：https://arxiv.org/abs/1909.07606v1
-- code：https://github.com/autoliuweijie/K-BERT
+- arxiv：<https://arxiv.org/abs/1909.07606v1>
+- code：<https://github.com/autoliuweijie/K-BERT>
 
 ## 细节
 

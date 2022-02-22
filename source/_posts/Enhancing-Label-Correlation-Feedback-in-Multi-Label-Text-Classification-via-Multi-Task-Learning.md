@@ -36,6 +36,10 @@ ACL Findings 2021，使用多任务学习加强标签相关性的反馈，设计
 - 标签对共现预测PLCP：通过两两组合，判断标签是否相关，捕获二阶相关性。
 - 条件标签共现预测CLCP：给定部分相关标签集合，预测其他位置标签的相关性，可以捕获高阶相关性。
 
+> 除去多任务的部分，模型结构和CORE一致。
+>
+> Correlation-Guided Representation for Multi-Label Text Classification, IJCAI 2021. [[paper]](https://www.ijcai.org/proceedings/2021/0463.pdf)
+
 ## Method
 
 ### Document-Label Joint Embedding (JE)

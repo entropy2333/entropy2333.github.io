@@ -4,7 +4,7 @@ date: 2021-02-27 12:52:04
 tags:
 - NLP
 - LSTM
-- ACL
+- NER
 category:
 - Paper
 ---
