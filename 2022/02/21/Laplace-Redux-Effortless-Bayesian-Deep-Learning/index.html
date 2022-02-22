@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"entropy2333.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="NIPS 2021，拉普拉斯近似（Laplacian Approximation）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Laplace Redux -- Effortless Bayesian Deep Learning">
+<meta property="og:url" content="https://entropy2333.github.io/2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/index.html">
+<meta property="og:site_name" content="entropy2333">
+<meta property="og:description" content="NIPS 2021，拉普拉斯近似（Laplacian Approximation）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/image-20220221150455582.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/image-20220222101329285.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/image-20220222101713332.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/image-20220222103811412.png">
+<meta property="article:published_time" content="2022-02-21T07:04:11.000Z">
+<meta property="article:modified_time" content="2022-02-22T03:14:42.934Z">
+<meta property="article:author" content="entropy2333">
+<meta property="article:tag" content="Bayesian">
+<meta property="article:tag" content="Laplace">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://entropy2333.github.io/2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/image-20220221150455582.png">
+
+
+<link rel="canonical" href="https://entropy2333.github.io/2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://entropy2333.github.io/2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/","path":"2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/","title":"Laplace Redux -- Effortless Bayesian Deep Learning"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Laplace Redux -- Effortless Bayesian Deep Learning | entropy2333</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">entropy2333</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method"><span class="nav-number">3.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#laplace-approximation-in-deep-learning"><span class="nav-number">3.1.</span> <span class="nav-text">Laplace Approximation in Deep Learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#four-components-of-scalable-laplace-approximation"><span class="nav-number">3.2.</span> <span class="nav-text">Four Components of Scalable Laplace Approximation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#laplace-a-toolkit-for-deep-laplace-approximation"><span class="nav-number">3.3.</span> <span class="nav-text">laplace: A Toolkit for Deep Laplace Approximation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experiments"><span class="nav-number">4.</span> <span class="nav-text">Experiments</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="entropy2333"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">entropy2333</p>
+  <div class="site-description" itemprop="description">Cyber Security, SJTU</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">59</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/entropy2333" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;entropy2333" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://ainevsia.github.io/" title="https:&#x2F;&#x2F;ainevsia.github.io&#x2F;" rel="noopener" target="_blank">ainevsia</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://entropy2333.gitee.io/" title="https:&#x2F;&#x2F;entropy2333.gitee.io" rel="noopener" target="_blank">entropy2333</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://rooki3ray.github.io/" title="https:&#x2F;&#x2F;rooki3ray.github.io" rel="noopener" target="_blank">rooki3ray</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://thomas-li-sjtu.github.io/" title="https:&#x2F;&#x2F;thomas-li-sjtu.github.io" rel="noopener" target="_blank">thomas-li</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://schenk75.github.io/" title="https:&#x2F;&#x2F;schenk75.github.io&#x2F;" rel="noopener" target="_blank">schenk</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/entropy2333" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="entropy2333">
+      <meta itemprop="description" content="Cyber Security, SJTU">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="entropy2333">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Laplace Redux -- Effortless Bayesian Deep Learning
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-21 15:04:11" itemprop="dateCreated datePublished" datetime="2022-02-21T15:04:11+08:00">2022-02-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Paper/" itemprop="url" rel="index"><span itemprop="name">Paper</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.6k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>NIPS 2021，拉普拉斯近似（Laplacian Approximation）。</p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/image-20220221150455582.png" alt="image-20220221150455582" style="zoom:33%;"></p>
+<ul>
+<li>paper: <a target="_blank" rel="noopener" href="https://proceedings.neurips.cc//paper/2021/file/a7c9585703d275249f30a088cebba0ad-Paper.pdf" class="uri">https://proceedings.neurips.cc//paper/2021/file/a7c9585703d275249f30a088cebba0ad-Paper.pdf</a></li>
+<li>library: <a target="_blank" rel="noopener" href="https://github.com/AlexImmer/Laplace" class="uri">https://github.com/AlexImmer/Laplace</a></li>
+<li>experiment: <a target="_blank" rel="noopener" href="https://github.com/runame/laplace-redux" class="uri">https://github.com/runame/laplace-redux</a></li>
+</ul>
+<h2 id="background">Background</h2>
+<p>现代神经网络有几个缺点</p>
+<ul>
+<li>校准能力差，过度自信（overconfidence）。</li>
+<li>持续训练时对先前任务的灾难性遗忘（catastrophic forgetting）。</li>
+<li>选择合适的网络架构和超参数很困难。</li>
+</ul>
+<p>贝叶斯模型为解决这些问题，采取了如下措施：</p>
+<ul>
+<li>给模型配备鲁棒的不确定估计。</li>
+<li>捕获过去的信息，使得模型能够持续学习。</li>
+<li>通过在数据拟合和模型复杂度间寻找最优的trade-off，实现自动的模型选择。</li>
+</ul>
+<blockquote>
+<p>贝叶斯神经网络介绍：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/81170602" class="uri">https://zhuanlan.zhihu.com/p/81170602</a></p>
+</blockquote>
+<p>但是贝叶斯神经网络并没有投入实施，主要是因为其难以实现和调参，训练代价大，很难scale到现代的模型和数据集。</p>
+<p>本文认为，拉普拉斯近似（Laplace Approximation，LA）是贝叶斯深度学习中一种简单高效，同时有竞争力的近似方法。</p>
+<ul>
+<li>本文率先调研了深度学习中LA的发展，并展现了可扩展且实用的LA的关键要素。</li>
+<li>提供了基于Pytorch的LA库laplace，实现了大量LA变种。</li>
+<li>使用laplace库进行了大量实验，展现了LA的竞争力。</li>
+</ul>
+<h2 id="method">Method</h2>
+<h3 id="laplace-approximation-in-deep-learning">Laplace Approximation in Deep Learning</h3>
+<p>深度学习中，LA有两种方式使用：</p>
+<ol type="1">
+<li>采用LA近似模型的后验分布，使得模型能够概率预测。</li>
+<li>使用LA近似model evidence，从而可以模型选择（调超参数）。</li>
+</ol>
+<p>给定数据集<span class="math inline">\(\mathcal{D} := \{ (x_n \in \mathbb{R}^M, y_n \in \mathbb{R}^C)\}\)</span>，参数为<span class="math inline">\(\theta\in\mathbb{R}^D\)</span>，<span class="math inline">\(L\)</span>层的神经网络<span class="math inline">\(f_\theta:\mathbb{R}^M\rightarrow \mathbb{R}^C\)</span>旨在最小化经验风险，通常可以分解为经验损失项<span class="math inline">\(\ell(x_n,y_n;\theta)\)</span>和正则项<span class="math inline">\(r(\theta)\)</span>的和。 <span class="math display">\[
+\theta_{MAP} = \arg\min_{\theta\in\mathbb{R}^D}\mathcal{L}(D;\theta)
+= \arg\min_{\theta\in\mathbb{R}^D}\left(r(\theta) + \sum_{n=1}^N\ell(x_n,y_n;\theta)\right)
+\]</span> 从贝叶斯的角度来看，这些项可以看作独立同分布的对数似然（log-likelihood）和对数先验（log-prior），此时<span class="math inline">\(\theta_{MAP}\)</span>事实上就是最大后验估计（Maximum A Posteriori, MAP）。 <span class="math display">\[
+\ell(x_n,y_n;\theta) = -\log p(y_n|f_\theta(x_n))\qquad \text{and} 
+\qquad r(\theta) = -\log p(\theta)
+\]</span> 广泛使用的正则方法<span class="math inline">\(r(\theta)= \frac{1}{2} \gamma^{-2}\|\theta\|^2\)</span>（也被称为权重衰减），对应一个中心的高斯先验<span class="math inline">\(p(\theta)=\mathcal{N}(\theta;0,\gamma^2 I)\)</span>。训练损失取负后的指数<span class="math inline">\(\exp(-\mathcal{L}(\mathcal{D};\theta))\)</span>就相当于未归一化的后验，归一化后可得 <span class="math display">\[
+\begin{equation}
+p(\theta \mid \mathcal{D}) = \tfrac{1}{Z} \,p(\mathcal{D} \mid \theta) \, p(\theta) = \tfrac{1}{Z}\exp(-\mathcal{L}(\mathcal{D};\theta)), \qquad Z:= \textstyle\int p(\mathcal{D} \mid \theta) \, p(\theta) \,d\theta
+\end{equation}
+\]</span> 拉普拉斯近似用一个<span class="math inline">\(\mathcal{L}\)</span>的二阶展开去构造对<span class="math inline">\(p(\theta|\mathcal{D})\)</span>的高斯近似，因此考虑 <span class="math display">\[
+\begin{equation}
+    \mathcal{L}(\mathcal{D}; \theta) \approx \mathcal{L}(\mathcal{D}; \theta_\text{MAP}) + \tfrac{1}{2} (\theta - \theta_\text{MAP})^\intercal \left( \nabla^2 _\theta \mathcal{L}(\mathcal{D}; \theta) \vert_{\theta_\text{MAP}} \right)(\theta - \theta_\text{MAP}) ,
+\end{equation}
+\]</span> 其中一阶项在<span class="math inline">\(\theta_{\text{MAP}}\)</span>处消失，从而可以将其看作<strong>高斯分布</strong>，即拉普拉斯后验近似： <span class="math display">\[
+\begin{equation}
+    p(\theta \mid \mathcal{D}) \approx \mathcal{N}(\theta; \theta_\text{MAP}, \varSigma) \qquad\text{with}\qquad \varSigma := -\left( \nabla^2_\theta \mathcal{L}(\mathcal{D};\theta) \vert_{\theta_\text{MAP}} \right)^{-1}.
+\end{equation}
+\]</span> 归一化常数<span class="math inline">\(Z\)</span>（通常被称为marginal likelihood或evidence）可用于模型选择，可以通过下式近似： <span class="math display">\[
+Z \approx \exp(-\mathcal{L}(\mathcal{D};\theta_\text{MAP})) \, (2\pi)^{D/2} \, (\det \varSigma)^{1/2}
+\]</span> <span class="math inline">\(\theta_{\text{MAP}}\)</span>可以通过标准的深度学习得到，唯一的额外步骤就是计算Hessian矩阵在<span class="math inline">\(\theta_{\text{MAP}}\)</span>处的逆。因此在得到预训练模型后，可以离线计算LA。</p>
+<p>一般来说，具有两次微分后对数密度的先验都可以使用。由于权重衰减的广泛使用，本文假设先验是零均值的高斯分布<span class="math inline">\(p(\theta)=\mathcal{N}(\theta;0,\gamma^2 I)\)</span>。从而Hessian矩阵取决于对数先验的正则器，以及复杂的对数似然。 <span class="math display">\[
+\begin{equation}
+    \nabla^2_\theta \mathcal{L}(\mathcal{D};\theta) \vert_{\theta_\text{MAP}} = -\gamma^{-2} I - \textstyle\sum_{n=1}^N \nabla^2_\theta \log p(y_n \mid f_\theta(x_n)) \vert_{\theta_\text{MAP}}.
+\end{equation}
+\]</span> Hessian矩阵之所以没有简单实现，就是因为式中第二项随着网络参数的规模平方增长。</p>
+<h3 id="four-components-of-scalable-laplace-approximation">Four Components of Scalable Laplace Approximation</h3>
+<p><img src="/2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/image-20220222101329285.png" alt="image-20220222101329285" style="zoom: 50%;"></p>
+<h3 id="laplace-a-toolkit-for-deep-laplace-approximation">laplace: A Toolkit for Deep Laplace Approximation</h3>
+<p><img src="/2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/image-20220222101713332.png" alt="image-20220222101713332" style="zoom: 33%;"></p>
+<h2 id="experiments">Experiments</h2>
+<p>本文的实验分为四个部分</p>
+<ol type="1">
+<li>寻找LA的最佳设计选择。</li>
+<li>在in-distribution、dataset-shift和out-of-distribution三种设置下，验证LA相比于贝叶斯baseline的竞争力。</li>
+<li>展现LA适用于各种数据模态和网络架构（包括transformer），这种情况下贝叶斯方法难以使用。</li>
+<li>展示LA可以作为持续学习的一个易用baseline。</li>
+</ol>
+<p><img src="/2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/image-20220222103811412.png" alt="image-20220222103811412" style="zoom: 33%;"></p>
+<p>实验结果表明，在CIFAR-10有数据增强的情况下，后处理的LA表现更好。</p>
+<p>laplace中默认设置是一个后处理KFAC最后一层的LA，采用GGN近似Hessian矩阵。这适用于所有最后一层为全连接层的网络架构，因此适用于预训练网络。对于需要自己训练的模型，采用GGN或经验Fisher的在线KFAC LA是一个不错的baseline。</p>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="entropy2333 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>entropy2333
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://entropy2333.github.io/2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/" title="Laplace Redux -- Effortless Bayesian Deep Learning">https://entropy2333.github.io/2022/02/21/Laplace-Redux-Effortless-Bayesian-Deep-Learning/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Bayesian/" rel="tag"># Bayesian</a>
+              <a href="/tags/Laplace/" rel="tag"># Laplace</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/20/RealFormer-Transformer-Likes-Residual-Attention/" rel="prev" title="RealFormer: Transformer Likes Residual Attention">
+                  <i class="fa fa-chevron-left"></i> RealFormer: Transformer Likes Residual Attention
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">entropy2333</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">133k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
+<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>
