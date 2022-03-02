@@ -133,3 +133,15 @@ backup:
   repository:
     github: git@github.com:entropy2333/entropy2333.github.io.git,backup
     gitee: git@gitee.com:entropy2333/entropy2333.git,backup
+
+# Extensions
+# plugins:
+#   hexo-generator-feed
+# Feed Atom
+feed:
+  enable: true
+  type: atom
+  path: atom.xml
+  order_by: -date
+  icon: myavatar.jpg
+  autodiscovery: true

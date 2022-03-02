@@ -22,6 +22,7 @@ ACL Findings 2021，使用多任务学习加强标签相关性的反馈，设计
 
 - paper: <https://arxiv.org/pdf/2106.03103.pdf>
 - code (tensorflow): <https://github.com/EiraZhang/LACO>
+- dataset: RCV1-V2 AAPD
 
 ## Background
 
