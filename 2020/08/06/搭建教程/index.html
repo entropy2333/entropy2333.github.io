@@ -28,7 +28,7 @@
 <meta property="og:description" content="采用Hexo+Next搭建个人博客，并通过Github Pages部署。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-08-06T10:11:48.000Z">
-<meta property="article:modified_time" content="2022-01-23T06:58:39.766Z">
+<meta property="article:modified_time" content="2022-03-02T12:25:04.133Z">
 <meta property="article:author" content="entropy2333">
 <meta name="twitter:card" content="summary">
 
@@ -164,7 +164,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -185,6 +185,9 @@
   <div class="links-of-author site-overview-item animated">
       <span class="links-of-author-item">
         <a href="https://github.com/entropy2333" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;entropy2333" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
       </span>
   </div>
 
@@ -289,7 +292,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.8k</span>
+      <span>2k</span>
     </span>
 </div>
 
@@ -351,7 +354,7 @@
 </ul>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># blog/_config.yml</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">entropy2333</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="attr">keywords:</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">entropy2333</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li>修改主题
+<li><p>修改主题</p>
 <ul>
 <li>下载主题</li>
 </ul>
@@ -360,7 +363,7 @@
 <li>修改配置文件</li>
 </ul>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># blog/_config.yml</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">next</span></span><br></pre></td></tr></table></figure></li>
-<li>关闭广告</li>
+<li><p>关闭广告</p></li>
 </ul>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># blog/themes/next/_config.yaml</span></span><br><span class="line"><span class="attr">powered:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
 <ul>
@@ -377,7 +380,9 @@
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># blog/themes/next/_config.yaml</span></span><br><span class="line"><span class="comment">#scheme: Muse</span></span><br><span class="line"><span class="comment">#scheme: Mist</span></span><br><span class="line"><span class="attr">scheme:</span> <span class="string">Pisces</span></span><br><span class="line"><span class="comment">#scheme: Gemini</span></span><br></pre></td></tr></table></figure></li>
 <li><p>修改头像</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># blog/themes/next/_config.yaml</span></span><br><span class="line"><span class="attr">avatar:</span></span><br><span class="line">  <span class="comment"># Replace the default image and set the url here.</span></span><br><span class="line">  <span class="comment"># url: #/images/avatar.gif</span></span><br><span class="line">  <span class="attr">url:</span> <span class="string">/images/myavatar.jpg</span></span><br><span class="line">  <span class="comment"># If true, the avatar will be dispalyed in circle.</span></span><br><span class="line">  <span class="attr">rounded:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># If true, the avatar will be rotated with the cursor.</span></span><br><span class="line">  <span class="attr">rotated:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure></li>
+<li><p>添加RSS订阅</p></li>
 </ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-feed --save</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> blog/_config.yaml 添加如下内容</span></span><br><span class="line">feed:</span><br><span class="line">  enable: true</span><br><span class="line">  type: atom</span><br><span class="line">  path: atom.xml</span><br><span class="line">  order_by: -date</span><br><span class="line">  icon: icon.png</span><br><span class="line">  autodiscovery: true</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> blog/themes/next/_config.yaml</span></span><br><span class="line">social:</span><br><span class="line">  RSS: /atom.xml || fa fa-rss</span><br></pre></td></tr></table></figure>
 <h2 id="总结">总结</h2>
 <p>更多的个性化设置基本都是基于修改配置文件，修改完用hexo g &amp;&amp; hexo s本地查看是否生效，可查看参考文章或百度。</p>
 <h2 id="参考文章">参考文章</h2>
@@ -466,7 +471,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">133k</span>
+    <span title="站点总字数">135k</span>
   </span>
 </div>
 <div class="busuanzi-count">

@@ -1,56 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>A novel reasoning mechanism for multi-label text classification</title>
-    <url>/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/</url>
-    <content><![CDATA[<p>Information Processing and Management 2021（CCF-B）</p>
-<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133117985.png" alt="image-20220127133117985" style="zoom:50%;"></p>
+    <title>C++ Primer Chapter 1 开始</title>
+    <url>/2020/11/23/C++-Primer-Chapter1-%E5%BC%80%E5%A7%8B%20/</url>
+    <content><![CDATA[<p>初识C++。</p>
 <a id="more"></a>
-<h2 id="overview">Overview</h2>
-<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127125300482.png" alt="image-20220127125300482" style="zoom:50%;"></p>
-<ul>
-<li>paper: <a href="https://www.sciencedirect.com/science/article/pii/S0306457320309341" class="uri">https://www.sciencedirect.com/science/article/pii/S0306457320309341</a></li>
-<li>code:</li>
-</ul>
-<h2 id="background">Background</h2>
-<p>多标签分类中，考虑标签内部的相关性非常有必要。自SGM等工作开始，许多人采用Seq2Seq的方法处理MLC问题。但是这种方法依赖于标签的顺序，为此本文提出了Multi-Label Reasoner（ML-Reasoner）的方法，为每个标签单独二分类以满足标签本质上的无序性。</p>
-<p>为了利用标签相关性，作者设计了一种新颖的迭代式推理机制，将先前预测的标签概率作为推理时的额外特征。</p>
-<h2 id="method">Method</h2>
-<p>数据集<span class="math inline">\(D=\{(x_i,y_i)\}_{i=1}^N\)</span>，样本<span class="math inline">\(x_i = \{w_1,\cdots,w_p,\cdots,w_n\}\)</span>。推理的迭代算法如下所示。</p>
-<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133330467.png" alt="image-20220127133330467" style="zoom:50%;"></p>
-<p>通过将前一轮所有标签的预测结果<span class="math inline">\(z_{t-1} = (z_{t-1,1}\cdots,z_{t-1,k})\)</span>作为下一轮的额外输入（看作权重），在迭代轮次中传递了标签信息，使得ML-Reasoner可以捕获标签相关性。相比之下CC或SGM等方法，只利用了部分的标签信息。</p>
-<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133936519.png" alt="image-20220127133936519" style="zoom:50%;"></p>
-<p>Reasoner模块有点像Transformer的Decoder部分，分别对text和label进行embedding，并计算attention后分类。</p>
-<p>层间传递时，将上一轮的概率看作权重，对label embedding加权。 <span class="math display">\[
-\begin{align}
-\vec{l}_j &amp;= \text{LabelEmbedding}(l_j)\in\mathbb{R}^{D_4} \\
-\vec{l}_{j_{\text{encoded}}} &amp;= z_{t-1,j}\vec{l}_j\in\mathbb{R}^{D_4}
-\end{align}
-\]</span> 作者这里使用的是TextCNN提取文本特征<span class="math inline">\(\vec{x}\in\mathbb{R^{D_2}}\)</span>，并接一个全连接层得到<span class="math inline">\(\vec{x}_{\text{encoded}}\in\mathbb{R^{D_3}}\)</span>。对文本和标签特征计算注意力权重： <span class="math display">\[
-\begin{align}
-s_j &amp;= W_2\left[\vec{x}_{\text{encoded}};\vec{l}_{j_{\text{encoded}}}\right] + b_2 \\
-\alpha_j &amp;= \frac{\exp(s_j)}{\sum_{i=1}^k\exp(s_i)} \\
-\vec{l}_{\text{attention}} &amp;= \sum_{j=1}^k\alpha_j\vec{l}_{j_{\text{encoded}}} \in \mathbb{R}^{D_4}
-\end{align}
-\]</span> 从而得到组合特征 <span class="math display">\[
-\vec{x}_{\text{combined}} = [\vec{x}_{\text{encoded}};\vec{l}_{\text{attention}}] \in\mathbb{R}^{D_3+D_4}
-\]</span> 然后使用全连接+sigmoid分类即可，采用BCE Loss。</p>
-<h2 id="experiment">Experiment</h2>
-<p>选择AAPD和RCV1-V2数据集。</p>
-<p>使用了AllenNLP库实现，BERT选用bert-base-uncased，学习率5e-5。基线ML-Reasoner采用GLove 300维初始化，label embedding为300维随机初始化，采用Adamax优化器，学习率2e-3。</p>
-<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127135231895.png" alt="image-20220127135231895" style="zoom:50%;"></p>
-<p>实验结果上，相比BERT有2%以上的提升。</p>
-<p>作者也验证了标签顺序对于模型性能没有影响。</p>
-<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127140128405.png" alt="image-20220127140128405" style="zoom:50%;"></p>
-<p>作者探讨了迭代轮次的影响，<span class="math inline">\(T=2\)</span>时最佳。</p>
-<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127135745941.png" alt="image-20220127135745941" style="zoom:50%;"></p>
+<h2 id="编写一个简单的c程序">编写一个简单的C++程序</h2>
+<p>每个C++程序都包含若干个函数，其中一个必须命名为main，操作系统通过调用main运行C++程序。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="编译运行程序">编译、运行程序</h3>
+<p>程序运行后，可以通过echo命令访问main的返回值。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> $? // UNIX</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$ERRORLEVEL</span>% // Windows</span><br></pre></td></tr></table></figure>
+<h2 id="初识输入输出">初识输入输出</h2>
+<table>
+<thead>
+<tr class="header">
+<th>对象</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>cin</td>
+<td>标准输入</td>
+</tr>
+<tr class="even">
+<td>cout</td>
+<td>标准输出</td>
+</tr>
+<tr class="odd">
+<td>cerr</td>
+<td>标准错误</td>
+</tr>
+<tr class="even">
+<td>clog</td>
+<td>程序运行时的一般性信息</td>
+</tr>
+</tbody>
+</table>
+<h3 id="注释简介">注释简介</h3>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 单行注释</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  多行注释</span></span><br><span class="line"><span class="comment"> 不能嵌套</span></span><br><span class="line"><span class="comment">/*</span></span><br></pre></td></tr></table></figure>
+<h2 id="控制流">控制流</h2>
+<p>while &amp; for &amp; if</p>
+<h3 id="读取数量不定的输入数据">读取数量不定的输入数据</h3>
+<p>当遇到文件结束符（EOF）或遇到一个无效输入时，istream对象的状态会变成无效，条件为假。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>, value = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; value)</span><br><span class="line">        sum += value;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Sum is &quot;</span> &lt;&lt; sum &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Windows系统中，输入EOF的方式是Ctrl + Z；UNIX中，方法是Ctrl + D。</p>
+</blockquote>
+<h3 id="统计输入的词频">统计输入的词频</h3>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> currVal = <span class="number">0</span>, val = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; currVal) &#123;</span><br><span class="line">        <span class="keyword">int</span> cnt = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; val)</span><br><span class="line">            <span class="keyword">if</span> (val == currVal)</span><br><span class="line">                ++cnt;</span><br><span class="line">          <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; currVal &lt;&lt; <span class="string">&quot; occurs &quot;</span></span><br><span class="line">                          &lt;&lt; cnt &lt;&lt; <span class="string">&quot; times &quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">                currVal = val;</span><br><span class="line">                cnt = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; currVal &lt;&lt; <span class="string">&quot; occurs &quot;</span></span><br><span class="line">                  &lt;&lt; cnt &lt;&lt; <span class="string">&quot; times &quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="类简介">类简介</h2>
+<blockquote>
+<p>包含来自标准库的头文件，使用&lt;&gt;包含头文件名；不属于标准库的头文件，使用""包围。</p>
+</blockquote>
 ]]></content>
       <categories>
-        <category>Paper</category>
+        <category>C++ Primer</category>
       </categories>
       <tags>
-        <tag>NLP</tag>
-        <tag>Multi-Label</tag>
+        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -125,70 +134,8 @@ L_{DB} = \begin{cases}
       </categories>
       <tags>
         <tag>NLP</tag>
-        <tag>Multi-Label</tag>
         <tag>Loss</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C++ Primer Chapter 1 开始</title>
-    <url>/2020/11/23/C++-Primer-Chapter1-%E5%BC%80%E5%A7%8B%20/</url>
-    <content><![CDATA[<p>初识C++。</p>
-<a id="more"></a>
-<h2 id="编写一个简单的c程序">编写一个简单的C++程序</h2>
-<p>每个C++程序都包含若干个函数，其中一个必须命名为main，操作系统通过调用main运行C++程序。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="编译运行程序">编译、运行程序</h3>
-<p>程序运行后，可以通过echo命令访问main的返回值。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> $? // UNIX</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$ERRORLEVEL</span>% // Windows</span><br></pre></td></tr></table></figure>
-<h2 id="初识输入输出">初识输入输出</h2>
-<table>
-<thead>
-<tr class="header">
-<th>对象</th>
-<th>用途</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>cin</td>
-<td>标准输入</td>
-</tr>
-<tr class="even">
-<td>cout</td>
-<td>标准输出</td>
-</tr>
-<tr class="odd">
-<td>cerr</td>
-<td>标准错误</td>
-</tr>
-<tr class="even">
-<td>clog</td>
-<td>程序运行时的一般性信息</td>
-</tr>
-</tbody>
-</table>
-<h3 id="注释简介">注释简介</h3>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 单行注释</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  多行注释</span></span><br><span class="line"><span class="comment"> 不能嵌套</span></span><br><span class="line"><span class="comment">/*</span></span><br></pre></td></tr></table></figure>
-<h2 id="控制流">控制流</h2>
-<p>while &amp; for &amp; if</p>
-<h3 id="读取数量不定的输入数据">读取数量不定的输入数据</h3>
-<p>当遇到文件结束符（EOF）或遇到一个无效输入时，istream对象的状态会变成无效，条件为假。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>, value = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; value)</span><br><span class="line">        sum += value;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Sum is &quot;</span> &lt;&lt; sum &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Windows系统中，输入EOF的方式是Ctrl + Z；UNIX中，方法是Ctrl + D。</p>
-</blockquote>
-<h3 id="统计输入的词频">统计输入的词频</h3>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> currVal = <span class="number">0</span>, val = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; currVal) &#123;</span><br><span class="line">        <span class="keyword">int</span> cnt = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; val)</span><br><span class="line">            <span class="keyword">if</span> (val == currVal)</span><br><span class="line">                ++cnt;</span><br><span class="line">          <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; currVal &lt;&lt; <span class="string">&quot; occurs &quot;</span></span><br><span class="line">                          &lt;&lt; cnt &lt;&lt; <span class="string">&quot; times &quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">                currVal = val;</span><br><span class="line">                cnt = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; currVal &lt;&lt; <span class="string">&quot; occurs &quot;</span></span><br><span class="line">                  &lt;&lt; cnt &lt;&lt; <span class="string">&quot; times &quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="类简介">类简介</h2>
-<blockquote>
-<p>包含来自标准库的头文件，使用&lt;&gt;包含头文件名；不属于标准库的头文件，使用""包围。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>C++ Primer</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
+        <tag>Multi-Label</tag>
       </tags>
   </entry>
   <entry>
@@ -321,6 +268,59 @@ L_{DB} = \begin{cases}
       </categories>
       <tags>
         <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>A novel reasoning mechanism for multi-label text classification</title>
+    <url>/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/</url>
+    <content><![CDATA[<p>Information Processing and Management 2021（CCF-B）</p>
+<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133117985.png" alt="image-20220127133117985" style="zoom:50%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127125300482.png" alt="image-20220127125300482" style="zoom:50%;"></p>
+<ul>
+<li>paper: <a href="https://www.sciencedirect.com/science/article/pii/S0306457320309341" class="uri">https://www.sciencedirect.com/science/article/pii/S0306457320309341</a></li>
+<li>code:</li>
+</ul>
+<h2 id="background">Background</h2>
+<p>多标签分类中，考虑标签内部的相关性非常有必要。自SGM等工作开始，许多人采用Seq2Seq的方法处理MLC问题。但是这种方法依赖于标签的顺序，为此本文提出了Multi-Label Reasoner（ML-Reasoner）的方法，为每个标签单独二分类以满足标签本质上的无序性。</p>
+<p>为了利用标签相关性，作者设计了一种新颖的迭代式推理机制，将先前预测的标签概率作为推理时的额外特征。</p>
+<h2 id="method">Method</h2>
+<p>数据集<span class="math inline">\(D=\{(x_i,y_i)\}_{i=1}^N\)</span>，样本<span class="math inline">\(x_i = \{w_1,\cdots,w_p,\cdots,w_n\}\)</span>。推理的迭代算法如下所示。</p>
+<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133330467.png" alt="image-20220127133330467" style="zoom:50%;"></p>
+<p>通过将前一轮所有标签的预测结果<span class="math inline">\(z_{t-1} = (z_{t-1,1}\cdots,z_{t-1,k})\)</span>作为下一轮的额外输入（看作权重），在迭代轮次中传递了标签信息，使得ML-Reasoner可以捕获标签相关性。相比之下CC或SGM等方法，只利用了部分的标签信息。</p>
+<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127133936519.png" alt="image-20220127133936519" style="zoom:50%;"></p>
+<p>Reasoner模块有点像Transformer的Decoder部分，分别对text和label进行embedding，并计算attention后分类。</p>
+<p>层间传递时，将上一轮的概率看作权重，对label embedding加权。 <span class="math display">\[
+\begin{align}
+\vec{l}_j &amp;= \text{LabelEmbedding}(l_j)\in\mathbb{R}^{D_4} \\
+\vec{l}_{j_{\text{encoded}}} &amp;= z_{t-1,j}\vec{l}_j\in\mathbb{R}^{D_4}
+\end{align}
+\]</span> 作者这里使用的是TextCNN提取文本特征<span class="math inline">\(\vec{x}\in\mathbb{R^{D_2}}\)</span>，并接一个全连接层得到<span class="math inline">\(\vec{x}_{\text{encoded}}\in\mathbb{R^{D_3}}\)</span>。对文本和标签特征计算注意力权重： <span class="math display">\[
+\begin{align}
+s_j &amp;= W_2\left[\vec{x}_{\text{encoded}};\vec{l}_{j_{\text{encoded}}}\right] + b_2 \\
+\alpha_j &amp;= \frac{\exp(s_j)}{\sum_{i=1}^k\exp(s_i)} \\
+\vec{l}_{\text{attention}} &amp;= \sum_{j=1}^k\alpha_j\vec{l}_{j_{\text{encoded}}} \in \mathbb{R}^{D_4}
+\end{align}
+\]</span> 从而得到组合特征 <span class="math display">\[
+\vec{x}_{\text{combined}} = [\vec{x}_{\text{encoded}};\vec{l}_{\text{attention}}] \in\mathbb{R}^{D_3+D_4}
+\]</span> 然后使用全连接+sigmoid分类即可，采用BCE Loss。</p>
+<h2 id="experiment">Experiment</h2>
+<p>选择AAPD和RCV1-V2数据集。</p>
+<p>使用了AllenNLP库实现，BERT选用bert-base-uncased，学习率5e-5。基线ML-Reasoner采用GLove 300维初始化，label embedding为300维随机初始化，采用Adamax优化器，学习率2e-3。</p>
+<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127135231895.png" alt="image-20220127135231895" style="zoom:50%;"></p>
+<p>实验结果上，相比BERT有2%以上的提升。</p>
+<p>作者也验证了标签顺序对于模型性能没有影响。</p>
+<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127140128405.png" alt="image-20220127140128405" style="zoom:50%;"></p>
+<p>作者探讨了迭代轮次的影响，<span class="math inline">\(T=2\)</span>时最佳。</p>
+<p><img src="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/image-20220127135745941.png" alt="image-20220127135745941" style="zoom:50%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>Multi-Label</tag>
       </tags>
   </entry>
   <entry>
@@ -476,6 +476,12 @@ L_{DB} = \begin{cases}
       <tags>
         <tag>C++</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>CSAPP Chap5: 优化程序性能</title>
+    <url>/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>CSAPP Chap3: 程序的机器级表示</title>
@@ -826,6 +832,90 @@ L_{DB} = \begin{cases}
 ]]></content>
   </entry>
   <entry>
+    <title>CSAPP Chap7: 链接</title>
+    <url>/2021/04/26/CSAPP-Chap7-%E9%93%BE%E6%8E%A5/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>CV入门（一）安装detectron2</title>
+    <url>/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/</url>
+    <content><![CDATA[<p>在windows 10系统上安装detectron2。</p>
+<a id="more"></a>
+<h2 id="环境依赖">环境依赖</h2>
+<p>给出自己的环境，低版本未测试。</p>
+<ul>
+<li>Python 3.7.2</li>
+<li>Pytorch 1.6</li>
+<li>pycocotools 2.0</li>
+<li>CUDA 10.2</li>
+<li>VS 2019 Community</li>
+</ul>
+<h3 id="安装-cuda">安装 CUDA</h3>
+<p>进入<a href="https://developer.nvidia.com/cuda-downloads">官网</a>，按部就班安装，<a href="https://blog.csdn.net/qq_37296487/article/details/83028394">参考教程</a>。</p>
+<p>cmd输入如下命令，测试CUDA是否安装成功。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvcc -V</span><br></pre></td></tr></table></figure>
+<h3 id="安装-pytorch">安装 Pytorch</h3>
+<p>python和git这些基本的就不提了，介绍一下pytorch的安装。</p>
+<p>进入<a href="https://pytorch.org/">pytorch官网</a>，选择相对应的版本，使用pip直接安装。</p>
+<p><img src="/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/1.png"></p>
+<p>测试Pytorch是否安装成功。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch, torchvision</span><br><span class="line">print(torch.__version__, torch.cuda.is_available())</span><br></pre></td></tr></table></figure>
+<h3 id="安装-vs-2019">安装 VS 2019</h3>
+<p>进入<a href="https://visualstudio.microsoft.com/zh-hans/downloads/">vs官网</a>，选择community版本进行下载。</p>
+<p>下载完成后，先不着急运行安装程序，按<a href="https://www.loongten.com/2019/06/18/vs2019/">博客</a>将安装目录迁移到非系统盘（C盘实在是装不下了）。</p>
+<p>完成后，运行安装程序，选择C++组件即可，其他组件看个人需求选择。</p>
+<h3 id="安装-pycocotools">安装 pycocotools</h3>
+<p><a href="https://github.com/cocodataset/cocoapi">原版</a>的pycocotools不支持windows，需要使用<a href="https://github.com/philferriere/cocoapi">修改版</a>。</p>
+<p>可通过如下命令安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/philferriere/cocoapi.git</span><br><span class="line"><span class="built_in">cd</span> PythonAPI</span><br><span class="line">python setup.py build_ext --inplace</span><br><span class="line">python setup.py build_ext install</span><br></pre></td></tr></table></figure>
+<p>或者直接</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install git+https://github.com/philferriere/cocoapi.git<span class="comment">#subdirectory=PythonAPI</span></span><br></pre></td></tr></table></figure>
+<p>出现Successfully installed pycocotools-2.0即为安装成功。</p>
+<h3 id="安装-detectron2">安装 detectron2</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/facebookresearch/detectron2.git</span><br></pre></td></tr></table></figure>
+<p>修改文件 setup.py，注释掉</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;pycocotools&gt;=2.0.1&quot;</span>,</span><br></pre></td></tr></table></figure>
+<p>开始安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python setup.py build develop</span><br></pre></td></tr></table></figure>
+<p>安装过程无报错即可。</p>
+<h4 id="目标检测">目标检测</h4>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_b275ba.pkl</span><br></pre></td></tr></table></figure>
+<h4 id="实例分割">实例分割</h4>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_f10217.pkl</span><br></pre></td></tr></table></figure>
+<h2 id="可能出现的问题">可能出现的问题</h2>
+<p><a href="https://github.com/conansherry/detectron2/issues/2">github issue</a></p>
+<p>安装时提示缺少什么包，直接pip install即可，出问题可以查stackoverflow。</p>
+<h3 id="cl.exe出错">cl.exe出错</h3>
+<p><a href="https://blog.csdn.net/qq_35067322/article/details/105835311">解决方法</a></p>
+<p>添加环境变量</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\bin\Hostx64\x64</span><br></pre></td></tr></table></figure>
+<p>如下即可</p>
+<p><img src="/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/2.png"></p>
+<h3 id="cocoeval出错">cocoeval出错</h3>
+<p>修改文件 detectron2.cpp</p>
+<p>添加</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>修改</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">localtime_r(&amp;rawtime, &amp;local_time);</span><br></pre></td></tr></table></figure>
+<p>为</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">localtime_s(&amp;local_time, &amp;rawtime);</span><br></pre></td></tr></table></figure>
+<h3 id="nvcc.exe出错">nvcc.exe出错</h3>
+<p>修改文件 detectron2/detectron2/layers/csrc/nms_rotated/nms_rotated_cuda.cu</p>
+<p>在11行</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> WITH_HIP</span></span><br></pre></td></tr></table></figure>
+<p>之前添加</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WITH_HIP</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>CV入门</category>
+      </categories>
+      <tags>
+        <tag>CV</tag>
+        <tag>detectron2</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Do Transformers Really Perform Bad for Graph Representation?</title>
     <url>/2021/06/20/Do-Transformers-Really-Perform-Bad-for-Graph-Representation/</url>
     <content><![CDATA[<p>Graphormer：KDD Cup2021 OGB-LSC赛道的冠军方案</p>
@@ -900,10 +990,51 @@ A_{ij} = \frac{(h_iW_Q)(h_jW_K)^T}{\sqrt{d}}+b_{\phi(v_i,v_j)} + c_{ij}
       </tags>
   </entry>
   <entry>
-    <title>CSAPP Chap7: 链接</title>
-    <url>/2021/04/26/CSAPP-Chap7-%E9%93%BE%E6%8E%A5/</url>
-    <content><![CDATA[
+    <title>Combining Label Propagation and Simple Models Out-performs Graph Neural Networks</title>
+    <url>/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/</url>
+    <content><![CDATA[<p>ICLR，采用后处理的方法而非GNN在OGB上取得SOTA。</p>
+<p><img src="/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/image-20220224170455627.png" alt="image-20220224170455627" style="zoom: 50%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/image-20220224161257742.png" alt="image-20220224161257742" style="zoom:33%;"></p>
+<ul>
+<li>paper: https://arxiv.org/pdf/2010.13993.pdf</li>
+<li>code: <a href="https://github.com/CUAI/CorrectAndSmooth" class="uri">https://github.com/CUAI/CorrectAndSmooth</a></li>
+</ul>
+<h2 id="background">Background</h2>
+<p>随着图神经网络变得越来越复杂， 理解模型的性能为什么提升越来越困难，将其应用在大规模数据集上也很困难。</p>
+<p>本文提出了一个简单的pipeline，包括三个部分</p>
+<ol type="1">
+<li>忽略图结构，用节点特征进行基本预测。</li>
+<li>纠正步骤，将训练数据的不确定性传播到整个图中，以纠正基本预测。</li>
+<li>对预测结果进行平滑处理。</li>
+</ol>
+<p>步骤2和3仅仅采用了经典方法做后处理。</p>
+<h2 id="method">Method</h2>
+<p>图<span class="math inline">\(G=(V,E)\)</span>有<span class="math inline">\(n=|V|\)</span>个节点，节点特征<span class="math inline">\(X\in\mathbb{R}^{n\times p}\)</span>。<span class="math inline">\(A\)</span>为邻接矩阵，<span class="math inline">\(D\)</span>为对角度矩阵，<span class="math inline">\(S=D^{-1/2}AD^{-1/2}\)</span>。对于预测问题，节点集合分为有标注的<span class="math inline">\(L\)</span>和无标注的<span class="math inline">\(U\)</span>，标签<span class="math inline">\(Y\in\mathbb{R}^{n\times c}\)</span>，需要给未标注的节点<span class="math inline">\(j\in U\)</span>打标签。</p>
+<p>首先直接用MLP对节点特征预测，不依赖任何的图结构，得到基本预测<span class="math inline">\(Z\)</span>。</p>
+<p>然后考虑融入标签特征纠正错误，提升预测的准确率。首先定义错误矩阵<span class="math inline">\(E\in\mathbb{R}^{n\times c}\)</span>，在验证集和测试集上均为0。 <span class="math display">\[
+E_{L_t} = Z_{L_t} - Y_{L_t},\quad E_{L_v}=0,\quad E_{U}=0.
+\]</span> 采用标签传播（label spreading）技巧对错误进行平滑，优化目标为 <span class="math display">\[
+\hat{E} = \arg \min_{W\in\mathbb{R}^{n\times c}} \trace(W^T(I-S)W)+\mu\lVert W-E\rVert^2_F
+\]</span> 第一项平滑了错误，第二项保障了所求的解接近初始错误。可以通过迭代求解<span class="math inline">\(E^{(t+1)} = (1-\alpha)E+\alpha SE^{(t)}\)</span>，其中<span class="math inline">\(\alpha=1/(1+\mu)\)</span>，<span class="math inline">\(E^{(0)} = E\)</span>。从而平滑后的错误为 <span class="math display">\[
+Z^{(r)} = Z + \hat{E}
+\]</span> 这种传播在回归问题的高斯假设下被证明正确，但对于分类问题而言，平滑后的错误可能尺度<span class="math inline">\(\hat{E}\)</span>不对。可以推出 <span class="math display">\[
+\lVert E^{(t+1)}\rVert \le (1-\alpha)\lVert E\rVert + \alpha\lVert S\rVert_2\lVert E^{(t)}\rVert_2 = (1-\alpha)\lVert E\rVert_2 + \alpha\lVert E^{(t)}\rVert_2
+\]</span> 当<span class="math inline">\(E^{(0)} = E\)</span>，从而<span class="math inline">\(\lVert E^{(t)}\rVert_2\le\lVert E\rVert_2\)</span>。因此传播不能完全纠正图中节点的错误，本文提出了两种缩放机制Autoscale和Scaled Fixed Diffusion来处理这个问题。</p>
+<p>在得到得分向量<span class="math inline">\(Z^{(r)}\)</span>后，进一步对预测结果进行平滑。这是因为邻接的节点容易有相同的标签，所以采用标签传播再一次平滑处理。 <span class="math display">\[
+G_{L_t} = Y_{L_t},\quad G_{L_v,U} = Z_{L_v, U}^{(r)}
+\]</span> 将训练节点设置为真实标签，验证与无标注节点采用纠正预测（验证集也可以用真实标签）。采用<span class="math inline">\(G^{(t+1)} = (1-\alpha)G+\alpha SG^{(t)}\)</span>迭代，给出最终的预测结果<span class="math inline">\(\hat{Y}\)</span>。</p>
+<h2 id="experiment">Experiment</h2>
+<p><img src="/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/image-20220302152112164.png" alt="image-20220302152112164" style="zoom:33%;"></p>
+<p><img src="/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/image-20220302152143010.png" alt="image-20220302152143010" style="zoom:33%;"></p>
 ]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>GNN</tag>
+      </tags>
   </entry>
   <entry>
     <title>Enhancing Label Correlation Feedback in Multi-Label Text Classification via Multi-Task Learning</title>
@@ -916,6 +1047,7 @@ A_{ij} = \frac{(h_iW_Q)(h_jW_K)^T}{\sqrt{d}}+b_{\phi(v_i,v_j)} + c_{ij}
 <ul>
 <li>paper: <a href="https://arxiv.org/pdf/2106.03103.pdf" class="uri">https://arxiv.org/pdf/2106.03103.pdf</a></li>
 <li>code (tensorflow): <a href="https://github.com/EiraZhang/LACO" class="uri">https://github.com/EiraZhang/LACO</a></li>
+<li>dataset: RCV1-V2 AAPD</li>
 </ul>
 <h2 id="background">Background</h2>
 <p>在多标签文本文类任务中，利用标签相关性的模型可以更好地泛化，有利于建模低频标签。基于Seq2Seq的方法可以有效捕获标签相关性，但也有几点不足：</p>
@@ -1030,84 +1162,6 @@ v_t^l &amp;= \begin{cases}
         <tag>NLP</tag>
         <tag>Transformer</tag>
         <tag>NER</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CV入门（一）安装detectron2</title>
-    <url>/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/</url>
-    <content><![CDATA[<p>在windows 10系统上安装detectron2。</p>
-<a id="more"></a>
-<h2 id="环境依赖">环境依赖</h2>
-<p>给出自己的环境，低版本未测试。</p>
-<ul>
-<li>Python 3.7.2</li>
-<li>Pytorch 1.6</li>
-<li>pycocotools 2.0</li>
-<li>CUDA 10.2</li>
-<li>VS 2019 Community</li>
-</ul>
-<h3 id="安装-cuda">安装 CUDA</h3>
-<p>进入<a href="https://developer.nvidia.com/cuda-downloads">官网</a>，按部就班安装，<a href="https://blog.csdn.net/qq_37296487/article/details/83028394">参考教程</a>。</p>
-<p>cmd输入如下命令，测试CUDA是否安装成功。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvcc -V</span><br></pre></td></tr></table></figure>
-<h3 id="安装-pytorch">安装 Pytorch</h3>
-<p>python和git这些基本的就不提了，介绍一下pytorch的安装。</p>
-<p>进入<a href="https://pytorch.org/">pytorch官网</a>，选择相对应的版本，使用pip直接安装。</p>
-<p><img src="/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/1.png"></p>
-<p>测试Pytorch是否安装成功。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch, torchvision</span><br><span class="line">print(torch.__version__, torch.cuda.is_available())</span><br></pre></td></tr></table></figure>
-<h3 id="安装-vs-2019">安装 VS 2019</h3>
-<p>进入<a href="https://visualstudio.microsoft.com/zh-hans/downloads/">vs官网</a>，选择community版本进行下载。</p>
-<p>下载完成后，先不着急运行安装程序，按<a href="https://www.loongten.com/2019/06/18/vs2019/">博客</a>将安装目录迁移到非系统盘（C盘实在是装不下了）。</p>
-<p>完成后，运行安装程序，选择C++组件即可，其他组件看个人需求选择。</p>
-<h3 id="安装-pycocotools">安装 pycocotools</h3>
-<p><a href="https://github.com/cocodataset/cocoapi">原版</a>的pycocotools不支持windows，需要使用<a href="https://github.com/philferriere/cocoapi">修改版</a>。</p>
-<p>可通过如下命令安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/philferriere/cocoapi.git</span><br><span class="line"><span class="built_in">cd</span> PythonAPI</span><br><span class="line">python setup.py build_ext --inplace</span><br><span class="line">python setup.py build_ext install</span><br></pre></td></tr></table></figure>
-<p>或者直接</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install git+https://github.com/philferriere/cocoapi.git<span class="comment">#subdirectory=PythonAPI</span></span><br></pre></td></tr></table></figure>
-<p>出现Successfully installed pycocotools-2.0即为安装成功。</p>
-<h3 id="安装-detectron2">安装 detectron2</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/facebookresearch/detectron2.git</span><br></pre></td></tr></table></figure>
-<p>修改文件 setup.py，注释掉</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;pycocotools&gt;=2.0.1&quot;</span>,</span><br></pre></td></tr></table></figure>
-<p>开始安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python setup.py build develop</span><br></pre></td></tr></table></figure>
-<p>安装过程无报错即可。</p>
-<h4 id="目标检测">目标检测</h4>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_b275ba.pkl</span><br></pre></td></tr></table></figure>
-<h4 id="实例分割">实例分割</h4>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_f10217.pkl</span><br></pre></td></tr></table></figure>
-<h2 id="可能出现的问题">可能出现的问题</h2>
-<p><a href="https://github.com/conansherry/detectron2/issues/2">github issue</a></p>
-<p>安装时提示缺少什么包，直接pip install即可，出问题可以查stackoverflow。</p>
-<h3 id="cl.exe出错">cl.exe出错</h3>
-<p><a href="https://blog.csdn.net/qq_35067322/article/details/105835311">解决方法</a></p>
-<p>添加环境变量</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\bin\Hostx64\x64</span><br></pre></td></tr></table></figure>
-<p>如下即可</p>
-<p><img src="/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/2.png"></p>
-<h3 id="cocoeval出错">cocoeval出错</h3>
-<p>修改文件 detectron2.cpp</p>
-<p>添加</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br></pre></td></tr></table></figure>
-<p>修改</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">localtime_r(&amp;rawtime, &amp;local_time);</span><br></pre></td></tr></table></figure>
-<p>为</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">localtime_s(&amp;local_time, &amp;rawtime);</span><br></pre></td></tr></table></figure>
-<h3 id="nvcc.exe出错">nvcc.exe出错</h3>
-<p>修改文件 detectron2/detectron2/layers/csrc/nms_rotated/nms_rotated_cuda.cu</p>
-<p>在11行</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> WITH_HIP</span></span><br></pre></td></tr></table></figure>
-<p>之前添加</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WITH_HIP</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>CV入门</category>
-      </categories>
-      <tags>
-        <tag>CV</tag>
-        <tag>detectron2</tag>
       </tags>
   </entry>
   <entry>
@@ -1367,6 +1421,80 @@ NYT和WOS的实验结果
       </tags>
   </entry>
   <entry>
+    <title>Hierarchy Decoder is All You Need To Text Classification</title>
+    <url>/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/</url>
+    <content><![CDATA[<p>基于Encoder-Decoder架构，提出层次解码器，使用递归的层次解码处理依赖关系。</p>
+<p><img src="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/image-20220117164632176.png" alt="image-20220117164632176" style="zoom:50%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/image-20220117162101021.png" alt="image-20220117162101021" style="zoom:50%;"></p>
+<ul>
+<li>paper: <a href="https://arxiv.org/pdf/2111.11104v1.pdf" class="uri">https://arxiv.org/pdf/2111.11104v1.pdf</a></li>
+<li>code:</li>
+</ul>
+<h2 id="background">Background</h2>
+<p>层次文本分类的方法可以分为local和global两类</p>
+<ul>
+<li>local方法是指将层次结构展平后分类，降低了计算的复杂度但是丢失了层次信息。</li>
+<li>global方法可以捕获层次信息，其往往采用元学习、强化学习或者图神经网络的方法，但是层次结构太大时计算不友好。</li>
+</ul>
+<p>理想的层次分类模型应该兼顾二者，既有效（effective）也是容易扩展的（scalable）。本文提出了层次解码器，可以在训练和推理时感知层次依赖关系。</p>
+<h2 id="method">Method</h2>
+<h3 id="encoder">Encoder</h3>
+<p>编码器部分选择单循环单元（Simple Reccurrent Unit, SRU），可以看作是简单快速并且更具解释性的RNN。SRU将矩阵-向量乘法修改为element-wise向量乘法，是一种可以并行的RNN。其计算过程示意如下： $$ <span class="math display">\[\begin{align}
+\overrightarrow{\mathbf{H}^l}&amp;=\overrightarrow{\text{SRU}^l}(\mathbf{H}^{l-1})\\
+        \overleftarrow{\mathbf{H}^l}&amp;=\overleftarrow{\text{SRU}^l}(\mathbf{H}^{l-1})\\
+
+\mathbf{H}^l&amp;=\mathbf{W}^l[\overrightarrow{\mathbf{H}^l};\overleftarrow{\mathbf{H}^l}]+b^l
+\end{align}\]</span> $$</p>
+<h3 id="hierarchy-decoder">Hierarchy Decoder</h3>
+<p>标签的层次关系可以表示为<span class="math inline">\(G=(V,\vec{E})\)</span>，对于文档<span class="math inline">\(d_k\)</span>，其对应的子图9就是<span class="math inline">\(G^{d_k} = (V^{d_k},\vec{E}^{d_k})\)</span>。通过解析树生成对应的序列<span class="math inline">\(S\)</span>，图中即为<span class="math inline">\(\text{S= R ( A ( D ( I ( [END] ) ) ) ) ( B ( F ( [END] ) ) ) ( C ( [END] ) ) )]}\)</span>。用one-hot向量表示其中的字符，即<span class="math inline">\(\vec{S} = [s_1,\cdots,s_M]\)</span>，其中<span class="math inline">\(s_i=\mathbb{I}_{v_i}\)</span>。</p>
+<p><img src="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/image-20220117164821897.png" alt="image-20220117164821897" style="zoom:33%;"></p>
+<p>于是层次嵌入<span class="math inline">\(\mathbf{U}^0\)</span>的初始化可以表示为 <span class="math display">\[
+\mathbf{\bar{U}}^0=\mathbf{W}^S\bar{\mathbf{S}} \\
+\mathbf{U}^0=\text{level\_embedding}(\mathbf{\bar{U}}^0)
+\]</span> 之后作者设计了level-wise掩码自注意力 <span class="math display">\[
+\begin{align}
+\dot{\mathbf{U}}^r &amp;= \text{Masked\_Attention}(\mathbf{Q,K,V}) \\
+&amp;= \text{softmax} \left( \frac{\mathbf{QK}^\top}{\sqrt{\text{e}}}+\mathbf{M} \right) \mathbf{V}
+\end{align}
+\]</span> 其中<span class="math inline">\(\mathbf{QKV}\)</span>都是对<span class="math inline">\(\mathbf{U}\)</span>线性变换得到的，掩码矩阵定义了父子的基层关系，定义为 <span class="math display">\[
+\mathbf{M}_{ij}=\begin{cases}
+-1e9 &amp; \text{ if } v_i \notin ancestor(v_j) \\ 
+0 &amp; \text{ else }
+\end{cases}
+\]</span> 自注意力计算后则是cross-attention，作者称为Text-Hierarchy Attention <span class="math display">\[
+\begin{align}
+    \mathbf{Q}&amp;=\mathbf{W}_{Q}^{r} {\dot{\mathbf{U}}^{r-1}}^{\top} \\
+    \mathbf{K}&amp;=\mathbf{W}_{K}^{r} \mathbf{H}^{\top}\\
+    \mathbf{V}&amp;=\mathbf{W}_{V}^{r} \mathbf{H}^{\top} \\
+    \ddot{\mathbf{U}}^r&amp;=\text{Masked\_Attention}(\mathbf{Q,K,V}) \\
+    &amp;=\text{softmax} \left (\frac{\mathbf{QK}^\top}{\sqrt{e}} \right ) \mathbf{V}
+\end{align}
+\]</span> 在解码时，计算子类和父类的相似度<span class="math inline">\(c_{ij}\)</span> <span class="math display">\[
+\begin{align}
+c_{ij}&amp;=U_i\cdot \mathbf{W}^S \cdot \mathbb{I}_{v_j} \quad \forall v_j \in child(v_i) \\
+p_i&amp;=\mathcal{F}(c_i)
+\end{align}
+\]</span> 其中<span class="math inline">\(\mathcal{F}\)</span>在单分类时为sigmoid，多标签时为softmax。</p>
+<p>递归层次解码的算法表示如下</p>
+<p><img src="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/image-20220117194712206.png" alt="image-20220117194712206" style="zoom:50%;"></p>
+<h2 id="experiment">Experiment</h2>
+<p>选取RCV1-V2和WOS数据集，学习率5e-5，隐层维度300，batch size为1024，硬件为NVIDIA A6000 * 8（富有）。</p>
+<p><img src="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/image-20220117194951077.png" alt="image-20220117194951077" style="zoom:50%;"></p>
+<p><img src="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/image-20220117195004616.png" alt="image-20220117195004616" style="zoom:33%;"></p>
+<p><img src="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/image-20220117201120349.png" alt="image-20220117201120349" style="zoom:33%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>Multi-Label</tag>
+        <tag>Transformer</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Internet安全协议与分析（一）IPSec</title>
     <url>/2020/10/10/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89IPSec/</url>
     <content><![CDATA[<p>介绍IPSec协议与IKE协议 。 <a id="more"></a></p>
@@ -1598,12 +1726,6 @@ NYT和WOS的实验结果
       </tags>
   </entry>
   <entry>
-    <title>CSAPP Chap5: 优化程序性能</title>
-    <url>/2021/04/26/CSAPP-Chap5-%E4%BC%98%E5%8C%96%E7%A8%8B%E5%BA%8F%E6%80%A7%E8%83%BD/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>Internet安全协议与分析（三）SET</title>
     <url>/2020/10/17/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%89%EF%BC%89SET/</url>
     <content><![CDATA[<p>介绍SET协议。</p>
@@ -1794,6 +1916,277 @@ NYT和WOS的实验结果
       </categories>
       <tags>
         <tag>SET</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Internet安全协议与分析（五）Kerberos</title>
+    <url>/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/</url>
+    <content><![CDATA[<p>介绍Kerberos协议。</p>
+<a id="more"></a>
+<h2 id="密钥管理问题">密钥管理问题</h2>
+<p>所有的密码系统都存在这样的问题：如何安全/可靠地分配密钥。理想的情况是，密钥分配协议应该得到形式化验证。</p>
+<h3 id="单点登录">单点登录</h3>
+<ul>
+<li>用户只需要登录一次，就可以访问多个系统，不需要记忆多个口令密码。</li>
+<li>优点
+<ul>
+<li>用户可以快速访问网络，提高工作效率，也能帮助提高系统的安全性。</li>
+<li>有利于进行账户密码管理、用户审计。</li>
+<li>方便进行企业应用部署。</li>
+</ul></li>
+</ul>
+<h2 id="kerberos认证服务协议">Kerberos认证服务协议</h2>
+<ul>
+<li>提供一个在客户端跟服务器端之间或服务器与服务器之间的身份验证机制（并且是相互的身份验证机制）·</li>
+<li>解决的问题
+<ul>
+<li>在公开的分布式环境中，工作站上的用户希望访问分布在网络中的服务器上的服务。</li>
+<li>服务器希望能够限制授权用户的访问，并对服务请求进行鉴别。</li>
+</ul></li>
+</ul>
+<h3 id="kerberos的加密体制">Kerberos的加密体制</h3>
+<ul>
+<li>Kerberos提供一个中心认证服务器，提供用户和服务器之间的认证服务。</li>
+<li>采用传统加密算法，<strong>无公钥体制</strong>。</li>
+<li>常用版本：Kerberos Version 4 和 Kerberos Version 5</li>
+</ul>
+<h3 id="主要功能">主要功能</h3>
+<ul>
+<li>在分布式的client/server体系结构中，采用Kerberos服务器提供认证服务。</li>
+<li>总体方案是提供一个可信第三方的认证服务。
+<ul>
+<li>用tickets验证</li>
+<li>避免本地保存密码和在互联网上传输密码</li>
+<li>包含可信第三方</li>
+<li>使用对称加密</li>
+<li>客户端与服务器之间能够相互验证</li>
+</ul></li>
+</ul>
+<h3 id="kerberos-version-4">Kerberos Version 4</h3>
+<ul>
+<li>引入可信第三方的认证服务，基于Needham &amp; Schroeder协议。</li>
+<li>采用DES加密算法，提供认证服务。</li>
+</ul>
+<h4 id="基本概念">基本概念</h4>
+<ul>
+<li>Principal
+<ul>
+<li>安全个体，被认证的个体，有名字和口令。</li>
+</ul></li>
+<li>KDC
+<ul>
+<li>密钥分发中心，提供票据和临时的会话密钥。</li>
+</ul></li>
+<li>Ticket
+<ul>
+<li>用户可以用它向服务器表明身份，包含客户标识、会话密钥、时间戳等信息。其中的大多数信息被加密，密钥为服务器的密钥。</li>
+</ul></li>
+<li>Authenticator
+<ul>
+<li>包含最近产生的信息，需要用到会话密钥。</li>
+</ul></li>
+<li>Credentials
+<ul>
+<li>票据加上会话密钥</li>
+</ul></li>
+<li>Authentication Server(AS)
+<ul>
+<li>通过long-term key认证客户</li>
+<li>给予客户ticket granting ticket和short-term key</li>
+<li><strong>认证服务</strong></li>
+</ul></li>
+<li>Ticket Granting Server(TGS)
+<ul>
+<li>通过short-term key和ticket granting ticket认证客户。</li>
+<li>TGS发放tickets给客户以访问其他服务器。</li>
+<li><strong>授权与访问控制服务</strong></li>
+</ul></li>
+</ul>
+<p>这样做的动机</p>
+<ul>
+<li>将认证与授权在逻辑上分离</li>
+<li>设置不同的生命周期
+<ul>
+<li>TGT通常10h，ST通常5min。</li>
+<li>方便客户，降低密钥的暴露时间。</li>
+</ul></li>
+</ul>
+<figure>
+<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201019141737715.png" alt="image-20201019141737715"><figcaption aria-hidden="true">image-20201019141737715</figcaption>
+</figure>
+<h4 id="认证服务交换获得tgt">认证服务交换：获得TGT</h4>
+<figure>
+<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201019141857995.png" alt="image-20201019141857995"><figcaption aria-hidden="true">image-20201019141857995</figcaption>
+</figure>
+<h4 id="票据许可服务交换获得st">票据许可服务交换：获得ST</h4>
+<figure>
+<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201019141907104.png" alt="image-20201019141907104"><figcaption aria-hidden="true">image-20201019141907104</figcaption>
+</figure>
+<figure>
+<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201019141920821.png" alt="image-20201019141920821"><figcaption aria-hidden="true">image-20201019141920821</figcaption>
+</figure>
+<h4 id="客户服务器认证交换获得服务">客户/服务器认证交换：获得服务</h4>
+<figure>
+<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201019141931124.png" alt="image-20201019141931124"><figcaption aria-hidden="true">image-20201019141931124</figcaption>
+</figure>
+<h4 id="kerberos和多个域">Kerberos和多个域</h4>
+<ul>
+<li>完整的Kerberos环境包括Kerberos服务器、一组工作站和一组应用服务器
+<ul>
+<li>所有用户和服务器均在Kerberos服务器上注册。</li>
+<li>Kerberos服务器必须在数据库中拥有所有用户的ID和口令散列表。</li>
+<li>Kerberos服务器必须与每一个服务器之间共享一个保密密钥。</li>
+</ul></li>
+<li>对于不同的域
+<ul>
+<li>每个辖区的Kerberos服务器与其他辖区的Kerberos服务器之间共享一个保密密钥，两个服务器互相注册。</li>
+</ul></li>
+</ul>
+<h4 id="跨域认证">跨域认证</h4>
+<figure>
+<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201019142401641.png" alt="image-20201019142401641"><figcaption aria-hidden="true">image-20201019142401641</figcaption>
+</figure>
+<figure>
+<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201019142408521.png" alt="image-20201019142408521"><figcaption aria-hidden="true">image-20201019142408521</figcaption>
+</figure>
+<h3 id="kerberos-version-5">Kerberos Version 5</h3>
+<ul>
+<li>标准化为RFC 1510</li>
+<li>改进之处</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>v4</th>
+<th>v5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>加密算法</td>
+<td>DES</td>
+<td>扩展</td>
+</tr>
+<tr class="even">
+<td>网络协议地址</td>
+<td>IP</td>
+<td>OSI</td>
+</tr>
+<tr class="odd">
+<td>票据生命周期</td>
+<td>最大1280min</td>
+<td>不限制</td>
+</tr>
+<tr class="even">
+<td>认证转发</td>
+<td></td>
+<td>允许服务器在事务中代表客户端访问另一台服务器</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>双重加密
+<ul>
+<li>V4中的票据被重复加密</li>
+</ul></li>
+<li>消息重放
+<ul>
+<li>AS-&gt;Client和TGS-&gt;Client消息在票据生命周期中或可被重放，V5采用新鲜数。</li>
+<li>采用同一票据的多个cs连接使用相同的会话密钥，因而会遭受重放，<strong>V5使用subkey机制</strong>。</li>
+</ul></li>
+</ul>
+<figure>
+<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201028140902276.png" alt="image-20201028140902276"><figcaption aria-hidden="true">image-20201028140902276</figcaption>
+</figure>
+<h3 id="小结">小结</h3>
+<ul>
+<li>认证方法
+<ul>
+<li>本地机器录入密码</li>
+<li>经由中央KDC认证</li>
+<li>网上不传输密码</li>
+</ul></li>
+<li>单点登录
+<ul>
+<li>KDC给予票据TGT</li>
+<li>TGT可以用于获取其他的服务票据</li>
+</ul></li>
+<li>优点
+<ul>
+<li>密码不容易被窃听</li>
+<li>密码不在网上传输</li>
+<li>密码猜测更困难</li>
+<li>单点登录
+<ul>
+<li>便捷，不用记忆多个口令。</li>
+</ul></li>
+<li>票据被盗之后难以使用，因为需要配合认证头来使用。</li>
+</ul></li>
+</ul>
+<h2 id="windows下的kerberos应用">Windows下的Kerberos应用</h2>
+<ul>
+<li>Windows 2000中代替了NTLM
+<ul>
+<li>支持公钥加密来保护client/AS消息</li>
+<li>允许使用基于smart cards的认证</li>
+<li>使用了Kerberos数据授权字段</li>
+<li>传递Win2K访问控制权限</li>
+<li>源于Active Directory，以SIDs的形式。</li>
+<li>消息格式公开，单为微软专有。</li>
+</ul></li>
+</ul>
+<h3 id="windows下域登录的机理">Windows下域登录的机理</h3>
+<figure>
+<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201028142153918.png" alt="image-20201028142153918"><figcaption aria-hidden="true">image-20201028142153918</figcaption>
+</figure>
+<figure>
+<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201028142208733.png" alt="image-20201028142208733"><figcaption aria-hidden="true">image-20201028142208733</figcaption>
+</figure>
+<h4 id="开始步骤">开始步骤</h4>
+<ul>
+<li>CTRL + ALT + DEL</li>
+<li>Winlogon service &amp; GINA (MSGINA.DLL)</li>
+<li>用户输入被转到LSA</li>
+<li>LSA加密缓存并经有Kerberos SSP和KDC交互</li>
+</ul>
+<h4 id="交互过程">交互过程</h4>
+<ul>
+<li>LSA向KDC发送KRB_AS_REQ消息
+<ul>
+<li>包括主体名称Alice和域名，加密密钥基于Alice口令生成。</li>
+</ul></li>
+<li>KDC返回KRB_AS_REO消息
+<ul>
+<li>包括会话密钥、TGT、授权数据（SID）。</li>
+</ul></li>
+<li>LSA向KDC发送KRB_TGS_REQ消息
+<ul>
+<li>包括目标计算机名Bob、目标计算级域名、TGT、认证头。</li>
+</ul></li>
+<li>KDC返回KRB_TGS_REP消息
+<ul>
+<li>包括会话密钥（被Alice与KDC的会话密钥加密）、会话票据（被Bob和KDC的会话密钥加密）</li>
+<li>会话票据包括Bob和Alice的会话密钥和TGT中的授权数据。</li>
+</ul></li>
+</ul>
+<h4 id="组装本地令牌">组装本地令牌</h4>
+<ul>
+<li>收到Alice的会话票据后，LSA解密并提取出授权数据。</li>
+<li>查询本地SAM数据库，检查Alice是否属于本地安全组及其可能被授予的特权。</li>
+<li>若有，则将所查询得到的SIDs加入授权数据的列表，根据此构造访问令牌，将令牌句柄和Alice会话的ID，确认返回给Winlogon。</li>
+</ul>
+<h4 id="进入系统">进入系统</h4>
+<ul>
+<li>Winlogon创建窗口和桌面对象并且附带令牌，启动Shell。</li>
+<li>Alice的访问令牌被其进程所继承。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Internet安全协议与分析</category>
+      </categories>
+      <tags>
+        <tag>Kerberos</tag>
       </tags>
   </entry>
   <entry>
@@ -2010,80 +2403,6 @@ NYT和WOS的实验结果
       <tags>
         <tag>SSL</tag>
         <tag>WTLS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hierarchy Decoder is All You Need To Text Classification</title>
-    <url>/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/</url>
-    <content><![CDATA[<p>基于Encoder-Decoder架构，提出层次解码器，使用递归的层次解码处理依赖关系。</p>
-<p><img src="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/image-20220117164632176.png" alt="image-20220117164632176" style="zoom:50%;"></p>
-<a id="more"></a>
-<h2 id="overview">Overview</h2>
-<p><img src="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/image-20220117162101021.png" alt="image-20220117162101021" style="zoom:50%;"></p>
-<ul>
-<li>paper: <a href="https://arxiv.org/pdf/2111.11104v1.pdf" class="uri">https://arxiv.org/pdf/2111.11104v1.pdf</a></li>
-<li>code:</li>
-</ul>
-<h2 id="background">Background</h2>
-<p>层次文本分类的方法可以分为local和global两类</p>
-<ul>
-<li>local方法是指将层次结构展平后分类，降低了计算的复杂度但是丢失了层次信息。</li>
-<li>global方法可以捕获层次信息，其往往采用元学习、强化学习或者图神经网络的方法，但是层次结构太大时计算不友好。</li>
-</ul>
-<p>理想的层次分类模型应该兼顾二者，既有效（effective）也是容易扩展的（scalable）。本文提出了层次解码器，可以在训练和推理时感知层次依赖关系。</p>
-<h2 id="method">Method</h2>
-<h3 id="encoder">Encoder</h3>
-<p>编码器部分选择单循环单元（Simple Reccurrent Unit, SRU），可以看作是简单快速并且更具解释性的RNN。SRU将矩阵-向量乘法修改为element-wise向量乘法，是一种可以并行的RNN。其计算过程示意如下： $$ <span class="math display">\[\begin{align}
-\overrightarrow{\mathbf{H}^l}&amp;=\overrightarrow{\text{SRU}^l}(\mathbf{H}^{l-1})\\
-        \overleftarrow{\mathbf{H}^l}&amp;=\overleftarrow{\text{SRU}^l}(\mathbf{H}^{l-1})\\
-
-\mathbf{H}^l&amp;=\mathbf{W}^l[\overrightarrow{\mathbf{H}^l};\overleftarrow{\mathbf{H}^l}]+b^l
-\end{align}\]</span> $$</p>
-<h3 id="hierarchy-decoder">Hierarchy Decoder</h3>
-<p>标签的层次关系可以表示为<span class="math inline">\(G=(V,\vec{E})\)</span>，对于文档<span class="math inline">\(d_k\)</span>，其对应的子图9就是<span class="math inline">\(G^{d_k} = (V^{d_k},\vec{E}^{d_k})\)</span>。通过解析树生成对应的序列<span class="math inline">\(S\)</span>，图中即为<span class="math inline">\(\text{S= R ( A ( D ( I ( [END] ) ) ) ) ( B ( F ( [END] ) ) ) ( C ( [END] ) ) )]}\)</span>。用one-hot向量表示其中的字符，即<span class="math inline">\(\vec{S} = [s_1,\cdots,s_M]\)</span>，其中<span class="math inline">\(s_i=\mathbb{I}_{v_i}\)</span>。</p>
-<p><img src="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/image-20220117164821897.png" alt="image-20220117164821897" style="zoom:33%;"></p>
-<p>于是层次嵌入<span class="math inline">\(\mathbf{U}^0\)</span>的初始化可以表示为 <span class="math display">\[
-\mathbf{\bar{U}}^0=\mathbf{W}^S\bar{\mathbf{S}} \\
-\mathbf{U}^0=\text{level\_embedding}(\mathbf{\bar{U}}^0)
-\]</span> 之后作者设计了level-wise掩码自注意力 <span class="math display">\[
-\begin{align}
-\dot{\mathbf{U}}^r &amp;= \text{Masked\_Attention}(\mathbf{Q,K,V}) \\
-&amp;= \text{softmax} \left( \frac{\mathbf{QK}^\top}{\sqrt{\text{e}}}+\mathbf{M} \right) \mathbf{V}
-\end{align}
-\]</span> 其中<span class="math inline">\(\mathbf{QKV}\)</span>都是对<span class="math inline">\(\mathbf{U}\)</span>线性变换得到的，掩码矩阵定义了父子的基层关系，定义为 <span class="math display">\[
-\mathbf{M}_{ij}=\begin{cases}
--1e9 &amp; \text{ if } v_i \notin ancestor(v_j) \\ 
-0 &amp; \text{ else }
-\end{cases}
-\]</span> 自注意力计算后则是cross-attention，作者称为Text-Hierarchy Attention <span class="math display">\[
-\begin{align}
-    \mathbf{Q}&amp;=\mathbf{W}_{Q}^{r} {\dot{\mathbf{U}}^{r-1}}^{\top} \\
-    \mathbf{K}&amp;=\mathbf{W}_{K}^{r} \mathbf{H}^{\top}\\
-    \mathbf{V}&amp;=\mathbf{W}_{V}^{r} \mathbf{H}^{\top} \\
-    \ddot{\mathbf{U}}^r&amp;=\text{Masked\_Attention}(\mathbf{Q,K,V}) \\
-    &amp;=\text{softmax} \left (\frac{\mathbf{QK}^\top}{\sqrt{e}} \right ) \mathbf{V}
-\end{align}
-\]</span> 在解码时，计算子类和父类的相似度<span class="math inline">\(c_{ij}\)</span> <span class="math display">\[
-\begin{align}
-c_{ij}&amp;=U_i\cdot \mathbf{W}^S \cdot \mathbb{I}_{v_j} \quad \forall v_j \in child(v_i) \\
-p_i&amp;=\mathcal{F}(c_i)
-\end{align}
-\]</span> 其中<span class="math inline">\(\mathcal{F}\)</span>在单分类时为sigmoid，多标签时为softmax。</p>
-<p>递归层次解码的算法表示如下</p>
-<p><img src="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/image-20220117194712206.png" alt="image-20220117194712206" style="zoom:50%;"></p>
-<h2 id="experiment">Experiment</h2>
-<p>选取RCV1-V2和WOS数据集，学习率5e-5，隐层维度300，batch size为1024，硬件为NVIDIA A6000 * 8（富有）。</p>
-<p><img src="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/image-20220117194951077.png" alt="image-20220117194951077" style="zoom:50%;"></p>
-<p><img src="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/image-20220117195004616.png" alt="image-20220117195004616" style="zoom:33%;"></p>
-<p><img src="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/image-20220117201120349.png" alt="image-20220117201120349" style="zoom:33%;"></p>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>Multi-Label</tag>
-        <tag>Transformer</tag>
       </tags>
   </entry>
   <entry>
@@ -2692,277 +3011,6 @@ D_{PK_B}(E_{SK_B}(X)) = D_{SK_B}(E_{PK_B}(X)) = X
       </tags>
   </entry>
   <entry>
-    <title>Internet安全协议与分析（五）Kerberos</title>
-    <url>/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/</url>
-    <content><![CDATA[<p>介绍Kerberos协议。</p>
-<a id="more"></a>
-<h2 id="密钥管理问题">密钥管理问题</h2>
-<p>所有的密码系统都存在这样的问题：如何安全/可靠地分配密钥。理想的情况是，密钥分配协议应该得到形式化验证。</p>
-<h3 id="单点登录">单点登录</h3>
-<ul>
-<li>用户只需要登录一次，就可以访问多个系统，不需要记忆多个口令密码。</li>
-<li>优点
-<ul>
-<li>用户可以快速访问网络，提高工作效率，也能帮助提高系统的安全性。</li>
-<li>有利于进行账户密码管理、用户审计。</li>
-<li>方便进行企业应用部署。</li>
-</ul></li>
-</ul>
-<h2 id="kerberos认证服务协议">Kerberos认证服务协议</h2>
-<ul>
-<li>提供一个在客户端跟服务器端之间或服务器与服务器之间的身份验证机制（并且是相互的身份验证机制）·</li>
-<li>解决的问题
-<ul>
-<li>在公开的分布式环境中，工作站上的用户希望访问分布在网络中的服务器上的服务。</li>
-<li>服务器希望能够限制授权用户的访问，并对服务请求进行鉴别。</li>
-</ul></li>
-</ul>
-<h3 id="kerberos的加密体制">Kerberos的加密体制</h3>
-<ul>
-<li>Kerberos提供一个中心认证服务器，提供用户和服务器之间的认证服务。</li>
-<li>采用传统加密算法，<strong>无公钥体制</strong>。</li>
-<li>常用版本：Kerberos Version 4 和 Kerberos Version 5</li>
-</ul>
-<h3 id="主要功能">主要功能</h3>
-<ul>
-<li>在分布式的client/server体系结构中，采用Kerberos服务器提供认证服务。</li>
-<li>总体方案是提供一个可信第三方的认证服务。
-<ul>
-<li>用tickets验证</li>
-<li>避免本地保存密码和在互联网上传输密码</li>
-<li>包含可信第三方</li>
-<li>使用对称加密</li>
-<li>客户端与服务器之间能够相互验证</li>
-</ul></li>
-</ul>
-<h3 id="kerberos-version-4">Kerberos Version 4</h3>
-<ul>
-<li>引入可信第三方的认证服务，基于Needham &amp; Schroeder协议。</li>
-<li>采用DES加密算法，提供认证服务。</li>
-</ul>
-<h4 id="基本概念">基本概念</h4>
-<ul>
-<li>Principal
-<ul>
-<li>安全个体，被认证的个体，有名字和口令。</li>
-</ul></li>
-<li>KDC
-<ul>
-<li>密钥分发中心，提供票据和临时的会话密钥。</li>
-</ul></li>
-<li>Ticket
-<ul>
-<li>用户可以用它向服务器表明身份，包含客户标识、会话密钥、时间戳等信息。其中的大多数信息被加密，密钥为服务器的密钥。</li>
-</ul></li>
-<li>Authenticator
-<ul>
-<li>包含最近产生的信息，需要用到会话密钥。</li>
-</ul></li>
-<li>Credentials
-<ul>
-<li>票据加上会话密钥</li>
-</ul></li>
-<li>Authentication Server(AS)
-<ul>
-<li>通过long-term key认证客户</li>
-<li>给予客户ticket granting ticket和short-term key</li>
-<li><strong>认证服务</strong></li>
-</ul></li>
-<li>Ticket Granting Server(TGS)
-<ul>
-<li>通过short-term key和ticket granting ticket认证客户。</li>
-<li>TGS发放tickets给客户以访问其他服务器。</li>
-<li><strong>授权与访问控制服务</strong></li>
-</ul></li>
-</ul>
-<p>这样做的动机</p>
-<ul>
-<li>将认证与授权在逻辑上分离</li>
-<li>设置不同的生命周期
-<ul>
-<li>TGT通常10h，ST通常5min。</li>
-<li>方便客户，降低密钥的暴露时间。</li>
-</ul></li>
-</ul>
-<figure>
-<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201019141737715.png" alt="image-20201019141737715"><figcaption aria-hidden="true">image-20201019141737715</figcaption>
-</figure>
-<h4 id="认证服务交换获得tgt">认证服务交换：获得TGT</h4>
-<figure>
-<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201019141857995.png" alt="image-20201019141857995"><figcaption aria-hidden="true">image-20201019141857995</figcaption>
-</figure>
-<h4 id="票据许可服务交换获得st">票据许可服务交换：获得ST</h4>
-<figure>
-<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201019141907104.png" alt="image-20201019141907104"><figcaption aria-hidden="true">image-20201019141907104</figcaption>
-</figure>
-<figure>
-<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201019141920821.png" alt="image-20201019141920821"><figcaption aria-hidden="true">image-20201019141920821</figcaption>
-</figure>
-<h4 id="客户服务器认证交换获得服务">客户/服务器认证交换：获得服务</h4>
-<figure>
-<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201019141931124.png" alt="image-20201019141931124"><figcaption aria-hidden="true">image-20201019141931124</figcaption>
-</figure>
-<h4 id="kerberos和多个域">Kerberos和多个域</h4>
-<ul>
-<li>完整的Kerberos环境包括Kerberos服务器、一组工作站和一组应用服务器
-<ul>
-<li>所有用户和服务器均在Kerberos服务器上注册。</li>
-<li>Kerberos服务器必须在数据库中拥有所有用户的ID和口令散列表。</li>
-<li>Kerberos服务器必须与每一个服务器之间共享一个保密密钥。</li>
-</ul></li>
-<li>对于不同的域
-<ul>
-<li>每个辖区的Kerberos服务器与其他辖区的Kerberos服务器之间共享一个保密密钥，两个服务器互相注册。</li>
-</ul></li>
-</ul>
-<h4 id="跨域认证">跨域认证</h4>
-<figure>
-<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201019142401641.png" alt="image-20201019142401641"><figcaption aria-hidden="true">image-20201019142401641</figcaption>
-</figure>
-<figure>
-<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201019142408521.png" alt="image-20201019142408521"><figcaption aria-hidden="true">image-20201019142408521</figcaption>
-</figure>
-<h3 id="kerberos-version-5">Kerberos Version 5</h3>
-<ul>
-<li>标准化为RFC 1510</li>
-<li>改进之处</li>
-</ul>
-<table>
-<thead>
-<tr class="header">
-<th></th>
-<th>v4</th>
-<th>v5</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>加密算法</td>
-<td>DES</td>
-<td>扩展</td>
-</tr>
-<tr class="even">
-<td>网络协议地址</td>
-<td>IP</td>
-<td>OSI</td>
-</tr>
-<tr class="odd">
-<td>票据生命周期</td>
-<td>最大1280min</td>
-<td>不限制</td>
-</tr>
-<tr class="even">
-<td>认证转发</td>
-<td></td>
-<td>允许服务器在事务中代表客户端访问另一台服务器</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>双重加密
-<ul>
-<li>V4中的票据被重复加密</li>
-</ul></li>
-<li>消息重放
-<ul>
-<li>AS-&gt;Client和TGS-&gt;Client消息在票据生命周期中或可被重放，V5采用新鲜数。</li>
-<li>采用同一票据的多个cs连接使用相同的会话密钥，因而会遭受重放，<strong>V5使用subkey机制</strong>。</li>
-</ul></li>
-</ul>
-<figure>
-<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201028140902276.png" alt="image-20201028140902276"><figcaption aria-hidden="true">image-20201028140902276</figcaption>
-</figure>
-<h3 id="小结">小结</h3>
-<ul>
-<li>认证方法
-<ul>
-<li>本地机器录入密码</li>
-<li>经由中央KDC认证</li>
-<li>网上不传输密码</li>
-</ul></li>
-<li>单点登录
-<ul>
-<li>KDC给予票据TGT</li>
-<li>TGT可以用于获取其他的服务票据</li>
-</ul></li>
-<li>优点
-<ul>
-<li>密码不容易被窃听</li>
-<li>密码不在网上传输</li>
-<li>密码猜测更困难</li>
-<li>单点登录
-<ul>
-<li>便捷，不用记忆多个口令。</li>
-</ul></li>
-<li>票据被盗之后难以使用，因为需要配合认证头来使用。</li>
-</ul></li>
-</ul>
-<h2 id="windows下的kerberos应用">Windows下的Kerberos应用</h2>
-<ul>
-<li>Windows 2000中代替了NTLM
-<ul>
-<li>支持公钥加密来保护client/AS消息</li>
-<li>允许使用基于smart cards的认证</li>
-<li>使用了Kerberos数据授权字段</li>
-<li>传递Win2K访问控制权限</li>
-<li>源于Active Directory，以SIDs的形式。</li>
-<li>消息格式公开，单为微软专有。</li>
-</ul></li>
-</ul>
-<h3 id="windows下域登录的机理">Windows下域登录的机理</h3>
-<figure>
-<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201028142153918.png" alt="image-20201028142153918"><figcaption aria-hidden="true">image-20201028142153918</figcaption>
-</figure>
-<figure>
-<img src="/2020/10/19/Internet%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E4%B8%8E%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%94%EF%BC%89Kerberos/image-20201028142208733.png" alt="image-20201028142208733"><figcaption aria-hidden="true">image-20201028142208733</figcaption>
-</figure>
-<h4 id="开始步骤">开始步骤</h4>
-<ul>
-<li>CTRL + ALT + DEL</li>
-<li>Winlogon service &amp; GINA (MSGINA.DLL)</li>
-<li>用户输入被转到LSA</li>
-<li>LSA加密缓存并经有Kerberos SSP和KDC交互</li>
-</ul>
-<h4 id="交互过程">交互过程</h4>
-<ul>
-<li>LSA向KDC发送KRB_AS_REQ消息
-<ul>
-<li>包括主体名称Alice和域名，加密密钥基于Alice口令生成。</li>
-</ul></li>
-<li>KDC返回KRB_AS_REO消息
-<ul>
-<li>包括会话密钥、TGT、授权数据（SID）。</li>
-</ul></li>
-<li>LSA向KDC发送KRB_TGS_REQ消息
-<ul>
-<li>包括目标计算机名Bob、目标计算级域名、TGT、认证头。</li>
-</ul></li>
-<li>KDC返回KRB_TGS_REP消息
-<ul>
-<li>包括会话密钥（被Alice与KDC的会话密钥加密）、会话票据（被Bob和KDC的会话密钥加密）</li>
-<li>会话票据包括Bob和Alice的会话密钥和TGT中的授权数据。</li>
-</ul></li>
-</ul>
-<h4 id="组装本地令牌">组装本地令牌</h4>
-<ul>
-<li>收到Alice的会话票据后，LSA解密并提取出授权数据。</li>
-<li>查询本地SAM数据库，检查Alice是否属于本地安全组及其可能被授予的特权。</li>
-<li>若有，则将所查询得到的SIDs加入授权数据的列表，根据此构造访问令牌，将令牌句柄和Alice会话的ID，确认返回给Winlogon。</li>
-</ul>
-<h4 id="进入系统">进入系统</h4>
-<ul>
-<li>Winlogon创建窗口和桌面对象并且附带令牌，启动Shell。</li>
-<li>Alice的访问令牌被其进程所继承。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Internet安全协议与分析</category>
-      </categories>
-      <tags>
-        <tag>Kerberos</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Label Mask for Multi-Label Text Classification</title>
     <url>/2022/01/18/Label-Mask-for-Multi-Label-Text-Classification/</url>
     <content><![CDATA[<p>采用Prompt方法做多标签分类，使用MLM提升模型的泛化性。</p>
@@ -3013,49 +3061,6 @@ D_{PK_B}(E_{SK_B}(X)) = D_{SK_B}(E_{PK_B}(X)) = X
         <tag>NLP</tag>
         <tag>Multi-Label</tag>
         <tag>Prompt</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>K-BERT: Enabling Language Representation with Knowledge Graph</title>
-    <url>/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/</url>
-    <content><![CDATA[<p>AAAI 2020, 介绍K-BERT模型。</p>
-<a id="more"></a>
-<h2 id="概述">概述</h2>
-<ul>
-<li>arxiv：<a href="https://arxiv.org/abs/1909.07606v1" class="uri">https://arxiv.org/abs/1909.07606v1</a></li>
-<li>code：<a href="https://github.com/autoliuweijie/K-BERT" class="uri">https://github.com/autoliuweijie/K-BERT</a></li>
-</ul>
-<h2 id="细节">细节</h2>
-<p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
-<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003741712.png" alt="image-20210225003741712" style="zoom:67%;"></p>
-<p>具体来说，算法分为以下几步。</p>
-<ul>
-<li>预先准备KG，建立查找表（关键词表）。</li>
-<li>对于给定的输入文本，利用工具分词（pkuseg）。</li>
-<li>将分词得到的结果去表中查询，得到对应的实体。</li>
-<li>计算实体位置，得到位置编码，也即论文中的soft-position index。</li>
-<li>计算可见矩阵，控制每个词受哪些词影响（如Cook不会被Beijing关联的China影响）。</li>
-</ul>
-<figure>
-<img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"><figcaption aria-hidden="true">image-20210225003844098</figcaption>
-</figure>
-<p>K-BERT并不算预训练模型，嵌入层依旧是使用的BERT模型，应该算基于BERT的fine-tuning网络，可以用于分类和序列标注。同时，K-BERT也可以加载其他BERT类模型，如ERNIE、RoBERTa等。</p>
-<p>创新点在于使用可见矩阵控制了Self-Attention的计算（如下图）。</p>
-<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225005229317.png" alt="image-20210225005229317" style="zoom: 67%;"></p>
-<h2 id="不足">不足</h2>
-<ul>
-<li>模型的鲁棒性受限于知识图谱的质量，取自于开放领域图谱中的信息，其实BERT通过大语料学习也能获得，可以考虑特定领域的知识。</li>
-<li>关联的三元组没有筛选，一词多义会引入错误的实体关联。</li>
-<li>对于非知识驱动的任务，引入知识反而会效果下降。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>Transformer</tag>
-        <tag>KG</tag>
       </tags>
   </entry>
   <entry>
@@ -3111,61 +3116,6 @@ D_{PK_B}(E_{SK_B}(X)) = D_{SK_B}(E_{PK_B}(X)) = X
         <tag>NLP</tag>
         <tag>Multi-Label</tag>
         <tag>GNN</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Lattice-BERT</title>
-    <url>/2021/04/16/Lattice-BERT/</url>
-    <content><![CDATA[<p>将词汇信息融入BERT（NAACL 2021）</p>
-<a id="more"></a>
-<h2 id="overview">Overview</h2>
-<ul>
-<li>arxiv: https://arxiv.org/pdf/2104.07204v1.pdf</li>
-<li>code: 暂无</li>
-</ul>
-<h2 id="background">Background</h2>
-<p>中文预训练模型将文本作为字符序列处理，忽略了粗粒度的语义特征。对于中文来说，词义并不完全是字义的组合，如”老板“并不等于“老的板”。将词级别的特征加入模型，可以有效补充字级别的不足。</p>
-<p>本文设计了word lattice的结构来利用多粒度的输入，让预训练模型在下游任务中学会利用这些特征。</p>
-<p>让Bert学会单词主要有两个难点：</p>
-<ul>
-<li>Bert原本的输入是字符序列，加入lattice后怎样描述位置信息。</li>
-<li>对于Masked Languaged Model，怎样针对lattice结构设计mask任务。</li>
-</ul>
-<p>本文设计了lattice position attention（LPA），以帮助transformer利用lattice中文本单元的位置和距离信息。此外，还提出了masked segment prediction（MSP）任务。 <span class="math display">\[
-\rm{Lattice-BERT} = \rm{BERT} + \rm{word\ lattice} + LPA + MSP
-\]</span></p>
-<h2 id="methodology">Methodology</h2>
-<h3 id="word-lattice">Word Lattice</h3>
-<p><img src="/2021/04/16/Lattice-BERT/image-20210416194914983.png" alt="image-20210416194914983" style="zoom: 80%;"></p>
-<p>Lattice就是一个有向无环图，和Lattice-LSTM的思想类似。难点在于如何在编码层保持lattice的结构，以及如何避免冗余信息带来的潜在影响。</p>
-<h3 id="lattice-position-attention">Lattice Position Attention</h3>
-<p>在BERT的attention基础上，加了三个位置相关项。 <span class="math display">\[
-\tilde{\alpha}_{ij} = \alpha_{ij} + \rm{att}_{ij} + b_{ij} + r_{ij}
-\]</span></p>
-<p>其中，<span class="math inline">\(\alpha_{ij}\)</span>表示原来的attention，<span class="math inline">\(\rm{att}_{ij}\)</span>计算了绝对位置的attention权重，<span class="math inline">\(b_{ij}\)</span>则是对相对距离的计算，<span class="math inline">\(r_{ij}\)</span>是对相对位置的缩放项。</p>
-<p><span class="math display">\[
-\rm{att}_{ij} = \frac {1} {\sqrt{2d_k}}([P_{s_i}^S;P_{e_i}^E]W^q)([P_{s_i}^S;P_{e_i}^E]W^k)^T
-\]</span></p>
-<p><span class="math display">\[
-b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{ee}
-\]</span></p>
-<blockquote>
-<p>感觉和FLAT类似，也是计算四个距离。</p>
-</blockquote>
-<h3 id="masked-segment-prediction">Masked Segment Prediction</h3>
-<p>BERT对单字掩码，Lattice-BERT则是对Segment掩码。</p>
-<p>Segment定义为：lattice的一个连通子图，且Segment之间彼此token不重叠，如下图。具体来说，为了句子分段，需要逐字遍历，判断当前的字是否是之前所有单词的结尾（真拗口）。</p>
-<p><img src="/2021/04/16/Lattice-BERT/image-20210416195015009.png" alt="image-20210416195015009" style="zoom:80%;"></p>
-<h2 id="experiment">Experiment</h2>
-<p>本文在11个中文NLU任务上进行实验，包括文本分类、阅读理解、序列标注等，在MSRA-NER和CLUE数据集上进行了实验，并与RoBERTa等预训练模型进行了比较。</p>
-<p><img src="/2021/04/16/Lattice-BERT/image-20210416201801843.png" alt="image-20210416201801843" style="zoom:80%;"></p>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>Transformer</tag>
       </tags>
   </entry>
   <entry>
@@ -3258,6 +3208,61 @@ Z \approx \exp(-\mathcal{L}(\mathcal{D};\theta_\text{MAP})) \, (2\pi)^{D/2} \, (
       <tags>
         <tag>Bayesian</tag>
         <tag>Laplace</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Lattice-BERT</title>
+    <url>/2021/04/16/Lattice-BERT/</url>
+    <content><![CDATA[<p>将词汇信息融入BERT（NAACL 2021）</p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<ul>
+<li>arxiv: https://arxiv.org/pdf/2104.07204v1.pdf</li>
+<li>code: 暂无</li>
+</ul>
+<h2 id="background">Background</h2>
+<p>中文预训练模型将文本作为字符序列处理，忽略了粗粒度的语义特征。对于中文来说，词义并不完全是字义的组合，如”老板“并不等于“老的板”。将词级别的特征加入模型，可以有效补充字级别的不足。</p>
+<p>本文设计了word lattice的结构来利用多粒度的输入，让预训练模型在下游任务中学会利用这些特征。</p>
+<p>让Bert学会单词主要有两个难点：</p>
+<ul>
+<li>Bert原本的输入是字符序列，加入lattice后怎样描述位置信息。</li>
+<li>对于Masked Languaged Model，怎样针对lattice结构设计mask任务。</li>
+</ul>
+<p>本文设计了lattice position attention（LPA），以帮助transformer利用lattice中文本单元的位置和距离信息。此外，还提出了masked segment prediction（MSP）任务。 <span class="math display">\[
+\rm{Lattice-BERT} = \rm{BERT} + \rm{word\ lattice} + LPA + MSP
+\]</span></p>
+<h2 id="methodology">Methodology</h2>
+<h3 id="word-lattice">Word Lattice</h3>
+<p><img src="/2021/04/16/Lattice-BERT/image-20210416194914983.png" alt="image-20210416194914983" style="zoom: 80%;"></p>
+<p>Lattice就是一个有向无环图，和Lattice-LSTM的思想类似。难点在于如何在编码层保持lattice的结构，以及如何避免冗余信息带来的潜在影响。</p>
+<h3 id="lattice-position-attention">Lattice Position Attention</h3>
+<p>在BERT的attention基础上，加了三个位置相关项。 <span class="math display">\[
+\tilde{\alpha}_{ij} = \alpha_{ij} + \rm{att}_{ij} + b_{ij} + r_{ij}
+\]</span></p>
+<p>其中，<span class="math inline">\(\alpha_{ij}\)</span>表示原来的attention，<span class="math inline">\(\rm{att}_{ij}\)</span>计算了绝对位置的attention权重，<span class="math inline">\(b_{ij}\)</span>则是对相对距离的计算，<span class="math inline">\(r_{ij}\)</span>是对相对位置的缩放项。</p>
+<p><span class="math display">\[
+\rm{att}_{ij} = \frac {1} {\sqrt{2d_k}}([P_{s_i}^S;P_{e_i}^E]W^q)([P_{s_i}^S;P_{e_i}^E]W^k)^T
+\]</span></p>
+<p><span class="math display">\[
+b_{ij} = b_{s_j-s_i}^{ss} + b_{s_j-e_i}^{se} + b_{e_j-s_i}^{es} + b_{e_j-e_i}^{ee}
+\]</span></p>
+<blockquote>
+<p>感觉和FLAT类似，也是计算四个距离。</p>
+</blockquote>
+<h3 id="masked-segment-prediction">Masked Segment Prediction</h3>
+<p>BERT对单字掩码，Lattice-BERT则是对Segment掩码。</p>
+<p>Segment定义为：lattice的一个连通子图，且Segment之间彼此token不重叠，如下图。具体来说，为了句子分段，需要逐字遍历，判断当前的字是否是之前所有单词的结尾（真拗口）。</p>
+<p><img src="/2021/04/16/Lattice-BERT/image-20210416195015009.png" alt="image-20210416195015009" style="zoom:80%;"></p>
+<h2 id="experiment">Experiment</h2>
+<p>本文在11个中文NLU任务上进行实验，包括文本分类、阅读理解、序列标注等，在MSRA-NER和CLUE数据集上进行了实验，并与RoBERTa等预训练模型进行了比较。</p>
+<p><img src="/2021/04/16/Lattice-BERT/image-20210416201801843.png" alt="image-20210416201801843" style="zoom:80%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>Transformer</tag>
       </tags>
   </entry>
   <entry>
@@ -3391,8 +3396,8 @@ g
       </categories>
       <tags>
         <tag>Multi-Label</tag>
-        <tag>Transformer</tag>
         <tag>CV</tag>
+        <tag>Transformer</tag>
       </tags>
   </entry>
   <entry>
@@ -3454,88 +3459,6 @@ R_{RSA}(\hat{\mathrm{y}})=\frac{\log\prod_{i=1}^{|\hat{\mathrm{y}}|}P_{MSA}(\hat
         <tag>NLP</tag>
         <tag>Multi-Label</tag>
         <tag>ICD</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Multi-label Classification with Partial Annotations using Class-aware Selective Loss</title>
-    <url>/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/</url>
-    <content><![CDATA[<p>分析了多标签分类中的部分标注问题，设计了Loss函数处理这个问题。</p>
-<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218142826882.png" alt="image-20220218142826882" style="zoom:33%;"></p>
-<a id="more"></a>
-<h2 id="overview">Overview</h2>
-<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218135857801.png" alt="image-20220218135857801" style="zoom:33%;"></p>
-<ul>
-<li>paper: <a href="https://arxiv.org/pdf/2110.10955v1.pdf" class="uri">https://arxiv.org/pdf/2110.10955v1.pdf</a></li>
-<li>code: <a href="https://github.com/alibaba-miil/partiallabelingcsl" class="uri">https://github.com/alibaba-miil/partiallabelingcsl</a></li>
-<li>dataset: OpenImages LVIS MS-COCO</li>
-</ul>
-<h2 id="background">Background</h2>
-<p>近年来，对每张图像进行完整标注变得越来越困难。例如OpenImages的训练集有900万张图像，包含9600个类别。在现实的大规模多标签分类任务中，部分标注的数据是不可避免的，如何处理那些未标注的标签是一个问题。</p>
-<p>最简单的方法就是直接忽略未标注的标签，但这样只利用了数据的一部分。将其直接当作负标签也是一种方法，但会引入噪声，并加剧正负样本的不平衡。这两种方法分别对应于下图的b和c。</p>
-<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218140940917.png" alt="image-20220218140940917" style="zoom:33%;"></p>
-<p>OpenImages中“黑色”标签只标注了1688个样本，占全体样本的0.02%，然而这是很可能频繁出现的标签。因此统计数据集中类别的频数往往不能反映真实的标签比例，需要从数据中估计类别的分布。</p>
-<p>本文提出了选择性（Selective）的方法，利用<strong>标签概率</strong>（Label likelihood）和<strong>标签先验</strong>（Label prior）两项判断每个标签的模式（Ignore还是Negative）。为了获得一个可靠的标签先验，还提出了一种估计类别分布的方法。</p>
-<h2 id="method">Method</h2>
-<p>给定部分标注的多标签数据集，类别标签<span class="math inline">\(y_c\in\{-1,0,1\}\)</span>，其中0表示缺失。用<span class="math inline">\(\mathcal{P}_{\mathbf{x}}=\{c|y_c=1\}\)</span>和<span class="math inline">\(\mathcal{N}_{\mathbf{x}}=\{c|y_c=-1\}\)</span>分别表示正负标签，用<span class="math inline">\(\mathcal{U}_{\mathbf{x}}=\{c|y_c=1\}\)</span>表示未标注的类别，通常有<span class="math inline">\(|\mathcal{P}_{\mathbf{x}}\cup \mathcal{P}_{\mathbf{x}}|\ll|\mathcal{U}_{\mathbf{x}}|\)</span>。损失函数的通用形式可以定义如下： <span class="math display">\[
-\mathcal{L}(x) =
-\sum_{c\in\mathcal{P}_{\mathbf{x}}}\mathcal{L}^+(\mathbf{x}) +
-\sum_{c\in\mathcal{N}_{\mathbf{x}}}\mathcal{L}^-(\mathbf{x}) +
-\sum_{c\in\mathcal{U}_{\mathbf{x}}}\mathcal{L}^u(\mathbf{x})
-\]</span> 对于常见的BCE，只考虑标注数据则有<span class="math inline">\(\mathcal{L}^+(\mathbf{x})=\log(p_c)\)</span>，<span class="math inline">\(\mathcal{L}^-(\mathbf{x})=\log(1-p_c)\)</span>，<span class="math inline">\(\mathcal{L}^u(\mathbf{x})=0\)</span>。</p>
-<p>对于Ignore模式，即有<span class="math inline">\(\mathcal{L}^u(\mathbf{x})=0\)</span>；对于Negtive模式，即有<span class="math inline">\(\mathcal{L}^u(\mathbf{x})=\mathcal{L}^-(\mathbf{x})\)</span>。</p>
-<p>本文采用非对称损失ASL（Asymmetric Loss）作为基准，其能够动态关注困难样本同时控制正负样本传播的比例。对于基本的Focal Loss，有 <span class="math display">\[
-\mathcal{L}_F(p_c,\gamma) = (1-p_c)^\gamma\log p_c
-\]</span> 部分非对称损失P-ASL定义为 <span class="math display">\[
-\begin{align}
-\mathcal{L}(x) =
-&amp;\sum_{c\in\mathcal{P}_{\mathbf{x}}}\mathcal{L}_F(p_c, \gamma^+)\\
-+&amp;\sum_{c\in\mathcal{N}_{\mathbf{x}}}\mathcal{L}_F(1-p_c,\gamma^-)
-+\sum_{c\in\mathcal{U}_{\mathbf{x}}}\omega_c\mathcal{L}_F(1-p_c, \gamma^u)
-\end{align}
-\]</span> 通常设置<span class="math inline">\(\gamma^+&lt;\gamma^-\)</span>，因为正样本更少见。同时有<span class="math inline">\(\gamma^-&lt;\gamma^u\)</span>，因为有标注的负样本更值得信赖。</p>
-<h3 id="class-aware-selective-loss">Class-aware Selective Loss</h3>
-<p>标签概率表示未标注标签<span class="math inline">\(c\)</span>的概率 <span class="math display">\[
-P(y_c=1|\mathbf{x};\mathbf{\theta});\quad\forall c\in\mathcal{U}_{\mathbf{x}}
-\]</span> 高置信度的标签可能出现在图像中，不能将其当作负样本，应该忽略。为此作者选了<span class="math inline">\(K\)</span>个最高概率的标签： <span class="math display">\[
-\Omega_L = \{c\in\mathcal{U}_{\mathbf{x}}|c\in\text{TopK}(\{p_c\})\}
-\]</span> <img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218151327653.png" alt="image-20220218151327653" style="zoom:33%;"></p>
-<p>标签先验可以看作数据中标签的出现频率 <span class="math display">\[
-P(y_c=1);\quad\forall c\in\mathcal{U}_{\mathbf{x}}
-\]</span> 用<span class="math inline">\(\hat{P}_r(c)\)</span>表示先验估计器，我们对于高先验值的标签感兴趣。 <span class="math display">\[
-\Omega_P = \{c\in\mathcal{U}_{\mathbf{x}}|\hat{P}_r(c)&gt;\eta\}
-\]</span> 其中<span class="math inline">\(\eta\in[0,1]\)</span>表示是否忽略的阈值。 <span class="math display">\[
-O_{\text{Ignore}} = \Omega_{L}\cup\Omega_P
-\]</span> 相应地，对应的权重定义为 <span class="math display">\[
-\omega_c = \begin{cases}
-0 &amp; c\in\Omega_{\textrm{Ignore}} \\
-1 &amp; c\notin\Omega_{\textrm{Ignore}}
-\end{cases}
-\]</span></p>
-<h3 id="estimating-the-class-distribution">Estimating the Class Distribution</h3>
-<p>在MS-COCO中，89%的类别出现在少于5%的样本中。标签先验可以通过下式估计 <span class="math display">\[
-P(y_c=1;\theta) = \frac{1}{|\mathcal{X}|}\sum_{\mathbf{x}\in\mathcal{X}}P(y_c=1|\mathbf{x};\mathbf{\theta})
-\]</span> 在Ignore模式下训练模型，此时则有<span class="math inline">\(\hat{P}_r(c) = P(y_c=1;\mathbf{\theta}_{\text{Ignore}})\)</span>。</p>
-<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153013652.png" alt="image-20220218153013652" style="zoom: 33%;"></p>
-<h2 id="experiment">Experiment</h2>
-<p>采用完整标注的MS-COCO数据集，模拟部分标注进行实验。部分标注的模式有两种：</p>
-<ol type="1">
-<li>Fixed per class (FPC) 对于每个类别随机采样固定数目<span class="math inline">\(N_s\)</span>的正负标注，丢弃其余标注。</li>
-<li>Random per annotation (RPA) 按概率<span class="math inline">\(p\)</span>删除每个标注。</li>
-</ol>
-<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153115301.png" alt="image-20220218153115301" style="zoom: 33%;"></p>
-<p>作者比较了估计的标签分布与实际分布的相似度，可以看出Ignore模式更适合。</p>
-<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153237480.png" alt="image-20220218153237480" style="zoom:33%;"></p>
-<p>公开benchmark选择了OpenImages和LVIS，取得了SOTA结果。</p>
-<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153446623.png" alt="image-20220218153446623" style="zoom:33%;"></p>
-<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153457307.png" alt="image-20220218153457307" style="zoom:33%;"></p>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>Multi-Label</tag>
-        <tag>Loss</tag>
-        <tag>CV</tag>
       </tags>
   </entry>
   <entry>
@@ -3633,48 +3556,6 @@ P(y_c=1;\theta) = \frac{1}{|\mathcal{X}|}\sum_{\mathbf{x}\in\mathcal{X}}P(y_c=1|
       </tags>
   </entry>
   <entry>
-    <title>Perceiver IO: A General Architecture for Structured Inputs &amp; Outputs</title>
-    <url>/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/</url>
-    <content><![CDATA[<p>来自DeepMind，Perceiver的续作，不再局限于分类任务，在NLP、CV、多模态甚至星际争霸二上取得了不错的成绩。</p>
-<p><img src="/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/image-20220202164605712.png" alt="image-20220202164605712" style="zoom:50%;"></p>
-<a id="more"></a>
-<h2 id="overview">Overview</h2>
-<p><img src="/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/image-20220202163943738.png" alt="image-20220202163943738" style="zoom:50%;"></p>
-<ul>
-<li>paper: <a href="https://arxiv.org/pdf/2107.14795v2.pdf" class="uri">https://arxiv.org/pdf/2107.14795v2.pdf</a></li>
-<li>code:
-<ul>
-<li>official: https://github.com/deepmind/deepmind-research/tree/master/perceiver</li>
-<li><a href="https://github.com/krasserm/perceiver-io" class="uri">https://github.com/krasserm/perceiver-io</a></li>
-</ul></li>
-</ul>
-<h2 id="background">Background</h2>
-<p>Perceiver只能处理分类任务，本文提出了一种用于解码结构化输出的机制，使得模型能够处理大量新的任务而不需要领域特有的处理方法。</p>
-<p>Perceiver IO是一个纯注意力的架构，输入编码到潜在空间，潜在的表示通过多层处理，经过解码得到最终的输出。</p>
-<h2 id="method">Method</h2>
-<h3 id="encoding-processing-and-decoding">Encoding, processing, and decoding</h3>
-<p>编码将输入序列<span class="math inline">\(x\in\mathbb{R}^{M\times C}\)</span>映射到潜在序列<span class="math inline">\(z\in\mathbb{R}^{N\times D}\)</span>，采用一系列模块进行处理，最终用一个注意力模块将潜在序列映射到输出序列<span class="math inline">\(y\in\mathbb{R}^{O\times E}\)</span>。其中<span class="math inline">\(N\)</span>和<span class="math inline">\(D\)</span>为超参数，<span class="math inline">\(C\)</span>、<span class="math inline">\(O\)</span>和<span class="math inline">\(E\)</span>为任务数据的属性，通常非常大。</p>
-<p>如Perceiver一样，Perceiver IO没有平方复杂度，编码器和解码器随着输入规模线性增长，潜在注意力的代价取决于输入输出的尺寸。</p>
-<h3 id="decoding-with-a-query-array">Decoding with a query array</h3>
-<p>给定<span class="math inline">\(N\times D\)</span>维的潜在表示，需要得到最终<span class="math inline">\(O\times E\)</span>维的输出序列。</p>
-<p><img src="/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/image-20220202170433574.png" alt="image-20220202170433574" style="zoom:50%;"></p>
-<p>对于分类这样的简单任务，直接使用position encoding。对于多任务或多模态，为每个任务或模态学习query。</p>
-<h2 id="experiment">Experiment</h2>
-<p>选择了多种任务，如下表所示。</p>
-<p><img src="/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/image-20220202164856457.png" alt="image-20220202164856457" style="zoom:50%;"></p>
-<p><img src="/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/image-20220202170920626.png" alt="image-20220202170920626" style="zoom:50%;"></p>
-<h2 id="conclusion">Conclusion</h2>
-<p>在Perceiver的基础上加了Decoder，从而可以处理多种任务。</p>
-]]></content>
-      <categories>
-        <category>Paper</category>
-      </categories>
-      <tags>
-        <tag>Perceiver</tag>
-        <tag>Multi-Modal</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Perceiver: General Perception with Iterative Attention</title>
     <url>/2022/02/02/Perceiver-General-Perception-with-Iterative-Attention/</url>
     <content><![CDATA[<p>ICML 2021，来自DeepMind，目前大多数模型只能处理单模态，本文提出基于Transformer的Perceiver模型，适用于各种各样的输入，不需要过多的特定假设。模型利用非对称的注意力机制，将输入迭代地提取到一个很小的隐藏bottleneck，从而可以处理非常大的输入。</p>
@@ -3722,6 +3603,130 @@ P(y_c=1;\theta) = \frac{1}{|\mathcal{X}|}\sum_{\mathbf{x}\in\mathcal{X}}P(y_c=1|
       </categories>
       <tags>
         <tag>Transformer</tag>
+        <tag>Perceiver</tag>
+        <tag>Multi-Modal</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Multi-label Classification with Partial Annotations using Class-aware Selective Loss</title>
+    <url>/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/</url>
+    <content><![CDATA[<p>分析了多标签分类中的部分标注问题，设计了Loss函数处理这个问题。</p>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218142826882.png" alt="image-20220218142826882" style="zoom:33%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218135857801.png" alt="image-20220218135857801" style="zoom:33%;"></p>
+<ul>
+<li>paper: <a href="https://arxiv.org/pdf/2110.10955v1.pdf" class="uri">https://arxiv.org/pdf/2110.10955v1.pdf</a></li>
+<li>code: <a href="https://github.com/alibaba-miil/partiallabelingcsl" class="uri">https://github.com/alibaba-miil/partiallabelingcsl</a></li>
+<li>dataset: OpenImages LVIS MS-COCO</li>
+</ul>
+<h2 id="background">Background</h2>
+<p>近年来，对每张图像进行完整标注变得越来越困难。例如OpenImages的训练集有900万张图像，包含9600个类别。在现实的大规模多标签分类任务中，部分标注的数据是不可避免的，如何处理那些未标注的标签是一个问题。</p>
+<p>最简单的方法就是直接忽略未标注的标签，但这样只利用了数据的一部分。将其直接当作负标签也是一种方法，但会引入噪声，并加剧正负样本的不平衡。这两种方法分别对应于下图的b和c。</p>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218140940917.png" alt="image-20220218140940917" style="zoom:33%;"></p>
+<p>OpenImages中“黑色”标签只标注了1688个样本，占全体样本的0.02%，然而这是很可能频繁出现的标签。因此统计数据集中类别的频数往往不能反映真实的标签比例，需要从数据中估计类别的分布。</p>
+<p>本文提出了选择性（Selective）的方法，利用<strong>标签概率</strong>（Label likelihood）和<strong>标签先验</strong>（Label prior）两项判断每个标签的模式（Ignore还是Negative）。为了获得一个可靠的标签先验，还提出了一种估计类别分布的方法。</p>
+<h2 id="method">Method</h2>
+<p>给定部分标注的多标签数据集，类别标签<span class="math inline">\(y_c\in\{-1,0,1\}\)</span>，其中0表示缺失。用<span class="math inline">\(\mathcal{P}_{\mathbf{x}}=\{c|y_c=1\}\)</span>和<span class="math inline">\(\mathcal{N}_{\mathbf{x}}=\{c|y_c=-1\}\)</span>分别表示正负标签，用<span class="math inline">\(\mathcal{U}_{\mathbf{x}}=\{c|y_c=1\}\)</span>表示未标注的类别，通常有<span class="math inline">\(|\mathcal{P}_{\mathbf{x}}\cup \mathcal{P}_{\mathbf{x}}|\ll|\mathcal{U}_{\mathbf{x}}|\)</span>。损失函数的通用形式可以定义如下： <span class="math display">\[
+\mathcal{L}(x) =
+\sum_{c\in\mathcal{P}_{\mathbf{x}}}\mathcal{L}^+(\mathbf{x}) +
+\sum_{c\in\mathcal{N}_{\mathbf{x}}}\mathcal{L}^-(\mathbf{x}) +
+\sum_{c\in\mathcal{U}_{\mathbf{x}}}\mathcal{L}^u(\mathbf{x})
+\]</span> 对于常见的BCE，只考虑标注数据则有<span class="math inline">\(\mathcal{L}^+(\mathbf{x})=\log(p_c)\)</span>，<span class="math inline">\(\mathcal{L}^-(\mathbf{x})=\log(1-p_c)\)</span>，<span class="math inline">\(\mathcal{L}^u(\mathbf{x})=0\)</span>。</p>
+<p>对于Ignore模式，即有<span class="math inline">\(\mathcal{L}^u(\mathbf{x})=0\)</span>；对于Negtive模式，即有<span class="math inline">\(\mathcal{L}^u(\mathbf{x})=\mathcal{L}^-(\mathbf{x})\)</span>。</p>
+<p>本文采用非对称损失ASL（Asymmetric Loss）作为基准，其能够动态关注困难样本同时控制正负样本传播的比例。对于基本的Focal Loss，有 <span class="math display">\[
+\mathcal{L}_F(p_c,\gamma) = (1-p_c)^\gamma\log p_c
+\]</span> 部分非对称损失P-ASL定义为 <span class="math display">\[
+\begin{align}
+\mathcal{L}(x) =
+&amp;\sum_{c\in\mathcal{P}_{\mathbf{x}}}\mathcal{L}_F(p_c, \gamma^+)\\
++&amp;\sum_{c\in\mathcal{N}_{\mathbf{x}}}\mathcal{L}_F(1-p_c,\gamma^-)
++\sum_{c\in\mathcal{U}_{\mathbf{x}}}\omega_c\mathcal{L}_F(1-p_c, \gamma^u)
+\end{align}
+\]</span> 通常设置<span class="math inline">\(\gamma^+&lt;\gamma^-\)</span>，因为正样本更少见。同时有<span class="math inline">\(\gamma^-&lt;\gamma^u\)</span>，因为有标注的负样本更值得信赖。</p>
+<h3 id="class-aware-selective-loss">Class-aware Selective Loss</h3>
+<p>标签概率表示未标注标签<span class="math inline">\(c\)</span>的概率 <span class="math display">\[
+P(y_c=1|\mathbf{x};\mathbf{\theta});\quad\forall c\in\mathcal{U}_{\mathbf{x}}
+\]</span> 高置信度的标签可能出现在图像中，不能将其当作负样本，应该忽略。为此作者选了<span class="math inline">\(K\)</span>个最高概率的标签： <span class="math display">\[
+\Omega_L = \{c\in\mathcal{U}_{\mathbf{x}}|c\in\text{TopK}(\{p_c\})\}
+\]</span> <img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218151327653.png" alt="image-20220218151327653" style="zoom:33%;"></p>
+<p>标签先验可以看作数据中标签的出现频率 <span class="math display">\[
+P(y_c=1);\quad\forall c\in\mathcal{U}_{\mathbf{x}}
+\]</span> 用<span class="math inline">\(\hat{P}_r(c)\)</span>表示先验估计器，我们对于高先验值的标签感兴趣。 <span class="math display">\[
+\Omega_P = \{c\in\mathcal{U}_{\mathbf{x}}|\hat{P}_r(c)&gt;\eta\}
+\]</span> 其中<span class="math inline">\(\eta\in[0,1]\)</span>表示是否忽略的阈值。 <span class="math display">\[
+O_{\text{Ignore}} = \Omega_{L}\cup\Omega_P
+\]</span> 相应地，对应的权重定义为 <span class="math display">\[
+\omega_c = \begin{cases}
+0 &amp; c\in\Omega_{\textrm{Ignore}} \\
+1 &amp; c\notin\Omega_{\textrm{Ignore}}
+\end{cases}
+\]</span></p>
+<h3 id="estimating-the-class-distribution">Estimating the Class Distribution</h3>
+<p>在MS-COCO中，89%的类别出现在少于5%的样本中。标签先验可以通过下式估计 <span class="math display">\[
+P(y_c=1;\theta) = \frac{1}{|\mathcal{X}|}\sum_{\mathbf{x}\in\mathcal{X}}P(y_c=1|\mathbf{x};\mathbf{\theta})
+\]</span> 在Ignore模式下训练模型，此时则有<span class="math inline">\(\hat{P}_r(c) = P(y_c=1;\mathbf{\theta}_{\text{Ignore}})\)</span>。</p>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153013652.png" alt="image-20220218153013652" style="zoom: 33%;"></p>
+<h2 id="experiment">Experiment</h2>
+<p>采用完整标注的MS-COCO数据集，模拟部分标注进行实验。部分标注的模式有两种：</p>
+<ol type="1">
+<li>Fixed per class (FPC) 对于每个类别随机采样固定数目<span class="math inline">\(N_s\)</span>的正负标注，丢弃其余标注。</li>
+<li>Random per annotation (RPA) 按概率<span class="math inline">\(p\)</span>删除每个标注。</li>
+</ol>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153115301.png" alt="image-20220218153115301" style="zoom: 33%;"></p>
+<p>作者比较了估计的标签分布与实际分布的相似度，可以看出Ignore模式更适合。</p>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153237480.png" alt="image-20220218153237480" style="zoom:33%;"></p>
+<p>公开benchmark选择了OpenImages和LVIS，取得了SOTA结果。</p>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153446623.png" alt="image-20220218153446623" style="zoom:33%;"></p>
+<p><img src="/2022/02/18/Multi-label-Classification-with-Partial-Annotations-using-Class-aware-Selective-Loss/image-20220218153457307.png" alt="image-20220218153457307" style="zoom:33%;"></p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>Loss</tag>
+        <tag>Multi-Label</tag>
+        <tag>CV</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Perceiver IO: A General Architecture for Structured Inputs &amp; Outputs</title>
+    <url>/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/</url>
+    <content><![CDATA[<p>来自DeepMind，Perceiver的续作，不再局限于分类任务，在NLP、CV、多模态甚至星际争霸二上取得了不错的成绩。</p>
+<p><img src="/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/image-20220202164605712.png" alt="image-20220202164605712" style="zoom:50%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/image-20220202163943738.png" alt="image-20220202163943738" style="zoom:50%;"></p>
+<ul>
+<li>paper: <a href="https://arxiv.org/pdf/2107.14795v2.pdf" class="uri">https://arxiv.org/pdf/2107.14795v2.pdf</a></li>
+<li>code:
+<ul>
+<li>official: https://github.com/deepmind/deepmind-research/tree/master/perceiver</li>
+<li><a href="https://github.com/krasserm/perceiver-io" class="uri">https://github.com/krasserm/perceiver-io</a></li>
+</ul></li>
+</ul>
+<h2 id="background">Background</h2>
+<p>Perceiver只能处理分类任务，本文提出了一种用于解码结构化输出的机制，使得模型能够处理大量新的任务而不需要领域特有的处理方法。</p>
+<p>Perceiver IO是一个纯注意力的架构，输入编码到潜在空间，潜在的表示通过多层处理，经过解码得到最终的输出。</p>
+<h2 id="method">Method</h2>
+<h3 id="encoding-processing-and-decoding">Encoding, processing, and decoding</h3>
+<p>编码将输入序列<span class="math inline">\(x\in\mathbb{R}^{M\times C}\)</span>映射到潜在序列<span class="math inline">\(z\in\mathbb{R}^{N\times D}\)</span>，采用一系列模块进行处理，最终用一个注意力模块将潜在序列映射到输出序列<span class="math inline">\(y\in\mathbb{R}^{O\times E}\)</span>。其中<span class="math inline">\(N\)</span>和<span class="math inline">\(D\)</span>为超参数，<span class="math inline">\(C\)</span>、<span class="math inline">\(O\)</span>和<span class="math inline">\(E\)</span>为任务数据的属性，通常非常大。</p>
+<p>如Perceiver一样，Perceiver IO没有平方复杂度，编码器和解码器随着输入规模线性增长，潜在注意力的代价取决于输入输出的尺寸。</p>
+<h3 id="decoding-with-a-query-array">Decoding with a query array</h3>
+<p>给定<span class="math inline">\(N\times D\)</span>维的潜在表示，需要得到最终<span class="math inline">\(O\times E\)</span>维的输出序列。</p>
+<p><img src="/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/image-20220202170433574.png" alt="image-20220202170433574" style="zoom:50%;"></p>
+<p>对于分类这样的简单任务，直接使用position encoding。对于多任务或多模态，为每个任务或模态学习query。</p>
+<h2 id="experiment">Experiment</h2>
+<p>选择了多种任务，如下表所示。</p>
+<p><img src="/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/image-20220202164856457.png" alt="image-20220202164856457" style="zoom:50%;"></p>
+<p><img src="/2022/02/02/Perceiver-IO-A-General-Architecture-for-Structured-Inputs-Outputs/image-20220202170920626.png" alt="image-20220202170920626" style="zoom:50%;"></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>在Perceiver的基础上加了Decoder，从而可以处理多种任务。</p>
+]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
         <tag>Perceiver</tag>
         <tag>Multi-Modal</tag>
       </tags>
@@ -3800,15 +3805,43 @@ p_k = \mathrm{Sigmoid}(W_k^T\mathcal{Q}_{L,k}+b_k)
       </categories>
       <tags>
         <tag>Multi-Label</tag>
-        <tag>Transformer</tag>
         <tag>CV</tag>
+        <tag>Transformer</tag>
       </tags>
   </entry>
   <entry>
     <title>RealFormer: Transformer Likes Residual Attention</title>
     <url>/2022/02/20/RealFormer-Transformer-Likes-Residual-Attention/</url>
-    <content><![CDATA[
+    <content><![CDATA[<p>ACL Findings 2021，在Transformer中引入残差Attention。</p>
+<p><img src="/2022/02/20/RealFormer-Transformer-Likes-Residual-Attention/image-20220223125711993.png" alt="image-20220223125711993" style="zoom: 50%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/02/20/RealFormer-Transformer-Likes-Residual-Attention/image-20220223125622056.png" alt="image-20220223125622056" style="zoom:33%;"></p>
+<ul>
+<li>paper: <a href="https://aclanthology.org/2021.findings-acl.81.pdf" class="uri">https://aclanthology.org/2021.findings-acl.81.pdf</a></li>
+<li>code: <a href="https://paperswithcode.com/paper/informer-transformer-likes-informed-attention" class="uri">https://paperswithcode.com/paper/informer-transformer-likes-informed-attention</a></li>
+</ul>
+<h2 id="background">Background</h2>
+<p>Transformer按Layer Normalization的位置可以分为Post-LN和Pre-LN，BERT、XLNET、RoBERTa和ALBERT等都属于前者，GPT-2和Megatron属于后者。本文兼顾二者，引入残差注意力模块提升了Transformer的性能。</p>
+<h2 id="method">Method</h2>
+<p>原始注意力 <span class="math display">\[
+\text{Attention}(Q&#39;,K&#39;,V&#39;) = \text{Softmax}(\frac{Q&#39;K&#39;^T}{\sqrt{d_k}})V&#39;
+\]</span> 残差注意力 <span class="math display">\[
+\text{ResidualAttention}(Q&#39;,K&#39;,V&#39;, Prev&#39;) = \text{Softmax}(\frac{Q&#39;K&#39;^T}{\sqrt{d_k}}+Prev&#39;)V&#39;
+\]</span></p>
+<h2 id="experiment">Experiment</h2>
+<p>在预训练和下游任务上都取得了更好的结果。</p>
+<p><img src="/2022/02/20/RealFormer-Transformer-Likes-Residual-Attention/image-20220223130401730.png" alt="image-20220223130401730" style="zoom:33%;"></p>
+<p><img src="/2022/02/20/RealFormer-Transformer-Likes-Residual-Attention/image-20220223130504167.png" alt="image-20220223130504167" style="zoom:33%;"></p>
+<p><img src="/2022/02/20/RealFormer-Transformer-Likes-Residual-Attention/image-20220223130518912.png" alt="image-20220223130518912" style="zoom:33%;"></p>
 ]]></content>
+      <categories>
+        <category>Paper</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+        <tag>Transformer</tag>
+      </tags>
   </entry>
   <entry>
     <title>Rethinking Positional Encoding In Language Pre-Training</title>
@@ -3912,79 +3945,46 @@ l_{\rm uniform} \triangleq \log\mathop{\mathbb{E}}_{(x,y)\sim p_{data}}e^{-2\|f(
       </tags>
   </entry>
   <entry>
-    <title>Transformer-based Dual Relation Graph for Multi-label Image Recognition</title>
-    <url>/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/</url>
-    <content><![CDATA[<p>ICCV 2021，提出了一种新的基于Transformer的双关系图学习框架，从结构关系和语义关系两个角度探索相关性。</p>
-<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119142439887.png" alt="image-20220119142439887" style="zoom:50%;"></p>
+    <title>K-BERT: Enabling Language Representation with Knowledge Graph</title>
+    <url>/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/</url>
+    <content><![CDATA[<p>AAAI 2020, 介绍K-BERT模型。</p>
 <a id="more"></a>
-<h2 id="overview">Overview</h2>
-<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119142410588.png" alt="image-20220119142410588" style="zoom:33%;"></p>
+<h2 id="概述">概述</h2>
 <ul>
-<li>paper: <a href="https://openaccess.thecvf.com//content/ICCV2021/papers/Zhao_Transformer-Based_Dual_Relation_Graph_for_Multi-Label_Image_Recognition_ICCV_2021_paper.pdf" class="uri">https://openaccess.thecvf.com//content/ICCV2021/papers/Zhao_Transformer-Based_Dual_Relation_Graph_for_Multi-Label_Image_Recognition_ICCV_2021_paper.pdf</a></li>
-<li>code:</li>
+<li>arxiv：<a href="https://arxiv.org/abs/1909.07606v1" class="uri">https://arxiv.org/abs/1909.07606v1</a></li>
+<li>code：<a href="https://github.com/autoliuweijie/K-BERT" class="uri">https://github.com/autoliuweijie/K-BERT</a></li>
 </ul>
-<h2 id="background">Background</h2>
-<p>标签相关性对于多标签识别至关重要，现有工作主要关注于标签的co-occurrence，采用RNN或GCN等方式。但对于低频标签表现不佳，为此有人提出基于高阶语义的图像特征构建动态图的方式，但是也存在不足之处：</p>
-<ol type="1">
-<li>在标签关系中没有显式建模物体的空间交互</li>
-<li>高阶语义特征不稳定，不能反映具体的类别</li>
-<li>没有考虑到大范围的场景信息和多样的目标尺寸</li>
-</ol>
-<p>本文联合建模了图像中多标签的结构和语义关系，如下图所示</p>
-<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119143646729.png" alt="image-20220119143646729" style="zoom:50%;"></p>
-<p>滑板（skateboard）和滑雪板（snowboard）的外观很相似，但是根据图中的雪景很容易认出这是一个滑雪板。</p>
-<h2 id="method">Method</h2>
-<p>本文提出了一个协同学习框架，包含结构关系和语义关系。</p>
-<p>结构关系图旨在捕获场景信息，构建不同尺寸之间的空间关系；语义关系图是为了构建动态的co-occurrent依赖。</p>
-<p>给定输入图像<span class="math inline">\(\mathcal{I}\)</span>，<span class="math inline">\(\Phi_S(\mathcal{I})=\{\mathbf{X}_1,\cdots,\mathbf{X}_s\}\)</span>为backbone提取的多尺度特征。使用Transformer捕获场景信息，并结合跨尺度注意力构建position-wise的关系。 <span class="math display">\[
-\mathbf{T} =  \mathop{\mathrm{concat}}\limits_{i=1}^{s} (\mathcal{G}^{trans}_i(\Psi_i(\mathbf{X}_i;\{\mathbf{X}\}_{k=1}^{s}))) \in \mathbb{R}^{N_T \times C_T}
-\]</span> 其中<span class="math inline">\(N_T\)</span>和<span class="math inline">\(C_T\)</span>表示结构关系节点<span class="math inline">\(\mathbf{T}\)</span>的数目和维度。</p>
-<p>为了构建语义关系图，使用显式的语义感知限制和结构指导建模class-wise dependencies <span class="math display">\[
-\mathbf{G} = \mathcal{G}^{sem}((\mathcal{C}(\mathbf{\mathbf{X}}), \mathbf{T});\mathcal{A}(\mathbf{T},\mathcal{C}(\mathbf{\mathbf{X}}))) \in \mathbb{R}^{N_{cls}\times (C_G+C_T)},
-\]</span> 其中<span class="math inline">\(\mathcal{G}^{sem}\)</span>表示语义图神经网络，<span class="math inline">\(\mathcal{C}(·)\)</span>表示语义感知限制，<span class="math inline">\(\mathcal{A}(·)\)</span>表示<span class="math inline">\(\mathcal{G}^{sem}\)</span>的联合关系相关性矩阵，<span class="math inline">\(N_{cls}\)</span>和<span class="math inline">\(C_G\)</span>表示语义向量的类别数和维度。</p>
-<p>给定两个关系图，使用协同学习的方式得到最终的预测结果。 <span class="math display">\[
-\mathbf{F} = \psi_t(\mathrm{GMP}(\mathbf{T}))\biguplus \psi_g(\mathbf{G}) \in \mathbb{R}^{N_{cls}},
-\]</span> 其中<span class="math inline">\(\mathrm{GMP}(·)\)</span>表示global max-pooling，<span class="math inline">\(\psi_{\{t,g\}}\)</span>表示类别分类器，<span class="math inline">\(\biguplus\)</span>表示加权和。</p>
-<h3 id="structural-relation-graph">Structural Relation Graph</h3>
-<p>图像中使用Transformer主要有两种方式：</p>
-<ol type="1">
-<li>将Transformer嵌入CNN的backbone</li>
-<li>将Transformer用于图像patch的序列特征</li>
-</ol>
-<p>作者认为后者计算代价大，数据有限的情况下网络难以优化，因此采用了第一种方式。</p>
-<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119234116531.png" alt="image-20220119234116531" style="zoom:50%;"></p>
-<p>本文采用了channel-wise的相对位置编码<span class="math inline">\(\mathcal{E}(·)\)</span> <span class="math display">\[
-\mathbf{X}_e = \mathcal{R}(\phi(\mathbf{X})) + \mathcal{E}(\mathcal{R}(\phi(\mathbf{X}))) \in \mathbb{R}^{HW\times C_T}
-\]</span> 其中<span class="math inline">\(\mathcal{R}(·)\)</span>表示reshape操作，随后作者计算位置相关矩阵<span class="math inline">\(\mathbf{A}^p\)</span>（注意力权重）。 <span class="math display">\[
-\begin{align}
-\mathbf{A}^p &amp;= \mathrm{softmax}\left(\frac{\mathbf{X}_e\mathbf{W}_Q(\mathbf{X}_e\mathbf{W}_K)^\top}{\sqrt{C_T}}\right) \\
-\mathbf{H} &amp;= \mathbf{A}^p\mathbf{X}_e\mathbf{W}_V
-\end{align}
-\]</span> 为了抑制不同尺寸带来的噪声，加强小目标的结构信息，作者提出了一种cross-attention融合策略。 <span class="math display">\[
-\mathbf{T}_i = \mathcal{G}_i^{trans}(\mathcal{D}(\prod_i^s\mathcal{U}(\mathbf{X}_i)) + \mathbf{X}_i)
-\]</span> 其中<span class="math inline">\(\mathcal{U}(\cdot)\)</span>和<span class="math inline">\(\mathcal{D}(\cdot)\)</span>分别表示上采样和下采样。</p>
-<p>Transformer的多头注意力机制可以捕获丰富的结构关系信息，跨尺度的注意力进一步增强了表示能力。</p>
-<h3 id="semantic-relation-graph">Semantic Relation Graph</h3>
-<p>作者认为图网络等方法没有考虑到每个样本的特点，因此在传统label graph的基础上，引入了语义相关的高阶特征。</p>
-<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119150006867.png" alt="image-20220119150006867" style="zoom:50%;"></p>
-<p>最终损失函数 <span class="math display">\[
-\mathcal{L} = \mathcal{L}_{fuse} + \mathcal{L}_{regular}+ \mathcal{L}_{position}+ \mathcal{L}_{class}.
-\]</span></p>
-<h2 id="experiment">Experiment</h2>
-<p>选用MS-COCO和VOC 2007数据集</p>
-<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119150310549.png" alt="image-20220119150310549" style="zoom:50%;"></p>
-<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119150332617.png" alt="image-20220119150332617" style="zoom:50%;"></p>
-<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119150357566.png" alt="image-20220119150357566" style="zoom:50%;"></p>
-<h2 id="conclusion">Conclusion</h2>
-<p>模型结构比较复杂，而且没有release代码，但motivation还是很有说服力。</p>
+<h2 id="细节">细节</h2>
+<p>模型结构如下图，输入的文本经过知识层后，变成树状结构后和可见矩阵一起送入模型训练。</p>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003741712.png" alt="image-20210225003741712" style="zoom:67%;"></p>
+<p>具体来说，算法分为以下几步。</p>
+<ul>
+<li>预先准备KG，建立查找表（关键词表）。</li>
+<li>对于给定的输入文本，利用工具分词（pkuseg）。</li>
+<li>将分词得到的结果去表中查询，得到对应的实体。</li>
+<li>计算实体位置，得到位置编码，也即论文中的soft-position index。</li>
+<li>计算可见矩阵，控制每个词受哪些词影响（如Cook不会被Beijing关联的China影响）。</li>
+</ul>
+<figure>
+<img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225003844098.png" alt="image-20210225003844098"><figcaption aria-hidden="true">image-20210225003844098</figcaption>
+</figure>
+<p>K-BERT并不算预训练模型，嵌入层依旧是使用的BERT模型，应该算基于BERT的fine-tuning网络，可以用于分类和序列标注。同时，K-BERT也可以加载其他BERT类模型，如ERNIE、RoBERTa等。</p>
+<p>创新点在于使用可见矩阵控制了Self-Attention的计算（如下图）。</p>
+<p><img src="/2021/02/25/K-BERT-Enabling-Language-Representation-with-Knowledge-Graph/image-20210225005229317.png" alt="image-20210225005229317" style="zoom: 67%;"></p>
+<h2 id="不足">不足</h2>
+<ul>
+<li>模型的鲁棒性受限于知识图谱的质量，取自于开放领域图谱中的信息，其实BERT通过大语料学习也能获得，可以考虑特定领域的知识。</li>
+<li>关联的三元组没有筛选，一词多义会引入错误的实体关联。</li>
+<li>对于非知识驱动的任务，引入知识反而会效果下降。</li>
+</ul>
 ]]></content>
       <categories>
         <category>Paper</category>
       </categories>
       <tags>
-        <tag>Multi-Label</tag>
+        <tag>NLP</tag>
         <tag>Transformer</tag>
-        <tag>CV</tag>
+        <tag>KG</tag>
       </tags>
   </entry>
   <entry>
@@ -4075,115 +4075,79 @@ WantWords工作流
       </tags>
   </entry>
   <entry>
-    <title>macOS挂载NTFS硬盘</title>
-    <url>/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/</url>
-    <content><![CDATA[<p>在macOS上挂载NTFS硬盘，支持读写。</p>
+    <title>Transformer-based Dual Relation Graph for Multi-label Image Recognition</title>
+    <url>/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/</url>
+    <content><![CDATA[<p>ICCV 2021，提出了一种新的基于Transformer的双关系图学习框架，从结构关系和语义关系两个角度探索相关性。</p>
+<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119142439887.png" alt="image-20220119142439887" style="zoom:50%;"></p>
 <a id="more"></a>
-<h2 id="问题">问题</h2>
-<p>硬盘：西数 My Passport 1T</p>
-<p>电脑：mbp2021 14-inch</p>
-<p>通过拓展坞连到mbp上只能读不能写，网上大概有三种方案：</p>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119142410588.png" alt="image-20220119142410588" style="zoom:33%;"></p>
 <ul>
-<li><p>下载NTFS For Mac软件（大多付费）</p></li>
-<li><p>格式化硬盘为ExFAT格式</p></li>
-<li><p>对于希捷硬盘，可以下载<a href="https://www.seagate.com/cn/zh/support/software/paragon/">Paragon驱动</a>。</p></li>
+<li>paper: <a href="https://openaccess.thecvf.com//content/ICCV2021/papers/Zhao_Transformer-Based_Dual_Relation_Graph_for_Multi-Label_Image_Recognition_ICCV_2021_paper.pdf" class="uri">https://openaccess.thecvf.com//content/ICCV2021/papers/Zhao_Transformer-Based_Dual_Relation_Graph_for_Multi-Label_Image_Recognition_ICCV_2021_paper.pdf</a></li>
+<li>code:</li>
 </ul>
-<h2 id="操作步骤">操作步骤</h2>
-<p>展示命令行挂载硬盘的方法，用作备忘。</p>
-<p>在桌面预先建立一个文件夹（如Passport）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir ~/Desktop/Passport</span><br></pre></td></tr></table></figure>
-<p>查看当前磁盘是否被挂载</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">diskutil list</span><br></pre></td></tr></table></figure>
-<p>带有external的即为移动硬盘</p>
-<p><img title src="/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/image-20211217003813737.png" alt="image-20211217003813737" data-align="center" width="613"></p>
-<p>如果已经挂载需要先卸载</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo umount /dev/disk4s1</span><br></pre></td></tr></table></figure>
-<p>否则以NTFS格式挂载到桌面建立的文件夹</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mount_ntfs -o rw,nobrowse /dev/disk4s1 ~/Desktop/Passport</span><br></pre></td></tr></table></figure>
-<p>由此就可以读写了，使用完记得卸载，或许可以写个脚本自动执行这些操作。</p>
+<h2 id="background">Background</h2>
+<p>标签相关性对于多标签识别至关重要，现有工作主要关注于标签的co-occurrence，采用RNN或GCN等方式。但对于低频标签表现不佳，为此有人提出基于高阶语义的图像特征构建动态图的方式，但是也存在不足之处：</p>
+<ol type="1">
+<li>在标签关系中没有显式建模物体的空间交互</li>
+<li>高阶语义特征不稳定，不能反映具体的类别</li>
+<li>没有考虑到大范围的场景信息和多样的目标尺寸</li>
+</ol>
+<p>本文联合建模了图像中多标签的结构和语义关系，如下图所示</p>
+<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119143646729.png" alt="image-20220119143646729" style="zoom:50%;"></p>
+<p>滑板（skateboard）和滑雪板（snowboard）的外观很相似，但是根据图中的雪景很容易认出这是一个滑雪板。</p>
+<h2 id="method">Method</h2>
+<p>本文提出了一个协同学习框架，包含结构关系和语义关系。</p>
+<p>结构关系图旨在捕获场景信息，构建不同尺寸之间的空间关系；语义关系图是为了构建动态的co-occurrent依赖。</p>
+<p>给定输入图像<span class="math inline">\(\mathcal{I}\)</span>，<span class="math inline">\(\Phi_S(\mathcal{I})=\{\mathbf{X}_1,\cdots,\mathbf{X}_s\}\)</span>为backbone提取的多尺度特征。使用Transformer捕获场景信息，并结合跨尺度注意力构建position-wise的关系。 <span class="math display">\[
+\mathbf{T} =  \mathop{\mathrm{concat}}\limits_{i=1}^{s} (\mathcal{G}^{trans}_i(\Psi_i(\mathbf{X}_i;\{\mathbf{X}\}_{k=1}^{s}))) \in \mathbb{R}^{N_T \times C_T}
+\]</span> 其中<span class="math inline">\(N_T\)</span>和<span class="math inline">\(C_T\)</span>表示结构关系节点<span class="math inline">\(\mathbf{T}\)</span>的数目和维度。</p>
+<p>为了构建语义关系图，使用显式的语义感知限制和结构指导建模class-wise dependencies <span class="math display">\[
+\mathbf{G} = \mathcal{G}^{sem}((\mathcal{C}(\mathbf{\mathbf{X}}), \mathbf{T});\mathcal{A}(\mathbf{T},\mathcal{C}(\mathbf{\mathbf{X}}))) \in \mathbb{R}^{N_{cls}\times (C_G+C_T)},
+\]</span> 其中<span class="math inline">\(\mathcal{G}^{sem}\)</span>表示语义图神经网络，<span class="math inline">\(\mathcal{C}(·)\)</span>表示语义感知限制，<span class="math inline">\(\mathcal{A}(·)\)</span>表示<span class="math inline">\(\mathcal{G}^{sem}\)</span>的联合关系相关性矩阵，<span class="math inline">\(N_{cls}\)</span>和<span class="math inline">\(C_G\)</span>表示语义向量的类别数和维度。</p>
+<p>给定两个关系图，使用协同学习的方式得到最终的预测结果。 <span class="math display">\[
+\mathbf{F} = \psi_t(\mathrm{GMP}(\mathbf{T}))\biguplus \psi_g(\mathbf{G}) \in \mathbb{R}^{N_{cls}},
+\]</span> 其中<span class="math inline">\(\mathrm{GMP}(·)\)</span>表示global max-pooling，<span class="math inline">\(\psi_{\{t,g\}}\)</span>表示类别分类器，<span class="math inline">\(\biguplus\)</span>表示加权和。</p>
+<h3 id="structural-relation-graph">Structural Relation Graph</h3>
+<p>图像中使用Transformer主要有两种方式：</p>
+<ol type="1">
+<li>将Transformer嵌入CNN的backbone</li>
+<li>将Transformer用于图像patch的序列特征</li>
+</ol>
+<p>作者认为后者计算代价大，数据有限的情况下网络难以优化，因此采用了第一种方式。</p>
+<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119234116531.png" alt="image-20220119234116531" style="zoom:50%;"></p>
+<p>本文采用了channel-wise的相对位置编码<span class="math inline">\(\mathcal{E}(·)\)</span> <span class="math display">\[
+\mathbf{X}_e = \mathcal{R}(\phi(\mathbf{X})) + \mathcal{E}(\mathcal{R}(\phi(\mathbf{X}))) \in \mathbb{R}^{HW\times C_T}
+\]</span> 其中<span class="math inline">\(\mathcal{R}(·)\)</span>表示reshape操作，随后作者计算位置相关矩阵<span class="math inline">\(\mathbf{A}^p\)</span>（注意力权重）。 <span class="math display">\[
+\begin{align}
+\mathbf{A}^p &amp;= \mathrm{softmax}\left(\frac{\mathbf{X}_e\mathbf{W}_Q(\mathbf{X}_e\mathbf{W}_K)^\top}{\sqrt{C_T}}\right) \\
+\mathbf{H} &amp;= \mathbf{A}^p\mathbf{X}_e\mathbf{W}_V
+\end{align}
+\]</span> 为了抑制不同尺寸带来的噪声，加强小目标的结构信息，作者提出了一种cross-attention融合策略。 <span class="math display">\[
+\mathbf{T}_i = \mathcal{G}_i^{trans}(\mathcal{D}(\prod_i^s\mathcal{U}(\mathbf{X}_i)) + \mathbf{X}_i)
+\]</span> 其中<span class="math inline">\(\mathcal{U}(\cdot)\)</span>和<span class="math inline">\(\mathcal{D}(\cdot)\)</span>分别表示上采样和下采样。</p>
+<p>Transformer的多头注意力机制可以捕获丰富的结构关系信息，跨尺度的注意力进一步增强了表示能力。</p>
+<h3 id="semantic-relation-graph">Semantic Relation Graph</h3>
+<p>作者认为图网络等方法没有考虑到每个样本的特点，因此在传统label graph的基础上，引入了语义相关的高阶特征。</p>
+<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119150006867.png" alt="image-20220119150006867" style="zoom:50%;"></p>
+<p>最终损失函数 <span class="math display">\[
+\mathcal{L} = \mathcal{L}_{fuse} + \mathcal{L}_{regular}+ \mathcal{L}_{position}+ \mathcal{L}_{class}.
+\]</span></p>
+<h2 id="experiment">Experiment</h2>
+<p>选用MS-COCO和VOC 2007数据集</p>
+<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119150310549.png" alt="image-20220119150310549" style="zoom:50%;"></p>
+<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119150332617.png" alt="image-20220119150332617" style="zoom:50%;"></p>
+<p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119150357566.png" alt="image-20220119150357566" style="zoom:50%;"></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>模型结构比较复杂，而且没有release代码，但motivation还是很有说服力。</p>
 ]]></content>
       <categories>
-        <category>备忘</category>
+        <category>Paper</category>
       </categories>
       <tags>
-        <tag>mac</tag>
-        <tag>shell</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>《程序员的自我修养》——链接、装载与库</title>
-    <url>/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/</url>
-    <content><![CDATA[<p>《程序员的自我修养》——链接、装载与库思维导图</p>
-<a id="more"></a>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/1. 温故而知新.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/2. 静态链接.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/3. 目标文件里有什么.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/4. 静态链接.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/5. Windows PE.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/6. 可执行文件的装载与进程.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/7. 动态链接.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/8. Linux共享库的组织.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/9. Windows下的动态链接.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/10. 内存.png" style="zoom:67%;"></p>
-<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/11. 运行库.png" style="zoom:67%;"></p>
-]]></content>
-      <categories>
-        <category>思维导图</category>
-      </categories>
-      <tags>
-        <tag>coding</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>《自然语言处理入门》</title>
-    <url>/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/</url>
-    <content><![CDATA[<p>《自然语言处理入门》思维导图</p>
-<a id="more"></a>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第1章%20新手上路.png" alt="第1章 新手上路"><figcaption aria-hidden="true">第1章 新手上路</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第2章%20词典分词.png" alt="第2章 词典分词"><figcaption aria-hidden="true">第2章 词典分词</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第3章%20二元语法与中文分词.png" alt="第3章 二元语法与中文分词"><figcaption aria-hidden="true">第3章 二元语法与中文分词</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第4章%20隐马尔可夫模型与序列标注.png" alt="第4章 隐马尔可夫模型与序列标注"><figcaption aria-hidden="true">第4章 隐马尔可夫模型与序列标注</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第5章%20感知机分类与序列标注.png" alt="第5章 感知机分类与序列标注"><figcaption aria-hidden="true">第5章 感知机分类与序列标注</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第6章%20条件随机场与序列标注.png" alt="第6章 条件随机场与序列标注"><figcaption aria-hidden="true">第6章 条件随机场与序列标注</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第7章%20词性标注.png" alt="第7章 词性标注"><figcaption aria-hidden="true">第7章 词性标注</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第8章%20命名实体识别.png" alt="第8章 命名实体识别"><figcaption aria-hidden="true">第8章 命名实体识别</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第9章%20信息抽取.png" alt="第9章 信息抽取"><figcaption aria-hidden="true">第9章 信息抽取</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第10章%20文本聚类.png" alt="第10章 文本聚类"><figcaption aria-hidden="true">第10章 文本聚类</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第11章%20文本分类.png" alt="第11章 文本分类"><figcaption aria-hidden="true">第11章 文本分类</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第12章%20依存句法分析.png" alt="第12章 依存句法分析"><figcaption aria-hidden="true">第12章 依存句法分析</figcaption>
-</figure>
-<figure>
-<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第13章%20深度学习与自然语言处理.png" alt="第13章 深度学习与自然语言处理"><figcaption aria-hidden="true">第13章 深度学习与自然语言处理</figcaption>
-</figure>
-]]></content>
-      <categories>
-        <category>思维导图</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
+        <tag>Multi-Label</tag>
+        <tag>CV</tag>
+        <tag>Transformer</tag>
       </tags>
   </entry>
   <entry>
@@ -4254,6 +4218,118 @@ v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)
       </tags>
   </entry>
   <entry>
+    <title>《程序员的自我修养》——链接、装载与库</title>
+    <url>/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/</url>
+    <content><![CDATA[<p>《程序员的自我修养》——链接、装载与库思维导图</p>
+<a id="more"></a>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/1. 温故而知新.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/2. 静态链接.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/3. 目标文件里有什么.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/4. 静态链接.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/5. Windows PE.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/6. 可执行文件的装载与进程.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/7. 动态链接.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/8. Linux共享库的组织.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/9. Windows下的动态链接.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/10. 内存.png" style="zoom:67%;"></p>
+<p><img src="/2022/01/02/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E2%80%94%E2%80%94%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/11. 运行库.png" style="zoom:67%;"></p>
+]]></content>
+      <categories>
+        <category>思维导图</category>
+      </categories>
+      <tags>
+        <tag>coding</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>macOS挂载NTFS硬盘</title>
+    <url>/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/</url>
+    <content><![CDATA[<p>在macOS上挂载NTFS硬盘，支持读写。</p>
+<a id="more"></a>
+<h2 id="问题">问题</h2>
+<p>硬盘：西数 My Passport 1T</p>
+<p>电脑：mbp2021 14-inch</p>
+<p>通过拓展坞连到mbp上只能读不能写，网上大概有三种方案：</p>
+<ul>
+<li><p>下载NTFS For Mac软件（大多付费）</p></li>
+<li><p>格式化硬盘为ExFAT格式</p></li>
+<li><p>对于希捷硬盘，可以下载<a href="https://www.seagate.com/cn/zh/support/software/paragon/">Paragon驱动</a>。</p></li>
+</ul>
+<h2 id="操作步骤">操作步骤</h2>
+<p>展示命令行挂载硬盘的方法，用作备忘。</p>
+<p>在桌面预先建立一个文件夹（如Passport）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir ~/Desktop/Passport</span><br></pre></td></tr></table></figure>
+<p>查看当前磁盘是否被挂载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">diskutil list</span><br></pre></td></tr></table></figure>
+<p>带有external的即为移动硬盘</p>
+<p><img title src="/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/image-20211217003813737.png" alt="image-20211217003813737" data-align="center" width="613"></p>
+<p>如果已经挂载需要先卸载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo umount /dev/disk4s1</span><br></pre></td></tr></table></figure>
+<p>否则以NTFS格式挂载到桌面建立的文件夹</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo mount_ntfs -o rw,nobrowse /dev/disk4s1 ~/Desktop/Passport</span><br></pre></td></tr></table></figure>
+<p>由此就可以读写了，使用完记得卸载，或许可以写个脚本自动执行这些操作。</p>
+]]></content>
+      <categories>
+        <category>备忘</category>
+      </categories>
+      <tags>
+        <tag>mac</tag>
+        <tag>shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《自然语言处理入门》</title>
+    <url>/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/</url>
+    <content><![CDATA[<p>《自然语言处理入门》思维导图</p>
+<a id="more"></a>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第1章%20新手上路.png" alt="第1章 新手上路"><figcaption aria-hidden="true">第1章 新手上路</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第2章%20词典分词.png" alt="第2章 词典分词"><figcaption aria-hidden="true">第2章 词典分词</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第3章%20二元语法与中文分词.png" alt="第3章 二元语法与中文分词"><figcaption aria-hidden="true">第3章 二元语法与中文分词</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第4章%20隐马尔可夫模型与序列标注.png" alt="第4章 隐马尔可夫模型与序列标注"><figcaption aria-hidden="true">第4章 隐马尔可夫模型与序列标注</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第5章%20感知机分类与序列标注.png" alt="第5章 感知机分类与序列标注"><figcaption aria-hidden="true">第5章 感知机分类与序列标注</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第6章%20条件随机场与序列标注.png" alt="第6章 条件随机场与序列标注"><figcaption aria-hidden="true">第6章 条件随机场与序列标注</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第7章%20词性标注.png" alt="第7章 词性标注"><figcaption aria-hidden="true">第7章 词性标注</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第8章%20命名实体识别.png" alt="第8章 命名实体识别"><figcaption aria-hidden="true">第8章 命名实体识别</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第9章%20信息抽取.png" alt="第9章 信息抽取"><figcaption aria-hidden="true">第9章 信息抽取</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第10章%20文本聚类.png" alt="第10章 文本聚类"><figcaption aria-hidden="true">第10章 文本聚类</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第11章%20文本分类.png" alt="第11章 文本分类"><figcaption aria-hidden="true">第11章 文本分类</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第12章%20依存句法分析.png" alt="第12章 依存句法分析"><figcaption aria-hidden="true">第12章 依存句法分析</figcaption>
+</figure>
+<figure>
+<img src="/2021/11/02/%E3%80%8A%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8%E3%80%8B/第13章%20深度学习与自然语言处理.png" alt="第13章 深度学习与自然语言处理"><figcaption aria-hidden="true">第13章 深度学习与自然语言处理</figcaption>
+</figure>
+]]></content>
+      <categories>
+        <category>思维导图</category>
+      </categories>
+      <tags>
+        <tag>NLP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>搭建个人博客</title>
     <url>/2020/08/06/%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/</url>
     <content><![CDATA[<p>采用Hexo+Next搭建个人博客，并通过Github Pages部署。</p>
@@ -4307,7 +4383,7 @@ v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)
 </ul>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># blog/_config.yml</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">entropy2333</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="attr">keywords:</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">entropy2333</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li>修改主题
+<li><p>修改主题</p>
 <ul>
 <li>下载主题</li>
 </ul>
@@ -4316,7 +4392,7 @@ v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)
 <li>修改配置文件</li>
 </ul>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># blog/_config.yml</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">next</span></span><br></pre></td></tr></table></figure></li>
-<li>关闭广告</li>
+<li><p>关闭广告</p></li>
 </ul>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># blog/themes/next/_config.yaml</span></span><br><span class="line"><span class="attr">powered:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
 <ul>
@@ -4333,7 +4409,9 @@ v^s(S) = \frac1{|S|}\sum_{w\in S}z(w)e^w(w)
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># blog/themes/next/_config.yaml</span></span><br><span class="line"><span class="comment">#scheme: Muse</span></span><br><span class="line"><span class="comment">#scheme: Mist</span></span><br><span class="line"><span class="attr">scheme:</span> <span class="string">Pisces</span></span><br><span class="line"><span class="comment">#scheme: Gemini</span></span><br></pre></td></tr></table></figure></li>
 <li><p>修改头像</p>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># blog/themes/next/_config.yaml</span></span><br><span class="line"><span class="attr">avatar:</span></span><br><span class="line">  <span class="comment"># Replace the default image and set the url here.</span></span><br><span class="line">  <span class="comment"># url: #/images/avatar.gif</span></span><br><span class="line">  <span class="attr">url:</span> <span class="string">/images/myavatar.jpg</span></span><br><span class="line">  <span class="comment"># If true, the avatar will be dispalyed in circle.</span></span><br><span class="line">  <span class="attr">rounded:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># If true, the avatar will be rotated with the cursor.</span></span><br><span class="line">  <span class="attr">rotated:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure></li>
+<li><p>添加RSS订阅</p></li>
 </ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-feed --save</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> blog/_config.yaml 添加如下内容</span></span><br><span class="line">feed:</span><br><span class="line">  enable: true</span><br><span class="line">  type: atom</span><br><span class="line">  path: atom.xml</span><br><span class="line">  order_by: -date</span><br><span class="line">  icon: icon.png</span><br><span class="line">  autodiscovery: true</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> blog/themes/next/_config.yaml</span></span><br><span class="line">social:</span><br><span class="line">  RSS: /atom.xml || fa fa-rss</span><br></pre></td></tr></table></figure>
 <h2 id="总结">总结</h2>
 <p>更多的个性化设置基本都是基于修改配置文件，修改完用hexo g &amp;&amp; hexo s本地查看是否生效，可查看参考文章或百度。</p>
 <h2 id="参考文章">参考文章</h2>
@@ -4374,6 +4452,83 @@ y^K\cdot K^S = (a^x)^K\cdot (a^k)^{k^{-1}(M-x\cdot K)} = a^M \bmod p
       </categories>
       <tags>
         <tag>数字签名</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>现代密码学（一）绪论</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%80%EF%BC%89%E7%BB%AA%E8%AE%BA/</url>
+    <content><![CDATA[<p>介绍密码学的基本概念。</p>
+<a id="more"></a>
+<h2 id="基本术语">基本术语</h2>
+<p>密码学是一门研究秘密信息隐写技术的学科。</p>
+<ul>
+<li>可以使消息的内容对所有人（除了发送者和接收者）保密</li>
+<li>可以使接收者验证消息的正确性</li>
+</ul>
+<p>常用的术语如下</p>
+<ul>
+<li>明文 plaintext</li>
+<li>密文 ciphertext</li>
+<li>密码算法 cipher</li>
+<li>密钥 key</li>
+<li>编码 encipher/encode</li>
+<li>译码 decipher/decode</li>
+<li>密码分析 cryptanalysis/codebreaking</li>
+<li>密码学 cryptology</li>
+</ul>
+<h3 id="符号记法">符号记法</h3>
+<p>加密 Encryption <span class="math display">\[
+C = EK(P)
+\]</span></p>
+<p>解密 Decryption <span class="math display">\[
+P = EK_{-1}(C)
+\]</span></p>
+<p>可以把密码系统理解为明文空间到密文空间的变换，其中密钥取自密钥空间。 <span class="math display">\[
+P\xrightarrow{EK}C \\
+C\xrightarrow{EK_{-1}}P
+\]</span></p>
+<h2 id="算法分类">算法分类</h2>
+<ul>
+<li>私钥加密算法
+<ul>
+<li>分组密码</li>
+<li>流密码（序列密码）</li>
+</ul></li>
+<li>公钥加密算法</li>
+<li>数字签名算法</li>
+<li>哈希函数</li>
+</ul>
+<h2 id="密码分析">密码分析</h2>
+<p>密码分析学是指在没有加密密钥的情况下，攻击密文的过程。</p>
+<ul>
+<li>唯密文攻击
+<ul>
+<li>只知道算法与一些密文</li>
+<li>利用统计方法</li>
+<li>需要能够识别明文</li>
+</ul></li>
+<li>已知明文攻击
+<ul>
+<li>知道一些明文/密文对</li>
+<li>利用已知的明文/密文对进行攻击</li>
+</ul></li>
+<li>选择明文攻击
+<ul>
+<li>能够选择明文并得到相应的密文</li>
+<li>利用算法的结构进行攻击</li>
+</ul></li>
+<li>选择密文攻击
+<ul>
+<li>能够选择密文并得到相应的明文</li>
+<li>利用对算法结构的知识进行攻击</li>
+</ul></li>
+</ul>
+]]></content>
+      <categories>
+        <category>现代密码学</category>
+      </categories>
+      <tags>
+        <tag>密码学</tag>
       </tags>
   </entry>
   <entry>
@@ -4658,83 +4813,6 @@ C_{-1} = IV
       </tags>
   </entry>
   <entry>
-    <title>现代密码学（一）绪论</title>
-    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%B8%80%EF%BC%89%E7%BB%AA%E8%AE%BA/</url>
-    <content><![CDATA[<p>介绍密码学的基本概念。</p>
-<a id="more"></a>
-<h2 id="基本术语">基本术语</h2>
-<p>密码学是一门研究秘密信息隐写技术的学科。</p>
-<ul>
-<li>可以使消息的内容对所有人（除了发送者和接收者）保密</li>
-<li>可以使接收者验证消息的正确性</li>
-</ul>
-<p>常用的术语如下</p>
-<ul>
-<li>明文 plaintext</li>
-<li>密文 ciphertext</li>
-<li>密码算法 cipher</li>
-<li>密钥 key</li>
-<li>编码 encipher/encode</li>
-<li>译码 decipher/decode</li>
-<li>密码分析 cryptanalysis/codebreaking</li>
-<li>密码学 cryptology</li>
-</ul>
-<h3 id="符号记法">符号记法</h3>
-<p>加密 Encryption <span class="math display">\[
-C = EK(P)
-\]</span></p>
-<p>解密 Decryption <span class="math display">\[
-P = EK_{-1}(C)
-\]</span></p>
-<p>可以把密码系统理解为明文空间到密文空间的变换，其中密钥取自密钥空间。 <span class="math display">\[
-P\xrightarrow{EK}C \\
-C\xrightarrow{EK_{-1}}P
-\]</span></p>
-<h2 id="算法分类">算法分类</h2>
-<ul>
-<li>私钥加密算法
-<ul>
-<li>分组密码</li>
-<li>流密码（序列密码）</li>
-</ul></li>
-<li>公钥加密算法</li>
-<li>数字签名算法</li>
-<li>哈希函数</li>
-</ul>
-<h2 id="密码分析">密码分析</h2>
-<p>密码分析学是指在没有加密密钥的情况下，攻击密文的过程。</p>
-<ul>
-<li>唯密文攻击
-<ul>
-<li>只知道算法与一些密文</li>
-<li>利用统计方法</li>
-<li>需要能够识别明文</li>
-</ul></li>
-<li>已知明文攻击
-<ul>
-<li>知道一些明文/密文对</li>
-<li>利用已知的明文/密文对进行攻击</li>
-</ul></li>
-<li>选择明文攻击
-<ul>
-<li>能够选择明文并得到相应的密文</li>
-<li>利用算法的结构进行攻击</li>
-</ul></li>
-<li>选择密文攻击
-<ul>
-<li>能够选择密文并得到相应的明文</li>
-<li>利用对算法结构的知识进行攻击</li>
-</ul></li>
-</ul>
-]]></content>
-      <categories>
-        <category>现代密码学</category>
-      </categories>
-      <tags>
-        <tag>密码学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>现代密码学（二）古典密码</title>
     <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/</url>
     <content><![CDATA[<p>介绍古典代换密码和古典置换密码。</p>
@@ -4818,69 +4896,6 @@ C\xrightarrow{EK_{-1}}P
       </categories>
       <tags>
         <tag>古典密码</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>现代密码学（四）序列密码</title>
-    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/</url>
-    <content><![CDATA[<p>介绍序列密码（流密码）。</p>
-<a id="more"></a>
-<h2 id="流密码">流密码</h2>
-<p>流密码的简单结构如下。</p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165456897.png" alt="image-20201228165456897" style="zoom:67%;"></p>
-<p>对于流密码来说，需要生成一个作为密钥流的“随机”比特序列。</p>
-<p>流密码的安全性取决于密钥的安全等级。</p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165551857.png" alt="image-20201228165551857" style="zoom:67%;"></p>
-<p>流密码可以分为两种</p>
-<ul>
-<li>同步流密码
-<ul>
-<li>密钥流的产生与明文消息相互独立</li>
-</ul></li>
-<li>自同步流密码
-<ul>
-<li>密钥流的产生与之间产生的若干密文有关</li>
-</ul></li>
-</ul>
-<h2 id="线性反馈移位寄存器-lfsr">线性反馈移位寄存器 LFSR</h2>
-<p>LFSR可以产生同步密钥流。 <span class="math display">\[
-a_i(t+1) = a_{i+1}(t),\ i=1,2,\dots,n-1 \\
-a_n(t+1) = c_na_1(t) \oplus c_{n-1}a_2(t) \oplus\dots\oplus c_1a_n(t)
-\]</span> 联结多项式为 <span class="math display">\[
-c_nx^n + c_{n-1}x^{n-1} +\dots+ c_1x+1
-\]</span></p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228170207505.png" alt="image-20201228170207505" style="zoom:67%;"></p>
-<p>例如对于联接多项式<span class="math inline">\(x^3+x^2+1\)</span>，对应的反馈函数为 <span class="math display">\[
-a_3 = a_1 \oplus a_2
-\]</span> 对于LFSR来说，一个n级LFSR序列的周期最大为<span class="math inline">\(2^n-1\)</span>。</p>
-<p>如果产生了最大周期，则称为m序列，LFSR的状态转移图只有两个圈。</p>
-<h2 id="伪随机序列">伪随机序列</h2>
-<h3 id="golomb随机性假设">Golomb随机性假设</h3>
-<ul>
-<li>在每一周期内，0和1的个数近似相等。</li>
-<li>在每一周期内，长度为i的游程占游程总数的<span class="math inline">\(\frac{1}{2^i}\)</span>。</li>
-<li>定义自相关函数<span class="math inline">\(C(\tau)=\sum_{i=1}^n(-1)^{a_i+a_{i+\tau}}\)</span>。
-<ul>
-<li>那么<span class="math inline">\(C(\tau)=\begin{cases}n,\quad\tau\equiv0\mod n\\c,\quad others\end{cases}\)</span>$</li>
-</ul></li>
-</ul>
-<h3 id="m序列的伪随机性">m序列的伪随机性</h3>
-<h3 id="线性复杂度">线性复杂度</h3>
-<p>能够输出该序列的最短LFSR的级数。</p>
-<p>一个好的流密码，应该具有大周期、大的线性复杂度，同时满足Golomb随机性假设。</p>
-<h2 id="基于lfsr的伪随机序列生成器">基于LFSR的伪随机序列生成器</h2>
-<h3 id="滤波生成器">滤波生成器</h3>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171735794.png" alt="image-20201228171735794" style="zoom:67%;"></p>
-<h3 id="组合生成器">组合生成器</h3>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171742568.png" alt="image-20201228171742568" style="zoom:67%;"></p>
-<h3 id="钟控生成器">钟控生成器</h3>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171755691.png" alt="image-20201228171755691" style="zoom:67%;"></p>
-]]></content>
-      <categories>
-        <category>现代密码学</category>
-      </categories>
-      <tags>
-        <tag>流密码</tag>
       </tags>
   </entry>
   <entry>
@@ -4987,6 +5002,58 @@ M &amp;= C_2\cdot K^{-1}\bmod p
         <tag>RSA</tag>
         <tag>Rabin</tag>
         <tag>El Gamal</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>现代密码学（八）信息隐藏与隐写分析</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<p>介绍信息隐藏与隐写分析。</p>
+<a id="more"></a>
+<h2 id="信息隐藏">信息隐藏</h2>
+<p>信息隐藏可以分为</p>
+<ul>
+<li>空域，如LSB。</li>
+<li>变换域，如DCT。</li>
+</ul>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228213531671.png" alt="image-20201228213531671" style="zoom:67%;"></p>
+<h2 id="数字水印的嵌入">数字水印的嵌入</h2>
+<ul>
+<li>加法嵌入</li>
+<li>乘法嵌入</li>
+</ul>
+<p>图像质量可以用峰值信噪比PSNR评价</p>
+<h2 id="信息隐藏算法">信息隐藏算法</h2>
+<p>空域算法，通过直接修改像素值实现隐藏信息嵌入。</p>
+<ul>
+<li>简单、快速、容量大。</li>
+<li>鲁棒性差。</li>
+</ul>
+<p>灰度256的图像有8个位平面。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214154609.png" alt="image-20201228214154609" style="zoom:67%;"></p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214300127.png" alt="image-20201228214300127" style="zoom:67%;"></p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214310415.png" alt="image-20201228214310415" style="zoom:67%;"></p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214318464.png" alt="image-20201228214318464" style="zoom:67%;"></p>
+<h2 id="频域水印算法">频域水印算法</h2>
+<p>在频域，通过修改频域空间的系数实现水印嵌入。</p>
+<ul>
+<li>鲁棒性好</li>
+<li>复杂度高</li>
+</ul>
+<p>JPEG只改中频系数，不会被消除掉。</p>
+<ul>
+<li>修改低频部分，容易看出变化，隐蔽性差。</li>
+<li>修改高频部分，容易被图像压缩算法破坏，鲁棒性差。</li>
+</ul>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214606301.png" alt="image-20201228214606301" style="zoom:67%;"></p>
+<h2 id="隐写分析">隐写分析</h2>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228215318459.png" alt="image-20201228215318459" style="zoom:67%;"></p>
+]]></content>
+      <categories>
+        <category>现代密码学</category>
+      </categories>
+      <tags>
+        <tag>信息隐藏</tag>
+        <tag>隐写分析</tag>
       </tags>
   </entry>
   <entry>
@@ -5103,55 +5170,66 @@ P(365, k) = 1 - \frac {365!} {(365-k)365^k}
       </tags>
   </entry>
   <entry>
-    <title>现代密码学（八）信息隐藏与隐写分析</title>
-    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<p>介绍信息隐藏与隐写分析。</p>
+    <title>现代密码学（四）序列密码</title>
+    <url>/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/</url>
+    <content><![CDATA[<p>介绍序列密码（流密码）。</p>
 <a id="more"></a>
-<h2 id="信息隐藏">信息隐藏</h2>
-<p>信息隐藏可以分为</p>
+<h2 id="流密码">流密码</h2>
+<p>流密码的简单结构如下。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165456897.png" alt="image-20201228165456897" style="zoom:67%;"></p>
+<p>对于流密码来说，需要生成一个作为密钥流的“随机”比特序列。</p>
+<p>流密码的安全性取决于密钥的安全等级。</p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228165551857.png" alt="image-20201228165551857" style="zoom:67%;"></p>
+<p>流密码可以分为两种</p>
 <ul>
-<li>空域，如LSB。</li>
-<li>变换域，如DCT。</li>
-</ul>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228213531671.png" alt="image-20201228213531671" style="zoom:67%;"></p>
-<h2 id="数字水印的嵌入">数字水印的嵌入</h2>
+<li>同步流密码
 <ul>
-<li>加法嵌入</li>
-<li>乘法嵌入</li>
-</ul>
-<p>图像质量可以用峰值信噪比PSNR评价</p>
-<h2 id="信息隐藏算法">信息隐藏算法</h2>
-<p>空域算法，通过直接修改像素值实现隐藏信息嵌入。</p>
+<li>密钥流的产生与明文消息相互独立</li>
+</ul></li>
+<li>自同步流密码
 <ul>
-<li>简单、快速、容量大。</li>
-<li>鲁棒性差。</li>
+<li>密钥流的产生与之间产生的若干密文有关</li>
+</ul></li>
 </ul>
-<p>灰度256的图像有8个位平面。</p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214154609.png" alt="image-20201228214154609" style="zoom:67%;"></p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214300127.png" alt="image-20201228214300127" style="zoom:67%;"></p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214310415.png" alt="image-20201228214310415" style="zoom:67%;"></p>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214318464.png" alt="image-20201228214318464" style="zoom:67%;"></p>
-<h2 id="频域水印算法">频域水印算法</h2>
-<p>在频域，通过修改频域空间的系数实现水印嵌入。</p>
+<h2 id="线性反馈移位寄存器-lfsr">线性反馈移位寄存器 LFSR</h2>
+<p>LFSR可以产生同步密钥流。 <span class="math display">\[
+a_i(t+1) = a_{i+1}(t),\ i=1,2,\dots,n-1 \\
+a_n(t+1) = c_na_1(t) \oplus c_{n-1}a_2(t) \oplus\dots\oplus c_1a_n(t)
+\]</span> 联结多项式为 <span class="math display">\[
+c_nx^n + c_{n-1}x^{n-1} +\dots+ c_1x+1
+\]</span></p>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228170207505.png" alt="image-20201228170207505" style="zoom:67%;"></p>
+<p>例如对于联接多项式<span class="math inline">\(x^3+x^2+1\)</span>，对应的反馈函数为 <span class="math display">\[
+a_3 = a_1 \oplus a_2
+\]</span> 对于LFSR来说，一个n级LFSR序列的周期最大为<span class="math inline">\(2^n-1\)</span>。</p>
+<p>如果产生了最大周期，则称为m序列，LFSR的状态转移图只有两个圈。</p>
+<h2 id="伪随机序列">伪随机序列</h2>
+<h3 id="golomb随机性假设">Golomb随机性假设</h3>
 <ul>
-<li>鲁棒性好</li>
-<li>复杂度高</li>
-</ul>
-<p>JPEG只改中频系数，不会被消除掉。</p>
+<li>在每一周期内，0和1的个数近似相等。</li>
+<li>在每一周期内，长度为i的游程占游程总数的<span class="math inline">\(\frac{1}{2^i}\)</span>。</li>
+<li>定义自相关函数<span class="math inline">\(C(\tau)=\sum_{i=1}^n(-1)^{a_i+a_{i+\tau}}\)</span>。
 <ul>
-<li>修改低频部分，容易看出变化，隐蔽性差。</li>
-<li>修改高频部分，容易被图像压缩算法破坏，鲁棒性差。</li>
+<li>那么<span class="math inline">\(C(\tau)=\begin{cases}n,\quad\tau\equiv0\mod n\\c,\quad others\end{cases}\)</span>$</li>
+</ul></li>
 </ul>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228214606301.png" alt="image-20201228214606301" style="zoom:67%;"></p>
-<h2 id="隐写分析">隐写分析</h2>
-<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%85%AB%EF%BC%89%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F%E4%B8%8E%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90/image-20201228215318459.png" alt="image-20201228215318459" style="zoom:67%;"></p>
+<h3 id="m序列的伪随机性">m序列的伪随机性</h3>
+<h3 id="线性复杂度">线性复杂度</h3>
+<p>能够输出该序列的最短LFSR的级数。</p>
+<p>一个好的流密码，应该具有大周期、大的线性复杂度，同时满足Golomb随机性假设。</p>
+<h2 id="基于lfsr的伪随机序列生成器">基于LFSR的伪随机序列生成器</h2>
+<h3 id="滤波生成器">滤波生成器</h3>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171735794.png" alt="image-20201228171735794" style="zoom:67%;"></p>
+<h3 id="组合生成器">组合生成器</h3>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171742568.png" alt="image-20201228171742568" style="zoom:67%;"></p>
+<h3 id="钟控生成器">钟控生成器</h3>
+<p><img src="/2020/12/27/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BA%8F%E5%88%97%E5%AF%86%E7%A0%81/image-20201228171755691.png" alt="image-20201228171755691" style="zoom:67%;"></p>
 ]]></content>
       <categories>
         <category>现代密码学</category>
       </categories>
       <tags>
-        <tag>信息隐藏</tag>
-        <tag>隐写分析</tag>
+        <tag>流密码</tag>
       </tags>
   </entry>
   <entry>
@@ -5289,78 +5367,6 @@ L2: L(w) = \frac 1 N \sum _{i=1} ^N (f(x_i;w)-y_i)+ \lambda \Vert w\Vert
       </categories>
       <tags>
         <tag>机器学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>统计学习方法（三）k近邻法</title>
-    <url>/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/</url>
-    <content><![CDATA[<p>k近邻法，是一种基本分类与回归方法。输入为特征向量，输出为类别。</p>
-<a id="more"></a>
-<h2 id="k近邻算法">3.1 k近邻算法</h2>
-<p>给定一个训练集，对新的输入实例，在训练集中找到最邻近的k个实例，将输入实例分为多数类。</p>
-<ul>
-<li>输入：训练数据集T，实例特征向量x。</li>
-<li>输出：实例x所属的类y。</li>
-<li>根据给定的距离度量，在T中找出与x最邻近的k个点。</li>
-<li>在邻域中根据分类决策规则（如多数表决）决定x的类别y。</li>
-<li>k=1时，称为最近邻算法，将与x最邻近点的类作为x的类。</li>
-</ul>
-<h2 id="k近邻模型">3.2 k近邻模型</h2>
-<h3 id="距离度量">距离度量</h3>
-<p><span class="math inline">\(L_p\)</span>距离定义为 <span class="math display">\[
-L_p(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^p)^{\frac 1 p}
-\]</span> p=1时，称为曼哈顿距离 <span class="math display">\[
-L_1(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|)
-\]</span> p=2时，即为欧式距离 <span class="math display">\[
-L_2(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^2)^{\frac 1 2}
-\]</span> p=∞时，称为切比雪夫距离，为各个坐标距离的最大值 <span class="math display">\[
-L_\infty(x_i, x_j) = \max_l |x_i^{(l)}-x_j^{(l)}|
-\]</span> 下图给出了与原点距离为1的图形</p>
-<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/1.png"></p>
-<h3 id="分类决策规则">分类决策规则</h3>
-<p>k近邻法中的分类决策规则往往是多数表决，即由k个临近点的多数类决定输入类。</p>
-<p>如果分类的损失函数为0-1损失函数，分类函数为 <span class="math display">\[
-f: \mathbf R^n \rightarrow \{c_1, c_2, ..., c_K\}
-\]</span> 那么误分类的概率为 <span class="math display">\[
-P(Y\neq f(X)) = 1- P(Y=f(X)) \\
-\Leftrightarrow \frac 1 k \sum _{x_i\in N_k(x)} I(y_i\neq c_j) = 1 - \frac 1 k \sum _{x_i\in N_k(x)} I(y_i= c_j)
-\]</span> ## 3.3 k近邻法的实现：kd树</p>
-<h3 id="构造kd树">构造kd树</h3>
-<p>kd树是二叉树，表示对k维空间的一个划分。</p>
-<p>构造kd树相当于不断地用超平面切分k维空间，构成一系列的k维超矩形区域，kd树的每个节点对应于一个k维超矩形区域。</p>
-<p>构造算法如下</p>
-<ol type="1">
-<li>开始：构造根节点，对应于包含T的k维空间的超矩形区域。
-<ul>
-<li>选择<span class="math inline">\(x^{(1)}\)</span>为坐标轴，以T中所有实例的<span class="math inline">\(x^{(1)}\)</span>坐标的中位数为切分点，将根节点对应的超矩形区域切分为两个子区域。</li>
-<li>由此生成深度为一的左右子节点，左子节点对应于坐标<span class="math inline">\(x^{(1)}\)</span>小于切分点的子区域。</li>
-</ul></li>
-<li>重复：对深度为j的节点，选择<span class="math inline">\(x^{(l)}\)</span>为切分的坐标轴，其中<span class="math inline">\(l=j(mod k)+1\)</span>，以坐标的中位数为切分点。
-<ul>
-<li>由此生成深度为j+1的左右子节点，左子节点对应于坐标<span class="math inline">\(x^{(l)}\)</span>小于切分点的子区域。</li>
-</ul></li>
-<li>直到两个子区域没有实例存在时停止，形成kd树的区域划分。</li>
-</ol>
-<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png"></p>
-<h3 id="搜索kd树">搜索kd树</h3>
-<p>给定一个目标点，搜索其最近邻，首先找到包含目标点的叶节点。从叶节点出发，依次回退到父节点，不断查找与目标点最邻近的节点。</p>
-<p>给定如图所示的kd树，根节点为A，子节点为B、C等，输入实例点为S，求S的最近邻。</p>
-<ul>
-<li>首先找到包含S的叶结点D，以D作为近似最近邻。</li>
-<li>返回D的父节点B，在B的另一子节点F的区域内搜索。</li>
-<li>继续返回上一级父节点A，在A的另一子节点C的区域内搜索。</li>
-<li>点E比点D更近，成为最近邻。</li>
-</ul>
-<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png"></p>
-<h2 id="scikit-learn">Scikit-learn</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">clf_sk = KNeighborsClassifier()</span><br><span class="line">clf_sk.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf_sk.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>统计学习方法</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-        <tag>KNN</tag>
       </tags>
   </entry>
   <entry>
@@ -5595,6 +5601,78 @@ s.t. \quad&amp; \sum_{i=1}^N\alpha_iy_i=0\\
         <tag>机器学习</tag>
         <tag>SVM</tag>
         <tag>Kernel trick</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>统计学习方法（三）k近邻法</title>
+    <url>/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/</url>
+    <content><![CDATA[<p>k近邻法，是一种基本分类与回归方法。输入为特征向量，输出为类别。</p>
+<a id="more"></a>
+<h2 id="k近邻算法">3.1 k近邻算法</h2>
+<p>给定一个训练集，对新的输入实例，在训练集中找到最邻近的k个实例，将输入实例分为多数类。</p>
+<ul>
+<li>输入：训练数据集T，实例特征向量x。</li>
+<li>输出：实例x所属的类y。</li>
+<li>根据给定的距离度量，在T中找出与x最邻近的k个点。</li>
+<li>在邻域中根据分类决策规则（如多数表决）决定x的类别y。</li>
+<li>k=1时，称为最近邻算法，将与x最邻近点的类作为x的类。</li>
+</ul>
+<h2 id="k近邻模型">3.2 k近邻模型</h2>
+<h3 id="距离度量">距离度量</h3>
+<p><span class="math inline">\(L_p\)</span>距离定义为 <span class="math display">\[
+L_p(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^p)^{\frac 1 p}
+\]</span> p=1时，称为曼哈顿距离 <span class="math display">\[
+L_1(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|)
+\]</span> p=2时，即为欧式距离 <span class="math display">\[
+L_2(x_i, x_j) = (\sum _{l=1} ^n |x_i^{(l)}-x_j^{(l)}|^2)^{\frac 1 2}
+\]</span> p=∞时，称为切比雪夫距离，为各个坐标距离的最大值 <span class="math display">\[
+L_\infty(x_i, x_j) = \max_l |x_i^{(l)}-x_j^{(l)}|
+\]</span> 下图给出了与原点距离为1的图形</p>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/1.png"></p>
+<h3 id="分类决策规则">分类决策规则</h3>
+<p>k近邻法中的分类决策规则往往是多数表决，即由k个临近点的多数类决定输入类。</p>
+<p>如果分类的损失函数为0-1损失函数，分类函数为 <span class="math display">\[
+f: \mathbf R^n \rightarrow \{c_1, c_2, ..., c_K\}
+\]</span> 那么误分类的概率为 <span class="math display">\[
+P(Y\neq f(X)) = 1- P(Y=f(X)) \\
+\Leftrightarrow \frac 1 k \sum _{x_i\in N_k(x)} I(y_i\neq c_j) = 1 - \frac 1 k \sum _{x_i\in N_k(x)} I(y_i= c_j)
+\]</span> ## 3.3 k近邻法的实现：kd树</p>
+<h3 id="构造kd树">构造kd树</h3>
+<p>kd树是二叉树，表示对k维空间的一个划分。</p>
+<p>构造kd树相当于不断地用超平面切分k维空间，构成一系列的k维超矩形区域，kd树的每个节点对应于一个k维超矩形区域。</p>
+<p>构造算法如下</p>
+<ol type="1">
+<li>开始：构造根节点，对应于包含T的k维空间的超矩形区域。
+<ul>
+<li>选择<span class="math inline">\(x^{(1)}\)</span>为坐标轴，以T中所有实例的<span class="math inline">\(x^{(1)}\)</span>坐标的中位数为切分点，将根节点对应的超矩形区域切分为两个子区域。</li>
+<li>由此生成深度为一的左右子节点，左子节点对应于坐标<span class="math inline">\(x^{(1)}\)</span>小于切分点的子区域。</li>
+</ul></li>
+<li>重复：对深度为j的节点，选择<span class="math inline">\(x^{(l)}\)</span>为切分的坐标轴，其中<span class="math inline">\(l=j(mod k)+1\)</span>，以坐标的中位数为切分点。
+<ul>
+<li>由此生成深度为j+1的左右子节点，左子节点对应于坐标<span class="math inline">\(x^{(l)}\)</span>小于切分点的子区域。</li>
+</ul></li>
+<li>直到两个子区域没有实例存在时停止，形成kd树的区域划分。</li>
+</ol>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/2.png"></p>
+<h3 id="搜索kd树">搜索kd树</h3>
+<p>给定一个目标点，搜索其最近邻，首先找到包含目标点的叶节点。从叶节点出发，依次回退到父节点，不断查找与目标点最邻近的节点。</p>
+<p>给定如图所示的kd树，根节点为A，子节点为B、C等，输入实例点为S，求S的最近邻。</p>
+<ul>
+<li>首先找到包含S的叶结点D，以D作为近似最近邻。</li>
+<li>返回D的父节点B，在B的另一子节点F的区域内搜索。</li>
+<li>继续返回上一级父节点A，在A的另一子节点C的区域内搜索。</li>
+<li>点E比点D更近，成为最近邻。</li>
+</ul>
+<p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png"></p>
+<h2 id="scikit-learn">Scikit-learn</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">clf_sk = KNeighborsClassifier()</span><br><span class="line">clf_sk.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf_sk.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>统计学习方法</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>KNN</tag>
       </tags>
   </entry>
   <entry>
