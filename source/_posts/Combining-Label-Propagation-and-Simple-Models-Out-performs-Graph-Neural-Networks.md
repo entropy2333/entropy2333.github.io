@@ -9,7 +9,7 @@ category:
 - Paper
 ---
 
-ICLR，采用后处理的方法而非GNN在OGB上取得SOTA。
+ICLR 2021，采用后处理的方法而非GNN在OGB上取得SOTA。
 
 <img src="Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/image-20220224170455627.png" alt="image-20220224170455627" style="zoom: 50%;" />
 
