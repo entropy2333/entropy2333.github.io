@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://entropy2333.github.io/"/>
-  <updated>2022-03-02T08:01:34.139Z</updated>
+  <updated>2022-03-08T03:15:32.482Z</updated>
   <id>https://entropy2333.github.io/</id>
   
   <author>
@@ -17,17 +17,40 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Git操作手册</title>
+    <link href="https://entropy2333.github.io/2022/03/05/Git%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C/"/>
+    <id>https://entropy2333.github.io/2022/03/05/Git%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C/</id>
+    <published>2022-03-05T15:01:44.000Z</published>
+    <updated>2022-03-08T03:15:32.482Z</updated>
+    
+    <content type="html"><![CDATA[<p>Git常见操作备忘</p><a id="more"></a><h2 id="resources">Resources</h2><ul><li>documentation: <a href="https://git-scm.com/docs" class="uri">https://git-scm.com/docs</a></li></ul><h2 id="常见操作备忘">常见操作备忘</h2><h3 id="使用access-token添加远程分支">使用Access Token添加远程分支</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin https://&lt;access-token-name&gt;:&lt;access-token&gt;@gitlab.com/myuser/myrepo.git</span><br></pre></td></tr></table></figure><h3 id="创建分支并提交">创建分支并提交</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 添加远程分支</span></span><br><span class="line">git remote add origin git@git.sjtu.edu.cn/user/repo.git</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建本地分支</span></span><br><span class="line">git checkout -b local_branch</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建空分支</span></span><br><span class="line">git checkout --orphan local_branch</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> push到远程分支</span></span><br><span class="line">git push origin local_branch</span><br></pre></td></tr></table></figure><h3 id="git-lfs">git-lfs</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装</span></span><br><span class="line">brew install git-lfs</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 开启lfs功能</span></span><br><span class="line">git lfs install</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 追踪大文件，提交时需要添加.gitattributes</span></span><br><span class="line">git lfs track</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 追踪指定文件</span></span><br><span class="line">git lfs track *.pdf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看追踪的文件列表</span></span><br><span class="line">git lfs ls-files</span><br></pre></td></tr></table></figure><h3 id="删除远程仓库不存在的分支">删除远程仓库不存在的分支</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看所有分支</span></span><br><span class="line">git branch -a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只查看远程分支</span></span><br><span class="line">git branch -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># -p/--prune: 删除不存在的远程分支</span></span><br><span class="line">git fetch -p</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Git常见操作备忘&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="备忘" scheme="https://entropy2333.github.io/categories/%E5%A4%87%E5%BF%98/"/>
+    
+    
+      <category term="Git" scheme="https://entropy2333.github.io/tags/Git/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Combining Label Propagation and Simple Models Out-performs Graph Neural Networks</title>
     <link href="https://entropy2333.github.io/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/"/>
     <id>https://entropy2333.github.io/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/</id>
     <published>2022-02-24T08:11:08.000Z</published>
-    <updated>2022-03-02T08:01:34.139Z</updated>
+    <updated>2022-03-03T08:03:38.900Z</updated>
     
-    <content type="html"><![CDATA[<p>ICLR，采用后处理的方法而非GNN在OGB上取得SOTA。</p><p><img src="/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/image-20220224170455627.png" alt="image-20220224170455627" style="zoom: 50%;"></p><a id="more"></a><h2 id="overview">Overview</h2><p><img src="/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/image-20220224161257742.png" alt="image-20220224161257742" style="zoom:33%;"></p><ul><li>paper: https://arxiv.org/pdf/2010.13993.pdf</li><li>code: <a href="https://github.com/CUAI/CorrectAndSmooth" class="uri">https://github.com/CUAI/CorrectAndSmooth</a></li></ul><h2 id="background">Background</h2><p>随着图神经网络变得越来越复杂， 理解模型的性能为什么提升越来越困难，将其应用在大规模数据集上也很困难。</p><p>本文提出了一个简单的pipeline，包括三个部分</p><ol type="1"><li>忽略图结构，用节点特征进行基本预测。</li><li>纠正步骤，将训练数据的不确定性传播到整个图中，以纠正基本预测。</li><li>对预测结果进行平滑处理。</li></ol><p>步骤2和3仅仅采用了经典方法做后处理。</p><h2 id="method">Method</h2><p>图<span class="math inline">\(G=(V,E)\)</span>有<span class="math inline">\(n=|V|\)</span>个节点，节点特征<span class="math inline">\(X\in\mathbb{R}^{n\times p}\)</span>。<span class="math inline">\(A\)</span>为邻接矩阵，<span class="math inline">\(D\)</span>为对角度矩阵，<span class="math inline">\(S=D^{-1/2}AD^{-1/2}\)</span>。对于预测问题，节点集合分为有标注的<span class="math inline">\(L\)</span>和无标注的<span class="math inline">\(U\)</span>，标签<span class="math inline">\(Y\in\mathbb{R}^{n\times c}\)</span>，需要给未标注的节点<span class="math inline">\(j\in U\)</span>打标签。</p><p>首先直接用MLP对节点特征预测，不依赖任何的图结构，得到基本预测<span class="math inline">\(Z\)</span>。</p><p>然后考虑融入标签特征纠正错误，提升预测的准确率。首先定义错误矩阵<span class="math inline">\(E\in\mathbb{R}^{n\times c}\)</span>，在验证集和测试集上均为0。 <span class="math display">\[E_{L_t} = Z_{L_t} - Y_{L_t},\quad E_{L_v}=0,\quad E_{U}=0.\]</span> 采用标签传播（label spreading）技巧对错误进行平滑，优化目标为 <span class="math display">\[\hat{E} = \arg \min_{W\in\mathbb{R}^{n\times c}} \trace(W^T(I-S)W)+\mu\lVert W-E\rVert^2_F\]</span> 第一项平滑了错误，第二项保障了所求的解接近初始错误。可以通过迭代求解<span class="math inline">\(E^{(t+1)} = (1-\alpha)E+\alpha SE^{(t)}\)</span>，其中<span class="math inline">\(\alpha=1/(1+\mu)\)</span>，<span class="math inline">\(E^{(0)} = E\)</span>。从而平滑后的错误为 <span class="math display">\[Z^{(r)} = Z + \hat{E}\]</span> 这种传播在回归问题的高斯假设下被证明正确，但对于分类问题而言，平滑后的错误可能尺度<span class="math inline">\(\hat{E}\)</span>不对。可以推出 <span class="math display">\[\lVert E^{(t+1)}\rVert \le (1-\alpha)\lVert E\rVert + \alpha\lVert S\rVert_2\lVert E^{(t)}\rVert_2 = (1-\alpha)\lVert E\rVert_2 + \alpha\lVert E^{(t)}\rVert_2\]</span> 当<span class="math inline">\(E^{(0)} = E\)</span>，从而<span class="math inline">\(\lVert E^{(t)}\rVert_2\le\lVert E\rVert_2\)</span>。因此传播不能完全纠正图中节点的错误，本文提出了两种缩放机制Autoscale和Scaled Fixed Diffusion来处理这个问题。</p><p>在得到得分向量<span class="math inline">\(Z^{(r)}\)</span>后，进一步对预测结果进行平滑。这是因为邻接的节点容易有相同的标签，所以采用标签传播再一次平滑处理。 <span class="math display">\[G_{L_t} = Y_{L_t},\quad G_{L_v,U} = Z_{L_v, U}^{(r)}\]</span> 将训练节点设置为真实标签，验证与无标注节点采用纠正预测（验证集也可以用真实标签）。采用<span class="math inline">\(G^{(t+1)} = (1-\alpha)G+\alpha SG^{(t)}\)</span>迭代，给出最终的预测结果<span class="math inline">\(\hat{Y}\)</span>。</p><h2 id="experiment">Experiment</h2><p><img src="/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/image-20220302152112164.png" alt="image-20220302152112164" style="zoom:33%;"></p><p><img src="/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/image-20220302152143010.png" alt="image-20220302152143010" style="zoom:33%;"></p>]]></content>
+    <content type="html"><![CDATA[<p>ICLR 2021，采用后处理的方法而非GNN在OGB上取得SOTA。</p><p><img src="/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/image-20220224170455627.png" alt="image-20220224170455627" style="zoom: 50%;"></p><a id="more"></a><h2 id="overview">Overview</h2><p><img src="/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/image-20220224161257742.png" alt="image-20220224161257742" style="zoom:33%;"></p><ul><li>paper: https://arxiv.org/pdf/2010.13993.pdf</li><li>code: <a href="https://github.com/CUAI/CorrectAndSmooth" class="uri">https://github.com/CUAI/CorrectAndSmooth</a></li></ul><h2 id="background">Background</h2><p>随着图神经网络变得越来越复杂， 理解模型的性能为什么提升越来越困难，将其应用在大规模数据集上也很困难。</p><p>本文提出了一个简单的pipeline，包括三个部分</p><ol type="1"><li>忽略图结构，用节点特征进行基本预测。</li><li>纠正步骤，将训练数据的不确定性传播到整个图中，以纠正基本预测。</li><li>对预测结果进行平滑处理。</li></ol><p>步骤2和3仅仅采用了经典方法做后处理。</p><h2 id="method">Method</h2><p>图<span class="math inline">\(G=(V,E)\)</span>有<span class="math inline">\(n=|V|\)</span>个节点，节点特征<span class="math inline">\(X\in\mathbb{R}^{n\times p}\)</span>。<span class="math inline">\(A\)</span>为邻接矩阵，<span class="math inline">\(D\)</span>为对角度矩阵，<span class="math inline">\(S=D^{-1/2}AD^{-1/2}\)</span>。对于预测问题，节点集合分为有标注的<span class="math inline">\(L\)</span>和无标注的<span class="math inline">\(U\)</span>，标签<span class="math inline">\(Y\in\mathbb{R}^{n\times c}\)</span>，需要给未标注的节点<span class="math inline">\(j\in U\)</span>打标签。</p><p>首先直接用MLP对节点特征预测，不依赖任何的图结构，得到基本预测<span class="math inline">\(Z\)</span>。</p><p>然后考虑融入标签特征纠正错误，提升预测的准确率。首先定义错误矩阵<span class="math inline">\(E\in\mathbb{R}^{n\times c}\)</span>，在验证集和测试集上均为0。 <span class="math display">\[E_{L_t} = Z_{L_t} - Y_{L_t},\quad E_{L_v}=0,\quad E_{U}=0.\]</span> 采用标签传播（label spreading）技巧对错误进行平滑，优化目标为 <span class="math display">\[\hat{E} = \arg \min_{W\in\mathbb{R}^{n\times c}} \trace(W^T(I-S)W)+\mu\lVert W-E\rVert^2_F\]</span> 第一项平滑了错误，第二项保障了所求的解接近初始错误。可以通过迭代求解<span class="math inline">\(E^{(t+1)} = (1-\alpha)E+\alpha SE^{(t)}\)</span>，其中<span class="math inline">\(\alpha=1/(1+\mu)\)</span>，<span class="math inline">\(E^{(0)} = E\)</span>。从而平滑后的错误为 <span class="math display">\[Z^{(r)} = Z + \hat{E}\]</span> 这种传播在回归问题的高斯假设下被证明正确，但对于分类问题而言，平滑后的错误可能尺度<span class="math inline">\(\hat{E}\)</span>不对。可以推出 <span class="math display">\[\lVert E^{(t+1)}\rVert \le (1-\alpha)\lVert E\rVert + \alpha\lVert S\rVert_2\lVert E^{(t)}\rVert_2 = (1-\alpha)\lVert E\rVert_2 + \alpha\lVert E^{(t)}\rVert_2\]</span> 当<span class="math inline">\(E^{(0)} = E\)</span>，从而<span class="math inline">\(\lVert E^{(t)}\rVert_2\le\lVert E\rVert_2\)</span>。因此传播不能完全纠正图中节点的错误，本文提出了两种缩放机制Autoscale和Scaled Fixed Diffusion来处理这个问题。</p><p>在得到得分向量<span class="math inline">\(Z^{(r)}\)</span>后，进一步对预测结果进行平滑。这是因为邻接的节点容易有相同的标签，所以采用标签传播再一次平滑处理。 <span class="math display">\[G_{L_t} = Y_{L_t},\quad G_{L_v,U} = Z_{L_v, U}^{(r)}\]</span> 将训练节点设置为真实标签，验证与无标注节点采用纠正预测（验证集也可以用真实标签）。采用<span class="math inline">\(G^{(t+1)} = (1-\alpha)G+\alpha SG^{(t)}\)</span>迭代，给出最终的预测结果<span class="math inline">\(\hat{Y}\)</span>。</p><h2 id="experiment">Experiment</h2><p><img src="/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/image-20220302152112164.png" alt="image-20220302152112164" style="zoom:33%;"></p><p><img src="/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/image-20220302152143010.png" alt="image-20220302152143010" style="zoom:33%;"></p>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;ICLR，采用后处理的方法而非GNN在OGB上取得SOTA。&lt;/p&gt;
+      &lt;p&gt;ICLR 2021，采用后处理的方法而非GNN在OGB上取得SOTA。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/2022/02/24/Combining-Label-Propagation-and-Simple-Models-Out-performs-Graph-Neural-Networks/image-20220224170455627.png&quot; alt=&quot;image-20220224170455627&quot; style=&quot;zoom: 50%;&quot;&gt;&lt;/p&gt;
     
     </summary>
@@ -111,9 +134,9 @@
       <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
     
     
-      <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
-    
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+      <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
     
       <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
     
@@ -276,9 +299,9 @@
     
       <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
     
-      <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
-    
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+      <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
     
   </entry>
   
@@ -517,32 +540,6 @@
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
       <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Graph Neural Networks with Learnable Structural and Positional Representations</title>
-    <link href="https://entropy2333.github.io/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/"/>
-    <id>https://entropy2333.github.io/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/</id>
-    <published>2021-11-17T04:36:32.000Z</published>
-    <updated>2022-01-23T06:58:39.534Z</updated>
-    
-    <content type="html"><![CDATA[<p>来自Bengio组，在GNN上引入位置编码，提出了一种新的框架LSPE，在分子数据集上的性能提升了2.87%至64.14%。</p><p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211117124217530.png" alt="image-20211117124217530" style="zoom:67%;"></p><a id="more"></a><h2 id="overview">Overview</h2><p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211117123851516.png" alt="image-20211117123851516" style="zoom: 50%;"></p><ul><li><p>arxiv: https://arxiv.org/pdf/2110.07875v1.pdf</p></li><li><p>code: https://github.com/vijaydwivedi75/gnn-lspe</p></li></ul><h2 id="background">Background</h2><p>GNN大多是基于消息传递机制，通过聚合邻居的信息构建节点表示，但这也带来了一定的局限性。每个节点的表示只依赖于一小块local结构，而没有考虑到节点的位置信息。比如图中两个节点有着相同的1-hop邻居，但2-hop或高阶邻居都不甚相同，此时GNN不能区分两个节点。面对这种局限性，可以有三种方法：</p><ol type="1"><li><p>堆叠多层网络，因为过平滑现象可能难以适用长距离的节点；</p></li><li><p>采用高阶的GNN，增加了计算代价；</p></li><li><p>考虑节点的位置编码。</p></li></ol><p>本文希望设计一种可学习的位置编码与GNN结合，从而可以提升GNN的节点表示能力，同时保持线性的计算复杂度便于大规模应用。</p><h2 id="method">Method</h2><h3 id="notation">Notation</h3><p>假设图为<span class="math inline">\(\mathcal{G} = (\mathcal(V), \mathcal{E})\)</span>，其中<span class="math inline">\(n = \lvert \mathcal{V} \rvert\)</span>表示节点数，<span class="math inline">\(E=\lvert \mathcal{E} \rvert\)</span>表示边数。<span class="math inline">\(A\in\mathbb{R}^{n\times n}\)</span>为邻接矩阵，<span class="math inline">\(A_{ij} = 1\)</span>表示两个节点有边相连，否则<span class="math inline">\(A_{ij} = 0\)</span>，<span class="math inline">\(D\in\mathbb{R}^{n\times n}\)</span>表示节点的度矩阵。<span class="math inline">\(h_i\)</span>和<span class="math inline">\(p_i\)</span>分别表示节点<span class="math inline">\(i\)</span>的表示和位置编码，<span class="math inline">\(e_{ij}\)</span>表示节点<span class="math inline">\(i\)</span>和节点<span class="math inline">\(j\)</span>相连的边的特征。</p><p>GNN模型一般有三个主要部分：嵌入层、堆叠的卷积层以及最后基于任务的层，用上标<span class="math inline">\(l\)</span>表示层数，标准的MP-GNN参数更新公式如下： <span class="math display">\[\begin{align}\text{MP-GNNs}: \quad    h_i^{l+1} &amp;= f_h(h_i^{l}, \{h_j^{l}\}_{j\in\mathcal{N}_i}, e_{ij}^l),    \ h_i^{l+1}, h_i^{l}\in \mathbb{R}^d, \tag{1} \label{eq1}\\    e_{ij}^{l+1} &amp;= f_e(h_i^{l}, h_j^{l}, e_{ij}^l),    \ e_{ij}^{l+1}, e_{ij}^{l}\in \mathbb{R}^d \tag{2}\end{align}\]</span></p><p>其中<span class="math inline">\(f_h\)</span>和<span class="math inline">\(f_e\)</span>表示有可学习参数的函数，<span class="math inline">\(\mathcal{N}_i\)</span>表示节点<span class="math inline">\(i\)</span>的邻居。Transformer也被认为是MP-GNNs的一种特例，考虑全连通图，将<span class="math inline">\(\eqref{eq1}\)</span>中的边特征丢弃，简化形式即为Transformer。</p><h3 id="positional-encoding">Positional Encoding</h3><p>现有MP-GNN中融合位置信息往往是通过拼接的方式： <span class="math display">\[\begin{align}    h_i^{\mathcal{l}=0} &amp;=    \mathrm{LL}_h{    \begin{bmatrix}        {h_i^{\mathrm{in}} \\ p_i^{in}}    \end{bmatrix}}    = D^0{    \begin{bmatrix}        {h_i^{\mathrm{in}} \\ p_i^{in}}    \end{bmatrix}}    +d^0\in\mathbb{R}^d,\tag{3} \\    e_{ij}^{l=0} &amp;= \mathrm{LL}(e_{ij}^{\mathrm{in}})    = B^0e_{ij}^{\mathrm{in}}+b^0\in\mathbb{R}^d \tag{4}\end{align}\]</span> 其中<span class="math inline">\(p_i^\mathrm{in}\in\mathbb{R}^k\)</span>表示输入节点的位置编码，<span class="math inline">\(D^0\in\mathbb{R}^{d\times(d_v+k)}\)</span>和<span class="math inline">\(d_0\in\mathbb{R}^d\)</span>表示全连接层的参数。这种方法融合了位置表示和结构化表示，同时保持了线性的计算复杂度，但是不能动态改变位置表示以更好地适应当前任务。</p><p>针对上述问题，本文将位置信息与结构信息分离，两种表示可以分别学习，这种框架称为可学习的结构和位置编码（<strong>L</strong>earnable <strong>S</strong>tructural and <strong>P</strong>ositional <strong>E</strong>ncodings，<strong>LSPE</strong>）。 <span class="math display">\[\begin{align}\text{MP-GNNs-LSPE}: \quad    h_i^{l+1} &amp;= f_h\left(    \begin{bmatrix}        h_i^{l} \\ p_i^l    \end{bmatrix},    \left\{        \begin{bmatrix}            h_i^{l}\\p_i^l        \end{bmatrix}    \right\}_{j\in\mathcal{N}_i}, e_{ij}^l\right),    \ h_i^{l+1}, h_i^{l}\in \mathbb{R}^d, \tag{5} \label{eq2} \\    e_{ij}^{l+1} &amp;= f_e(h_i^{l}, h_j^{l}, e_{ij}^l),    \ e_{ij}^{l+1}, e_{ij}^{l}\in \mathbb{R}^d \tag{6} \\    p_i^{l+1} &amp;= f_p(p_i^l, \{p_j^{l}\}_{j\in\mathcal{N}_i}, e_{ij}^l),\ p_i^{l+1},p_i^l\in\mathbb{R}^d, \tag{7}\end{align}\]</span></p><h3 id="definition-of-initial-pe">Definition of Initial PE</h3><p>初始位置编码的选择很重要，本文比较了两种编码：Laplacian PE（LapPE）和Random Walk PE（RWPE）。LapPE为每个节点提供了唯一表示，并且是距离敏感的，但是受限于符号不明确，在训练过程中需要随机翻转符号。</p><p>本文提出了RWPE编码，定义如下： <span class="math display">\[p_i^{\mathrm{RWPE}} = [\mathrm{RW}_{ii}, \mathrm{RW}_{ii}^2, \cdots,\mathrm{RW}_{ii}^k]\in\mathbb{R}^k\tag{8}\]</span> 其中<span class="math inline">\(\mathrm{RW}=AD^{-1}\)</span>，本文没有使用完整的随机游走矩阵<span class="math inline">\({R_{ij}}\)</span>，而是只考虑了节点自身的随机游走矩阵，降低了计算复杂度。RWPE编码没有LapPE的符号不明确问题，不需要随机额外的invariance，同时也提供了唯一的节点表示，在节点有一个独特的k-hop拓扑邻居时。</p><h3 id="positional-loss">Positional Loss</h3><p>因为本文分离了位置信息，因此可以考虑设计位置编码loss以强迫其学习图的拓扑结构，本文采用的是Laplacian eigenvector loss。 <span class="math display">\[\begin{align}    \text{Loss} &amp;= \text{Loss}_{\text{Task}}\left(        \begin{bmatrix}            h^{l=L} \\ p^{l=L}        \end{bmatrix}    \right)         + \alpha\ \text{Loss}_{\text{LapEig}}(p^{l=L}) \tag{9} \\     \text{Loss}_{\text{LapEig}}(p) &amp;= \frac{1}{k}\text{trace}(p^T\Delta p) + \frac{\lambda}{k} \lVert p^Tp-\mathrm{I}_k \rVert^2_F \tag{10}\end{align}\]</span> 其中<span class="math inline">\(h^{l=L}\in\mathbb{R}^{n\times d}\)</span>，<span class="math inline">\(p^{l=L}\in\mathbb{R}^{n\times k}\)</span>，<span class="math inline">\(\lVert \cdot \rVert_F\)</span>表示Frobenius范数，定义为矩阵各项元素平方和的平方根。此外注意到，本文限制位置向量的均值为0范数为1，以更好地近似Laplacian eigenvector loss。</p><h2 id="experiment">Experiment</h2><p>在三个数据集ZINC、OGBG-MOLTOX21和OGBG-MOLPCBA上进行了实验，在不使用PE时图网络很难取得好的表现。</p><p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211120142523504.png" alt="image-20211120142523504" style="zoom:67%;"></p><p>本文也比较了稀疏GNN和Transformer GNN类的方法，稀疏GNN在LSPE的加持下取得了更好的结果，尽管Transformer GNN理论上可以更好地克服长距依赖的局限性。</p><p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211120143016350.png" alt="image-20211120143016350" style="zoom:67%;"></p><p>此外，本文对k的选择也做了实验，结果上来看适当大一点比较好。</p><p><img src="/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211120143711638.png" alt="image-20211120143711638" style="zoom:67%;"></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;来自Bengio组，在GNN上引入位置编码，提出了一种新的框架LSPE，在分子数据集上的性能提升了2.87%至64.14%。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/2021/11/17/Graph-Neural-Networks-with-Learnable-Structural-and-Positional-Representations/image-20211117124217530.png&quot; alt=&quot;image-20211117124217530&quot; style=&quot;zoom:67%;&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
-    
-    
-      <category term="GNN" scheme="https://entropy2333.github.io/tags/GNN/"/>
-    
-      <category term="PE" scheme="https://entropy2333.github.io/tags/PE/"/>
     
   </entry>
   
