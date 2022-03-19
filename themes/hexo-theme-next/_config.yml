@@ -366,19 +366,19 @@ codeblock:
   # Code Highlight theme
   # All available themes: https://theme-next.js.org/highlight/
   theme:
-    enable: true
+    enable: false
     light: atom-one-light
     dark: atom-one-dark
   prism:
-    enable: false
-    light: prism
-    dark: prism-dark
+    enable: true
+    light: prism-one-dark
+    dark: prism-one-dark
   # Add copy button on codeblock
   copy_button:
     enable: true
     show_result: true
     # Available values: default | flat | mac
-    style:
+    style: flat
 
 back2top:
   enable: true
@@ -899,7 +899,10 @@ vendors:
   fontawesome:
 
   # Prism
-  prism:
+  # prism:
+  # prism: //cdn.jsdelivr.net/npm/prismjs@1/prism.min.js
+  prism: /js/prism/prism.js
+  # prism: //cdn.jsdelivr.net/npm/prism-theme-one-dark@1.0.0/index.min.js
   prism_autoloader:
   prism_line_numbers:
 

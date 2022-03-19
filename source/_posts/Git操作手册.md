@@ -71,3 +71,14 @@ git branch -r
 git fetch -p
 ```
 
+### 合并多次提交
+
+```sh
+# 合并最近的n次提交
+git rebase -i HEAD~n
+
+# 合并当前HEAD到指定commit id
+git rebase $commit-id
+```
+
+默认编辑器为nano，可以用`git config --global core.editor "vim"`修改为vim。
