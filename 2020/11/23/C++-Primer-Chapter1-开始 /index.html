@@ -165,7 +165,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -178,7 +178,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">63</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -317,10 +317,14 @@
 <a id="more"></a>
 <h2 id="编写一个简单的c程序">编写一个简单的C++程序</h2>
 <p>每个C++程序都包含若干个函数，其中一个必须命名为main，操作系统通过调用main运行C++程序。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">int main()
+&#123;
+    return 0;
+&#125;</code></pre>
 <h3 id="编译运行程序">编译、运行程序</h3>
 <p>程序运行后，可以通过echo命令访问main的返回值。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> $? // UNIX</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$ERRORLEVEL</span>% // Windows</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token variable">$?</span> // UNIX
+<span class="token builtin class-name">echo</span> <span class="token variable">$ERRORLEVEL</span>% // Windows</code></pre>
 <h2 id="初识输入输出">初识输入输出</h2>
 <table>
 <thead>
@@ -349,17 +353,48 @@
 </tbody>
 </table>
 <h3 id="注释简介">注释简介</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 单行注释</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  多行注释</span></span><br><span class="line"><span class="comment"> 不能嵌套</span></span><br><span class="line"><span class="comment">/*</span></span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">&#x2F;&#x2F; 单行注释
+&#x2F;*
+    多行注释
+    不能嵌套
+&#x2F;*</code></pre>
 <h2 id="控制流">控制流</h2>
 <p>while &amp; for &amp; if</p>
 <h3 id="读取数量不定的输入数据">读取数量不定的输入数据</h3>
 <p>当遇到文件结束符（EOF）或遇到一个无效输入时，istream对象的状态会变成无效，条件为假。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>, value = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; value)</span><br><span class="line">        sum += value;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Sum is &quot;</span> &lt;&lt; sum &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">#include &lt;iostream&gt;
+int main()
+&#123;
+    int sum &#x3D; 0, value &#x3D; 0;
+    while (std::cin &gt;&gt; value)
+        sum +&#x3D; value;
+    std::cout &lt;&lt; &quot;Sum is &quot; &lt;&lt; sum &lt;&lt; std::endl;
+    return 0;
+&#125;</code></pre>
 <blockquote>
 <p>Windows系统中，输入EOF的方式是Ctrl + Z；UNIX中，方法是Ctrl + D。</p>
 </blockquote>
 <h3 id="统计输入的词频">统计输入的词频</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> currVal = <span class="number">0</span>, val = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; currVal) &#123;</span><br><span class="line">        <span class="keyword">int</span> cnt = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; val)</span><br><span class="line">            <span class="keyword">if</span> (val == currVal)</span><br><span class="line">                ++cnt;</span><br><span class="line">          <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; currVal &lt;&lt; <span class="string">&quot; occurs &quot;</span></span><br><span class="line">                          &lt;&lt; cnt &lt;&lt; <span class="string">&quot; times &quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">                currVal = val;</span><br><span class="line">                cnt = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; currVal &lt;&lt; <span class="string">&quot; occurs &quot;</span></span><br><span class="line">                  &lt;&lt; cnt &lt;&lt; <span class="string">&quot; times &quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">#include &lt;iostream&gt;
+int main()
+&#123;
+    int currVal &#x3D; 0, val &#x3D; 0;
+    if (std::cin &gt;&gt; currVal) &#123;
+        int cnt &#x3D; 1;
+        while (std::cin &gt;&gt; val)
+            if (val &#x3D;&#x3D; currVal)
+                ++cnt;
+            else &#123;
+                std::cout &lt;&lt; currVal &lt;&lt; &quot; occurs &quot;
+                          &lt;&lt; cnt &lt;&lt; &quot; times &quot; &lt;&lt; std::endl;
+                currVal &#x3D; val;
+                cnt &#x3D; 1;
+            &#125;
+        std::cout &lt;&lt; currVal &lt;&lt; &quot; occurs &quot;
+                  &lt;&lt; cnt &lt;&lt; &quot; times &quot; &lt;&lt; std::endl;
+    &#125;
+    return 0;
+&#125;</code></pre>
 <h2 id="类简介">类简介</h2>
 <blockquote>
 <p>包含来自标准库的头文件，使用&lt;&gt;包含头文件名；不属于标准库的头文件，使用""包围。</p>
@@ -461,7 +496,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">136k</span>
+    <span title="站点总字数">138k</span>
   </span>
 </div>
 <div class="busuanzi-count">

@@ -170,7 +170,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,7 +183,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">63</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -377,7 +377,12 @@ P(Y\neq f(X)) = 1- P(Y=f(X)) \\
 </ul>
 <p><img src="/2020/08/13/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%88%E4%B8%89%EF%BC%89k%E8%BF%91%E9%82%BB%E6%B3%95/3.png"></p>
 <h2 id="scikit-learn">Scikit-learn</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">clf_sk = KNeighborsClassifier()</span><br><span class="line">clf_sk.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf_sk.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>neighbors <span class="token keyword">import</span> KNeighborsClassifier
+
+clf_sk <span class="token operator">=</span> KNeighborsClassifier<span class="token punctuation">(</span><span class="token punctuation">)</span>
+clf_sk<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>X_train<span class="token punctuation">,</span> y_train<span class="token punctuation">)</span>
+
+clf_sk<span class="token punctuation">.</span>score<span class="token punctuation">(</span>X_test<span class="token punctuation">,</span> y_test<span class="token punctuation">)</span></code></pre>
 
     </div>
 
@@ -391,16 +396,16 @@ P(Y\neq f(X)) = 1- P(Y=f(X)) \\
       <div class="popular-posts-title"><a href="/2020/08/11/统计学习方法（一）概论/" rel="bookmark">统计学习方法（一）概论</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2020/08/26/统计学习方法（九）EM算法及其推广/" rel="bookmark">统计学习方法（九）EM算法及其推广</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2020/08/19/统计学习方法（七）支持向量机/" rel="bookmark">统计学习方法（七）支持向量机</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2020/08/12/统计学习方法（二）感知机/" rel="bookmark">统计学习方法（二）感知机</a></div>
+      <div class="popular-posts-title"><a href="/2020/08/26/统计学习方法（九）EM算法及其推广/" rel="bookmark">统计学习方法（九）EM算法及其推广</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2020/08/15/统计学习方法（五）决策树/" rel="bookmark">统计学习方法（五）决策树</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/08/25/统计学习方法（八）提升方法/" rel="bookmark">统计学习方法（八）提升方法</a></div>
     </li>
   </ul>
 
@@ -485,7 +490,7 @@ P(Y\neq f(X)) = 1- P(Y=f(X)) \\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">136k</span>
+    <span title="站点总字数">138k</span>
   </span>
 </div>
 <div class="busuanzi-count">

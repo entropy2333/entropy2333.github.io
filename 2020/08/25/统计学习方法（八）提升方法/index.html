@@ -166,7 +166,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -179,7 +179,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">63</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -392,7 +392,12 @@ f_m(x)=f_{m-1}(x)+T(x;\Theta_m)
 -[\frac{\partial L(y,f(x_i))}{\partial f(x_i)}]_{f(x)=f_{m-1}(x)}
 \]</span> 作为回归问题中残差的近似值，拟合回归树。</p>
 <h2 id="scikit-learn">Scikit-learn</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line"></span><br><span class="line">clf = AdaBoostClassifier(n_estimators=<span class="number">100</span>, learning_rate=<span class="number">0.5</span>)</span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br></pre></td></tr></table></figure>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>ensemble <span class="token keyword">import</span> AdaBoostClassifier
+
+clf <span class="token operator">=</span> AdaBoostClassifier<span class="token punctuation">(</span>n_estimators<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">,</span> learning_rate<span class="token operator">=</span><span class="token number">0.5</span><span class="token punctuation">)</span>
+clf<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>X_train<span class="token punctuation">,</span> y_train<span class="token punctuation">)</span>
+
+clf<span class="token punctuation">.</span>score<span class="token punctuation">(</span>X_test<span class="token punctuation">,</span> y_test<span class="token punctuation">)</span></code></pre>
 
     </div>
 
@@ -406,16 +411,16 @@ f_m(x)=f_{m-1}(x)+T(x;\Theta_m)
       <div class="popular-posts-title"><a href="/2020/08/11/统计学习方法（一）概论/" rel="bookmark">统计学习方法（一）概论</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/08/19/统计学习方法（七）支持向量机/" rel="bookmark">统计学习方法（七）支持向量机</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2020/08/13/统计学习方法（三）k近邻法/" rel="bookmark">统计学习方法（三）k近邻法</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2020/08/26/统计学习方法（九）EM算法及其推广/" rel="bookmark">统计学习方法（九）EM算法及其推广</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2020/08/19/统计学习方法（七）支持向量机/" rel="bookmark">统计学习方法（七）支持向量机</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2020/08/12/统计学习方法（二）感知机/" rel="bookmark">统计学习方法（二）感知机</a></div>
+      <div class="popular-posts-title"><a href="/2020/08/15/统计学习方法（五）决策树/" rel="bookmark">统计学习方法（五）决策树</a></div>
     </li>
   </ul>
 
@@ -500,7 +505,7 @@ f_m(x)=f_{m-1}(x)+T(x;\Theta_m)
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">136k</span>
+    <span title="站点总字数">138k</span>
   </span>
 </div>
 <div class="busuanzi-count">

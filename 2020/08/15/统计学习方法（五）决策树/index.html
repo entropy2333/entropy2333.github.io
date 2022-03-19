@@ -170,7 +170,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -183,7 +183,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">63</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -436,7 +436,20 @@ g(t) = \frac {C(t) - C(T_t)} {|T_t|-1}
 <li><p>采用交叉验证法，在子树序列中选取最优子树</p></li>
 </ul>
 <h2 id="scikit-learn">Scikit-learn</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> export_graphviz</span><br><span class="line"><span class="keyword">import</span> graphviz</span><br><span class="line"></span><br><span class="line">clf = DecisionTreeClassifier()</span><br><span class="line">clf.fit(X_train, y_train,)</span><br><span class="line"></span><br><span class="line">clf.score(X_test, y_test)</span><br><span class="line"></span><br><span class="line">tree_pic = export_graphviz(clf, out_file=<span class="string">&quot;mytree.pdf&quot;</span>)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;mytree.pdf&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    dot_graph = f.read()</span><br><span class="line"></span><br><span class="line">graphviz.Source(dot_graph)</span><br></pre></td></tr></table></figure>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>tree <span class="token keyword">import</span> DecisionTreeClassifier
+<span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>tree <span class="token keyword">import</span> export_graphviz
+<span class="token keyword">import</span> graphviz
+
+clf <span class="token operator">=</span> DecisionTreeClassifier<span class="token punctuation">(</span><span class="token punctuation">)</span>
+clf<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>X_train<span class="token punctuation">,</span> y_train<span class="token punctuation">,</span><span class="token punctuation">)</span>
+
+clf<span class="token punctuation">.</span>score<span class="token punctuation">(</span>X_test<span class="token punctuation">,</span> y_test<span class="token punctuation">)</span>
+
+tree_pic <span class="token operator">=</span> export_graphviz<span class="token punctuation">(</span>clf<span class="token punctuation">,</span> out_file<span class="token operator">=</span><span class="token string">"mytree.pdf"</span><span class="token punctuation">)</span>
+<span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'mytree.pdf'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    dot_graph <span class="token operator">=</span> f<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+graphviz<span class="token punctuation">.</span>Source<span class="token punctuation">(</span>dot_graph<span class="token punctuation">)</span></code></pre>
 <h2 id="总结">总结</h2>
 <p>总体思路就是构造决策树，根据损失函数进行剪枝，具体细节没怎么看懂，回头找份代码瞧瞧。</p>
 
@@ -452,16 +465,16 @@ g(t) = \frac {C(t) - C(T_t)} {|T_t|-1}
       <div class="popular-posts-title"><a href="/2020/08/11/统计学习方法（一）概论/" rel="bookmark">统计学习方法（一）概论</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/08/19/统计学习方法（七）支持向量机/" rel="bookmark">统计学习方法（七）支持向量机</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2020/08/13/统计学习方法（三）k近邻法/" rel="bookmark">统计学习方法（三）k近邻法</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2020/08/26/统计学习方法（九）EM算法及其推广/" rel="bookmark">统计学习方法（九）EM算法及其推广</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2020/08/19/统计学习方法（七）支持向量机/" rel="bookmark">统计学习方法（七）支持向量机</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2020/08/12/统计学习方法（二）感知机/" rel="bookmark">统计学习方法（二）感知机</a></div>
+      <div class="popular-posts-title"><a href="/2020/08/25/统计学习方法（八）提升方法/" rel="bookmark">统计学习方法（八）提升方法</a></div>
     </li>
   </ul>
 
@@ -546,7 +559,7 @@ g(t) = \frac {C(t) - C(T_t)} {|T_t|-1}
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">136k</span>
+    <span title="站点总字数">138k</span>
   </span>
 </div>
 <div class="busuanzi-count">

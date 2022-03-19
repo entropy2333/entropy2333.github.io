@@ -174,7 +174,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -187,7 +187,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">63</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -311,7 +311,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>6.3k</span>
+      <span>7k</span>
     </span>
 </div>
 
@@ -325,11 +325,12 @@
         <p>介绍标准库string和vector，以及迭代器和数组的使用。</p>
 <a id="more"></a>
 <h3 id="命名空间的using声明">命名空间的using声明</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span>::name;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">using namespace::name;</code></pre>
 <p>头文件不应该包含using声明。</p>
 <h2 id="标准库类型string">标准库类型string</h2>
 <p>string定义在命名空间std中。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;string&gt;</span><br><span class="line">using namespace std::string;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">#include &lt;string&gt;
+using namespace std::string;</code></pre>
 <h3 id="定义和初始化">定义和初始化</h3>
 <p>如果使用等号，实际上执行的是拷贝初始化。反之，执行的是直接初始化。</p>
 <p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133107639.png" alt="image-20201130133107639" style="zoom: 50%;"></p>
@@ -338,23 +339,45 @@
 <h4 id="读写">读写</h4>
 <p>执行读取操作时，会自动忽略开头的空白字符，直至遇到下一处空白。</p>
 <p>输入" Hello World! "，输出则为"Hello"。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> s;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; s;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int main()
+&#123;
+    string s;
+    cin &gt;&gt; s;
+    cout &lt;&lt; s &lt;&lt; endl;
+    return 0;
+&#125;</code></pre>
 <p>可以用getline读取一整行。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> <span class="built_in">line</span>;</span><br><span class="line">    <span class="keyword">while</span> (getline(<span class="built_in">cin</span>, <span class="built_in">line</span>))</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="built_in">line</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int main()
+&#123;
+    string line;
+    while (getline(cin, line))
+        cout &lt;&lt; line &lt;&lt; endl;
+    return 0;
+&#125;</code></pre>
 <h4 id="emptysize">empty&amp;size</h4>
 <p>empty判断string对象是否为空，返回bool。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (getline(<span class="built_in">cin</span>, <span class="built_in">line</span>))</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">line</span>.empty())</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="built_in">line</span> &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">while (getline(cin, line))
+    if (!line.empty())
+        cout &lt;&lt; line &lt;&lt; endl;</code></pre>
 <p>size返回string对象的长度，类型为string::size_type。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (getline(<span class="built_in">cin</span>, <span class="built_in">line</span>))</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">line</span>.empty())</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="built_in">line</span>.<span class="built_in">size</span>() &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">while (getline(cin, line))
+    if (!line.empty())
+        cout &lt;&lt; line.size() &lt;&lt; endl;</code></pre>
 <blockquote>
 <p>此时，空字符也会计数。</p>
 </blockquote>
 <p>当使用size_type进行比较时，注意不要与int混用，因为负值的带符号数会转化为大整数的无符号数。</p>
 <h4 id="比较加法">比较&amp;加法</h4>
 <p>string对象逐字符比较，按字典序比较。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s1 = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line"><span class="built_in">string</span> s2 = <span class="string">&quot;abc def&quot;</span>;</span><br><span class="line"><span class="built_in">string</span> s3 = <span class="string">&quot;abdef&quot;</span>;</span><br><span class="line"><span class="comment">// res: s1 &lt; s2 &lt; s3</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">string s1 &#x3D; &quot;abc&quot;;
+string s2 &#x3D; &quot;abc def&quot;;
+string s3 &#x3D; &quot;abdef&quot;;
+&#x2F;&#x2F; res: s1 &lt; s2 &lt; s3</code></pre>
 <p>两个string对象可以相加，字面值也可以和string对象相加。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s1 = <span class="string">&quot;hello&quot;</span>, s2 = <span class="string">&quot;world&quot;</span>。</span><br><span class="line"><span class="built_in">string</span> s3 = s1 + s2。</span><br><span class="line"><span class="built_in">string</span> s4 = s1 + <span class="string">&quot; &quot;</span> + s2 + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="built_in">string</span> s5 = <span class="string">&quot;hello&quot;</span> + <span class="string">&quot; &quot;</span> + s2; <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">string s1 &#x3D; &quot;hello&quot;, s2 &#x3D; &quot;world&quot;。
+string s3 &#x3D; s1 + s2。
+string s4 &#x3D; s1 + &quot; &quot; + s2 + &quot;\n&quot;;
+string s5 &#x3D; &quot;hello&quot; + &quot; &quot; + s2; &#x2F;&#x2F; error</code></pre>
 <blockquote>
 <p>运算时，应保证+两侧的运算对象至少有一个是string。</p>
 </blockquote>
@@ -366,80 +389,160 @@
 <p>C++程序应该使用cname形式的头文件，以区分从C继承的头文件。</p>
 </blockquote>
 <p>为了遍历string对象，可以使用下标，也可以使用范围for语句（推荐）。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> c : s)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; c &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">string s &#x3D; &quot;hello world&quot;;
+for (auto c : s)
+    cout &lt;&lt; c &lt;&lt; endl;</code></pre>
 <p>如果想要改变字符，需要把循环变量定义为引用类型。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;c : s)</span><br><span class="line">    c = <span class="built_in">toupper</span>(c);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">string s &#x3D; &quot;hello world&quot;;
+for (auto &amp;c : s)
+    c &#x3D; toupper(c);
+cout &lt;&lt; s;</code></pre>
 <p>有时候只需要处理部分字符，可以使用下标，也可以使用迭代器（后续介绍）。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实现单词首字母大写</span></span><br><span class="line"><span class="built_in">string</span> s = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">decltype</span>(s.<span class="built_in">size</span>()) index = <span class="number">0</span>;</span><br><span class="line">     index != s.<span class="built_in">size</span>(); ++index) &#123;</span><br><span class="line">    <span class="keyword">if</span> (index == <span class="number">0</span> &amp;&amp; <span class="built_in">isalpha</span>(s[index])) &#123;</span><br><span class="line">        s[index] = <span class="built_in">toupper</span>(s[index]);</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">isalpha</span>(s[index]) &amp;&amp; !<span class="built_in">isalpha</span>(s[index<span class="number">-1</span>]))</span><br><span class="line">        s[index] = <span class="built_in">toupper</span>(s[index]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s; <span class="comment">// output: &quot;Hello world&quot;</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; 实现单词首字母大写
+string s &#x3D; &quot;hello world&quot;;
+for (decltype(s.size()) index &#x3D; 0;
+     index !&#x3D; s.size(); ++index) &#123;
+    if (index &#x3D;&#x3D; 0 &amp;&amp; isalpha(s[index])) &#123;
+        s[index] &#x3D; toupper(s[index]);
+        continue;
+    &#125;
+    else if (isalpha(s[index]) &amp;&amp; !isalpha(s[index-1]))
+        s[index] &#x3D; toupper(s[index]);
+&#125;
+cout &lt;&lt; s; &#x2F;&#x2F; output: &quot;Hello world&quot;</code></pre>
 <blockquote>
 <p>使用下标时，切忌下标越界，应该时刻检查下标的合法性。</p>
 </blockquote>
 <h2 id="标准库类型vector">标准库类型vector</h2>
 <p>vector表示相同类型对象的集合，每个对象都有一个索引用于访问对象。因此vector也被称为容器，vector同时也是一个类模板（距离还比较遥远）。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">vector</span>;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">#include &lt;vector&gt;
+using std::vector;</code></pre>
 <p>模板实例化时，需要提供对象类型。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec;              <span class="comment">// 元素是int</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; file;  <span class="comment">// 元素是存放string的vector</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">vector&lt;int&gt; ivec;               &#x2F;&#x2F; 元素是int
+vector&lt;vector&lt;string&gt;&gt; file;    &#x2F;&#x2F; 元素是存放string的vector</code></pre>
 <p>vector作为类模板，不是类型。</p>
 <p>引用不是对象，不存在包含引用的vector。</p>
 <h3 id="定义和初始化vector对象">定义和初始化vector对象</h3>
 <p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133133358.png" alt="image-20201130133133358" style="zoom:50%;"></p>
 <p>注意区分列表初始化和元素数量。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v1&#123;<span class="number">10</span>&#125;; <span class="comment">// 列表初始化，v1有1个元素，值为10。</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v2</span><span class="params">(<span class="number">10</span>)</span></span>; <span class="comment">// v2有10个元素，值为0。</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v3&#123;<span class="number">10</span>, <span class="number">1</span>&#125;; <span class="comment">// 列表初始化，v3有2个元素，值为10和1。</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">v4</span><span class="params">(<span class="number">10</span>, <span class="number">1</span>)</span></span>; <span class="comment">// v4有10个元素，值为1。</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">vector&lt;int&gt; v1&#123;10&#125;; &#x2F;&#x2F; 列表初始化，v1有1个元素，值为10。
+vector&lt;int&gt; v2(10); &#x2F;&#x2F; v2有10个元素，值为0。
+
+vector&lt;int&gt; v3&#123;10, 1&#125;; &#x2F;&#x2F; 列表初始化，v3有2个元素，值为10和1。
+vector&lt;int&gt; v4(10, 1); &#x2F;&#x2F; v4有10个元素，值为1。</code></pre>
 <h3 id="向vector对象添加元素">向vector对象添加元素</h3>
 <p>可以用vector的成员函数push_back添加元素。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != <span class="number">10</span>; ++i)</span><br><span class="line">    v.push_back(i);</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">vector&lt;int&gt; v;
+for (int i &#x3D; 0; i !&#x3D; 10; ++i)
+    v.push_back(i);</code></pre>
 <blockquote>
 <p>与C不同，C++推荐先定义一个空的vector对象，运行时向其中添加具体值。</p>
 </blockquote>
 <h3 id="其他vector操作">其他vector操作</h3>
 <p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130133935086.png" alt="image-20201130133935086" style="zoom:50%;"></p>
 <p>vector同样支持范围for语句。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;i : v)   <span class="comment">// 使用引用对vector的元素赋值</span></span><br><span class="line">    i *= <span class="number">2</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> i : v)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">vector&lt;int&gt; v &#x3D; &#123;1, 2, 3, 4, 5&#125;;
+for (auto &amp;i : v)   &#x2F;&#x2F; 使用引用对vector的元素赋值
+    i *&#x3D; 2;
+for (auto i : v)
+    cout &lt;&lt; i &lt;&lt; &quot; &quot;;</code></pre>
 <p>与string类似，vector的size函数返回类型为vector<T>::size_type。</T></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 统计各分数段内的人数</span></span><br><span class="line"><span class="comment">// input: 42 65 95 100 39 67 95 76 88 76 83 92 76 93 101</span></span><br><span class="line"><span class="comment">// output: 0 0 0 1 1 0 2 3 2 4 1</span></span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span>&gt; <span class="title">scores</span><span class="params">(<span class="number">11</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="keyword">unsigned</span> grade = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; grade) &#123;</span><br><span class="line">    <span class="keyword">if</span> (grade &lt;= <span class="number">100</span>)</span><br><span class="line">        ++scores[grade/<span class="number">10</span>];</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> i : scores)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; 统计各分数段内的人数
+&#x2F;&#x2F; input: 42 65 95 100 39 67 95 76 88 76 83 92 76 93 101
+&#x2F;&#x2F; output: 0 0 0 1 1 0 2 3 2 4 1
+vector&lt;unsigned&gt; scores(11, 0);
+unsigned grade &#x3D; 0;
+while (cin &gt;&gt; grade) &#123;
+    if (grade &lt;&#x3D; 100)
+        ++scores[grade&#x2F;10];
+    else break;
+&#125;
+for (auto i : scores)
+    cout &lt;&lt; i &lt;&lt; &quot; &quot;;</code></pre>
 <h2 id="迭代器介绍">迭代器介绍</h2>
 <h3 id="使用迭代器">使用迭代器</h3>
 <p>有迭代器的类型拥有名为begin和end的成员。</p>
 <p>begin成员返回指向第一个元素的迭代器，end成员返回指向容器“尾后”元素的迭代器，通常被称作尾后迭代器。</p>
 <p>如果容器为空，begin和end返回的是同一个迭代器，都是尾后迭代器。</p>
 <p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135012221.png" alt="image-20201130135012221" style="zoom:50%;"></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> s = <span class="string">&quot;hello world&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> it = s.<span class="built_in">begin</span>(); it != s.<span class="built_in">end</span>(); ++it)</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">isalpha</span>(*it))</span><br><span class="line">        *it = <span class="built_in">toupper</span>(*it);</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">string s &#x3D; &quot;hello world&quot;;
+for (auto it &#x3D; s.begin(); it !&#x3D; s.end(); ++it)
+    if (isalpha(*it))
+        *it &#x3D; toupper(*it);</code></pre>
 <blockquote>
 <p>C++习惯在for循环中使用!=进行判断，因为大多数迭代器都没有定义&lt;运算符。</p>
 </blockquote>
 <p>迭代器也有const类型，能读取但不能修改vector。</p>
 <p>为了便捷，C++11引入了两个新函数cbegin和cend。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v1;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v2;</span><br><span class="line"><span class="keyword">auto</span> it1 = v1.<span class="built_in">begin</span>();   <span class="comment">// type: vector&lt;int&gt;::iterator</span></span><br><span class="line"><span class="keyword">auto</span> it2 = v2.<span class="built_in">begin</span>();  <span class="comment">// type: vector&lt;int&gt;::const_iterator</span></span><br><span class="line"><span class="keyword">auto</span> it3 = v1.cbegin(); <span class="comment">// type: vector&lt;int&gt;::const_iterator</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">vector&lt;int&gt; v1;
+const vector&lt;int&gt; v2;
+auto it1 &#x3D; v1.begin(); &#x2F;&#x2F; type: vector&lt;int&gt;::iterator
+auto it2 &#x3D; v2.begin();  &#x2F;&#x2F; type: vector&lt;int&gt;::const_iterator
+auto it3 &#x3D; v1.cbegin(); &#x2F;&#x2F; type: vector&lt;int&gt;::const_iterator</code></pre>
 <p>为了简化解引用和成员访问操作一起使用，C++定义了箭头运算符。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*it.empty;   <span class="comment">// error</span></span><br><span class="line">(*it).empty;</span><br><span class="line">it-&gt;empty;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">*it.empty;   &#x2F;&#x2F; error
+(*it).empty;
+it-&gt;empty;</code></pre>
 <h3 id="迭代器运算">迭代器运算</h3>
 <p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130135031052.png" alt="image-20201130135031052" style="zoom:50%;"></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 得到最接近中间元素的迭代器</span></span><br><span class="line"><span class="keyword">auto</span> mid = v.<span class="built_in">begin</span>() + v.<span class="built_in">size</span>() / <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; 得到最接近中间元素的迭代器
+auto mid &#x3D; v.begin() + v.size() &#x2F; 2;</code></pre>
 <p>C++定义了迭代器的差值，类型为difference_type。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 二分搜索</span></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; <span class="built_in">text</span>;</span><br><span class="line"><span class="built_in">string</span> sought;</span><br><span class="line"><span class="keyword">auto</span> beg = <span class="built_in">text</span>.<span class="built_in">begin</span>(), <span class="built_in">end</span> = <span class="built_in">text</span>.<span class="built_in">end</span>();</span><br><span class="line"><span class="keyword">auto</span> mid = <span class="built_in">text</span>.<span class="built_in">begin</span>() + (<span class="built_in">end</span> - beg) / <span class="number">2</span>;</span><br><span class="line"><span class="keyword">while</span> (mid != <span class="built_in">end</span> &amp;&amp; *mid != sought) &#123;</span><br><span class="line">    <span class="keyword">if</span> (sought &lt; *mid) <span class="comment">// 在前半部分则忽略后半部分</span></span><br><span class="line">        <span class="built_in">end</span> = mid;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        beg = mid + <span class="number">1</span>; <span class="comment">// 否则忽略前半部分</span></span><br><span class="line">    mid = beg + (<span class="built_in">end</span> - beg) /<span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; 二分搜索
+vector&lt;string&gt; text;
+string sought;
+auto beg &#x3D; text.begin(), end &#x3D; text.end();
+auto mid &#x3D; text.begin() + (end - beg) &#x2F; 2;
+while (mid !&#x3D; end &amp;&amp; *mid !&#x3D; sought) &#123;
+    if (sought &lt; *mid) &#x2F;&#x2F; 在前半部分则忽略后半部分
+        end &#x3D; mid;
+    else
+        beg &#x3D; mid + 1; &#x2F;&#x2F; 否则忽略前半部分
+    mid &#x3D; beg + (end - beg) &#x2F;2;
+&#125;</code></pre>
 <h2 id="数组">数组</h2>
 <p>与vector不同，数组的大小确定不变，不能随意增加元素。</p>
 <h3 id="定义和初始化-1">定义和初始化</h3>
 <p>数组的长度在编译时必须已知，所以维度必须是常量表达式。</p>
 <p>定义数组时，必须指定类型，不能使用auto。和vector一样，不存在引用的数组。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> cnt = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="keyword">unsigned</span> sz = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">int</span> arr[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> *parr[sz];  <span class="comment">// 包含42个整型指针的数组</span></span><br><span class="line"><span class="built_in">string</span> bad[cnt]; <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">unsigned cnt &#x3D; 42;
+constexpr unsigned sz &#x3D; 42;
+int arr[10];
+int *parr[sz];   &#x2F;&#x2F; 包含42个整型指针的数组
+string bad[cnt]; &#x2F;&#x2F; error</code></pre>
 <p>数组也支持列表初始化，此时可以不指明长度，编译器会自动计算。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">unsigned</span> sz = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">int</span> ial[sz] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> a2[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> a3[<span class="number">5</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;    <span class="comment">// a3[] = &#123;0, 1, 2, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">const unsigned sz &#x3D; 3;
+int ial[sz] &#x3D; &#123;0, 1, 2&#125;;
+int a2[] &#x3D; &#123;0, 1, 2&#125;;
+int a3[5] &#x3D; &#123;0, 1, 2&#125;;   &#x2F;&#x2F; a3[] &#x3D; &#123;0, 1, 2, 0, 0&#125;</code></pre>
 <p>值得注意的是，在使用字符数组时，会在结尾添加一个空字符。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> a1[] = &#123;<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;+&#x27;</span>, <span class="string">&#x27;+&#x27;</span>&#125;;</span><br><span class="line"><span class="keyword">char</span> a2[] = &#123;<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;+&#x27;</span>, <span class="string">&#x27;+&#x27;</span>, <span class="string">&#x27;\0&#x27;</span>&#125;;  <span class="comment">// 显式添加空字符</span></span><br><span class="line"><span class="keyword">char</span> a3[] = <span class="string">&quot;C++&quot;</span>;  <span class="comment">// 自动添加空字符</span></span><br><span class="line"><span class="keyword">char</span> a4[<span class="number">6</span>] = <span class="string">&quot;Daniel&quot;</span>; <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">char a1[] &#x3D; &#123;&#39;C&#39;, &#39;+&#39;, &#39;+&#39;&#125;;
+char a2[] &#x3D; &#123;&#39;C&#39;, &#39;+&#39;, &#39;+&#39;, &#39;\0&#39;&#125;;   &#x2F;&#x2F; 显式添加空字符
+char a3[] &#x3D; &quot;C++&quot;;   &#x2F;&#x2F; 自动添加空字符
+char a4[6] &#x3D; &quot;Daniel&quot;; &#x2F;&#x2F; error</code></pre>
 <p>上述表达式中，a1长度为3，a2和a3的长度都是4，a4长度应改为7。</p>
 <p>数组不允许拷贝和赋值。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> a2[] = a; <span class="comment">// error</span></span><br><span class="line">a2 = a; <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int a[] &#x3D; &#123;0, 1, 2&#125;;
+int a2[] &#x3D; a; &#x2F;&#x2F; error
+a2 &#x3D; a; &#x2F;&#x2F; error</code></pre>
 <p>为了理解复杂的数组声明，可以从内向外阅读。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *ptrs[<span class="number">10</span>]; <span class="comment">// 含有10个整型指针的数组</span></span><br><span class="line"><span class="keyword">int</span> &amp;refs[<span class="number">10</span>]; <span class="comment">// 不存在引用的数组</span></span><br><span class="line"><span class="keyword">int</span> (*Parray)[<span class="number">10</span>] = &amp;arr; <span class="comment">// Parray指向一个含有10个整数的数组</span></span><br><span class="line"><span class="keyword">int</span> (&amp;arrRef)[<span class="number">10</span>] = arr;  <span class="comment">// arrRef引用一个含有10个整数的数组</span></span><br><span class="line"><span class="keyword">int</span> *(&amp;arry)[<span class="number">10</span>] = ptrs;  <span class="comment">// arry是数组的引用，该数组含有10个指针</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int *ptrs[10]; &#x2F;&#x2F; 含有10个整型指针的数组
+int &amp;refs[10]; &#x2F;&#x2F; 不存在引用的数组
+int (*Parray)[10] &#x3D; &amp;arr; &#x2F;&#x2F; Parray指向一个含有10个整数的数组
+int (&amp;arrRef)[10] &#x3D; arr;  &#x2F;&#x2F; arrRef引用一个含有10个整数的数组
+int *(&amp;arry)[10] &#x3D; ptrs;  &#x2F;&#x2F; arry是数组的引用，该数组含有10个指针</code></pre>
 <h3 id="访问数组元素">访问数组元素</h3>
 <p>数组也可以用范围for语句或下标运算符访问。</p>
 <p>数组下标被定义为size_t类型，定义在cstddef头文件中。</p>
 <h3 id="指针和数组">指针和数组</h3>
 <p>使用数组的时候，编译器一般会把它转换成指针。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> nums[] = &#123;<span class="string">&quot;one&quot;</span>, <span class="string">&quot;two&quot;</span>, <span class="string">&quot;three&quot;</span>&#125;;</span><br><span class="line"><span class="built_in">string</span> *p1 = &amp;nums[<span class="number">0</span>]; <span class="comment">// p1指向nums的第一个元素</span></span><br><span class="line"><span class="built_in">string</span> *p2 = &amp;nums;      <span class="comment">// p2和p1等价</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">string nums[] &#x3D; &#123;&quot;one&quot;, &quot;two&quot;, &quot;three&quot;&#125;;
+string *p1 &#x3D; &amp;nums[0]; &#x2F;&#x2F; p1指向nums的第一个元素
+string *p2 &#x3D; &amp;nums;       &#x2F;&#x2F; p2和p1等价</code></pre>
 <p>尽管能计算得到数组的尾后指针，但容易出错。C++11引入两个函数begin和end，与容器的同名成员功能类似。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ia[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> *beg = <span class="built_in">begin</span>(ia);</span><br><span class="line"><span class="keyword">int</span> *last = <span class="built_in">end</span>(ia);</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int ia[] &#x3D; &#123;0, 1, 2, 3, 4, 5&#125;;
+int *beg &#x3D; begin(ia);
+int *last &#x3D; end(ia);</code></pre>
 <p>与容器相似，指针相减的类型名为ptrdiff_t，也定义在cstddef中。</p>
 <h4 id="c风格字符串">C风格字符串</h4>
 <blockquote>
@@ -448,23 +551,47 @@
 <p><img src="/2020/11/23/C++-Primer-Chapter3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E5%90%91%E9%87%8F%E5%92%8C%E6%95%B0%E7%BB%84/image-20201130144349734.png" alt="image-20201130144349734" style="zoom:50%;"></p>
 <h4 id="与旧代码的接口">与旧代码的接口</h4>
 <p>允许使用字符串字面值初始化string对象，反过来则不行，需要使用c_str函数。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(<span class="string">&quot;hello world&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">char</span> *str = s; <span class="comment">// error</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *str = s.c_str();</span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">string s(&quot;hello world&quot;);
+char *str &#x3D; s; &#x2F;&#x2F; error
+const char *str &#x3D; s.c_str();</code></pre>
 <p>可以使用数组初始化vector对象</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> int_arr[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">ivec</span><span class="params">(<span class="built_in">begin</span>(int_arr), <span class="built_in">end</span>(int_arr))</span></span>;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int int_arr[] &#x3D; &#123;0, 1, 2, 3, 4, 5&#125;;
+vector&lt;int&gt; ivec(begin(int_arr), end(int_arr));</code></pre>
 <blockquote>
 <p>C++应当尽量使用vector和迭代器，而非内置数组和指针；应当尽量使用string，而非C风格字符串。</p>
 </blockquote>
 <h2 id="多维数组">多维数组</h2>
 <p>多维数组实际上就是数组的数组。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ia1[<span class="number">3</span>][<span class="number">4</span>] = &#123;</span><br><span class="line">    &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;,</span><br><span class="line">    &#123;<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>&#125;,</span><br><span class="line">    &#123;<span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">int</span> ia2[<span class="number">3</span>][<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> ia3[<span class="number">3</span>][<span class="number">4</span>] = &#123;&#123; <span class="number">0</span> &#125;, &#123; <span class="number">1</span> &#125;, &#123; <span class="number">2</span> &#125;&#125;; <span class="comment">// 初始化每行的第一个元素</span></span><br><span class="line"><span class="keyword">int</span> ia4[<span class="number">3</span>][<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span>&#125;; <span class="comment">// 初始化第一行</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int ia1[3][4] &#x3D; &#123;
+    &#123;0, 1, 2, 3&#125;,
+    &#123;4, 5, 6, 7&#125;,
+    &#123;8, 9, 10, 11&#125;
+&#125;;
+int ia2[3][4] &#x3D; &#123;0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11&#125;;
+int ia3[3][4] &#x3D; &#123;&#123; 0 &#125;, &#123; 1 &#125;, &#123; 2 &#125;&#125;; &#x2F;&#x2F; 初始化每行的第一个元素
+int ia4[3][4] &#x3D; &#123;0, 3, 6, 9&#125;; &#x2F;&#x2F; 初始化第一行</code></pre>
 <p>可以通过下标运算符访问多维数组的元素。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">size_t</span> rowCnt = <span class="number">3</span>, colCnt = <span class="number">4</span>;</span><br><span class="line"><span class="keyword">int</span> ia[rowCnt][colCnt];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i != rowCnt; ++i) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> j = <span class="number">0</span>; j != colCnt; ++j) &#123;</span><br><span class="line">        ia[i][j] = i * colCnt + j;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">constexpr size_t rowCnt &#x3D; 3, colCnt &#x3D; 4;
+int ia[rowCnt][colCnt];
+for (size_t i &#x3D; 0; i !&#x3D; rowCnt; ++i) &#123;
+    for (size_t j &#x3D; 0; j !&#x3D; colCnt; ++j) &#123;
+        ia[i][j] &#x3D; i * colCnt + j;
+    &#125;
+&#125;</code></pre>
 <p>也可以用范围for语句访问，实现同样的效果。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> cnt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> &amp;row : ia) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;col : row) &#123;</span><br><span class="line">        col = cnt;</span><br><span class="line">        ++cnt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">size_t cnt &#x3D; 0;
+for (auto &amp;row : ia) &#123;
+    for (auto &amp;col : row) &#123;
+        col &#x3D; cnt;
+        ++cnt;
+    &#125;
+&#125;</code></pre>
 <p>因为循环中要赋值，所以选用引用类型。其实除了内层循环，其他所有循环的控制变量都应该是引用类型。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> row : ia)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> col : row)</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">for (auto row : ia)
+    for (auto col : row)</code></pre>
 <p>上面这段语句将无法通过编译，因为row不是引用类型，所以row的类型是int*。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *ip[<span class="number">4</span>];   <span class="comment">// 整形指针的数组</span></span><br><span class="line"><span class="keyword">int</span> (*ip)[<span class="number">4</span>]; <span class="comment">// 指向含有4个整数的数组</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int *ip[4];   &#x2F;&#x2F; 整形指针的数组
+int (*ip)[4]; &#x2F;&#x2F; 指向含有4个整数的数组</code></pre>
 
     </div>
 
@@ -562,7 +689,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">136k</span>
+    <span title="站点总字数">138k</span>
   </span>
 </div>
 <div class="busuanzi-count">

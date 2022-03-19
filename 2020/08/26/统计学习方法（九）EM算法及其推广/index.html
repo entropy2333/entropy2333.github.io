@@ -168,7 +168,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -181,7 +181,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">63</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -305,7 +305,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>6.1k</span>
+      <span>6k</span>
     </span>
 </div>
 
@@ -453,7 +453,19 @@ Q(\theta,\theta^{(i)})=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\hat\gamma_{jk}
 <h3 id="f函数的极大-极大算法">F函数的极大-极大算法</h3>
 <h3 id="gem算法">GEM算法</h3>
 <h2 id="scikit-learn">Scikit-learn</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.mixture <span class="keyword">import</span> GaussianMixture</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化观测数据</span></span><br><span class="line">data = np.array([<span class="number">-67</span>, <span class="number">-48</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">14</span>, <span class="number">16</span>, <span class="number">23</span>, <span class="number">24</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">41</span>, <span class="number">49</span>, <span class="number">56</span>, <span class="number">60</span>,</span><br><span class="line">                 <span class="number">75</span>]).reshape(<span class="number">-1</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 聚类</span></span><br><span class="line">gmmModel = GaussianMixture(n_components=<span class="number">2</span>)</span><br><span class="line">gmmModel.fit(data)</span><br><span class="line">labels = gmmModel.predict(data)</span><br><span class="line">print(<span class="string">&quot;labels =&quot;</span>, labels)</span><br></pre></td></tr></table></figure>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>mixture <span class="token keyword">import</span> GaussianMixture
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+
+<span class="token comment"># 初始化观测数据</span>
+data <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">67</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">48</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">14</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">,</span> <span class="token number">23</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">28</span><span class="token punctuation">,</span> <span class="token number">29</span><span class="token punctuation">,</span> <span class="token number">41</span><span class="token punctuation">,</span> <span class="token number">49</span><span class="token punctuation">,</span> <span class="token number">56</span><span class="token punctuation">,</span> <span class="token number">60</span><span class="token punctuation">,</span>
+                 <span class="token number">75</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 聚类</span>
+gmmModel <span class="token operator">=</span> GaussianMixture<span class="token punctuation">(</span>n_components<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+gmmModel<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+labels <span class="token operator">=</span> gmmModel<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"labels ="</span><span class="token punctuation">,</span> labels<span class="token punctuation">)</span></code></pre>
 <h2 id="总结">总结</h2>
 <p>对于含隐变量的模型，分E步和M步，分别求期望和极大值，得到参数的新的估计值，迭代以极大化函数。</p>
 
@@ -469,16 +481,16 @@ Q(\theta,\theta^{(i)})=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\hat\gamma_{jk}
       <div class="popular-posts-title"><a href="/2020/08/11/统计学习方法（一）概论/" rel="bookmark">统计学习方法（一）概论</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2020/08/13/统计学习方法（三）k近邻法/" rel="bookmark">统计学习方法（三）k近邻法</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2020/08/19/统计学习方法（七）支持向量机/" rel="bookmark">统计学习方法（七）支持向量机</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2020/08/12/统计学习方法（二）感知机/" rel="bookmark">统计学习方法（二）感知机</a></div>
+      <div class="popular-posts-title"><a href="/2020/08/13/统计学习方法（三）k近邻法/" rel="bookmark">统计学习方法（三）k近邻法</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2020/08/15/统计学习方法（五）决策树/" rel="bookmark">统计学习方法（五）决策树</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/08/25/统计学习方法（八）提升方法/" rel="bookmark">统计学习方法（八）提升方法</a></div>
     </li>
   </ul>
 
@@ -563,7 +575,7 @@ Q(\theta,\theta^{(i)})=\sum_{k=1}^K\{n_k\log\alpha_k+\sum_{j=1}^N\hat\gamma_{jk}
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">136k</span>
+    <span title="站点总字数">138k</span>
   </span>
 </div>
 <div class="busuanzi-count">

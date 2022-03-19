@@ -168,7 +168,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -181,7 +181,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">63</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -305,7 +305,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>395</span>
+      <span>391</span>
     </span>
 </div>
 
@@ -330,15 +330,15 @@
 <h2 id="操作步骤">操作步骤</h2>
 <p>展示命令行挂载硬盘的方法，用作备忘。</p>
 <p>在桌面预先建立一个文件夹（如Passport）</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/Desktop/Passport</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">mkdir</span> ~/Desktop/Passport</code></pre>
 <p>查看当前磁盘是否被挂载</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diskutil list</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">diskutil list</code></pre>
 <p>带有external的即为移动硬盘</p>
 <p><img title src="/2021/12/17/macOS%E6%8C%82%E8%BD%BDNTFS%E7%A1%AC%E7%9B%98/image-20211217003813737.png" alt="image-20211217003813737" data-align="center" width="613"></p>
 <p>如果已经挂载需要先卸载</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo umount /dev/disk4s1</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">umount</span> /dev/disk4s1</code></pre>
 <p>否则以NTFS格式挂载到桌面建立的文件夹</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mount_ntfs -o rw,nobrowse /dev/disk4s1 ~/Desktop/Passport</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> mount_ntfs -o rw,nobrowse /dev/disk4s1 ~/Desktop/Passport</code></pre>
 <p>由此就可以读写了，使用完记得卸载，或许可以写个脚本自动执行这些操作。</p>
 
     </div>
@@ -429,7 +429,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">136k</span>
+    <span title="站点总字数">138k</span>
   </span>
 </div>
 <div class="busuanzi-count">

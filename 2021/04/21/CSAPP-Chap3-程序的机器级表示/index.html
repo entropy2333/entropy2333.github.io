@@ -180,7 +180,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -193,7 +193,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">63</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -317,7 +317,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.4k</span>
+      <span>4.3k</span>
     </span>
 </div>
 
@@ -331,7 +331,7 @@
         <p>CSAPP第三章</p>
 <a id="more"></a>
 <h2 id="程序编码">程序编码</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">linux&gt; gcc -Og -o p p1.c p2.c</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">linux<span class="token operator">></span> gcc -Og -o p p1.c p2.c</code></pre>
 <blockquote>
 <p>-Og告诉编译器使用会生成符合原始C代码整体结构的机器代码的优化等级</p>
 </blockquote>
@@ -343,11 +343,11 @@
 <li><strong>链接器</strong>（Linker）将目标代码文件和实现库函数的代码合并，生成可执行文件p。</li>
 </ul>
 <p>在命令行使用“-S”选项，可以看到编译器产生的汇编代码。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">linux&gt; gcc -Og -S mstore.c</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">linux<span class="token operator">></span> gcc -Og -S mstore.c</code></pre>
 <p>使用“-c”选项，GCC会编译并汇编该代码。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">linux&gt; gcc -Og -c mstore.c</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">linux<span class="token operator">></span> gcc -Og -c mstore.c</code></pre>
 <p>可以使用反汇编器查看机器代码文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">linux&gt; objdump -d mstore.c</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">linux<span class="token operator">></span> objdump -d mstore.c</code></pre>
 <h2 id="数据格式">数据格式</h2>
 <p>Intel用字表示16位数据类型</p>
 <table>
@@ -577,8 +577,14 @@
 <p><img src="/2021/04/21/CSAPP-Chap3-%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA/image-20210421194448374.png" alt="image-20210421194448374" style="zoom:80%;"></p>
 <p>pushq指令的功能是把数据压到栈上，而popq指令时弹出数据。这些指令只有一个操作数——压入的数据源和弹出的数据目的。</p>
 <p><img src="/2021/04/21/CSAPP-Chap3-%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA/image-20210421200607814.png" alt="image-20210421200607814" style="zoom: 80%;"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pushq %rsp</span><br><span class="line">&#x2F;&#x2F; 等价于</span><br><span class="line">subq $8, %rsp</span><br><span class="line">movq %rbp, (%rsp)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">popq %rax</span><br><span class="line">&#x2F;&#x2F; 等价于</span><br><span class="line">movq (%rsp), %rax</span><br><span class="line">addq $8, %rsp</span><br></pre></td></tr></table></figure>
+<pre class="language-assembly" data-language="assembly"><code class="language-assembly">pushq %rsp
+&#x2F;&#x2F; 等价于
+subq $8, %rsp
+movq %rbp, (%rsp)</code></pre>
+<pre class="language-assembly" data-language="assembly"><code class="language-assembly">popq %rax
+&#x2F;&#x2F; 等价于
+movq (%rsp), %rax
+addq $8, %rsp</code></pre>
 <h2 id="算术和逻辑操作">算术和逻辑操作</h2>
 <p><img src="/2021/04/21/CSAPP-Chap3-%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA/image-20210421200957477.png" alt="image-20210421200957477" style="zoom:80%;"></p>
 <p><strong>加载有效地址</strong>指令leaq实际上是movq指令的变形。它的指令形式是从内存读数据到寄存器，但实际上它根本没有引用内存，该指令将有效地址写入目的操作数。</p>
@@ -625,9 +631,19 @@
 <p>第二种编码是给出“绝对”地址，用4个字节直接指定目标。</p>
 <h3 id="用条件控制来实现条件分支">用条件控制来实现条件分支</h3>
 <p>C语言中的if-else语句的通用形式模版如下：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (test-expr)</span><br><span class="line">  then-statement</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  <span class="keyword">else</span>-statement</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">if</span> <span class="token punctuation">(</span>test<span class="token operator">-</span>expr<span class="token punctuation">)</span>
+  then<span class="token operator">-</span>statement
+<span class="token keyword">else</span>
+  <span class="token keyword">else</span><span class="token operator">-</span>statement</code></pre>
 <p>对于这种通用形式，汇编实现通常会使用下面这种形式：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  t = test-expr;</span><br><span class="line">  <span class="keyword">if</span> (!t)</span><br><span class="line">    <span class="keyword">goto</span> <span class="literal">false</span>;</span><br><span class="line">  then-statement</span><br><span class="line">  <span class="keyword">goto</span> done;</span><br><span class="line"><span class="literal">false</span>:</span><br><span class="line">  <span class="keyword">else</span>-statement</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">  t <span class="token operator">=</span> test<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>t<span class="token punctuation">)</span>
+    <span class="token keyword">goto</span> false<span class="token punctuation">;</span>
+  then<span class="token operator">-</span>statement
+  <span class="token keyword">goto</span> done<span class="token punctuation">;</span>
+false<span class="token operator">:</span>
+  <span class="token keyword">else</span><span class="token operator">-</span>statement
+done<span class="token operator">:</span></code></pre>
 <h3 id="用条件传送实现条件分支">用条件传送实现条件分支</h3>
 <p>现代处理器使用流水线执行指令，遇到条件需要跳转时，只有知道跳转结果才能确定指令顺序，才能使用流水线。现在处理器采用<strong>分支预测</strong>的方法来预测跳转的结果，即处理器会预测当前跳转的结果。</p>
 <p>用<strong>条件传送</strong>来实现条件分支，不会先判断跳转，而是先将两个分支的结果进行计算，将结果分别保存在两个寄存器中，然后再通过<strong>条件传送指令<code>CMOV</code></strong>将正确结果传送到输出的寄存器中。</p>
@@ -639,16 +655,45 @@
 </ol>
 <h3 id="循环">循环</h3>
 <p>do-while</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    body-statement</span><br><span class="line">&#125; <span class="keyword">while</span>(test-expr);</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">loop:</span><br><span class="line">  body-statement</span><br><span class="line">    t &#x3D; test-expr;</span><br><span class="line">   if (t)</span><br><span class="line">        goto loop;</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">do</span> <span class="token punctuation">&#123;</span>
+    body<span class="token operator">-</span>statement
+<span class="token punctuation">&#125;</span> <span class="token keyword">while</span><span class="token punctuation">(</span>test<span class="token operator">-</span>expr<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-assembly" data-language="assembly"><code class="language-assembly">loop:
+    body-statement
+    t &#x3D; test-expr;
+    if (t)
+        goto loop;</code></pre>
 <p>while有两种翻译方法</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(test-expr)</span><br><span class="line">    body-statement</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">while</span><span class="token punctuation">(</span>test<span class="token operator">-</span>expr<span class="token punctuation">)</span>
+    body<span class="token operator">-</span>statement</code></pre>
 <p>第一种方法称为跳转到中间（jump to middle）。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">   goto test;</span><br><span class="line">loop:</span><br><span class="line"> body-statement</span><br><span class="line">test:</span><br><span class="line"> t &#x3D; test-expr;</span><br><span class="line">   if (t)</span><br><span class="line">        goto loop;</span><br></pre></td></tr></table></figure>
+<pre class="language-assembly" data-language="assembly"><code class="language-assembly">   goto test;
+loop:
+    body-statement
+test:
+    t &#x3D; test-expr;
+    if (t)
+        goto loop;</code></pre>
 <p>当使用较高优化等级时，比如<code>-O1</code>时，GCC会使用guarded-do策略。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">t = test-expr;</span><br><span class="line"><span class="keyword">if</span> (!t)</span><br><span class="line">    <span class="keyword">goto</span> done;</span><br><span class="line">loop:</span><br><span class="line">   body-statement</span><br><span class="line">    t = test-expr;</span><br><span class="line">    <span class="keyword">if</span> (t)</span><br><span class="line">        <span class="keyword">goto</span> loop;</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">t <span class="token operator">=</span> test<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>t<span class="token punctuation">)</span>
+    <span class="token keyword">goto</span> done<span class="token punctuation">;</span>
+loop<span class="token operator">:</span>
+    body<span class="token operator">-</span>statement
+    t <span class="token operator">=</span> test<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>t<span class="token punctuation">)</span>
+        <span class="token keyword">goto</span> loop<span class="token punctuation">;</span>
+done<span class="token operator">:</span></code></pre>
 <p>for循环可以转化为while循环，GCC会为其产生的代码是while循环的两种方法之一，这取决于根据优化等级。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (init-expr; test-expr; update-expr)</span><br><span class="line">    body-statement</span><br><span class="line"></span><br><span class="line"><span class="comment">// 等价于</span></span><br><span class="line">init-expr;</span><br><span class="line"><span class="keyword">while</span> (test-expr) &#123;</span><br><span class="line"> body-statement</span><br><span class="line">    update-expr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">for</span> <span class="token punctuation">(</span>init<span class="token operator">-</span>expr<span class="token punctuation">;</span> test<span class="token operator">-</span>expr<span class="token punctuation">;</span> update<span class="token operator">-</span>expr<span class="token punctuation">)</span>
+    body<span class="token operator">-</span>statement
+
+<span class="token comment">// 等价于</span>
+init<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+<span class="token keyword">while</span> <span class="token punctuation">(</span>test<span class="token operator">-</span>expr<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    body<span class="token operator">-</span>statement
+    update<span class="token operator">-</span>expr<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 <h3 id="switch">Switch</h3>
 <p>switch语句可以根据一个整数索引数值进行多重分支，通过使用<strong>跳转表（Jump Table）</strong>使得实现更加高效。跳转表是一个数组，表项i是一个代码段的地址。</p>
 <p><img src="/2021/04/21/CSAPP-Chap3-%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA/image-20210422183451074.png" alt="image-20210422183451074" style="zoom:67%;"></p>
@@ -747,7 +792,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">136k</span>
+    <span title="站点总字数">138k</span>
   </span>
 </div>
 <div class="busuanzi-count">

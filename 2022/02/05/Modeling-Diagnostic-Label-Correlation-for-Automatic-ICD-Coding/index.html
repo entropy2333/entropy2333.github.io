@@ -173,7 +173,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -186,7 +186,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">63</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -310,7 +310,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.4k</span>
+      <span>3.3k</span>
     </span>
 </div>
 
@@ -347,7 +347,43 @@ P_{base}(\hat{\mathbf{y}}|\mathbf{x}, \theta_{base}) = \prod_{i=1}^{|\mathcal{Y}
 <blockquote>
 <p>[ICML 2016] Conditional bernoulli mixtures for multi-label classification <a target="_blank" rel="noopener" href="http://proceedings.mlr.press/v48/lij16.pdf">[paper]</a></p>
 </blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_n_best</span>(<span class="params">probs, n=<span class="number">10</span></span>):</span></span><br><span class="line">    flip_idx = np.argsort(np.abs(probs<span class="number">-0.5</span>))[:n]</span><br><span class="line">    labels = np.zeros(len(probs))</span><br><span class="line">    cum_prob = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">for</span> i, prob <span class="keyword">in</span> enumerate(probs):</span><br><span class="line">        <span class="keyword">if</span> i <span class="keyword">in</span> flip_idx:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> prob &gt;= <span class="number">0.5</span>:</span><br><span class="line">            labels[i] = <span class="number">1</span></span><br><span class="line">            cum_prob += np.log(prob)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            labels[i] = <span class="number">0</span></span><br><span class="line">            cum_prob += np.log(<span class="number">1</span>-prob)</span><br><span class="line"></span><br><span class="line">    last_queue = PriorityQueue()</span><br><span class="line">    last_queue.put((cum_prob, labels))</span><br><span class="line">    <span class="keyword">for</span> i, prob <span class="keyword">in</span> enumerate(probs):</span><br><span class="line">        <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> flip_idx:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        queue = PriorityQueue()</span><br><span class="line">        <span class="keyword">for</span> cum_prob, labels <span class="keyword">in</span> last_queue.queue:</span><br><span class="line">            labels2 = np.copy(labels)</span><br><span class="line">            labels[i] = <span class="number">1</span></span><br><span class="line">            queue.put((cum_prob + np.log(prob+<span class="number">1e-6</span>), labels))</span><br><span class="line">            labels2[i] = <span class="number">0</span></span><br><span class="line">            queue.put((cum_prob + np.log(<span class="number">1</span>-prob+<span class="number">1e-6</span>), labels2))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> len(queue.queue) &gt; n:</span><br><span class="line">            _ = queue.get()</span><br><span class="line"></span><br><span class="line">        last_queue = queue</span><br><span class="line"></span><br><span class="line">    n_best = []</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> queue.empty():</span><br><span class="line">        n_best.append(queue.get())</span><br><span class="line">    n_best = n_best[::<span class="number">-1</span>]</span><br><span class="line">    <span class="keyword">return</span> n_best</span><br></pre></td></tr></table></figure>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">get_n_best</span><span class="token punctuation">(</span>probs<span class="token punctuation">,</span> n<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    flip_idx <span class="token operator">=</span> np<span class="token punctuation">.</span>argsort<span class="token punctuation">(</span>np<span class="token punctuation">.</span><span class="token builtin">abs</span><span class="token punctuation">(</span>probs<span class="token operator">-</span><span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">:</span>n<span class="token punctuation">]</span>
+    labels <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>probs<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    cum_prob <span class="token operator">=</span> <span class="token number">0.0</span>
+    <span class="token keyword">for</span> i<span class="token punctuation">,</span> prob <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>probs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> i <span class="token keyword">in</span> flip_idx<span class="token punctuation">:</span>
+            <span class="token keyword">continue</span>
+        <span class="token keyword">if</span> prob <span class="token operator">>=</span> <span class="token number">0.5</span><span class="token punctuation">:</span>
+            labels<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
+            cum_prob <span class="token operator">+=</span> np<span class="token punctuation">.</span>log<span class="token punctuation">(</span>prob<span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            labels<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
+            cum_prob <span class="token operator">+=</span> np<span class="token punctuation">.</span>log<span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">-</span>prob<span class="token punctuation">)</span>
+
+    last_queue <span class="token operator">=</span> PriorityQueue<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    last_queue<span class="token punctuation">.</span>put<span class="token punctuation">(</span><span class="token punctuation">(</span>cum_prob<span class="token punctuation">,</span> labels<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i<span class="token punctuation">,</span> prob <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>probs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> i <span class="token keyword">not</span> <span class="token keyword">in</span> flip_idx<span class="token punctuation">:</span>
+            <span class="token keyword">continue</span>
+        queue <span class="token operator">=</span> PriorityQueue<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> cum_prob<span class="token punctuation">,</span> labels <span class="token keyword">in</span> last_queue<span class="token punctuation">.</span>queue<span class="token punctuation">:</span>
+            labels2 <span class="token operator">=</span> np<span class="token punctuation">.</span>copy<span class="token punctuation">(</span>labels<span class="token punctuation">)</span>
+            labels<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
+            queue<span class="token punctuation">.</span>put<span class="token punctuation">(</span><span class="token punctuation">(</span>cum_prob <span class="token operator">+</span> np<span class="token punctuation">.</span>log<span class="token punctuation">(</span>prob<span class="token operator">+</span><span class="token number">1e</span><span class="token operator">-</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">,</span> labels<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            labels2<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
+            queue<span class="token punctuation">.</span>put<span class="token punctuation">(</span><span class="token punctuation">(</span>cum_prob <span class="token operator">+</span> np<span class="token punctuation">.</span>log<span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">-</span>prob<span class="token operator">+</span><span class="token number">1e</span><span class="token operator">-</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">,</span> labels2<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+        <span class="token keyword">while</span> <span class="token builtin">len</span><span class="token punctuation">(</span>queue<span class="token punctuation">.</span>queue<span class="token punctuation">)</span> <span class="token operator">></span> n<span class="token punctuation">:</span>
+            _ <span class="token operator">=</span> queue<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        last_queue <span class="token operator">=</span> queue
+
+    n_best <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">while</span> <span class="token keyword">not</span> queue<span class="token punctuation">.</span>empty<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        n_best<span class="token punctuation">.</span>append<span class="token punctuation">(</span>queue<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    n_best <span class="token operator">=</span> n_best<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+    <span class="token keyword">return</span> n_best</code></pre>
 <h3 id="candidate-reranking">Candidate Reranking</h3>
 <p>基本分类器假设标签是独立的，为此本文引入了标签集合的重排器（reranker），以捕获标签的共享性与共现性。</p>
 <p>给定候选集<span class="math inline">\(\hat{\mathbf{y}}\)</span>，重排器计算得分<span class="math inline">\(R(\hat{\mathbf{y}})\)</span>，根据得分的加权和重排。 <span class="math display">\[
@@ -361,7 +397,21 @@ P_{MADE}(\hat{\mathrm{y}})=\prod_{i=1}^{|\mathcal{Y}|}P_{MADE}(y_i=\hat{\mathrm{
 R_{MADE}(\hat{\mathrm{y}}) = \frac{\log P_{MADE}(\hat{\mathrm{y}})}{|\hat{\mathrm{y}}|^{\beta}}
 \]</span> 其中<span class="math inline">\(|\hat{\mathrm{y}}|\)</span>表示子集的大小，作为一个长度惩罚项，作者发现不加这一项的话模型容易偏向更小的集合。</p>
 <p>此外，受BERT的MLM启发，作者还提出了一个掩码自注意力重排器Mask-SA。将对角线的标签掩码，输入到BERT中做MLM。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">input_ids, attention_mask = build_masked_input(</span><br><span class="line">    token_ids, tokenizer, mask_positions=[i]</span><br><span class="line">)</span><br><span class="line">all_input_ids.append(input_ids)</span><br><span class="line">all_attention_mask.append(attention_mask)</span><br><span class="line"></span><br><span class="line">all_input_ids = torch.tensor(all_input_ids).cuda()</span><br><span class="line">all_attention_mask = torch.tensor(all_attention_mask).cuda()</span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    output = model(all_input_ids, all_attention_mask)</span><br><span class="line">prediction_scores = output[<span class="number">0</span>]</span><br><span class="line">log_prob = <span class="number">0.0</span></span><br><span class="line"><span class="keyword">for</span> i, token_id <span class="keyword">in</span> enumerate(token_ids):</span><br><span class="line">    log_prob += prediction_scores[i, i].detach().log_softmax(dim=<span class="number">-1</span>)[token_id].cpu().item()</span><br><span class="line">nbests_with_bert.append((<span class="number">0.0</span>, log_prob, len(token_ids), prob, labels))</span><br></pre></td></tr></table></figure>
+<pre class="language-python" data-language="python"><code class="language-python">input_ids<span class="token punctuation">,</span> attention_mask <span class="token operator">=</span> build_masked_input<span class="token punctuation">(</span>
+    token_ids<span class="token punctuation">,</span> tokenizer<span class="token punctuation">,</span> mask_positions<span class="token operator">=</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+<span class="token punctuation">)</span>
+all_input_ids<span class="token punctuation">.</span>append<span class="token punctuation">(</span>input_ids<span class="token punctuation">)</span>
+all_attention_mask<span class="token punctuation">.</span>append<span class="token punctuation">(</span>attention_mask<span class="token punctuation">)</span>
+
+all_input_ids <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span>all_input_ids<span class="token punctuation">)</span><span class="token punctuation">.</span>cuda<span class="token punctuation">(</span><span class="token punctuation">)</span>
+all_attention_mask <span class="token operator">=</span> torch<span class="token punctuation">.</span>tensor<span class="token punctuation">(</span>all_attention_mask<span class="token punctuation">)</span><span class="token punctuation">.</span>cuda<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">with</span> torch<span class="token punctuation">.</span>no_grad<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    output <span class="token operator">=</span> model<span class="token punctuation">(</span>all_input_ids<span class="token punctuation">,</span> all_attention_mask<span class="token punctuation">)</span>
+prediction_scores <span class="token operator">=</span> output<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+log_prob <span class="token operator">=</span> <span class="token number">0.0</span>
+<span class="token keyword">for</span> i<span class="token punctuation">,</span> token_id <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>token_ids<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    log_prob <span class="token operator">+=</span> prediction_scores<span class="token punctuation">[</span>i<span class="token punctuation">,</span> i<span class="token punctuation">]</span><span class="token punctuation">.</span>detach<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>log_softmax<span class="token punctuation">(</span>dim<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">[</span>token_id<span class="token punctuation">]</span><span class="token punctuation">.</span>cpu<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>item<span class="token punctuation">(</span><span class="token punctuation">)</span>
+nbests_with_bert<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> log_prob<span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>token_ids<span class="token punctuation">)</span><span class="token punctuation">,</span> prob<span class="token punctuation">,</span> labels<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 <p>这实际上等价于预测其他标签的概率<span class="math inline">\(P_{MSA}(\hat{\mathrm{y}}_i|\hat{\mathrm{y}}-\{\hat{\mathrm{y}}_i\},\theta_{MSA})\)</span>，最终的得分定义为 <span class="math display">\[
 R_{RSA}(\hat{\mathrm{y}})=\frac{\log\prod_{i=1}^{|\hat{\mathrm{y}}|}P_{MSA}(\hat{\mathrm{y}}_i|\hat{\mathrm{y}}-\{\hat{\mathrm{y}}_i\},\theta_{MSA})}{|\hat{\mathrm{y}}|^{\beta}}
 \]</span></p>
@@ -477,7 +527,7 @@ R_{RSA}(\hat{\mathrm{y}})=\frac{\log\prod_{i=1}^{|\hat{\mathrm{y}}|}P_{MSA}(\hat
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">136k</span>
+    <span title="站点总字数">138k</span>
   </span>
 </div>
 <div class="busuanzi-count">

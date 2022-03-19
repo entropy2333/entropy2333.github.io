@@ -169,7 +169,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -182,7 +182,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">63</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -306,7 +306,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.9k</span>
+      <span>3.3k</span>
     </span>
 </div>
 
@@ -342,7 +342,8 @@
 <li>因为无符号数非负，所以下面这段代码为死循环。</li>
 </ul></li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">unsigned</span> i = <span class="number">10</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">for (unsigned i &#x3D; 10; i &gt;&#x3D; 0; i--)
+    std::cout &lt;&lt; i &lt;&lt; std::endl;</code></pre>
 <h3 id="字面值常量">字面值常量</h3>
 <p>C++规定的转义序列如下</p>
 <p><img src="/2020/11/23/C++-Primer-Chapter2-%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B/image-20201123153641722.png" alt="image-20201123153641722" style="zoom:50%;"></p>
@@ -355,7 +356,10 @@
 <h3 id="变量定义">变量定义</h3>
 <p>以下四条语句都可以定义一个int变量并初始化为0。</p>
 <p>在C++11，可以用花括号来初始化变量，称为列表初始化。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> cnt = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cnt</span><span class="params">(<span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="keyword">int</span> cnt&#123;<span class="number">0</span>&#125;;</span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">int cnt &#x3D; 0;
+int cnt &#x3D; &#123;0&#125;;
+int cnt(0);
+int cnt&#123;0&#125;;</code></pre>
 <blockquote>
 <p>初始化：创建变量时，赋予其一个初始值。</p>
 <p>赋值：把对象的当前值擦除，用一个新值代替。</p>
@@ -368,7 +372,9 @@
 <li>如果想声明一个变量而非定义，要添加关键字extern。</li>
 <li>变量的定义只出现在一个文件中，其他使用该变量的文件对其声明，但不能重复定义。</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> i; <span class="comment">// 声明变量</span></span><br><span class="line"><span class="keyword">int</span> j;          <span class="comment">// 声明并定义</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">double</span> pi = <span class="number">3.14</span>; <span class="comment">// 定义</span></span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">extern int i; &#x2F;&#x2F; 声明变量
+int j;        &#x2F;&#x2F; 声明并定义
+extern double pi &#x3D; 3.14; &#x2F;&#x2F; 定义</code></pre>
 <h3 id="标识符">标识符</h3>
 <ul>
 <li>标识符以字母或数字开头，大小写敏感。</li>
@@ -379,7 +385,13 @@
 <ul>
 <li>如果函数要用到全局变量，则不宜再定义一个同名的局部变量。</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> cnt = <span class="number">10</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> cnt = <span class="number">20</span>;</span><br><span class="line">    <span class="comment">// 用::cnt显式访问全局变量</span></span><br><span class="line">    <span class="comment">// result: 10 20</span></span><br><span class="line"> <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; cnt &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; ::cnt &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int cnt &#x3D; 10;
+int main() &#123;
+    int cnt &#x3D; 20;
+    &#x2F;&#x2F; 用::cnt显式访问全局变量
+    &#x2F;&#x2F; result: 10 20
+    std::cout &lt;&lt; cnt &lt;&lt; &quot; &quot; &lt;&lt; ::cnt &lt;&lt; std::endl;
+&#125;</code></pre>
 <h2 id="复合类型">复合类型</h2>
 <h3 id="引用">引用</h3>
 <ul>
@@ -387,24 +399,39 @@
 <li>无法令引用重新绑定到另外一个对象，所以引用必须初始化。</li>
 <li>引用只能绑定在对象上，引用自身不是对象。</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> val = <span class="number">1024</span>;</span><br><span class="line"><span class="keyword">int</span> &amp;refVal = val;</span><br><span class="line"><span class="keyword">int</span> refVal;      <span class="comment">// 报错：引用必须初始化</span></span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">int val &#x3D; 1024;
+int &amp;refVal &#x3D; val;
+int refVal;     &#x2F;&#x2F; 报错：引用必须初始化</code></pre>
 <h3 id="指针">指针</h3>
 <ul>
 <li>指针存放某个对象的地址，使用取地址符&amp;获取地址。</li>
 <li>使用解引用符*访问指针指向的对象。</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> val = <span class="number">1024</span>;</span><br><span class="line"><span class="keyword">int</span> *p = &amp;val;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; p &lt;&lt; *p; <span class="comment">// result: 008FF9F8 1024</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int val &#x3D; 1024;
+int *p &#x3D; &amp;val;
+cout &lt;&lt; p &lt;&lt; *p; &#x2F;&#x2F; result: 008FF9F8 1024</code></pre>
 <p>空指针不指向任何对象</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p1 = <span class="literal">nullptr</span>;</span><br><span class="line"><span class="keyword">int</span> *p2 = <span class="number">0</span>; <span class="comment">// 指针不能指向字面值常量，0表示空指针。</span></span><br><span class="line"><span class="keyword">int</span> *p3 = <span class="literal">NULL</span>; <span class="comment">// include &lt;cstdlib&gt;</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int *p1 &#x3D; nullptr;
+int *p2 &#x3D; 0; &#x2F;&#x2F; 指针不能指向字面值常量，0表示空指针。
+int *p3 &#x3D; NULL; &#x2F;&#x2F; include &lt;cstdlib&gt;</code></pre>
 <p>void*是一种特殊的指针，可以指向任意非常量，不能执行解引用操作。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> pi = <span class="number">3.14</span>, *pd = &amp; pi;</span><br><span class="line"><span class="keyword">void</span> *pv = &amp;pi;</span><br><span class="line">pv = pd;</span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">double pi &#x3D; 3.14, *pd &#x3D; &amp; pi;
+void *pv &#x3D; &amp;pi;
+pv &#x3D; pd;</code></pre>
 <h3 id="理解复合类型的声明">理解复合类型的声明</h3>
 <p>定义指针和引用时，最好将*和&amp;与变量名连在一起，以免引起误导。</p>
 <p>指针可以指向指针</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> val = <span class="number">1024</span>;</span><br><span class="line"><span class="keyword">int</span> *pi = &amp;val;</span><br><span class="line"><span class="keyword">int</span> **ppi = &amp;pi;</span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">int val &#x3D; 1024;
+int *pi &#x3D; &amp;val;
+int **ppi &#x3D; &amp;pi;</code></pre>
 <p>引用不是对象，所以不存在指向引用的指针。</p>
 <p>但指针是对象，所以引用可以绑定指针。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> *p = &amp;i;</span><br><span class="line"><span class="keyword">int</span> *&amp;r = p;  <span class="comment">// r是一个对指针p的引用</span></span><br><span class="line"></span><br><span class="line">r = &amp;i;</span><br><span class="line">*r = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int i &#x3D; 10;
+int *p &#x3D; &amp;i;
+int *&amp;r &#x3D; p;   &#x2F;&#x2F; r是一个对指针p的引用
+
+r &#x3D; &amp;i;
+*r &#x3D; 0;</code></pre>
 <h2 id="const限定符">const限定符</h2>
 <h3 id="const的引用">const的引用</h3>
 <p>使用const定义变量时，变量的值不能被改变，const对象必须初始化。</p>
@@ -413,31 +440,52 @@
 <p>如果想共享const变量，需要用extern修饰。</p>
 </blockquote>
 <p>可以把引用绑定到const对象上，称为对常量的引用。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> val = <span class="number">1024</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;refVal = val;</span><br><span class="line">refVal = <span class="number">10</span>;     <span class="comment">// 错误：对常量的引用不能修改绑定的对象</span></span><br><span class="line"><span class="keyword">int</span> &amp;refVal2 = val; <span class="comment">// 错误：非常量引用不能绑定常量对象</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">const int val &#x3D; 1024;
+const int &amp;refVal &#x3D; val;
+refVal &#x3D; 10;       &#x2F;&#x2F; 错误：对常量的引用不能修改绑定的对象
+int &amp;refVal2 &#x3D; val; &#x2F;&#x2F; 错误：非常量引用不能绑定常量对象</code></pre>
 <p>允许为一个常量引用绑定非常量的对象。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r1 = i;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r2 = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r3 = i * <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> &amp;r4 = r1 * <span class="number">2</span>;    <span class="comment">// 错误：r1是常量引用，r4是非常量引用。</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int i &#x3D; 42;
+const int &amp;r1 &#x3D; i;
+const int &amp;r2 &#x3D; 42;
+const int &amp;r3 &#x3D; i * 2;
+int &amp;r4 &#x3D; r1 * 2;  &#x2F;&#x2F; 错误：r1是常量引用，r4是非常量引用。</code></pre>
 <p>常量引用绑定非常量对象时，不能通过常量引用改变值，但可以通过其他途径改变绑定对象的值。</p>
 <h3 id="const与指针">const与指针</h3>
 <p>指向常量指针不能改变所指对象的值。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> pi = <span class="number">3.14</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> *p = &amp;pi;</span><br><span class="line">*p = <span class="number">10</span>;        <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">const double pi &#x3D; 3.14;
+const double *p &#x3D; &amp;pi;
+*p &#x3D; 10;       &#x2F;&#x2F; error</code></pre>
 <p>const指针不能改变指针本身的值，而非指向的那个值。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> pi = <span class="number">3.14</span>, i = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">double</span> *<span class="keyword">const</span> p = &amp;pi;</span><br><span class="line">p = &amp;i;            <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">double pi &#x3D; 3.14, i &#x3D; 10;
+double *const p &#x3D; &amp;pi;
+p &#x3D; &amp;i;            &#x2F;&#x2F; error</code></pre>
 <h3 id="顶层const">顶层const</h3>
 <p><strong>顶层const表示指针本身是常量，底层const表示指针指向的对象是一个常量。</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">const</span> ci = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> *<span class="keyword">const</span> p1 = &amp;i;     <span class="comment">// top-level</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p2 = &amp;ci;   <span class="comment">// low-level</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *<span class="keyword">const</span> p3 = p2; <span class="comment">// low-level &amp; top-level</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r = ci;     <span class="comment">// low-level</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int i &#x3D; 0;
+const ci &#x3D; 10;
+int *const p1 &#x3D; &amp;i;        &#x2F;&#x2F; top-level
+const int *p2 &#x3D; &amp;ci;   &#x2F;&#x2F; low-level
+const int *const p3 &#x3D; p2; &#x2F;&#x2F; low-level &amp; top-level
+const int &amp;r &#x3D; ci;     &#x2F;&#x2F; low-level</code></pre>
 <h3 id="constexpr和常量表达式">constexpr和常量表达式</h3>
 <p>常量表达式是指值不会改变并且在编译过程中就能得到计算结果的表达式。</p>
 <h2 id="处理类型">处理类型</h2>
 <h3 id="类型别名">类型别名</h3>
 <p>有两种方法可以定义类型别名</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">double</span> wages;</span><br><span class="line"><span class="keyword">using</span> wages = <span class="keyword">double</span>;</span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">typedef double wages;
+using wages &#x3D; double;</code></pre>
 <h3 id="auto-decltype">auto &amp; decltype</h3>
 <p>auto让编译器去分析表达式所属的类型，auto定义的变量必须有初始值。</p>
 <p>decltype可以返回操作数的数据类型。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">decltype</span>(f()) sum = x;</span><br><span class="line"><span class="keyword">int</span> i = <span class="number">42</span>, *p = &amp;i;</span><br><span class="line"><span class="keyword">decltype</span>(*p) c; <span class="comment">// 错误：c是int&amp;，必须初始化。</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">decltype(f()) sum &#x3D; x;
+int i &#x3D; 42, *p &#x3D; &amp;i;
+decltype(*p) c; &#x2F;&#x2F; 错误：c是int&amp;，必须初始化。</code></pre>
 <h2 id="自定义数据结构">自定义数据结构</h2>
 <h3 id="预处理器">预处理器</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> SALES_DATA_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SALES_DATA_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<pre class="language-c++" data-language="c++"><code class="language-c++">#ifndef SALES_DATA_H
+#define SALES_DATA_H
+#endif</code></pre>
 
     </div>
 
@@ -535,7 +583,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">136k</span>
+    <span title="站点总字数">138k</span>
   </span>
 </div>
 <div class="busuanzi-count">

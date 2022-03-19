@@ -169,7 +169,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -182,7 +182,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">63</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -306,7 +306,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.8k</span>
+      <span>1.7k</span>
     </span>
 </div>
 
@@ -331,13 +331,14 @@
 <h3 id="安装-cuda">安装 CUDA</h3>
 <p>进入<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-downloads">官网</a>，按部就班安装，<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37296487/article/details/83028394">参考教程</a>。</p>
 <p>cmd输入如下命令，测试CUDA是否安装成功。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvcc -V</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">nvcc -V</code></pre>
 <h3 id="安装-pytorch">安装 Pytorch</h3>
 <p>python和git这些基本的就不提了，介绍一下pytorch的安装。</p>
 <p>进入<a target="_blank" rel="noopener" href="https://pytorch.org/">pytorch官网</a>，选择相对应的版本，使用pip直接安装。</p>
 <p><img src="/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/1.png"></p>
 <p>测试Pytorch是否安装成功。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch, torchvision</span><br><span class="line">print(torch.__version__, torch.cuda.is_available())</span><br></pre></td></tr></table></figure>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch<span class="token punctuation">,</span> torchvision
+<span class="token keyword">print</span><span class="token punctuation">(</span>torch<span class="token punctuation">.</span>__version__<span class="token punctuation">,</span> torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>is_available<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
 <h3 id="安装-vs-2019">安装 VS 2019</h3>
 <p>进入<a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/zh-hans/downloads/">vs官网</a>，选择community版本进行下载。</p>
 <p>下载完成后，先不着急运行安装程序，按<a target="_blank" rel="noopener" href="https://www.loongten.com/2019/06/18/vs2019/">博客</a>将安装目录迁移到非系统盘（C盘实在是装不下了）。</p>
@@ -345,44 +346,47 @@
 <h3 id="安装-pycocotools">安装 pycocotools</h3>
 <p><a target="_blank" rel="noopener" href="https://github.com/cocodataset/cocoapi">原版</a>的pycocotools不支持windows，需要使用<a target="_blank" rel="noopener" href="https://github.com/philferriere/cocoapi">修改版</a>。</p>
 <p>可通过如下命令安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/philferriere/cocoapi.git</span><br><span class="line"><span class="built_in">cd</span> PythonAPI</span><br><span class="line">python setup.py build_ext --inplace</span><br><span class="line">python setup.py build_ext install</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> clone https://github.com/philferriere/cocoapi.git
+<span class="token builtin class-name">cd</span> PythonAPI
+python setup.py build_ext --inplace
+python setup.py build_ext <span class="token function">install</span></code></pre>
 <p>或者直接</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install git+https://github.com/philferriere/cocoapi.git<span class="comment">#subdirectory=PythonAPI</span></span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">pip <span class="token function">install</span> git+https://github.com/philferriere/cocoapi.git<span class="token comment">#subdirectory=PythonAPI</span></code></pre>
 <p>出现Successfully installed pycocotools-2.0即为安装成功。</p>
 <h3 id="安装-detectron2">安装 detectron2</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/facebookresearch/detectron2.git</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> clone https://github.com/facebookresearch/detectron2.git</code></pre>
 <p>修改文件 setup.py，注释掉</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;pycocotools&gt;=2.0.1&quot;</span>,</span><br></pre></td></tr></table></figure>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token string">"pycocotools>=2.0.1"</span><span class="token punctuation">,</span></code></pre>
 <p>开始安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python setup.py build develop</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">python setup.py build develop</code></pre>
 <p>安装过程无报错即可。</p>
 <h4 id="目标检测">目标检测</h4>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_b275ba.pkl</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input <span class="token punctuation">..</span>/TestExample/test.jpg --output <span class="token punctuation">..</span>/TestExample/output.jpg --opts MODEL.WEIGHTS <span class="token punctuation">..</span>/TestExample/model_final_b275ba.pkl</code></pre>
 <h4 id="实例分割">实例分割</h4>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input ../TestExample/test.jpg --output ../TestExample/output.jpg --opts MODEL.WEIGHTS ../TestExample/model_final_f10217.pkl</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">python demo/demo.py --config-file configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml --input <span class="token punctuation">..</span>/TestExample/test.jpg --output <span class="token punctuation">..</span>/TestExample/output.jpg --opts MODEL.WEIGHTS <span class="token punctuation">..</span>/TestExample/model_final_f10217.pkl</code></pre>
 <h2 id="可能出现的问题">可能出现的问题</h2>
 <p><a target="_blank" rel="noopener" href="https://github.com/conansherry/detectron2/issues/2">github issue</a></p>
 <p>安装时提示缺少什么包，直接pip install即可，出问题可以查stackoverflow。</p>
 <h3 id="cl.exe出错">cl.exe出错</h3>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35067322/article/details/105835311">解决方法</a></p>
 <p>添加环境变量</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\bin\Hostx64\x64</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">C:<span class="token punctuation">\</span>Program Files <span class="token punctuation">(</span>x86<span class="token punctuation">)</span><span class="token punctuation">\</span>Microsoft Visual Studio<span class="token punctuation">\</span><span class="token number">2019</span><span class="token punctuation">\</span>Community<span class="token punctuation">\</span>VC<span class="token punctuation">\</span>Tools<span class="token punctuation">\</span>MSVC<span class="token punctuation">\</span><span class="token number">14.27</span>.29110<span class="token punctuation">\</span>bin<span class="token punctuation">\</span>Hostx64<span class="token punctuation">\</span>x64</code></pre>
 <p>如下即可</p>
 <p><img src="/2020/08/22/CV%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%E5%AE%89%E8%A3%85detectron2/2.png"></p>
 <h3 id="cocoeval出错">cocoeval出错</h3>
 <p>修改文件 detectron2.cpp</p>
 <p>添加</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">#include &lt;time.h&gt;</code></pre>
 <p>修改</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localtime_r(&amp;rawtime, &amp;local_time);</span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">localtime_r(&amp;rawtime, &amp;local_time);</code></pre>
 <p>为</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localtime_s(&amp;local_time, &amp;rawtime);</span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">localtime_s(&amp;local_time, &amp;rawtime);</code></pre>
 <h3 id="nvcc.exe出错">nvcc.exe出错</h3>
 <p>修改文件 detectron2/detectron2/layers/csrc/nms_rotated/nms_rotated_cuda.cu</p>
 <p>在11行</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> WITH_HIP</span></span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">#ifdef WITH_HIP</code></pre>
 <p>之前添加</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WITH_HIP</span></span><br></pre></td></tr></table></figure>
+<pre class="language-C++" data-language="C++"><code class="language-C++">#define WITH_HIP</code></pre>
 
     </div>
 
@@ -487,7 +491,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">136k</span>
+    <span title="站点总字数">138k</span>
   </span>
 </div>
 <div class="busuanzi-count">

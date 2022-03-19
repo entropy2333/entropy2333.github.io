@@ -175,7 +175,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -188,7 +188,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">63</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -312,7 +312,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.6k</span>
+      <span>3.5k</span>
     </span>
 </div>
 
@@ -365,15 +365,62 @@ M = H_DH_Y^T
 \mathcal{L}_{plcp} = -[q_{ij}\ln p_{ij} + (1-q_{ij})\ln(1-p_{ij})]
 \]</span></p>
 <p>构造标签集</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">label_list = example.label.split(<span class="string">&quot; &quot;</span>)</span><br><span class="line">label_ids = _predicate_label_to_id(label_list, label_map)</span><br><span class="line">right_labels = []</span><br><span class="line">wrong_labels = []</span><br><span class="line"><span class="keyword">for</span> label_id <span class="keyword">in</span> range(<span class="number">0</span>,len(label_ids)):</span><br><span class="line">    <span class="keyword">if</span> label_ids[label_id]==<span class="number">1</span>:</span><br><span class="line">        right_labels.append(label_id)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            wrong_labels.append(label_id)</span><br><span class="line"></span><br><span class="line">right_pair = list(itertools.combinations(right_labels, <span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">contrast_dict = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> pair <span class="keyword">in</span> right_pair:</span><br><span class="line">    contrast_dict[pair]=[<span class="number">0</span>,<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,int(len(right_pair)*<span class="number">2</span>)):</span><br><span class="line">        r = random.sample(right_labels,<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">        w =random.sample(wrong_labels,<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">        contrast_dict[(r,w)]=[<span class="number">1</span>,<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<pre class="language-python" data-language="python"><code class="language-python">label_list <span class="token operator">=</span> example<span class="token punctuation">.</span>label<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span>
+label_ids <span class="token operator">=</span> _predicate_label_to_id<span class="token punctuation">(</span>label_list<span class="token punctuation">,</span> label_map<span class="token punctuation">)</span>
+right_labels <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+wrong_labels <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> label_id <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token builtin">len</span><span class="token punctuation">(</span>label_ids<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> label_ids<span class="token punctuation">[</span>label_id<span class="token punctuation">]</span><span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">:</span>
+        right_labels<span class="token punctuation">.</span>append<span class="token punctuation">(</span>label_id<span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            wrong_labels<span class="token punctuation">.</span>append<span class="token punctuation">(</span>label_id<span class="token punctuation">)</span>
+
+right_pair <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span>itertools<span class="token punctuation">.</span>combinations<span class="token punctuation">(</span>right_labels<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+contrast_dict <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+<span class="token keyword">for</span> pair <span class="token keyword">in</span> right_pair<span class="token punctuation">:</span>
+    contrast_dict<span class="token punctuation">[</span>pair<span class="token punctuation">]</span><span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>right_pair<span class="token punctuation">)</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        r <span class="token operator">=</span> random<span class="token punctuation">.</span>sample<span class="token punctuation">(</span>right_labels<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        w <span class="token operator">=</span>random<span class="token punctuation">.</span>sample<span class="token punctuation">(</span>wrong_labels<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        contrast_dict<span class="token punctuation">[</span><span class="token punctuation">(</span>r<span class="token punctuation">,</span>w<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">]</span></code></pre>
 <p>构造feature并采样</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">feature_list=[]</span><br><span class="line"><span class="keyword">for</span> pair <span class="keyword">in</span> contrast_dict.keys():</span><br><span class="line">    feature = InputFeatures(</span><br><span class="line">      input_ids=input_ids,</span><br><span class="line">      input_mask=input_mask,</span><br><span class="line">      segment_ids=segment_ids,</span><br><span class="line">      token_label_ids=token_label_ids,</span><br><span class="line">      label_ids=label_ids,</span><br><span class="line">      fit_labelspace_positions=fit_labelspace_positions,</span><br><span class="line">      fit_docspace_positions=fit_docspace_positions,</span><br><span class="line">      pair = list(pair),</span><br><span class="line">      pair_target=list(contrast_dict[pair]),</span><br><span class="line">      <span class="comment">#    pair = list([0,1]),</span></span><br><span class="line">      <span class="comment">#    pair_target= list([0,1]),</span></span><br><span class="line">      is_real_example=<span class="literal">True</span>)</span><br><span class="line">    feature_list.append(feature)</span><br><span class="line">a = random.sample(feature_list, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<pre class="language-python" data-language="python"><code class="language-python">feature_list<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> pair <span class="token keyword">in</span> contrast_dict<span class="token punctuation">.</span>keys<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    feature <span class="token operator">=</span> InputFeatures<span class="token punctuation">(</span>
+      input_ids<span class="token operator">=</span>input_ids<span class="token punctuation">,</span>
+      input_mask<span class="token operator">=</span>input_mask<span class="token punctuation">,</span>
+      segment_ids<span class="token operator">=</span>segment_ids<span class="token punctuation">,</span>
+      token_label_ids<span class="token operator">=</span>token_label_ids<span class="token punctuation">,</span>
+      label_ids<span class="token operator">=</span>label_ids<span class="token punctuation">,</span>
+      fit_labelspace_positions<span class="token operator">=</span>fit_labelspace_positions<span class="token punctuation">,</span>
+      fit_docspace_positions<span class="token operator">=</span>fit_docspace_positions<span class="token punctuation">,</span>
+      pair <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span>pair<span class="token punctuation">)</span><span class="token punctuation">,</span>
+      pair_target<span class="token operator">=</span><span class="token builtin">list</span><span class="token punctuation">(</span>contrast_dict<span class="token punctuation">[</span>pair<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">#    pair = list([0,1]),</span>
+      <span class="token comment">#    pair_target= list([0,1]),</span>
+      is_real_example<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    feature_list<span class="token punctuation">.</span>append<span class="token punctuation">(</span>feature<span class="token punctuation">)</span>
+a <span class="token operator">=</span> random<span class="token punctuation">.</span>sample<span class="token punctuation">(</span>feature_list<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span></code></pre>
 <h3 id="clcp-task">CLCP Task</h3>
 <p>从<span class="math inline">\(Y^+\)</span>中随机采样<span class="math inline">\(s\)</span>个标签，形成<span class="math inline">\(Y^G\)</span>，然后判断剩余的标签是否与其相关。为此引入了一个额外的位置向量<span class="math inline">\(E_Y = [e_{y_1},\cdots,e_{y_n}]\)</span>，<span class="math inline">\(e_{y_i}=0\)</span>就表示标签被采样了，也即<span class="math inline">\(y_i\in Y^G\)</span>，反之则<span class="math inline">\(y_i\in Y-Y^G\)</span>。</p>
 <p>将所有被采样的标签表示做平均得到<span class="math inline">\(h_{y^G}\)</span>，将其拼接到所有未被采样的标签表示，作为输入特征。同样采用交叉熵作为损失函数。 <span class="math display">\[
 \mathcal{L}_{clcp} = -\sum_{i=1}^{n-s}[q_{i}\ln p_{i} + (1-q_{i})\ln(1-p_{i})]
 \]</span> 其中<span class="math inline">\(q_i\in\{0,1\}\)</span>表示标签<span class="math inline">\(y_i\)</span>是否与<span class="math inline">\(Y^G\)</span>中的标签共同出现。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">right_mask_labels = random.sample(right_labels,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> num_label <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">54</span>) :</span><br><span class="line">    <span class="keyword">if</span> num_label <span class="keyword">not</span> <span class="keyword">in</span> right_mask_labels:</span><br><span class="line">        fit_labelspace_mask_positions.append(num_label)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        fit_labelspace_given_positions.append(num_label)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> mask_position <span class="keyword">in</span> fit_labelspace_mask_positions:</span><br><span class="line">    <span class="keyword">if</span> mask_position <span class="keyword">in</span> right_labels:</span><br><span class="line">        mask_lm_ids.append(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        mask_lm_ids.append(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<pre class="language-python" data-language="python"><code class="language-python">right_mask_labels <span class="token operator">=</span> random<span class="token punctuation">.</span>sample<span class="token punctuation">(</span>right_labels<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> num_label <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">54</span><span class="token punctuation">)</span> <span class="token punctuation">:</span>
+    <span class="token keyword">if</span> num_label <span class="token keyword">not</span> <span class="token keyword">in</span> right_mask_labels<span class="token punctuation">:</span>
+        fit_labelspace_mask_positions<span class="token punctuation">.</span>append<span class="token punctuation">(</span>num_label<span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        fit_labelspace_given_positions<span class="token punctuation">.</span>append<span class="token punctuation">(</span>num_label<span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> mask_position <span class="token keyword">in</span> fit_labelspace_mask_positions<span class="token punctuation">:</span>
+    <span class="token keyword">if</span> mask_position <span class="token keyword">in</span> right_labels<span class="token punctuation">:</span>
+        mask_lm_ids<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        mask_lm_ids<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span></code></pre>
 <h2 id="experiment">Experiment</h2>
 <p>在AAPD和RCV1-V2上进行了实验，实验设置为bert-base-uncased，batch size为32，最大长度320，学习率为5e-5，<span class="math inline">\(\gamma\)</span>为0.5。</p>
 <p><img src="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/image-20220116153829791.png" alt="image-20220116153829791" style="zoom:50%;"></p>
@@ -493,7 +540,7 @@ M = H_DH_Y^T
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">136k</span>
+    <span title="站点总字数">138k</span>
   </span>
 </div>
 <div class="busuanzi-count">
