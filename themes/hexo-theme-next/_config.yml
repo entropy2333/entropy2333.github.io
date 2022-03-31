@@ -899,10 +899,7 @@ vendors:
   fontawesome:
 
   # Prism
-  # prism:
-  # prism: //cdn.jsdelivr.net/npm/prismjs@1/prism.min.js
-  prism: /js/prism/prism.js
-  # prism: //cdn.jsdelivr.net/npm/prism-theme-one-dark@1.0.0/index.min.js
+  prism:
   prism_autoloader:
   prism_line_numbers:
 

@@ -60,7 +60,7 @@ git lfs ls-files
 
 ### 删除远程仓库不存在的分支
 
-```sh
+```shell
 # 查看所有分支
 git branch -a
 
@@ -73,7 +73,7 @@ git fetch -p
 
 ### 合并多次提交
 
-```sh
+```shell
 # 合并最近的n次提交
 git rebase -i HEAD~n
 
