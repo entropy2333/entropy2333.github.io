@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"entropy2333.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="ACL 2022，使用Graphormer与对比学习处理层次文本分类（HTC）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Incorporating Hierarchy into Text Encoder: a Contrastive Learning Approach for Hierarchical Text Classification">
+<meta property="og:url" content="https://entropy2333.github.io/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/index.html">
+<meta property="og:site_name" content="entropy2333">
+<meta property="og:description" content="ACL 2022，使用Graphormer与对比学习处理层次文本分类（HTC）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://entropy2333.github.io/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/image-20220331164335199.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/image-20220331163906431.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/image-20220331164405911.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/image-20220331175437473.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/image-20220331175445242.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/image-20220331175519133.png">
+<meta property="article:published_time" content="2022-03-31T08:00:57.000Z">
+<meta property="article:modified_time" content="2022-03-31T09:55:20.854Z">
+<meta property="article:author" content="entropy2333">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="Multi-Label">
+<meta property="article:tag" content="Graphormer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://entropy2333.github.io/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/image-20220331164335199.png">
+
+
+<link rel="canonical" href="https://entropy2333.github.io/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://entropy2333.github.io/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/","path":"2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/","title":"Incorporating Hierarchy into Text Encoder: a Contrastive Learning Approach for Hierarchical Text Classification"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Incorporating Hierarchy into Text Encoder: a Contrastive Learning Approach for Hierarchical Text Classification | entropy2333</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="entropy2333" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">entropy2333</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method"><span class="nav-number">3.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#text-encoder"><span class="nav-number">3.1.</span> <span class="nav-text">Text Encoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#graph-encoder"><span class="nav-number">3.2.</span> <span class="nav-text">Graph Encoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#positive-sample-generation"><span class="nav-number">3.3.</span> <span class="nav-text">Positive Sample Generation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#contrastive-learning-module"><span class="nav-number">3.4.</span> <span class="nav-text">Contrastive Learning Module</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="entropy2333"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">entropy2333</p>
+  <div class="site-description" itemprop="description">Cyber Security, SJTU</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/entropy2333" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;entropy2333" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://ainevsia.github.io/" title="https:&#x2F;&#x2F;ainevsia.github.io&#x2F;" rel="noopener" target="_blank">ainevsia</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://entropy2333.gitee.io/" title="https:&#x2F;&#x2F;entropy2333.gitee.io" rel="noopener" target="_blank">entropy2333</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://rooki3ray.github.io/" title="https:&#x2F;&#x2F;rooki3ray.github.io" rel="noopener" target="_blank">rooki3ray</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://thomas-li-sjtu.github.io/" title="https:&#x2F;&#x2F;thomas-li-sjtu.github.io" rel="noopener" target="_blank">thomas-li</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://schenk75.github.io/" title="https:&#x2F;&#x2F;schenk75.github.io&#x2F;" rel="noopener" target="_blank">schenk</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/entropy2333" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="entropy2333">
+      <meta itemprop="description" content="Cyber Security, SJTU">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="entropy2333">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Incorporating Hierarchy into Text Encoder: a Contrastive Learning Approach for Hierarchical Text Classification
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-31 16:00:57" itemprop="dateCreated datePublished" datetime="2022-03-31T16:00:57+08:00">2022-03-31</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>ACL 2022，使用Graphormer与对比学习处理层次文本分类（HTC）。</p>
+<p><img src="/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/image-20220331164335199.png" alt="image-20220331164335199" style="zoom:50%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/image-20220331163906431.png" alt="image-20220331163906431" style="zoom:50%;"></p>
+<ul>
+<li>paper: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2203.03825.pdf" class="uri">https://arxiv.org/pdf/2203.03825.pdf</a></li>
+<li>code: <a target="_blank" rel="noopener" href="https://github.com/wzh9969/contrastive-htc" class="uri">https://github.com/wzh9969/contrastive-htc</a></li>
+<li>dataset: RCV1-V2 WOS NYT</li>
+</ul>
+<h2 id="background">Background</h2>
+<p>现有的HTC方法已经引入了各种层次信息，主要有两种方式。</p>
+<ul>
+<li>将文本和标签分别编码，得到混合表示。</li>
+<li>将层次信息融入编码器，得到层次感知的文本表示。</li>
+</ul>
+<p><img src="/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/image-20220331164405911.png" alt="image-20220331164405911" style="zoom: 50%;"></p>
+<p>本文引入了对比学习以获得层次感知的表示，尝试构建高质量的正样本。现有的方法包括数据增强和对抗攻击等，这些要么是无监督要么是任务无关的。</p>
+<p>作者的motivation主要是：文本分类时大多数的词或token其实并不重要，而少量的关键词对结果有很大的影响。给定文本序列及其标签，只保留少量关键词的短序列也应该保持同样的标签。因此，本文的idea和对抗攻击有点像，希望找出对分类影响最大的tokens，但对抗攻击是试图修改它们，而本文修改的是不重要的tokens。</p>
+<h2 id="method">Method</h2>
+<h3 id="text-encoder">Text Encoder</h3>
+<p>文本嵌入采用BERT，老生常谈。 <span class="math display">\[
+x = \{[CLS], x_1, x_2, \cdots, x_{n-2}, [SEP]\}
+\]</span> 文本表示<span class="math inline">\(H\in\mathbb{R}^{n\times d_h}\)</span>，采用<span class="math inline">\(h_x=h_{[CLS]}\)</span>作为句子表示 <span class="math display">\[
+H = \mathrm{BERT}(x)
+\]</span></p>
+<h3 id="graph-encoder">Graph Encoder</h3>
+<p>本文采用<a href="https://entropy2333.github.io/2021/06/20/Do-Transformers-Really-Perform-Bad-for-Graph-Representation">Graphormer</a>建模标签的层次关系，在Transformer的基础上使用spatial encoding和edge encoding建模图结构。节点特征是标签嵌入和名称嵌入的和： <span class="math display">\[
+f_i = \mathrm{label\_emb}(y_i) + \mathrm{name\_emb}(y_i)
+\]</span> 标签嵌入是可学习的，名称嵌入利用了标签的名称（其中可能蕴含了丰富信息），采用BERT编码得到，最终得到所有节点特征<span class="math inline">\(F\in\mathbb{R}^{k\times d_h}\)</span>。</p>
+<p>为了利用结构信息，采用Graphormer中魔改的self-attention <span class="math display">\[
+A_{ij}^{G} = \frac{(f_iW_Q^G)(f_jW_K^G)^T}{\sqrt{d_h}} + c_{ij} + b_{\phi(y_i, y_j)}
+\]</span> 其中<span class="math inline">\(c_{ij} = \frac1D\sum_{n=1}^Dw_{e_n}\)</span>，<span class="math inline">\(D=\phi(y_i,y_j)\)</span>。<span class="math inline">\(A_{ij}^G\)</span>中的第一项是标准的点积注意力，<span class="math inline">\(c_{ij}\)</span>表示edge encoding，<span class="math inline">\(\phi(y_i,y_j)\)</span>表示两个节点间的距离。</p>
+<p>因为在HTC问题中，图实际上是一个树，因此两个节点间只有一条路径<span class="math inline">\((e_1, e_2, \cdots, e_D)\)</span>，所以<span class="math inline">\(c_{ij}\)</span>表示了两个节点间的边信息，<span class="math inline">\(w_{e_i}\in\mathbb{R}^1\)</span>是可学习的权重。<span class="math inline">\(b_{\phi(y_i, y_j)}\)</span>为spatial encoding，衡量了两个节点间的连通性。</p>
+<p>和Transformer里一样，对注意力做softmax后LayerNorm即可。 <span class="math display">\[
+L = \mathrm{LayerNorm}(\mathrm{softmax}(A^G)V+F)
+\]</span></p>
+<h3 id="positive-sample-generation">Positive Sample Generation</h3>
+<p>对于对比学习来说，最重要的就是构建正样本。这一步的目标是保留部分token，同时维持标签不变。对于BERT的token embedding来说： <span class="math display">\[
+\{e_1,e_2,\cdots,e_n\} = \mathrm{BERT\_emb}(x)
+\]</span> 可以用cross attention衡量token与label之间的相关性 <span class="math display">\[
+q_i = e_iW_Q,k_j=l_jW_K,A_{ij}=\frac{q_ik_j^T}{\sqrt{d_h}}
+\]</span> 其中<span class="math inline">\(W_Q, W_K\in\mathbb{R}^{d_h\times d_h}\)</span>为权重矩阵。对注意力矩阵计算Softmax即可得到token <span class="math inline">\(x_i\)</span>属于标签<span class="math inline">\(y_i\)</span>的概率，给定<span class="math inline">\(y_j\)</span>可以从分布中采样关键token，构建正样本<span class="math inline">\(\hat{x}\)</span>。为了使得采样操作可微，采用Gumbel-Softmax代替Softmax。 <span class="math display">\[
+P_{ij} = \mathrm{gumbel\_softmax}(A_{i1},A_{i2},\cdots,A_{ik})_j
+\]</span></p>
+<blockquote>
+<p>Gumbel-Softmax是一种重参数化（Reparameterization）的技巧，可以参考<a target="_blank" rel="noopener" href="https://kexue.fm/archives/6705">苏神的讲解</a>。</p>
+</blockquote>
+<p>将所有真实标签的概率相加，作为token <span class="math inline">\(x_i\)</span>属于真实标签集合 <span class="math inline">\(y\)</span>的概率 <span class="math display">\[
+P_i = \sum_{j\in y}P_{ij}
+\]</span> 最终的正样本通过门限控制得到 <span class="math display">\[
+\hat{x} = \{x_i\ \text{if}\ P_i &gt; \gamma\ \text{else}\ \mathbf{0}\}
+\]</span> 其中<span class="math inline">\(\mathbf{0}\)</span>表示全零向量，保持关键词的位置不变。因为选择操作也不可微，所以作者还给出了一种等价实现： <span class="math display">\[
+\hat{e_i} = e_i((P_i+Detach(1-P_i))\ \text{if}\ P_i &gt; \gamma \ \text{else}\ 0）
+\]</span> 其中<span class="math inline">\(\hat{e_i}\)</span>要么为<span class="math inline">\(e_i\)</span>要么为0，从而对应的梯度为 <span class="math display">\[
+\frac{\partial \hat{e}_i}{\partial P_i} = e_i\ \text{if}\ P_i &gt; \gamma \ \text{else} \ 0
+\]</span> 将构建的正样本也送入BERT，得到表示 <span class="math display">\[
+\hat{H} = \mathrm{BERT}(\hat{x})
+\]</span></p>
+<h3 id="contrastive-learning-module">Contrastive Learning Module</h3>
+<p>至此，已经有了文本序列和缩减字符的正样本，它们的句子表示应当相似。给定<span class="math inline">\(N\)</span>个正样本对<span class="math inline">\((h_i,\hat{h_i})\)</span>，首先过一层全连接 <span class="math display">\[
+\begin{align}
+    c_i &amp;= W_2\mathrm{ReLU}(W_1h_i) \\
+    \hat{c_i} &amp;= W_2\mathrm{ReLU}(W_1\hat{h_i})
+\end{align}
+\]</span> 其中<span class="math inline">\(W_1, W_2\in\mathbb{R}^{d_h\times d_h}\)</span>。对于每个样本来说，同一个batch内的其他样本都是负例，所以共有<span class="math inline">\(2(N-1)\)</span>个负样本对。之后和<a href="https://entropy2333.github.io/2021/07/06/SimCSE-Simple-Contrastive-Learning-of-Sentence-Embeddings/">SimCSE</a>一样，采用交叉熵计算 <span class="math display">\[
+\begin{equation}
+    L_m^{con}=-\log\frac{\exp ({\rm sim}(z_m, \mu(z_m))/\tau)}{\sum^{2N}_{i=1,i\not= m}\exp ({\rm sim}(z_m, z_i)/\tau)}
+\end{equation}
+\]</span> 其中<span class="math inline">\(\rm{sim}\)</span>为cosine相似度，<span class="math display">\[{\rm sim}(u, v)=u\cdot v/ \|u\|\|v\|\]</span>，<span class="math inline">\(\mu\)</span>为匹配函数： <span class="math display">\[
+\begin{equation}
+    \mu(z_m)=\left\{ \begin{array}{ll}
+         c_i, \text{ if } z_m=\hat{c_i}&amp;\\
+         \hat{c_i}, \text{ if } z_m=c_i&amp;
+    \end{array}
+    \right.
+\end{equation}
+\]</span> 对比损失是所有样本的和 <span class="math display">\[
+\begin{equation}
+    L^{con}=\frac{1}{2N}\sum_{m=1}^{2N}L_m^{con}
+\end{equation}
+\]</span> 至于HTC任务，全连接+BCE即可。 <span class="math display">\[
+\begin{equation}
+L_{ij}^C=-y_{ij}\log(p_{ij})-(1-y_{ij})\log(1-p_{ij})
+\end{equation}
+\]</span></p>
+<p><span class="math display">\[
+\begin{equation}
+    L^C=\sum_{i=1}^N\sum_{j=1}^kL_{ij}^C
+\end{equation}
+\]</span></p>
+<p>最终的损失函数是三者的加权和，在推理时模型退化为BERT+分类头。 <span class="math display">\[
+\begin{equation}
+    L=L^C+\hat{L^C}+\lambda L^{con}
+\end{equation}
+\]</span></p>
+<h2 id="experiment">Experiment</h2>
+<p>选择了WOS、NYT和RCV1-V2数据集，使用bert-base-uncased作为基准模型。对于Graphormer，设置8个头，768的特征维度。batch size设置为12，学习率3e-5。</p>
+<p>对于WOS，<span class="math inline">\(\gamma\)</span>为0.02，对于NYT和RCV1-V2，<span class="math inline">\(\gamma\)</span>为0.005。WOS和RCV1-V2的<span class="math inline">\(\lambda\)</span>为0.1，NYT的<span class="math inline">\(\lambda\)</span>为0.3。</p>
+<p>之前的部分模型采用TextRCNN作为文本编码器，作者也给出了BERT的结果。值得一提的是，作者没有复现出HiMatch的BERT结果，因此采用的是自己的结果。</p>
+<p><img src="/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/image-20220331175437473.png" alt="image-20220331175437473" style="zoom:50%;"></p>
+<p><img src="/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/image-20220331175445242.png" alt="image-20220331175445242" style="zoom:50%;"></p>
+<p><img src="/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/image-20220331175519133.png" alt="image-20220331175519133" style="zoom:50%;"></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/01/27/A-novel-reasoning-mechanism-for-multi-label-text-classification/" rel="bookmark">A novel reasoning mechanism for multi-label text classification</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/01/25/Balancing-Methods-for-Multi-label-Text-Classification-with-Long-Tailed-Class-Distribution/" rel="bookmark">Balancing Methods for Multi-label Text Classification with Long-Tailed Class Distribution</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/01/16/Enhancing-Label-Correlation-Feedback-in-Multi-Label-Text-Classification-via-Multi-Task-Learning/" rel="bookmark">Enhancing Label Correlation Feedback in Multi-Label Text Classification via Multi-Task Learning</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/02/13/HCL-MTC-Hierarchical-Contrastive-Learning-for-Multi-label-Text-Classification/" rel="bookmark">HCL-MTC: Hierarchical Contrastive Learning for Multi-label Text Classification</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/03/21/Hierarchy-aware-Label-Semantics-Matching-Network-for-Hierarchical-Text-Classification/" rel="bookmark">Hierarchy-aware Label Semantics Matching Network for Hierarchical Text Classification</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="entropy2333 微信">
+        <span>微信</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>entropy2333
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://entropy2333.github.io/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/" title="Incorporating Hierarchy into Text Encoder: a Contrastive Learning Approach for Hierarchical Text Classification">https://entropy2333.github.io/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+              <a href="/tags/Multi-Label/" rel="tag"># Multi-Label</a>
+              <a href="/tags/Graphormer/" rel="tag"># Graphormer</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/21/Hierarchy-aware-Label-Semantics-Matching-Network-for-Hierarchical-Text-Classification/" rel="prev" title="Hierarchy-aware Label Semantics Matching Network for Hierarchical Text Classification">
+                  <i class="fa fa-chevron-left"></i> Hierarchy-aware Label Semantics Matching Network for Hierarchical Text Classification
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">entropy2333</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">147k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"//cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"}}</script>
+<script src="/js/third-party/math/mathjax.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+</body>
+</html>

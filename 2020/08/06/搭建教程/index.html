@@ -28,7 +28,7 @@
 <meta property="og:description" content="采用Hexo+Next搭建个人博客，并通过Github Pages部署。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-08-06T10:11:48.000Z">
-<meta property="article:modified_time" content="2022-03-02T12:25:04.133Z">
+<meta property="article:modified_time" content="2022-03-19T16:36:47.298Z">
 <meta property="article:author" content="entropy2333">
 <meta name="twitter:card" content="summary">
 
@@ -164,7 +164,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-count">71</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -177,7 +177,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">63</span>
+        <span class="site-state-item-count">65</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -292,7 +292,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
+      <span>2.5k</span>
     </span>
 </div>
 
@@ -307,17 +307,11 @@
 <a id="more"></a>
 <h2 id="配置环境">配置环境</h2>
 <ul>
-<li>安装Node.js</li>
+<li><p>安装Node.js，使用<code>npm -v</code>查看版本</p></li>
+<li><p>安装Git，使用<code>git --version</code>查看版本</p></li>
+<li><p>修改npm源</p></li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">npm</span> -v</code></pre>
-<ul>
-<li>安装Git</li>
-</ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> --version</code></pre>
-<ul>
-<li>修改npm源</li>
-</ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 获取npm源</span>
+<pre class="language-shell" data-language="shell"><code class="language-shell"><span class="token comment"># 获取npm源</span>
 <span class="token function">npm</span> get registry
 <span class="token comment"># 修改为淘宝源</span>
 <span class="token function">npm</span> config <span class="token builtin class-name">set</span> registry http://registry.npm.taobao.org/
@@ -326,18 +320,18 @@
 <ul>
 <li>安装Hexo</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> -g hexo-cli</code></pre>
+<pre class="language-shell" data-language="shell"><code class="language-shell"><span class="token function">npm</span> <span class="token function">install</span> -g hexo-cli</code></pre>
 <h2 id="部署网站">部署网站</h2>
 <ul>
 <li>初始化文件夹</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">hexo init <span class="token operator">&lt;</span>folder<span class="token operator">></span>
+<pre class="language-shell" data-language="shell"><code class="language-shell">hexo init <span class="token operator">&lt;</span>folder<span class="token operator">></span>
 <span class="token builtin class-name">cd</span> <span class="token operator">&lt;</span>folder<span class="token operator">></span>
 <span class="token function">npm</span> <span class="token function">install</span></code></pre>
 <ul>
 <li>至此网站已经初步搭建完成，通过如下命令本地查看。</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># generate and start</span>
+<pre class="language-shell" data-language="shell"><code class="language-shell"><span class="token comment"># generate and start</span>
 hexo g <span class="token operator">&amp;&amp;</span> hexo s
 <span class="token comment"># open http://localhost:4000</span></code></pre>
 <ul>
@@ -347,7 +341,7 @@ hexo g <span class="token operator">&amp;&amp;</span> hexo s
 <li>新建仓库，名为username.github.io。</li>
 <li>安装插件</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> hexo-developer-git --save</code></pre>
+<pre class="language-shell" data-language="shell"><code class="language-shell"><span class="token function">npm</span> <span class="token function">install</span> hexo-developer-git --save</code></pre>
 <ul>
 <li>修改配置文件_config.yml</li>
 </ul>
@@ -358,7 +352,7 @@ hexo g <span class="token operator">&amp;&amp;</span> hexo s
 <ul>
 <li>部署网站</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash">hexo clean <span class="token operator">&amp;&amp;</span> hexo g <span class="token operator">&amp;&amp;</span> hexo d</code></pre></li>
+<pre class="language-shell" data-language="shell"><code class="language-shell">hexo clean <span class="token operator">&amp;&amp;</span> hexo g <span class="token operator">&amp;&amp;</span> hexo d</code></pre></li>
 </ul>
 <h2 id="修改配置">修改配置</h2>
 <ul>
@@ -377,7 +371,7 @@ hexo g <span class="token operator">&amp;&amp;</span> hexo s
 <ul>
 <li>下载主题</li>
 </ul>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> clone https://github.com/theme-next/hexo-theme-next.git themes/next</code></pre>
+<pre class="language-shell" data-language="shell"><code class="language-shell"><span class="token function">git</span> clone https://github.com/theme-next/hexo-theme-next.git themes/next</code></pre>
 <ul>
 <li>修改配置文件</li>
 </ul>
@@ -423,28 +417,66 @@ hexo new page <span class="token string">"about"</span></code></pre></li>
 <span class="token key atrule">rounded</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
 <span class="token comment"># If true, the avatar will be rotated with the cursor.</span>
 <span class="token key atrule">rotated</span><span class="token punctuation">:</span> <span class="token boolean important">false</span></code></pre></li>
-<li><p>添加RSS订阅</p></li>
+<li><p>添加RSS订阅，需要安装插件<code>npm install hexo-generator-feed --save</code></p></li>
 </ul>
-<pre class="language-shell" data-language="shell"><code class="language-shell"><span class="token function">npm</span> <span class="token function">install</span> hexo-generator-feed --save
-
-<span class="token comment"># blog/_config.yaml 添加如下内容</span>
-feed:
-  enable: <span class="token boolean">true</span>
-  type: atom
-  path: atom.xml
-  order_by: -date
-  icon: icon.png
-  autodiscovery: <span class="token boolean">true</span>
+<pre class="language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># blog/_config.yaml 添加如下内容</span>
+<span class="token key atrule">feed</span><span class="token punctuation">:</span>
+  <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">type</span><span class="token punctuation">:</span> atom
+  <span class="token key atrule">path</span><span class="token punctuation">:</span> atom.xml
+  <span class="token key atrule">order_by</span><span class="token punctuation">:</span> <span class="token punctuation">-</span>date
+  <span class="token key atrule">icon</span><span class="token punctuation">:</span> icon.png
+  <span class="token key atrule">autodiscovery</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
 
 <span class="token comment"># blog/themes/next/_config.yaml</span>
-social:
-  RSS: /atom.xml <span class="token operator">||</span> fa fa-rss</code></pre>
+<span class="token key atrule">social</span><span class="token punctuation">:</span>
+  <span class="token key atrule">RSS</span><span class="token punctuation">:</span> /atom.xml <span class="token punctuation">|</span><span class="token punctuation">|</span> fa fa<span class="token punctuation">-</span>rss</code></pre>
+<ul>
+<li>修改代码块样式</li>
+</ul>
+<pre class="language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># blog/_config.yaml</span>
+<span class="token key atrule">highlight</span><span class="token punctuation">:</span>
+  <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+  <span class="token key atrule">line_number</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">auto_detect</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+  <span class="token key atrule">tab_replace</span><span class="token punctuation">:</span> <span class="token string">''</span>
+  <span class="token key atrule">wrap</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">hljs</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+<span class="token key atrule">prismjs</span><span class="token punctuation">:</span>
+  <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">preprocess</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">line_number</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+  <span class="token key atrule">line_threshold</span><span class="token punctuation">:</span> <span class="token number">0</span>
+  <span class="token key atrule">tab_replace</span><span class="token punctuation">:</span> <span class="token string">''</span>
+ 
+<span class="token comment"># blog/themes/next/_config.yaml</span>
+<span class="token key atrule">codeblock</span><span class="token punctuation">:</span>
+  <span class="token comment"># Code Highlight theme</span>
+  <span class="token comment"># All available themes: https://theme-next.js.org/highlight/</span>
+  <span class="token key atrule">theme</span><span class="token punctuation">:</span>
+    <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
+    <span class="token key atrule">light</span><span class="token punctuation">:</span> atom<span class="token punctuation">-</span>one<span class="token punctuation">-</span>light
+    <span class="token key atrule">dark</span><span class="token punctuation">:</span> atom<span class="token punctuation">-</span>one<span class="token punctuation">-</span>dark
+  <span class="token key atrule">prism</span><span class="token punctuation">:</span>
+    <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+    <span class="token key atrule">light</span><span class="token punctuation">:</span> prism<span class="token punctuation">-</span>one<span class="token punctuation">-</span>dark
+    <span class="token key atrule">dark</span><span class="token punctuation">:</span> prism<span class="token punctuation">-</span>one<span class="token punctuation">-</span>dark
+  <span class="token comment"># Add copy button on codeblock</span>
+  <span class="token key atrule">copy_button</span><span class="token punctuation">:</span>
+    <span class="token key atrule">enable</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+    <span class="token key atrule">show_result</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+    <span class="token comment"># Available values: default | flat | mac</span>
+    <span class="token key atrule">style</span><span class="token punctuation">:</span> flat</code></pre>
 <h2 id="总结">总结</h2>
-<p>更多的个性化设置基本都是基于修改配置文件，修改完用hexo g &amp;&amp; hexo s本地查看是否生效，可查看参考文章或百度。</p>
+<p>个性化设置基本都是基于修改配置文件，修改完用<code>hexo clean; hexo g; hexo s</code>本地查看是否生效。</p>
 <h2 id="参考文章">参考文章</h2>
-<p><a target="_blank" rel="noopener" href="https://blog.bestzuo.cn/posts/blog-establish.html">Hexo博客+Next主题深度优化与定制</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9f63b925b322">Hexo+NexT搭建个人博客</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33840251/article/details/103899972">Cannot read property ‘enable_sync’ of undefined</a></p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://hexo.io/docs/index.html">Hexo官方手册</a></p></li>
+<li><p><a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/">Next官方手册</a></p></li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.bestzuo.cn/posts/blog-establish.html">Hexo博客+Next主题深度优化与定制</a></p></li>
+<li><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9f63b925b322">Hexo+NexT搭建个人博客</a></p></li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33840251/article/details/103899972">Cannot read property ‘enable_sync’ of undefined</a></p></li>
+</ul>
 
     </div>
 
@@ -527,7 +559,7 @@ social:
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">138k</span>
+    <span title="站点总字数">147k</span>
   </span>
 </div>
 <div class="busuanzi-count">
