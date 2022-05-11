@@ -123,7 +123,7 @@ $$
     L_m^{con}=-\log\frac{\exp ({\rm sim}(z_m, \mu(z_m))/\tau)}{\sum^{2N}_{i=1,i\not= m}\exp ({\rm sim}(z_m, z_i)/\tau)}
 \end{equation}
 $$
-其中$\rm{sim}$为cosine相似度，$${\rm sim}(u, v)=u\cdot v/ \|u\|\|v\|$$，$\mu$为匹配函数：
+其中$\rm{sim}$为cosine相似度，${\rm sim}(u, v)=u\cdot v/ \|u\|\|v\|$，$\mu$为匹配函数：
 $$
 \begin{equation}
     \mu(z_m)=\left\{ \begin{array}{ll}
