@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://entropy2333.github.io/2022/03/21/Hierarchy-aware-Label-Semantics-Matching-Network-for-Hierarchical-Text-Classification/image-20220323141220288.png">
 <meta property="og:image" content="https://entropy2333.github.io/2022/03/21/Hierarchy-aware-Label-Semantics-Matching-Network-for-Hierarchical-Text-Classification/image-20220323141233506.png">
 <meta property="article:published_time" content="2022-03-21T08:29:51.000Z">
-<meta property="article:modified_time" content="2022-03-24T05:34:02.923Z">
+<meta property="article:modified_time" content="2022-04-04T11:36:15.985Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="NLP">
 <meta property="article:tag" content="Multi-Label">
@@ -175,7 +175,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-count">72</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -188,7 +188,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-count">66</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -334,7 +334,7 @@
 <li>dataset: RCV1-V2 WOS EURLEX-57K</li>
 </ul>
 <h2 id="background">Background</h2>
-<p>有点类似对比学习的思想，将HTC问题形式华为一个语义匹配问题，希望文本表示与目标标签的表示更接近，与不相关的标签表示距离更远。</p>
+<p>有点类似对比学习的思想，将HTC问题形式化为一个语义匹配问题，希望文本表示与目标标签的表示更接近，与不相关的标签表示距离更远。</p>
 <h2 id="method">Method</h2>
 <p>参考HiAGM，首先分别用LSTM和GCN对文本和标签提取特征，作者这里对文本也用了GCN进一步提取特征，称为hierarchy-aware text feature propagation module。 <span class="math display">\[
 \begin{align}
@@ -465,7 +465,7 @@ L_{match} = \max(0,D(\Phi_t, \Phi_l^p)-D(\Phi_t, \Phi_l^n)+\gamma)
       <div class="popular-posts-title"><a href="/2022/02/13/HCL-MTC-Hierarchical-Contrastive-Learning-for-Multi-label-Text-Classification/" rel="bookmark">HCL-MTC: Hierarchical Contrastive Learning for Multi-label Text Classification</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2022/01/17/Hierarchy-Decoder-is-All-You-Need-To-Text-Classification/" rel="bookmark">Hierarchy Decoder is All You Need To Text Classification</a></div>
+      <div class="popular-posts-title"><a href="/2022/05/08/HPT-Hierarchy-aware-Prompt-Tuning-for-Hierarchical-Text-Classification/" rel="bookmark">HPT: Hierarchy-aware Prompt Tuning for Hierarchical Text Classification</a></div>
     </li>
   </ul>
 
@@ -551,7 +551,7 @@ L_{match} = \max(0,D(\Phi_t, \Phi_l^p)-D(\Phi_t, \Phi_l^n)+\gamma)
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">147k</span>
+    <span title="站点总字数">150k</span>
   </span>
 </div>
 <div class="busuanzi-count">

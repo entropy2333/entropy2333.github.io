@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://entropy2333.github.io/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/image-20220331175445242.png">
 <meta property="og:image" content="https://entropy2333.github.io/2022/03/31/Incorporating-Hierarchy-into-Text-Encoder-a-Contrastive-Learning-Approach-for-Hierarchical-Text-Classification/image-20220331175519133.png">
 <meta property="article:published_time" content="2022-03-31T08:00:57.000Z">
-<meta property="article:modified_time" content="2022-03-31T09:55:20.854Z">
+<meta property="article:modified_time" content="2022-03-31T12:01:16.150Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="NLP">
 <meta property="article:tag" content="Multi-Label">
@@ -174,7 +174,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-count">72</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -187,7 +187,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-count">66</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -382,7 +382,7 @@ P_i = \sum_{j\in y}P_{ij}
 \begin{equation}
     L_m^{con}=-\log\frac{\exp ({\rm sim}(z_m, \mu(z_m))/\tau)}{\sum^{2N}_{i=1,i\not= m}\exp ({\rm sim}(z_m, z_i)/\tau)}
 \end{equation}
-\]</span> 其中<span class="math inline">\(\rm{sim}\)</span>为cosine相似度，<span class="math display">\[{\rm sim}(u, v)=u\cdot v/ \|u\|\|v\|\]</span>，<span class="math inline">\(\mu\)</span>为匹配函数： <span class="math display">\[
+\]</span> 其中<span class="math inline">\(\rm{sim}\)</span>为cosine相似度，<span class="math inline">\({\rm sim}(u, v)=u\cdot v/ \|u\|\|v\|\)</span>，<span class="math inline">\(\mu\)</span>为匹配函数： <span class="math display">\[
 \begin{equation}
     \mu(z_m)=\left\{ \begin{array}{ll}
          c_i, \text{ if } z_m=\hat{c_i}&amp;\\
@@ -438,7 +438,7 @@ L_{ij}^C=-y_{ij}\log(p_{ij})-(1-y_{ij})\log(1-p_{ij})
       <div class="popular-posts-title"><a href="/2022/02/13/HCL-MTC-Hierarchical-Contrastive-Learning-for-Multi-label-Text-Classification/" rel="bookmark">HCL-MTC: Hierarchical Contrastive Learning for Multi-label Text Classification</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2022/03/21/Hierarchy-aware-Label-Semantics-Matching-Network-for-Hierarchical-Text-Classification/" rel="bookmark">Hierarchy-aware Label Semantics Matching Network for Hierarchical Text Classification</a></div>
+      <div class="popular-posts-title"><a href="/2022/05/08/HPT-Hierarchy-aware-Prompt-Tuning-for-Hierarchical-Text-Classification/" rel="bookmark">HPT: Hierarchy-aware Prompt Tuning for Hierarchical Text Classification</a></div>
     </li>
   </ul>
 
@@ -490,6 +490,9 @@ L_{ij}^C=-y_{ij}\log(p_{ij})-(1-y_{ij})\log(1-p_{ij})
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2022/05/08/HPT-Hierarchy-aware-Prompt-Tuning-for-Hierarchical-Text-Classification/" rel="next" title="HPT: Hierarchy-aware Prompt Tuning for Hierarchical Text Classification">
+                  HPT: Hierarchy-aware Prompt Tuning for Hierarchical Text Classification <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -521,7 +524,7 @@ L_{ij}^C=-y_{ij}\log(p_{ij})-(1-y_{ij})\log(1-p_{ij})
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">147k</span>
+    <span title="站点总字数">150k</span>
   </span>
 </div>
 <div class="busuanzi-count">

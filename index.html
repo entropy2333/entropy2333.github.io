@@ -161,7 +161,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-count">72</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,7 +174,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-count">66</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -237,6 +237,150 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2022/05/08/HPT-Hierarchy-aware-Prompt-Tuning-for-Hierarchical-Text-Classification/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="entropy2333">
+      <meta itemprop="description" content="Cyber Security, SJTU">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="entropy2333">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/08/HPT-Hierarchy-aware-Prompt-Tuning-for-Hierarchical-Text-Classification/" class="post-title-link" itemprop="url">HPT: Hierarchy-aware Prompt Tuning for Hierarchical Text Classification</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-08 09:55:01" itemprop="dateCreated datePublished" datetime="2022-05-08T09:55:01+08:00">2022-05-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Paper/" itemprop="url" rel="index"><span itemprop="name">Paper</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.2k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>用 Prompt 方法做层次文本分类，并融合了层次信息。</p>
+<p><img src="/2022/05/08/HPT-Hierarchy-aware-Prompt-Tuning-for-Hierarchical-Text-Classification/image-20220508100925643.png" alt="image-20220508100925643" style="zoom: 33%;"></p>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/05/08/HPT-Hierarchy-aware-Prompt-Tuning-for-Hierarchical-Text-Classification/image-20220508095632413.png" alt="image-20220508095632413" style="zoom:33%;"></p>
+<ul>
+<li>paper: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2204.13413v1.pdf" class="uri">https://arxiv.org/pdf/2204.13413v1.pdf</a></li>
+<li>dataset: WOS RCV1-V2 NYT</li>
+</ul>
+<h2 id="motivation">Motivation</h2>
+<p>对于微调（finetune）范式，在预训练的MLM任务与下游分类任务之间存在 gap ，为此提出了 prompt tuning 的概念，即构造模版让预训练模型做完形填空任务。例如构造模版 <span class="math inline">\(\text{x is [MASK]}\)</span>，其中<span class="math inline">\(\text{[MASK]}\)</span>可以代表分类中的标签，利用 MLM 预测 <span class="math inline">\(\text{[MASK]}\)</span> 的值，从而可以充分利用PLM的潜力。</p>
+<p>在层次分类这种任务上，prompt 也同样适用，例如<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2106.10076.pdf">Label Mask for Multi-Label Text Classification</a>。不过现有方法仍然存在两个问题：</p>
+<ul>
+<li><strong>Hierarchy and flat gap</strong>：局限于flat prompt，忽略了标签的层次信息。</li>
+<li><strong>Multi-label and multi-class gap</strong>：MLM任务是多分类任务，而非多标签任务。</li>
+</ul>
+<p>因此作者提出了 <strong>H</strong>ierarchy-aware <strong>P</strong>rompt <strong>T</strong>uning 方法，并将 HTC 转变为多标签的 MLM 任务。</p>
+<h2 id="method">Method</h2>
+<h3 id="perliminaries">Perliminaries</h3>
+<p>标签层次定义为 <span class="math inline">\(\mathcal{H}=(\mathcal{Y},E)\)</span>，给定文本 <span class="math inline">\(\mathbf{x}\)</span>，预测的标签集合 <span class="math inline">\(Y\)</span> 对应于 <span class="math inline">\(\mathcal{H}\)</span> 中的一条或多条路径。</p>
+<p>对于传统的微调范式而言，需要在语句首尾拼接 <span class="math inline">\([CLS]\)</span> 和 <span class="math inline">\([SEP]\)</span>，即输入形式为 $  $。送入模型后，对输出的 <span class="math inline">\(h_{[CLS]}\)</span> 接分类器预测标签即可。</p>
+<p>而对于Prompt Tuning，主要有两种：</p>
+<ul>
+<li>Hard Prompt：人为构造的模版，如 <span class="math inline">\(\text{[CLS] } \mathbf{x}\text{ [SEP] the text is about [MASK] [SEP]}\)</span>，模型需要预测被掩码的位置，相当于对词表中的每个词计算分数。此外还需要定义 verbalizer，即标签的映射关系。</li>
+<li>Soft Prompt：不需要手工构造模版，采用可学习的向量作为模版，如 <span class="math inline">\(\text{[CLS] } \mathbf{x} \text{ [SEP] [V1] [V2] [V3] [MASK] [SEP]}\)</span>，模型预测 <span class="math inline">\(\text{[MASK]}\)</span> 的同时学习模版。</li>
+</ul>
+<p>上述两种方式可以实现 HTC 的任务，将其转化为多个二分类任务，但存在作者提出的两个问题。</p>
+<p><img src="/2022/05/08/HPT-Hierarchy-aware-Prompt-Tuning-for-Hierarchical-Text-Classification/image-20220508103548543.png" alt="image-20220508103548543" style="zoom:33%;"></p>
+<h3 id="hierarchy-aware-prompt">Hierarchy-aware Prompt</h3>
+<p>给定 <span class="math inline">\(L\)</span> 层的层级结构，构造 <span class="math inline">\(L\)</span> 个虚拟模版 <span class="math inline">\(\text{[V1] ... [VL]}\)</span> ，输入为 <span class="math inline">\(\text{[CLS] } \mathbf{x}\text{ [SEP] [V1] [PRED] ... [VL] [PRED] [SEP]}\)</span>，其中 <span class="math inline">\(\text{[PRED]}\)</span> 相当于 <span class="math inline">\(\text{[MASK]}\)</span>。</p>
+<p>具体而言，使用 BERT 作为文本编码器，那么输入表示为： <span class="math display">\[
+\mathbf{T} = [\mathbf{x}_1,\cdots,\mathbf{x}_N,\mathbf{t}_1,\mathbf{e}_P,\cdots,\mathbf{t}_L,\mathbf{e}_P]
+\]</span> 其中 <span class="math inline">\(\mathbf{X} = [\mathbf{x}_1,\cdots,\mathbf{x}_N]\)</span> 表示词向量， <span class="math inline">\(\mathbf{e}_P\)</span> 就是 <span class="math inline">\(\text{[PRED]}\)</span> 的嵌入，采用 <span class="math inline">\(\text{[MASK]}\)</span> 作为初始化，<span class="math inline">\(\{\mathbf{t}_i\}\)</span> 表示 layer-wise 的模版嵌入，采用随机初始化。采用 BERT 编码后的输出为： <span class="math display">\[
+\mathbf{H} = [\mathbf{h}_1,\cdots,\mathbf{h}_N,h_{\mathbf{t}_1},\mathbf{h}^1_P,\cdots,h_{\mathbf{t}_L},\mathbf{h}^2_P]
+\]</span> 之后对于 verblizer，为每个标签 <span class="math inline">\(y_i\)</span> 采用可学习的虚拟单词 <span class="math inline">\(v_i\)</span>，选择对应 token embedding 的均值初始化 <span class="math inline">\(\mathbf{v}_i\)</span>，形式化为： <span class="math display">\[
+\text{Verb}_m(y_i) = \begin{cases}v_i,&amp;y_i\in\mathcal{N_m}\\
+\varnothing,&amp;\text{Others}\end{cases}
+\]</span></p>
+<p>其中 <span class="math inline">\(\mathcal{N}_m\)</span> 表示第 <span class="math inline">\(m\)</span> 层的标签集合。</p>
+<h3 id="hierarchy-injection">Hierarchy Injection</h3>
+<p>考虑到上述方法只引入了标签的深度信息，作者希望在模版表示中引入层次知识。为此采用 <span class="math inline">\(K\)</span> 层堆叠的 GAT 建模层次关系，给定在第 <span class="math inline">\(k\)</span> 层的节点 <span class="math inline">\(u\)</span>，信息聚合操作定义为： <span class="math display">\[
+\mathbf{g}_u^{(k+1)} = \text{ReLU}\left(\sum_{v\in\mathcal{N}(u)\cup\{u\}}\frac{1}{c_u}\mathbf{W}^{(k)}\mathbf{g}_v^{(k)}\right)
+\]</span> 其中 <span class="math inline">\(N(u)\)</span> 表示 <span class="math inline">\(u\)</span> 的邻居，<span class="math inline">\(c_u\)</span> 是一个归一化常数。</p>
+<p>为了获取每层的知识，创建 <span class="math inline">\(L\)</span> 个虚拟节点 <span class="math inline">\(t_1,\cdots,t_L\)</span>，将 <span class="math inline">\(t_i\)</span> 与第 <span class="math inline">\(i\)</span> 层所有的节点相连（有点像 <span class="math inline">\(\text{[CLS]}\)</span> ）。对于节点初始化，采用虚拟单词 <span class="math inline">\(\mathbf{v}_i\)</span> 作为节点 <span class="math inline">\(y_i\in\mathcal{Y}\)</span> 的特征，模版嵌入 <span class="math inline">\(\mathbf{t}_i\)</span> 作为 <span class="math inline">\(t_i\)</span> 的节点特征。</p>
+<p>在构建的新图上施加 GAT，虚拟节点 <span class="math inline">\(t_i\)</span> 的输出表示为 <span class="math inline">\(g_{t_i}\)</span>，其聚合了第 <span class="math inline">\(i\)</span> 层的知识，利用残差连接获得第 <span class="math inline">\(i\)</span> 个模版嵌入： <span class="math display">\[
+\mathbf{t}_i^\prime = \mathbf{t}_i + \mathbf{g}_{t_i}^K
+\]</span> 用 <span class="math inline">\(\mathbf{t}_i^\prime\)</span> 替代原有的 <span class="math inline">\(\mathbf{t}_i\)</span> 送入 BERT 即可。</p>
+<h3 id="zero-bounded-multi-label-cross-entropy-loss">Zero-bounded Multi-label Cross Entropy Loss</h3>
+<p>采用了多标签交叉熵，参考苏神的博客 <a target="_blank" rel="noopener" href="https://kexue.fm/archives/7359">将“softmax+交叉熵”推广到多标签分类问题</a>。</p>
+<p>具体而言，作者对每一层都计算了交叉熵： <span class="math display">\[
+\mathcal{L}_{ZMLCE}^m = \log(1+\sum_{y_i\in\mathcal{N}_m^n}e^{s_{y_i}}) + \log(1+\sum_{y_i\in\mathcal{N}_m^p}e^{-s_{y_i}})
+\]</span> 其中 <span class="math inline">\(s_{y_i} = \mathbf{v}^T_i\mathbf{h}_P^m + b_{im}\)</span>，<span class="math inline">\(\mathcal{N}_m^p\)</span> 和 <span class="math inline">\(\mathcal{N}_m^n\)</span> 分别表示第 <span class="math inline">\(m\)</span> 层的正负标签集合。此外作者加了 MLM Loss，掩码比例为 15%。 <span class="math display">\[
+\mathcal{L}_{all} = \mathcal{L}_{MLM} + \sum_{m=1}^L\mathcal{L}_{ZMLCE}^m
+\]</span> 在推理时，选择得分大于 0 的标签作为预测结果。</p>
+<h2 id="experiments">Experiments</h2>
+<p>选用 WOS NYT 和 RCV1-V2，只用了一层的 GAT。</p>
+<p><img src="/2022/05/08/HPT-Hierarchy-aware-Prompt-Tuning-for-Hierarchical-Text-Classification/image-20220508095742431.png" alt="image-20220508095742431" style="zoom: 50%;"></p>
+<p>从结果来看，不论是 HardPrompt 还是 SoftPrompt 都比直接微调要好，提出的方法取得了 SOTA。</p>
+<p>消融实验验证了作者提出各个模块的有效性。</p>
+<p><img src="/2022/05/08/HPT-Hierarchy-aware-Prompt-Tuning-for-Hierarchical-Text-Classification/image-20220511135822969.png" alt="image-20220511135822969" style="zoom: 33%;"></p>
+<p>作者比较了模型在数据不平衡的表现，包括每层的标签数不平衡和每个样本包含的标签数不平衡。</p>
+<p><img src="/2022/05/08/HPT-Hierarchy-aware-Prompt-Tuning-for-Hierarchical-Text-Classification/image-20220511140218722.png" alt="image-20220511140218722" style="zoom: 50%;"></p>
+<p>此外还探讨了低资源设置下的表现，采用10%的训练数据，这也符合 prompt 本身的应用场景。</p>
+<p><img src="/2022/05/08/HPT-Hierarchy-aware-Prompt-Tuning-for-Hierarchical-Text-Classification/image-20220511140224948.png" alt="image-20220511140224948" style="zoom:50%;"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1036,96 +1180,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://entropy2333.github.io/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/myavatar.jpg">
-      <meta itemprop="name" content="entropy2333">
-      <meta itemprop="description" content="Cyber Security, SJTU">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="entropy2333">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/" class="post-title-link" itemprop="url">Modeling Diagnostic Label Correlation for Automatic ICD Coding</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-02-05 16:15:11" itemprop="dateCreated datePublished" datetime="2022-02-05T16:15:11+08:00">2022-02-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Paper/" itemprop="url" rel="index"><span itemprop="name">Paper</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.3k</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>NAACL 2021，提出了一个two-stage框架以捕获标签相关性，提升自动ICD编码的性能。</p>
-<p><img src="/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/image-20220205161927097.png" alt="image-20220205161927097" style="zoom:50%;"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/02/05/Modeling-Diagnostic-Label-Correlation-for-Automatic-ICD-Coding/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
@@ -1150,7 +1204,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">147k</span>
+    <span title="站点总字数">150k</span>
   </span>
 </div>
 <div class="busuanzi-count">
