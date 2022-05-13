@@ -17,6 +17,22 @@ Git常见操作备忘
 
 ## 常见操作备忘
 
+## 配置
+
+```bash
+# 查看
+git config user.name
+git config user.email
+
+# 修改（局部）
+git config user.name ${your_name}
+git config user.email ${email@example.com}
+
+# 修改（全局）
+git config --global user.name ${your_name}
+git config --global user.email ${email@example.com}
+```
+
 ### 使用Access Token添加远程分支
 
 ```shell
@@ -82,3 +98,24 @@ git rebase $commit-id
 ```
 
 默认编辑器为nano，可以用`git config --global core.editor "vim"`修改为vim。
+
+## 修改历史提交信息
+
+```bash
+git filter-branch -f --env-filter '
+OLD_EMAIL="old_email"
+CORRECT_NAME="your_name"
+CORRECT_EMAIL="email@exmaple.com"
+if [ "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL" ]
+then
+    export GIT_COMMITTER_NAME="$CORRECT_NAME"
+    export GIT_COMMITTER_EMAIL="$CORRECT_EMAIL"
+fi
+if [ "$GIT_AUTHOR_EMAIL" = "$OLD_EMAIL" ]
+then
+    export GIT_AUTHOR_NAME="$CORRECT_NAME"
+    export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
+fi
+' --tag-name-filter cat -- --branches --tags
+```
+

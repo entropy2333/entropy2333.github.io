@@ -31,7 +31,6 @@
     "hexo-symbols-count-time": "^0.7.1"
   },
   "devDependencies": {
-    "hexo-inject": "^1.0.0",
-    "hexo-math": "^3.0.4"
+    "hexo-inject": "^1.0.0"
   }
 }

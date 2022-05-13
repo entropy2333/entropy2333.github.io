@@ -14,6 +14,8 @@ category:
 
 <img src="HPT-Hierarchy-aware-Prompt-Tuning-for-Hierarchical-Text-Classification/image-20220508100925643.png" alt="image-20220508100925643" style="zoom: 33%;" />
 
+<!--more-->
+
 ## Overview
 
 <img src="HPT-Hierarchy-aware-Prompt-Tuning-for-Hierarchical-Text-Classification/image-20220508095632413.png" alt="image-20220508095632413" style="zoom:33%;" />
@@ -36,7 +38,7 @@ category:
 
 ### Perliminaries
 
-标签层次定义为 $\mathcal{H}=(\mathcal{Y},E)$，给定文本 $\mathbf{x}$，预测的标签集合 $Y$ 对应于 $\mathcal{H}$ 中的一条或多条路径。
+标签层次定义为$\mathcal{H}=(\mathcal{Y},E)$，给定文本 $\mathbf{x}$，预测的标签集合 $Y$ 对应于 $\mathcal{H}$ 中的一条或多条路径。
 
 对于传统的微调范式而言，需要在语句首尾拼接 $[CLS]$ 和 $[SEP]$，即输入形式为 $ \text{[CLS] } \mathbf{x}\text{ [SEP]}$。送入模型后，对输出的 $h_{[CLS]}$ 接分类器预测标签即可。
 
