@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://entropy2333.github.io/"/>
-  <updated>2022-05-13T16:47:43.301Z</updated>
+  <updated>2022-06-02T15:10:38.358Z</updated>
   <id>https://entropy2333.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>镜像网站配置</title>
+    <link href="https://entropy2333.github.io/2022/06/02/%E9%95%9C%E5%83%8F%E7%BD%91%E7%AB%99%E9%85%8D%E7%BD%AE/"/>
+    <id>https://entropy2333.github.io/2022/06/02/%E9%95%9C%E5%83%8F%E7%BD%91%E7%AB%99%E9%85%8D%E7%BD%AE/</id>
+    <published>2022-06-02T14:33:37.000Z</published>
+    <updated>2022-06-02T15:10:38.358Z</updated>
+    
+    <content type="html"><![CDATA[<p>配置环境时常常要修改国内镜像，记录常用的镜像网站。</p><a id="more"></a><h2 id="pip">Pip</h2><ul><li><p>官方源：https://pypi.python.org/simple/</p></li><li><p>清华大学 ：https://pypi.tuna.tsinghua.edu.cn/simple/</p></li><li><p>阿里云：http://mirrors.aliyun.com/pypi/simple/</p></li><li><p>中国科学技术大学 ：http://pypi.mirrors.ustc.edu.cn/simple/</p></li><li><p>华中科技大学：http://pypi.hustunique.com/</p></li><li><p>豆瓣源：http://pypi.douban.com/simple/</p></li><li><p>腾讯源：http://mirrors.cloud.tencent.com/pypi/simple</p></li><li><p>华为镜像源：https://repo.huaweicloud.com/repository/pypi/simple/</p></li></ul><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 临时使用</span>pip <span class="token function">install</span> <span class="token variable">$&#123;PKG&#125;</span> -i <span class="token variable">$&#123;PIP_URL&#125;</span></code></pre><p>永久修改</p><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">mkdir</span> ~/.pip<span class="token builtin class-name">cd</span> ~/.pip<span class="token function">touch</span> pip.conf</code></pre><p>输入内容</p><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>global<span class="token punctuation">]</span>index-url <span class="token operator">=</span> https://pypi.tuna.tsinghua.edu.cn/simple</code></pre><h2 id="homebrew">Homebrew</h2><ul><li>阿里云：<a href="https://mirrors.cloud.tencent.com/help/homebrew.html" class="uri">https://mirrors.cloud.tencent.com/help/homebrew.html</a></li><li>腾讯云：<a href="https://mirrors.cloud.tencent.com/help/homebrew.html" class="uri">https://mirrors.cloud.tencent.com/help/homebrew.html</a></li><li>中科大：<a href="http://mirrors.ustc.edu.cn/help/brew.git.html" class="uri">http://mirrors.ustc.edu.cn/help/brew.git.html</a></li></ul><p>以中科大为例</p><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 替换brew.git</span><span class="token builtin class-name">cd</span> <span class="token string">"<span class="token variable"><span class="token variable">$(</span>brew --repo<span class="token variable">)</span></span>"</span><span class="token function">git</span> remote set-url origin https://mirrors.ustc.edu.cn/brew.git<span class="token comment"># 替换homebrew-core.git</span><span class="token builtin class-name">cd</span> <span class="token string">"<span class="token variable"><span class="token variable">$(</span>brew --repo<span class="token variable">)</span></span>/Library/Taps/homebrew/homebrew-core"</span><span class="token function">git</span> remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git<span class="token comment"># 应用生效</span>brew update<span class="token comment"># 替换homebrew-bottles</span><span class="token builtin class-name">echo</span> <span class="token string">'export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles'</span> <span class="token operator">>></span> ~/.zshrc<span class="token builtin class-name">source</span> ~/.zshrc</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;配置环境时常常要修改国内镜像，记录常用的镜像网站。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="备忘" scheme="https://entropy2333.github.io/categories/%E5%A4%87%E5%BF%98/"/>
+    
+    
+      <category term="Mirror" scheme="https://entropy2333.github.io/tags/Mirror/"/>
+    
+  </entry>
   
   <entry>
     <title>HPT: Hierarchy-aware Prompt Tuning for Hierarchical Text Classification</title>
@@ -245,9 +268,9 @@
       <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
     
     
-      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
-    
       <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
+    
+      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
       <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
     
@@ -410,9 +433,9 @@
     
       <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
     
-      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
-    
       <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
+    
+      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
   </entry>
   
@@ -525,34 +548,6 @@
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
       <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ML-Decoder: Scalable and Versatile Classification Head</title>
-    <link href="https://entropy2333.github.io/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/"/>
-    <id>https://entropy2333.github.io/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/</id>
-    <published>2022-01-15T07:58:44.000Z</published>
-    <updated>2022-02-07T07:02:51.697Z</updated>
-    
-    <content type="html"><![CDATA[<p>本文提出了一种新的基于注意力的分类头ML-Decoder，使用query预测类别标签的存在。ML-Decoder是计算高效的，并且是多功能的，在query的加持下可以泛化到unseen类别。</p><p><img src="/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115161912555.png" alt="image-20220115161912555" style="zoom:50%;"></p><a id="more"></a><h2 id="overview">Overview</h2><p><img src="/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115160147438.png" alt="image-20220115160147438" style="zoom:50%;"></p><ul><li>paper: <a href="https://arxiv.org/pdf/2111.12933v1.pdf" class="uri">https://arxiv.org/pdf/2111.12933v1.pdf</a></li><li>code: <a href="https://github.com/alibaba-miil/ml_decoder" class="uri">https://github.com/alibaba-miil/ml_decoder</a></li></ul><h2 id="background">Background</h2><p>对于单标签分类，通常使用GAP（Global Average Pooling）后接全连接层，这也可以扩展到多标签分类。</p><p>基于GAP的方法简单高效，但性能往往不是最佳的，且不能直接应用于零样本学习。基于注意力的方法往往性能更好，但是计算代价大，对于超大规模分类的场景不适用。</p><p>本文提出了ML-Decoder，统一了单标签、多标签和零样本的分类，并取得了SOTA的结果。其基于原生的Transformer Decoder，主要做了两点修改。</p><ul><li>去除了冗余的自注意力块，将复杂度由平方降低为线性。</li><li>使用了一种新颖的group-decoding机制，使用固定数目的query而非给每个类指派一个query，之后使用group全连接池化层插值到最终的类别数。</li></ul><h2 id="method">Method</h2><h3 id="baseline">Baseline</h3><p>经典的分类网络由backbone和分类头两部分组成。backbone输出空间特征<span class="math inline">\(E\in\mathbb{R}^{H\times W\times D}\)</span>，分类头将其转化为N个logit<span class="math inline">\(\{l_n\}_{n=1}^N\)</span>，<span class="math inline">\(N\)</span>表示类别数。</p><p>处理空间特征的baseline主要由GAP和注意力两种。</p><p>基于GAP的方法，首先在样本空间维度上做全局平均得到<span class="math inline">\(z\in\mathbb{R}^{D\times1}\)</span>，随后接一个全连接层<span class="math inline">\(W\in\mathbb{R}^{N\times D}\)</span>得到分类结果。</p><p>基于注意力的方法，较为典型的就是类似于DETR提出的Transformer Decoder，已经在多标签分类上取得了顶尖的结果（这里引用的就是Query2Label）。这种方法在类别数较少的数据集上表现很好，比如MS-COCO和Pascal-VOC，但计算代价与类别数的平方相关，对于Open Images（9600个类别）这种大规模数据集难以适用。</p><h3 id="recap">Recap</h3><p><img src="/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115164251296.png" alt="image-20220115164251296" style="zoom:50%;"></p><center>ML-Decoder与原生的区别</center><p>ML-Decoder主要做了以下两个修改</p><ul><li><p><strong>去除自注意力</strong>：Transformer Decoder对query会计算self-attention，在推理阶段实际上这实际上是一个固定的变换，但之后进入cross-attention也会经过全连接层，意味着这个self-attention实际上是冗余的。</p></li><li><p><strong>Group-decoding</strong>：对于超大规模分类，即使是线性复杂度代价也很高，作者希望cross-attention和feed-forward层与类别数无关，因此将输入的query数目固定为<span class="math inline">\(K\)</span>。</p></li></ul><p>在feed-forward后，query送入Group全连接池化层，这一层主要做两件事。</p><ul><li>将每个query扩展到<span class="math inline">\(\frac NK\)</span>个输出。</li><li>对embedding的维度做池化。</li></ul><p><span class="math display">\[\begin{gather*}L_i = (W_k·Q_k)_j \\\text{where: }k=i\ \textbf{div}\ g,\ j=i\ \textbf{mod}\g\end{gather*}\]</span></p><p>其中<span class="math inline">\(g=\frac NK\)</span>，<span class="math inline">\(Q_k\in\mathbb{R}^{D}\)</span>表示第<span class="math inline">\(k\)</span>个query，<span class="math inline">\(W_k\in\mathbb{R}^{g\times D}\)</span>表示第<span class="math inline">\(k\)</span>个可学习的变换矩阵。计算过程示意如下图所示（<span class="math inline">\(g=4\)</span>）。</p><p><img src="/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115171512804.png" alt="image-20220115171512804" style="zoom:50%;"></p><pre class="language-python" data-language="python"><code class="language-python"><span class="token decorator annotation punctuation">@torch<span class="token punctuation">.</span>jit<span class="token punctuation">.</span>script</span><span class="token keyword">class</span> <span class="token class-name">GroupFC</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> embed_len_decoder<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">:</span>        self<span class="token punctuation">.</span>embed_len_decoder <span class="token operator">=</span> embed_len_decoder    <span class="token keyword">def</span> <span class="token function">__call__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> h<span class="token punctuation">:</span> Tensor<span class="token punctuation">,</span> duplicate_pooling<span class="token punctuation">:</span> Tensor<span class="token punctuation">,</span>                 out_extrap<span class="token punctuation">:</span> Tensor<span class="token punctuation">)</span><span class="token punctuation">:</span>        <span class="token triple-quoted-string string">"""        Args:            h: [batch_size, embed_len_decoder, decoder_embedding]            duplicate_pooling: [embed_len_decoder, decoder_embedding, duplicate_factor]            out_extrap: [batch_size, embed_len_decoder, duplicate_factor]        """</span>        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>h<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>            h_i <span class="token operator">=</span> h<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> i<span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span>  <span class="token comment"># [batch_size, decoder_embedding]</span>            <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>duplicate_pooling<span class="token punctuation">.</span>shape<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">:</span>                w_i <span class="token operator">=</span> duplicate_pooling<span class="token punctuation">[</span>                    i<span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span>  <span class="token comment"># [decoder_embedding, duplicate_factor]</span>            <span class="token keyword">else</span><span class="token punctuation">:</span>                w_i <span class="token operator">=</span> duplicate_pooling            out_extrap<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> i<span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token operator">=</span> torch<span class="token punctuation">.</span>matmul<span class="token punctuation">(</span>h_i<span class="token punctuation">,</span> w_i<span class="token punctuation">)</span></code></pre><p>将输出展平截取即可得到结果</p><pre class="language-python" data-language="python"><code class="language-python">h_out <span class="token operator">=</span> out_extrap<span class="token punctuation">.</span>flatten<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span>self<span class="token punctuation">.</span>decoder<span class="token punctuation">.</span>num_classes<span class="token punctuation">]</span></code></pre><p>此外，Query2Label中使用了可学习的query，本文认为全连接层可以变换到任意值，所以使用固定query也是可以的，这也使得ML-Decoder能做零样本学习。</p><h3 id="ml-decoder-for-zsl">ML-Decoder for ZSL</h3><p>对于零样本学习，ML-Decoder使用固定query。采用语言模型提取标签语义，得到embedding向量作为输入的query，共享其他参数。作者针对零样本修改了Group-decoding，细节在此就不赘述了。</p><p>作者认为这种query的设计方案，可以结合数据增强，比如random-query或者query-noise等，思路还是挺巧妙的。</p><p><img src="/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115173027175.png" alt="image-20220115173027175" style="zoom:50%;"></p><h2 id="experiment">Experiment</h2><p>选取了MS-COCO、Pascal-VOC和Open Images，在NUS-WIDE上测试了零样本性能，并在ImageNet上测试了单标签分类性能。</p><h3 id="ablation">Ablation</h3><p>Transformer Decoder的使用可以显著提高性能，在query数目相同的情况下性能相同，说明自注意力确实是冗余的。</p><p><img src="/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115173836504.png" alt="image-20220115173836504" style="zoom:50%;"></p><p>在Open Image上的实验表明，相比原生Decoder，ML-Decoder大幅降低了计算复杂度，在计算量提高10%-20%的情况下比GAP取得了更好的结果。同时增加query的数目边际效益递减。</p><p><img src="/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115173917781.png" alt="image-20220115173917781" style="zoom:50%;"></p><p><img src="/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115174647227.png" alt="image-20220115174647227" style="zoom:50%;"></p><p><img src="/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115173941995.png" alt="image-20220115173941995" style="zoom:50%;"></p><h3 id="results">Results</h3><p>刷新SOTA。</p><p><img src="/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115173951299.png" alt="image-20220115173951299" style="zoom:50%;"></p><p><img src="/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115174012989.png" alt="image-20220115174012989" style="zoom:50%;"></p><p>在ImageNet上，使用ResNet50达到80.7%。</p><p><img src="/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115174714856.png" alt="image-20220115174714856" style="zoom:50%;"></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;本文提出了一种新的基于注意力的分类头ML-Decoder，使用query预测类别标签的存在。ML-Decoder是计算高效的，并且是多功能的，在query的加持下可以泛化到unseen类别。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/2022/01/15/ML-Decoder-Scalable-and-Versatile-Classification-Head/image-20220115161912555.png&quot; alt=&quot;image-20220115161912555&quot; style=&quot;zoom:50%;&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
-    
-    
-      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
-    
-      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
-    
-      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
     
   </entry>
   

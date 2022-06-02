@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://entropy2333.github.io/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141847051.png">
 <meta property="og:image" content="https://entropy2333.github.io/2021/11/23/Hierarchy-Aware-T5-with-Path-Adaptive-Mask-Mechanism-for-Hierarchical-Text-Classification/image-20211123141920675.png">
 <meta property="article:published_time" content="2021-11-23T05:46:57.000Z">
-<meta property="article:modified_time" content="2022-01-23T06:58:39.544Z">
+<meta property="article:modified_time" content="2022-05-13T17:17:51.824Z">
 <meta property="article:author" content="entropy2333">
 <meta property="article:tag" content="Multi-Label">
 <meta property="article:tag" content="Transformer">
@@ -176,7 +176,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-count">73</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -189,7 +189,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-count">67</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -384,6 +384,7 @@ m_{i,j}=\left\{
 \text{Loss}_{\text{PAMM}}=\sum_{b=1}^{B}(\frac{\sum_{h=1}^{H}(\sum_{i=1}^{n}(1-\sum_{j\in C}s_{i,j}))}{H})
 \end{aligned}
 \]</span></p>
+<p>最终的损失是两者加权：</p>
 <p><span class="math display">\[
 \begin{aligned}
     \text{Loss}=&amp;\text{Loss}_{\text{HiA-T5}}+\rho \text{Loss}_{\text{PAMM}}
@@ -510,7 +511,7 @@ NYT和WOS的实验结果
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">151k</span>
+    <span title="站点总字数">152k</span>
   </span>
 </div>
 <div class="busuanzi-count">
