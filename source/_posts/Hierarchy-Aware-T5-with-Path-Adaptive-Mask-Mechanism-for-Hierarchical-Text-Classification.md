@@ -105,6 +105,8 @@ $$
 \end{aligned}
 $$
 
+最终的损失是两者加权：
+
 $$
 \begin{aligned}
     \text{Loss}=&\text{Loss}_{\text{HiA-T5}}+\rho \text{Loss}_{\text{PAMM}}
