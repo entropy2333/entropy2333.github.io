@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://entropy2333.github.io/"/>
-  <updated>2022-06-02T15:10:38.358Z</updated>
+  <updated>2022-09-07T09:08:34.893Z</updated>
   <id>https://entropy2333.github.io/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://entropy2333.github.io/2022/06/02/%E9%95%9C%E5%83%8F%E7%BD%91%E7%AB%99%E9%85%8D%E7%BD%AE/"/>
     <id>https://entropy2333.github.io/2022/06/02/%E9%95%9C%E5%83%8F%E7%BD%91%E7%AB%99%E9%85%8D%E7%BD%AE/</id>
     <published>2022-06-02T14:33:37.000Z</published>
-    <updated>2022-06-02T15:10:38.358Z</updated>
+    <updated>2022-09-07T09:08:34.893Z</updated>
     
-    <content type="html"><![CDATA[<p>配置环境时常常要修改国内镜像，记录常用的镜像网站。</p><a id="more"></a><h2 id="pip">Pip</h2><ul><li><p>官方源：https://pypi.python.org/simple/</p></li><li><p>清华大学 ：https://pypi.tuna.tsinghua.edu.cn/simple/</p></li><li><p>阿里云：http://mirrors.aliyun.com/pypi/simple/</p></li><li><p>中国科学技术大学 ：http://pypi.mirrors.ustc.edu.cn/simple/</p></li><li><p>华中科技大学：http://pypi.hustunique.com/</p></li><li><p>豆瓣源：http://pypi.douban.com/simple/</p></li><li><p>腾讯源：http://mirrors.cloud.tencent.com/pypi/simple</p></li><li><p>华为镜像源：https://repo.huaweicloud.com/repository/pypi/simple/</p></li></ul><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 临时使用</span>pip <span class="token function">install</span> <span class="token variable">$&#123;PKG&#125;</span> -i <span class="token variable">$&#123;PIP_URL&#125;</span></code></pre><p>永久修改</p><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">mkdir</span> ~/.pip<span class="token builtin class-name">cd</span> ~/.pip<span class="token function">touch</span> pip.conf</code></pre><p>输入内容</p><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>global<span class="token punctuation">]</span>index-url <span class="token operator">=</span> https://pypi.tuna.tsinghua.edu.cn/simple</code></pre><h2 id="homebrew">Homebrew</h2><ul><li>阿里云：<a href="https://mirrors.cloud.tencent.com/help/homebrew.html" class="uri">https://mirrors.cloud.tencent.com/help/homebrew.html</a></li><li>腾讯云：<a href="https://mirrors.cloud.tencent.com/help/homebrew.html" class="uri">https://mirrors.cloud.tencent.com/help/homebrew.html</a></li><li>中科大：<a href="http://mirrors.ustc.edu.cn/help/brew.git.html" class="uri">http://mirrors.ustc.edu.cn/help/brew.git.html</a></li></ul><p>以中科大为例</p><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 替换brew.git</span><span class="token builtin class-name">cd</span> <span class="token string">"<span class="token variable"><span class="token variable">$(</span>brew --repo<span class="token variable">)</span></span>"</span><span class="token function">git</span> remote set-url origin https://mirrors.ustc.edu.cn/brew.git<span class="token comment"># 替换homebrew-core.git</span><span class="token builtin class-name">cd</span> <span class="token string">"<span class="token variable"><span class="token variable">$(</span>brew --repo<span class="token variable">)</span></span>/Library/Taps/homebrew/homebrew-core"</span><span class="token function">git</span> remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git<span class="token comment"># 应用生效</span>brew update<span class="token comment"># 替换homebrew-bottles</span><span class="token builtin class-name">echo</span> <span class="token string">'export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles'</span> <span class="token operator">>></span> ~/.zshrc<span class="token builtin class-name">source</span> ~/.zshrc</code></pre>]]></content>
+    <content type="html"><![CDATA[<p>配置环境时常常要修改国内镜像，记录常用的镜像网站。</p><a id="more"></a><h2 id="常见镜像站">常见镜像站</h2><ul><li>SJTU：<a href="https://mirror.sjtu.edu.cn" class="uri">https://mirror.sjtu.edu.cn</a></li><li>清华：<a href="https://mirrors.tuna.tsinghua.edu.cn" class="uri">https://mirrors.tuna.tsinghua.edu.cn</a></li><li>阿里：<a href="https://developer.aliyun.com/mirror/" class="uri">https://developer.aliyun.com/mirror/</a></li><li>腾讯：<a href="https://mirrors.cloud.tencent.com" class="uri">https://mirrors.cloud.tencent.com</a></li><li>中科大：<a href="https://mirrors.ustc.edu.cn" class="uri">https://mirrors.ustc.edu.cn</a></li></ul><h2 id="常用的配置">常用的配置</h2><ul><li><a href="https://mirror.sjtu.edu.cn/docs/anaconda">anaconda</a></li><li><a href="https://mirror.sjtu.edu.cn/docs/git/ohmyzsh.git">git/ohmyzsh.git</a></li><li><a href="https://mirror.sjtu.edu.cn/docs/git/brew.git">homebrew</a></li><li><a href="https://mirror.sjtu.edu.cn/docs/pypi-packages">pypi-packages</a></li><li><a href="https://mirror.sjtu.edu.cn/docs/pytorch-wheels">pytorch-wheels</a></li><li><a href="https://mirror.sjtu.edu.cn/docs/ubuntu">ubuntu apt</a></li></ul><h2 id="homebrew">Homebrew</h2><ul><li>阿里云：<a href="https://mirrors.cloud.tencent.com/help/homebrew.html" class="uri">https://mirrors.cloud.tencent.com/help/homebrew.html</a></li><li>腾讯云：<a href="https://mirrors.cloud.tencent.com/help/homebrew.html" class="uri">https://mirrors.cloud.tencent.com/help/homebrew.html</a></li><li>中科大：<a href="http://mirrors.ustc.edu.cn/help/brew.git.html" class="uri">http://mirrors.ustc.edu.cn/help/brew.git.html</a></li></ul><p>以中科大为例</p><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 替换brew.git</span><span class="token builtin class-name">cd</span> <span class="token string">"<span class="token variable"><span class="token variable">$(</span>brew --repo<span class="token variable">)</span></span>"</span><span class="token function">git</span> remote set-url origin https://mirrors.ustc.edu.cn/brew.git<span class="token comment"># 替换homebrew-core.git</span><span class="token builtin class-name">cd</span> <span class="token string">"<span class="token variable"><span class="token variable">$(</span>brew --repo<span class="token variable">)</span></span>/Library/Taps/homebrew/homebrew-core"</span><span class="token function">git</span> remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git<span class="token comment"># 应用生效</span>brew update<span class="token comment"># 替换homebrew-bottles</span><span class="token builtin class-name">echo</span> <span class="token string">'export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles'</span> <span class="token operator">>></span> ~/.zshrc<span class="token builtin class-name">source</span> ~/.zshrc</code></pre>]]></content>
     
     <summary type="html">
     
@@ -268,9 +268,9 @@
       <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
     
     
-      <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
-    
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+      <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
     
       <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
     
@@ -433,9 +433,9 @@
     
       <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
     
-      <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
-    
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+      <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
     
   </entry>
   
@@ -461,9 +461,9 @@
     
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
     
-      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
-    
       <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
+    
+      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
   </entry>
   
