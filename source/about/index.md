@@ -6,6 +6,13 @@ comments: false
 ---
 
 - Cyber Security Postgraduate@SJTU
-- Onmyoji and Genshim player
-- Currently working on NLP & KG.
-- Life is short, I need Python.
+- Research interest:
+  - NLP KG Multi-Modal
+  - Information Extraction
+  - Document Understanding
+  - Optical Character Recognition
+- Game Player
+  - Onmyoji Genshim LOL etc.
+- Technology Stack
+  - Python C++
+- Contact me: entropy2333@163.com
