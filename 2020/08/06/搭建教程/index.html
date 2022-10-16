@@ -28,7 +28,7 @@
 <meta property="og:description" content="采用Hexo+Next搭建个人博客，并通过Github Pages部署。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-08-06T10:11:48.000Z">
-<meta property="article:modified_time" content="2022-06-02T14:50:54.105Z">
+<meta property="article:modified_time" content="2022-10-16T13:29:32.693Z">
 <meta property="article:author" content="entropy2333">
 <meta name="twitter:card" content="summary">
 
@@ -147,7 +147,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%98%E6%96%B9%E6%89%8B%E5%86%8C"><span class="nav-number">1.</span> <span class="nav-text">官方手册</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">配置环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E7%BD%91%E7%AB%99"><span class="nav-number">3.</span> <span class="nav-text">部署网站</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">修改配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">6.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">配置环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E7%BD%91%E7%AB%99"><span class="nav-number">2.</span> <span class="nav-text">部署网站</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">修改配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">5.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -276,6 +276,15 @@
 
       <time title="创建时间：2020-08-06 18:11:48" itemprop="dateCreated datePublished" datetime="2020-08-06T18:11:48+08:00">2020-08-06</time>
     </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%A4%87%E5%BF%98/" itemprop="url" rel="index"><span itemprop="name">备忘</span></a>
+        </span>
+    </span>
 
   
     <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
@@ -305,10 +314,6 @@
     <div class="post-body" itemprop="articleBody">
         <p>采用Hexo+Next搭建个人博客，并通过Github Pages部署。</p>
 <a id="more"></a>
-<h2 id="官方手册">官方手册</h2>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://theme-next.js.org" class="uri">https://theme-next.js.org</a></li>
-</ul>
 <h2 id="配置环境">配置环境</h2>
 <ul>
 <li><p>安装Node.js，使用<code>npm -v</code>查看版本</p></li>
@@ -345,9 +350,9 @@ hexo g <span class="token operator">&amp;&amp;</span> hexo s
 <li>新建仓库，名为username.github.io。</li>
 <li>安装插件</li>
 </ul>
-<pre class="language-shell" data-language="shell"><code class="language-shell"><span class="token function">npm</span> <span class="token function">install</span> hexo-developer-git --save</code></pre>
+<pre class="language-shell" data-language="shell"><code class="language-shell"><span class="token function">npm</span> <span class="token function">install</span> hexo-deployer-git --save</code></pre>
 <ul>
-<li>修改配置文件_config.yml</li>
+<li>修改配置文件<code>_config.yml</code></li>
 </ul>
 <pre class="language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">deploy</span><span class="token punctuation">:</span>
 <span class="token key atrule">type</span><span class="token punctuation">:</span> git
@@ -471,6 +476,9 @@ hexo new page <span class="token string">"about"</span></code></pre></li>
     <span class="token key atrule">show_result</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
     <span class="token comment"># Available values: default | flat | mac</span>
     <span class="token key atrule">style</span><span class="token punctuation">:</span> flat</code></pre>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/third-party-services/math-equations.html">更换公式的渲染引擎为pandoc</a></li>
+</ul>
 <h2 id="总结">总结</h2>
 <p>个性化设置基本都是基于修改配置文件，修改完用<code>hexo clean; hexo g; hexo s</code>本地查看是否生效。</p>
 <h2 id="参考文章">参考文章</h2>
@@ -563,7 +571,7 @@ hexo new page <span class="token string">"about"</span></code></pre></li>
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">154k</span>
+    <span title="站点总字数">156k</span>
   </span>
 </div>
 <div class="busuanzi-count">

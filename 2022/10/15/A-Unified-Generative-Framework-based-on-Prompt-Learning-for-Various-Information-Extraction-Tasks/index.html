@@ -20,15 +20,25 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"entropy2333.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="来自复旦邱组，提出了一种基于prompt的生成式框架，可以用于各种信息抽取任务。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="A Unified Generative Framework based on Prompt Learning for Various Information Extraction Tasks">
 <meta property="og:url" content="https://entropy2333.github.io/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/index.html">
 <meta property="og:site_name" content="entropy2333">
+<meta property="og:description" content="来自复旦邱组，提出了一种基于prompt的生成式框架，可以用于各种信息抽取任务。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://entropy2333.github.io/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015230422371.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015225408244.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015231526949.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015230440594.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015234536910.png">
+<meta property="og:image" content="https://entropy2333.github.io/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221016000408620.png">
 <meta property="article:published_time" content="2022-10-15T07:32:08.000Z">
-<meta property="article:modified_time" content="2022-10-15T07:32:08.632Z">
+<meta property="article:modified_time" content="2022-10-15T16:08:41.558Z">
 <meta property="article:author" content="entropy2333">
+<meta property="article:tag" content="Prompt">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://entropy2333.github.io/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015230422371.png">
 
 
 <link rel="canonical" href="https://entropy2333.github.io/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/">
@@ -132,7 +142,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -145,6 +155,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method"><span class="nav-number">3.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#notation"><span class="nav-number">3.1.</span> <span class="nav-text">Notation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sub-prompts-generation"><span class="nav-number">3.2.</span> <span class="nav-text">Sub-Prompts Generation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prompts-construction"><span class="nav-number">3.3.</span> <span class="nav-text">Prompts Construction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#answer-generation"><span class="nav-number">3.4.</span> <span class="nav-text">Answer Generation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experiment"><span class="nav-number">4.</span> <span class="nav-text">Experiment</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -273,6 +284,15 @@
 
       <time title="创建时间：2022-10-15 15:32:08" itemprop="dateCreated datePublished" datetime="2022-10-15T15:32:08+08:00">2022-10-15</time>
     </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Paper/" itemprop="url" rel="index"><span itemprop="name">Paper</span></a>
+        </span>
+    </span>
 
   
     <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
@@ -289,7 +309,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>0</span>
+      <span>2.3k</span>
     </span>
 </div>
 
@@ -300,7 +320,73 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        
+        <p>来自复旦邱组，提出了一种基于prompt的生成式框架，可以用于各种信息抽取任务。</p>
+<p><img src="/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015230422371.png" alt="image-20221015230422371" style="zoom:33%;"></p>
+<a id="more"></a>
+<h2 id="overview">Overview</h2>
+<p><img src="/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015225408244.png" alt="image-20221015225408244" style="zoom:33%;"></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2209.11570v1.pdf">[paper]</a> <a target="_blank" rel="noopener" href="https://paperswithcode.com/paper/a-unified-generative-framework-based-on">[papers-with-code]</a> <a target="_blank" rel="noopener" href="https://dblp.uni-trier.de/search/publ/bibtex0?q=A%20Unified%20Generative%20Framework%20based%20on%20Prompt%20Learning%20for%20Various%20Information%20Extraction%20Tasks">[dblp]</a></li>
+</ul>
+<h2 id="background">Background</h2>
+<p>在信息抽取领域，传统方法大多基于微调范式。它们针对下游任务精心设计网络结构，但是至少有两个因素会导致预训练和微调之间不可忽略的gap。</p>
+<ul>
+<li>采用额外的网络会导致预训练和微调的结构化差异</li>
+<li>预训练任务和下游任务存在显著差异</li>
+</ul>
+<p><img src="/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015231526949.png" alt="image-20221015231526949" style="zoom:33%;"></p>
+<p>prompt范式正是为了修复预训练与微调的不一致，在这种范式下，各种下游任务都转化为类似于预训练的任务。</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://paperswithcode.com/paper/lightner-a-lightweight-generative-framework">LightNER</a>针对NER任务提出了一种生成式框架，其引入了prompt指导的注意力层，在低资源NER任务上取得了很好的成绩，但不能应用到其他IE任务上（例如事件抽取）。</p></li>
+<li><p><a target="_blank" rel="noopener" href="https://paperswithcode.com/paper/event-extraction-as-natural-language">DEGREE</a>为事件抽取提供了一种模版设计的方法，具体来说，它通过恢复特定类型提示中的受损文本来提取事件。然而，DEGREE通过将所有论据角色的代词集合到一个描述事件发生的短句中，构建了事件类型的特定类型提示。这导致了论据子提示和事件类型之间的密切关联。换句话说，这导致了不同事件类型的论据子提示之间存在相当大的差异。此外，DEGREE也不能应用于其他IE任务（例如关系抽取）。</p></li>
+<li><p><a target="_blank" rel="noopener" href="https://paperswithcode.com/paper/ptr-prompt-tuning-with-rules-for-text">PTR</a>是一个通用的基于提示的文本分类框架。它通过结合子提示和可学习的虚拟标记来生成提示，并通过仅有编码器的PLM将[MASK]标记映射到候选答案来判断关系的类型。然而，PTR只能用预先设计的子符号和逻辑规则对特定的文本内容进行分类，但不能从文本中提取具有可变长度的信息，如实体和事件。</p></li>
+</ul>
+<p><img src="/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015230440594.png" alt="image-20221015230440594" style="zoom:33%;"></p>
+<p>为了缓解这些问题，本文为所有的IE任务引入了一个新的统一的基于提示的生成框架（CPGF）。CPGF将各种IE任务转换为完形填空任务，并用T5来预测答案。本文的贡献如下：</p>
+<ul>
+<li>本文提出了一个基于提示学习范式的新型统一生成框架，用于各种信息抽取任务。</li>
+<li>本文介绍了一种为复杂任务（如EE）构建独立子提示的方法。此外，为了提高框架在数据稀缺的情况下提取事件的通用能力，为事件提取设计了一种由多个模块化子提示组成的可组合提示。</li>
+<li>本文提出了一种基于提示的方法，通过判断语义矛盾来实现关系抽取，并为其设计了一个相应的模板。</li>
+<li>一系列关于EE、NER和RE的实验结果表明，该框架在数据丰富和数据稀缺的情况下都很有效。</li>
+</ul>
+<h2 id="method">Method</h2>
+<p>本文提出的框架包含四个部分：</p>
+<ul>
+<li>信息分解表示将复杂的信息分割成多个片段。</li>
+<li>子提示生成产生信息片段的子提示。</li>
+<li>提示构建产生信息类型的特定类型或可组合提示（EE独有）。</li>
+<li>在填槽阶段，采用T5来预测答案。</li>
+</ul>
+<h3 id="notation">Notation</h3>
+<ul>
+<li>原始文本<span class="math inline">\(S\)</span></li>
+<li>目标信息<span class="math inline">\(\mathcal{Y}=\{\mathcal{Y}^1,\cdots,\mathcal{Y}^t\}\)</span>
+<ul>
+<li><span class="math inline">\(\mathcal{Y}^j\)</span>表示类型<span class="math inline">\(j\)</span>的待提取信息，<span class="math inline">\(t\)</span>为类型总数</li>
+<li>对于EE，<span class="math inline">\(\mathcal{Y}^j\)</span>可能包含多个元素，如事件类型和论元角色</li>
+</ul></li>
+<li>提示<span class="math inline">\(Pr=\{Pr^1,\cdots,Pr^t\}\)</span></li>
+</ul>
+<h3 id="sub-prompts-generation">Sub-Prompts Generation</h3>
+<p>依赖于类型的子提示适用于数据丰富的场景，而模块化的子提示是为数据稀缺的场景设计的。下图显示了这两种子提示之间的区别。该图的左边部分显示了依赖类型的子提示和信息类别之间的关系。在这种情况下，子提示是通过用掩码词替换每个信息类型的定义或片段描述中的关键词而独立产生的。</p>
+<p><img src="/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015234536910.png" alt="image-20221015234536910" style="zoom:33%;"></p>
+<p>在使用模块化子提示的情况下，我们在产生子提示之前合并类似的信息片段。CPGF将具有相同语义但分布在不同类型信息中的元素视为同一信息片段。通过分析训练数据集中的信息元素的语义，手工建立了一个涵盖每种信息类型的所有组成的信息片段库。数据集中的每一类信息都由库中的一个或多个信息片段组成。</p>
+<p>我们通过为信息片段库中的每个元素生成一个与类型无关的子提示，组成一个模块化的子提示库<span class="math inline">\(P=\{p_1,p_2,\cdots,p_{\lvert F\rvert}\}\)</span>，其中<span class="math inline">\(\lvert F\rvert\)</span>表示信息片段的总数。详细地说，它在一个描述片段和信息类型之间关系的通用句子中替换了关键词，以获得一个模块化的子提示。我们的框架通过从模块化子提示库中搜索其片段来获得目标信息的子提示。通过这种方式，CPGF可以有效地提取具有从未见过的类型的信息元素，如果这些元素出现在片段库中。</p>
+<h3 id="prompts-construction">Prompts Construction</h3>
+<p>第<span class="math inline">\(j\)</span>种信息类型的提示是通过连接原始文本和子提示来构建的： <span class="math display">\[
+\begin{align}
+\mathcal{S}_{\text{prompt}}^j &amp;= f_{\text{prompt}}(S) \\
+                              &amp;= S \mathop{\Vert} Pr^j
+\end{align}
+\]</span> 其中<span class="math inline">\(\mathop\Vert\)</span>表示拼接两段文本，<span class="math inline">\(Pr^j\)</span>表示组合目标信息中所有相关元素的子提示： <span class="math display">\[
+Pr^j = \mathop{\Vert}_{i=1}^n p_i^j
+\]</span> 对于NER和RE，<span class="math inline">\(n\)</span>始终为1。对于EE，<span class="math inline">\(S^j_{\text{promt}}\)</span>被称为特定类型的prompt，如果用来组成的提示语是依赖于类型的，因为这个提示语的每个部分都与信息类型有关。由模块化子提示组成的提示被命名为 "可组合提示"。</p>
+<h3 id="answer-generation">Answer Generation</h3>
+<p><img src="/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221016000408620.png" alt="image-20221016000408620" style="zoom:33%;"></p>
+<p>在获得样本的一系列提示后，将其送入PLM，通过MLM预测每个提示中MASK词的预测值。 <span class="math display">\[
+z_i^j = \text{MLM}(p_i^j)
+\]</span> 在这个过程中，使用特殊字符 <span class="math inline">\(\vert\)</span> 分隔子提示的多个答案。</p>
+<h2 id="experiment">Experiment</h2>
 
     </div>
 
@@ -308,6 +394,15 @@
     
     
       
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/05/08/HPT-Hierarchy-aware-Prompt-Tuning-for-Hierarchical-Text-Classification/" rel="bookmark">HPT: Hierarchy-aware Prompt Tuning for Hierarchical Text Classification</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/01/18/Label-Mask-for-Multi-Label-Text-Classification/" rel="bookmark">Label Mask for Multi-Label Text Classification</a></div>
+    </li>
+  </ul>
 
 
     <footer class="post-footer">
@@ -342,6 +437,9 @@
 </ul>
 </div>
 
+          <div class="post-tags">
+              <a href="/tags/Prompt/" rel="tag"># Prompt</a>
+          </div>
 
         
 
@@ -383,7 +481,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">154k</span>
+    <span title="站点总字数">156k</span>
   </span>
 </div>
 <div class="busuanzi-count">
