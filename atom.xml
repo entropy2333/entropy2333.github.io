@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://entropy2333.github.io/"/>
-  <updated>2022-10-15T16:08:41.558Z</updated>
+  <updated>2022-10-17T04:29:48.159Z</updated>
   <id>https://entropy2333.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Visual Prompt Tuning for Few-Shot Text Classification</title>
+    <link href="https://entropy2333.github.io/2022/10/17/Visual-Prompt-Tuning-for-Few-Shot-Text-Classification/"/>
+    <id>https://entropy2333.github.io/2022/10/17/Visual-Prompt-Tuning-for-Few-Shot-Text-Classification/</id>
+    <published>2022-10-17T04:29:48.000Z</published>
+    <updated>2022-10-17T04:29:48.159Z</updated>
+    
+    <content type="html"><![CDATA[<p>Abstract</p><a id="more"></a><h2 id="overview">Overview</h2><p>links of paper pdf &amp; code</p><h2 id="background">Background</h2><h2 id="method">Method</h2><h2 id="experiment">Experiment</h2>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Abstract&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>A Unified Generative Framework based on Prompt Learning for Various Information Extraction Tasks</title>
@@ -107,11 +128,11 @@
       <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
     
     
+      <category term="Prompt" scheme="https://entropy2333.github.io/tags/Prompt/"/>
+    
       <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
     
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
-    
-      <category term="Prompt" scheme="https://entropy2333.github.io/tags/Prompt/"/>
     
       <category term="GAT" scheme="https://entropy2333.github.io/tags/GAT/"/>
     
@@ -512,34 +533,6 @@
       <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
     
       <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Label Mask for Multi-Label Text Classification</title>
-    <link href="https://entropy2333.github.io/2022/01/18/Label-Mask-for-Multi-Label-Text-Classification/"/>
-    <id>https://entropy2333.github.io/2022/01/18/Label-Mask-for-Multi-Label-Text-Classification/</id>
-    <published>2022-01-18T04:52:51.000Z</published>
-    <updated>2022-01-23T06:58:39.614Z</updated>
-    
-    <content type="html"><![CDATA[<p>采用Prompt方法做多标签分类，使用MLM提升模型的泛化性。</p><p><img src="/2022/01/18/Label-Mask-for-Multi-Label-Text-Classification/image-20220118125800350.png" alt="image-20220118125800350" style="zoom:50%;"></p><a id="more"></a><h2 id="overview">Overview</h2><p><img src="/2022/01/18/Label-Mask-for-Multi-Label-Text-Classification/image-20220118125611230.png" alt="image-20220118125611230" style="zoom:33%;"></p><ul><li>paper: <a href="https://arxiv.org/pdf/2106.10076.pdf" class="uri">https://arxiv.org/pdf/2106.10076.pdf</a></li><li>code: <a href="https://github.com/DunZhang/LM-MLC" class="uri">https://github.com/DunZhang/LM-MLC</a></li></ul><h2 id="background">Background</h2><p>受完形填空的启发，本文提出了标签掩码多标签文本分类模型（Label Mask Multi-label Text Classification, LM-MTC），以捕获标签间的相关性。</p><p>作者将不同的标签映射为不同的token，并构建了前缀模版的集合。训练时将这些模版与语句拼接送入BERT，预测时就掩码所有的标签token。</p><h2 id="method">Method</h2><p>对于多标签分类任务，为每个标签都构建模版不现实，因此本文为整个标签空间构建了一个模版系统。每个位置的标签有三种状态：0、1或mask，其对应的模版如下： <span class="math display">\[[LS-1][YES-1][LE-1] \\[LS-2][No-2][LE-2] \\[LS-3][MASK-3][LE-3]\]</span> 其中<span class="math inline">\(LS\)</span>代表标签开始，<span class="math inline">\(LE\)</span>代表标签结束。若<span class="math inline">\(N\)</span>表示标签数，那么最终的输入序列长度为<span class="math inline">\(3N+L\)</span>，。</p><p>模型训练主要有两个目标：</p><ol type="1"><li>预测多标签的分布概率</li><li>使用MLM预测掩码</li></ol><p>最终的损失函数是交叉熵与MLM的加权和 <span class="math display">\[\mathcal{L} = \mathcal{L}_{mtc} + \lambda\mathcal{L}_{mlm}\]</span></p><h2 id="experiment">Experiment</h2><p>选用六个数据集进行实验，所选的数据集标签数都不多，可能这也是Prompt方法目前的不足之处。</p><p>采用四个评价指标，其中Micro-Jaccard表示<span class="math inline">\(\frac{\lvert A\cap B\rvert}{\lvert A\cup B\rvert}\)</span>，Hamming Loss表示误分类标签的比例。</p><p>实验设置学习率5e-5，batch_size为16，训练epoch为40，MLM的比例为0.15。</p><p><img src="/2022/01/18/Label-Mask-for-Multi-Label-Text-Classification/image-20220118131109255.png" alt="image-20220118131109255" style="zoom:50%;"></p><p><img src="/2022/01/18/Label-Mask-for-Multi-Label-Text-Classification/image-20220118131153480.png" alt="image-20220118131153480" style="zoom:50%;"></p><p><img src="/2022/01/18/Label-Mask-for-Multi-Label-Text-Classification/image-20220118131609495.png" alt="image-20220118131609495" style="zoom:50%;"></p><p>调参结果</p><p><img src="/2022/01/18/Label-Mask-for-Multi-Label-Text-Classification/image-20220118132843322.png" alt="image-20220118132843322" style="zoom:50%;"></p><p>模型对于模版还是比较敏感的，采用不用的掩码可以更好地提升模型效果</p><p><img src="/2022/01/18/Label-Mask-for-Multi-Label-Text-Classification/image-20220118132909353.png" alt="image-20220118132909353" style="zoom:50%;"></p><h2 id="conclusion">Conclusion</h2><p>文章采用Prompt方法尝试多标签分类，算是一个比较新的方向。但引入模版增大了输入文本的长度，且模版的选取很重要，模型对此很敏感。</p><p>Prompt方法应该在小样本场景下表现更好，期待有这方面的具体实验。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;采用Prompt方法做多标签分类，使用MLM提升模型的泛化性。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/2022/01/18/Label-Mask-for-Multi-Label-Text-Classification/image-20220118125800350.png&quot; alt=&quot;image-20220118125800350&quot; style=&quot;zoom:50%;&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
-    
-    
-      <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
-    
-      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
-    
-      <category term="Prompt" scheme="https://entropy2333.github.io/tags/Prompt/"/>
     
   </entry>
   
