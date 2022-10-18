@@ -2,7 +2,7 @@
 title: about
 date: 2021-12-06 17:06:31
 type: "about"
-comments: false
+comments: true
 ---
 
 - Cyber Security Postgraduate@SJTU
