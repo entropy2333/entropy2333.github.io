@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://entropy2333.github.io/"/>
-  <updated>2022-10-17T04:29:48.159Z</updated>
+  <updated>2023-06-22T13:29:39.848Z</updated>
   <id>https://entropy2333.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Singing Voice Conversion</title>
+    <link href="https://entropy2333.github.io/2023/06/22/Singing-Voice-Conversion/"/>
+    <id>https://entropy2333.github.io/2023/06/22/Singing-Voice-Conversion/</id>
+    <published>2023-06-22T13:24:03.000Z</published>
+    <updated>2023-06-22T13:29:39.848Z</updated>
+    
+    <content type="html"><![CDATA[<p>基于so-vits-svc的唱歌声音转换。</p><a id="more"></a><h1 id="singing-voice-conversion">Singing Voice Conversion</h1><blockquote><p>本文由ChatGPT润色生成</p></blockquote><p>基于so-vits-svc的唱歌声音转换。</p><h2 id="准备工作">准备工作</h2><ul><li>克隆代码并安装依赖</li></ul><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> clone https://github.com/svc-develop-team/so-vits-svc.gitconda create -n aisinger <span class="token assign-left variable">python</span><span class="token operator">=</span><span class="token number">3.8</span><span class="token builtin class-name">cd</span> so-vits-svcpip <span class="token function">install</span> -r requirements.txt</code></pre><ul><li>下载预训练模型 <a href="https://ibm.box.com/s/z1wgl1stco8ffooyatzdwsqn2psd9lrr">checkpoint_best_legacy_500.pt</a>，并将其放置在 <code>pretrain</code> 目录下</li><li>下载自定义模型，包括<ul><li><code>G_xxx.pth</code></li><li><code>config.json</code></li><li><code>kmeans_xxx.pt</code>（可选）</li></ul></li><li>使用 <a href="https://github.com/deezer/spleeter/wiki/2.-Getting-started#using-docker-image">spleeter</a> 来分离人声和伴奏</li></ul><p>选项 1（推荐）：谷歌 Colab</p><pre class="language-bash" data-language="bash"><code class="language-bash">spleeter separate -o output/ xxx.mp3</code></pre><p>选项 2（不适用于 M1 Mac）：我们也可以在本地使用 docker</p><pre class="language-bash" data-language="bash"><code class="language-bash">docker run -v <span class="token variable"><span class="token variable">$(</span><span class="token builtin class-name">pwd</span><span class="token variable">)</span></span>/output:/output deezer/spleeter:3.8 separate -o /output xxx.mp3</code></pre><p>它将生成两个文件：<code>vocals.wav</code> 和 <code>accompaniment.wav</code>，<code>vocals.wav</code> 是用于转换的。</p><h2 id="入门">入门</h2><p>我们可以打开 webui 来转换 wav</p><pre class="language-bash" data-language="bash"><code class="language-bash">python -u webUI.py</code></pre><p>或者直接使用 cli 进行转换</p><pre class="language-bash" data-language="bash"><code class="language-bash">python inference_main.py <span class="token punctuation">\</span>    -m <span class="token string">"logs/44k/G_27200.pth"</span> <span class="token punctuation">\</span>    -c <span class="token string">"configs/config.json"</span> <span class="token punctuation">\</span>    -n <span class="token string">"/path/to/vocals.wav"</span> <span class="token punctuation">\</span>    -t <span class="token number">0</span> <span class="token punctuation">\</span>    -s <span class="token string">"sun"</span> <span class="token punctuation">\</span>    -cm <span class="token string">"logs/44k/kmeans_10000.pt"</span></code></pre><p>生成的 wav 存放在 <code>results</code> 目录下，然后我们使用 ffmpeg 合并两个 wav</p><pre class="language-bash" data-language="bash"><code class="language-bash">ffmpeg -i <span class="token punctuation">..</span>/<span class="token punctuation">..</span>/results/sun_1687426444.wav -i accompaniment.wav -filter_complex <span class="token assign-left variable">amix</span><span class="token operator">=</span>inputs<span class="token operator">=</span><span class="token number">2</span>:duration<span class="token operator">=</span>longest output_1687426444.wav</code></pre><p>使用 ffmpeg 将 wav 转换为 mp3</p><pre class="language-bash" data-language="bash"><code class="language-bash">ffmpeg -i output_1687426444.wav -vn -ar <span class="token number">44100</span> -ac <span class="token number">2</span> -b:a 192k output_1687426444.mp3</code></pre><p>我们还可以将两个步骤合并为一个步骤</p><pre class="language-bash" data-language="bash"><code class="language-bash">ffmpeg -i <span class="token punctuation">..</span>/<span class="token punctuation">..</span>/results/sun_1687426444.wav -i accompaniment.wav -filter_complex <span class="token assign-left variable">amix</span><span class="token operator">=</span>inputs<span class="token operator">=</span><span class="token number">2</span>:duration<span class="token operator">=</span>longest -vn -ar <span class="token number">44100</span> -ac <span class="token number">2</span> -b:a 192k output_1687426444.mp3</code></pre><h2 id="问题">问题</h2><p><code>RuntimeError: Given groups=1, weight of size [xxx, 256, xxx], expected input[xxx, 768, xxx] to have 256 channels, but got 768 channels instead</code></p><ul><li>这是由于编码器配置和模型权重之间的不匹配。我们可以修改 <code>config.json</code> 中的 <code>speech_encoder</code>。 <pre class="language-diff" data-language="diff"><code class="language-diff">&#123;<span class="token unchanged">    "model"</span><span class="token inserted-sign inserted">+ "speech_encoder": "vec256l9"</span>&#125;</code></pre></li></ul><h2 id="参考资料">参考资料</h2><ul><li>https://zhuanlan.zhihu.com/p/630115251</li><li>https://www.bilibili.com/read/cv22206231/</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;基于so-vits-svc的唱歌声音转换。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="备忘" scheme="https://entropy2333.github.io/categories/%E5%A4%87%E5%BF%98/"/>
+    
+    
+      <category term="AIGC" scheme="https://entropy2333.github.io/tags/AIGC/"/>
+    
+  </entry>
   
   <entry>
     <title>Visual Prompt Tuning for Few-Shot Text Classification</title>
@@ -42,7 +65,7 @@
     <link href="https://entropy2333.github.io/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/"/>
     <id>https://entropy2333.github.io/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/</id>
     <published>2022-10-15T07:32:08.000Z</published>
-    <updated>2022-10-15T16:08:41.558Z</updated>
+    <updated>2022-11-01T02:58:14.906Z</updated>
     
     <content type="html"><![CDATA[<p>来自复旦邱组，提出了一种基于prompt的生成式框架，可以用于各种信息抽取任务。</p><p><img src="/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015230422371.png" alt="image-20221015230422371" style="zoom:33%;"></p><a id="more"></a><h2 id="overview">Overview</h2><p><img src="/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015225408244.png" alt="image-20221015225408244" style="zoom:33%;"></p><ul><li><a href="https://arxiv.org/pdf/2209.11570v1.pdf">[paper]</a> <a href="https://paperswithcode.com/paper/a-unified-generative-framework-based-on">[papers-with-code]</a> <a href="https://dblp.uni-trier.de/search/publ/bibtex0?q=A%20Unified%20Generative%20Framework%20based%20on%20Prompt%20Learning%20for%20Various%20Information%20Extraction%20Tasks">[dblp]</a></li></ul><h2 id="background">Background</h2><p>在信息抽取领域，传统方法大多基于微调范式。它们针对下游任务精心设计网络结构，但是至少有两个因素会导致预训练和微调之间不可忽略的gap。</p><ul><li>采用额外的网络会导致预训练和微调的结构化差异</li><li>预训练任务和下游任务存在显著差异</li></ul><p><img src="/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015231526949.png" alt="image-20221015231526949" style="zoom:33%;"></p><p>prompt范式正是为了修复预训练与微调的不一致，在这种范式下，各种下游任务都转化为类似于预训练的任务。</p><ul><li><p><a href="https://paperswithcode.com/paper/lightner-a-lightweight-generative-framework">LightNER</a>针对NER任务提出了一种生成式框架，其引入了prompt指导的注意力层，在低资源NER任务上取得了很好的成绩，但不能应用到其他IE任务上（例如事件抽取）。</p></li><li><p><a href="https://paperswithcode.com/paper/event-extraction-as-natural-language">DEGREE</a>为事件抽取提供了一种模版设计的方法，具体来说，它通过恢复特定类型提示中的受损文本来提取事件。然而，DEGREE通过将所有论据角色的代词集合到一个描述事件发生的短句中，构建了事件类型的特定类型提示。这导致了论据子提示和事件类型之间的密切关联。换句话说，这导致了不同事件类型的论据子提示之间存在相当大的差异。此外，DEGREE也不能应用于其他IE任务（例如关系抽取）。</p></li><li><p><a href="https://paperswithcode.com/paper/ptr-prompt-tuning-with-rules-for-text">PTR</a>是一个通用的基于提示的文本分类框架。它通过结合子提示和可学习的虚拟标记来生成提示，并通过仅有编码器的PLM将[MASK]标记映射到候选答案来判断关系的类型。然而，PTR只能用预先设计的子符号和逻辑规则对特定的文本内容进行分类，但不能从文本中提取具有可变长度的信息，如实体和事件。</p></li></ul><p><img src="/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015230440594.png" alt="image-20221015230440594" style="zoom:33%;"></p><p>为了缓解这些问题，本文为所有的IE任务引入了一个新的统一的基于提示的生成框架（CPGF）。CPGF将各种IE任务转换为完形填空任务，并用T5来预测答案。本文的贡献如下：</p><ul><li>本文提出了一个基于提示学习范式的新型统一生成框架，用于各种信息抽取任务。</li><li>本文介绍了一种为复杂任务（如EE）构建独立子提示的方法。此外，为了提高框架在数据稀缺的情况下提取事件的通用能力，为事件提取设计了一种由多个模块化子提示组成的可组合提示。</li><li>本文提出了一种基于提示的方法，通过判断语义矛盾来实现关系抽取，并为其设计了一个相应的模板。</li><li>一系列关于EE、NER和RE的实验结果表明，该框架在数据丰富和数据稀缺的情况下都很有效。</li></ul><h2 id="method">Method</h2><p>本文提出的框架包含四个部分：</p><ul><li>信息分解表示将复杂的信息分割成多个片段。</li><li>子提示生成产生信息片段的子提示。</li><li>提示构建产生信息类型的特定类型或可组合提示（EE独有）。</li><li>在填槽阶段，采用T5来预测答案。</li></ul><h3 id="notation">Notation</h3><ul><li>原始文本<span class="math inline">\(S\)</span></li><li>目标信息<span class="math inline">\(\mathcal{Y}=\{\mathcal{Y}^1,\cdots,\mathcal{Y}^t\}\)</span><ul><li><span class="math inline">\(\mathcal{Y}^j\)</span>表示类型<span class="math inline">\(j\)</span>的待提取信息，<span class="math inline">\(t\)</span>为类型总数</li><li>对于EE，<span class="math inline">\(\mathcal{Y}^j\)</span>可能包含多个元素，如事件类型和论元角色</li></ul></li><li>提示<span class="math inline">\(Pr=\{Pr^1,\cdots,Pr^t\}\)</span></li></ul><h3 id="sub-prompts-generation">Sub-Prompts Generation</h3><p>依赖于类型的子提示适用于数据丰富的场景，而模块化的子提示是为数据稀缺的场景设计的。下图显示了这两种子提示之间的区别。该图的左边部分显示了依赖类型的子提示和信息类别之间的关系。在这种情况下，子提示是通过用掩码词替换每个信息类型的定义或片段描述中的关键词而独立产生的。</p><p><img src="/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221015234536910.png" alt="image-20221015234536910" style="zoom:33%;"></p><p>在使用模块化子提示的情况下，我们在产生子提示之前合并类似的信息片段。CPGF将具有相同语义但分布在不同类型信息中的元素视为同一信息片段。通过分析训练数据集中的信息元素的语义，手工建立了一个涵盖每种信息类型的所有组成的信息片段库。数据集中的每一类信息都由库中的一个或多个信息片段组成。</p><p>我们通过为信息片段库中的每个元素生成一个与类型无关的子提示，组成一个模块化的子提示库<span class="math inline">\(P=\{p_1,p_2,\cdots,p_{\lvert F\rvert}\}\)</span>，其中<span class="math inline">\(\lvert F\rvert\)</span>表示信息片段的总数。详细地说，它在一个描述片段和信息类型之间关系的通用句子中替换了关键词，以获得一个模块化的子提示。我们的框架通过从模块化子提示库中搜索其片段来获得目标信息的子提示。通过这种方式，CPGF可以有效地提取具有从未见过的类型的信息元素，如果这些元素出现在片段库中。</p><h3 id="prompts-construction">Prompts Construction</h3><p>第<span class="math inline">\(j\)</span>种信息类型的提示是通过连接原始文本和子提示来构建的： <span class="math display">\[\begin{align}\mathcal{S}_{\text{prompt}}^j &amp;= f_{\text{prompt}}(S) \\                              &amp;= S \mathop{\Vert} Pr^j\end{align}\]</span> 其中<span class="math inline">\(\mathop\Vert\)</span>表示拼接两段文本，<span class="math inline">\(Pr^j\)</span>表示组合目标信息中所有相关元素的子提示： <span class="math display">\[Pr^j = \mathop{\Vert}_{i=1}^n p_i^j\]</span> 对于NER和RE，<span class="math inline">\(n\)</span>始终为1。对于EE，<span class="math inline">\(S^j_{\text{promt}}\)</span>被称为特定类型的prompt，如果用来组成的提示语是依赖于类型的，因为这个提示语的每个部分都与信息类型有关。由模块化子提示组成的提示被命名为 "可组合提示"。</p><h3 id="answer-generation">Answer Generation</h3><p><img src="/2022/10/15/A-Unified-Generative-Framework-based-on-Prompt-Learning-for-Various-Information-Extraction-Tasks/image-20221016000408620.png" alt="image-20221016000408620" style="zoom:33%;"></p><p>在获得样本的一系列提示后，将其送入PLM，通过MLM预测每个提示中MASK词的预测值。 <span class="math display">\[z_i^j = \text{MLM}(p_i^j)\]</span> 在这个过程中，使用特殊字符 <span class="math inline">\(\vert\)</span> 分隔子提示的多个答案。</p><h2 id="experiment">Experiment</h2>]]></content>
     
@@ -337,9 +360,9 @@
       <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
     
     
-      <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
-    
       <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
+      <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
     
       <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
     
@@ -502,37 +525,9 @@
     
       <category term="NLP" scheme="https://entropy2333.github.io/tags/NLP/"/>
     
+      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
+    
       <category term="Loss" scheme="https://entropy2333.github.io/tags/Loss/"/>
-    
-      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Transformer-based Dual Relation Graph for Multi-label Image Recognition</title>
-    <link href="https://entropy2333.github.io/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/"/>
-    <id>https://entropy2333.github.io/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/</id>
-    <published>2022-01-19T06:19:39.000Z</published>
-    <updated>2022-01-23T06:58:39.673Z</updated>
-    
-    <content type="html"><![CDATA[<p>ICCV 2021，提出了一种新的基于Transformer的双关系图学习框架，从结构关系和语义关系两个角度探索相关性。</p><p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119142439887.png" alt="image-20220119142439887" style="zoom:50%;"></p><a id="more"></a><h2 id="overview">Overview</h2><p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119142410588.png" alt="image-20220119142410588" style="zoom:33%;"></p><ul><li>paper: <a href="https://openaccess.thecvf.com//content/ICCV2021/papers/Zhao_Transformer-Based_Dual_Relation_Graph_for_Multi-Label_Image_Recognition_ICCV_2021_paper.pdf" class="uri">https://openaccess.thecvf.com//content/ICCV2021/papers/Zhao_Transformer-Based_Dual_Relation_Graph_for_Multi-Label_Image_Recognition_ICCV_2021_paper.pdf</a></li><li>code:</li></ul><h2 id="background">Background</h2><p>标签相关性对于多标签识别至关重要，现有工作主要关注于标签的co-occurrence，采用RNN或GCN等方式。但对于低频标签表现不佳，为此有人提出基于高阶语义的图像特征构建动态图的方式，但是也存在不足之处：</p><ol type="1"><li>在标签关系中没有显式建模物体的空间交互</li><li>高阶语义特征不稳定，不能反映具体的类别</li><li>没有考虑到大范围的场景信息和多样的目标尺寸</li></ol><p>本文联合建模了图像中多标签的结构和语义关系，如下图所示</p><p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119143646729.png" alt="image-20220119143646729" style="zoom:50%;"></p><p>滑板（skateboard）和滑雪板（snowboard）的外观很相似，但是根据图中的雪景很容易认出这是一个滑雪板。</p><h2 id="method">Method</h2><p>本文提出了一个协同学习框架，包含结构关系和语义关系。</p><p>结构关系图旨在捕获场景信息，构建不同尺寸之间的空间关系；语义关系图是为了构建动态的co-occurrent依赖。</p><p>给定输入图像<span class="math inline">\(\mathcal{I}\)</span>，<span class="math inline">\(\Phi_S(\mathcal{I})=\{\mathbf{X}_1,\cdots,\mathbf{X}_s\}\)</span>为backbone提取的多尺度特征。使用Transformer捕获场景信息，并结合跨尺度注意力构建position-wise的关系。 <span class="math display">\[\mathbf{T} =  \mathop{\mathrm{concat}}\limits_{i=1}^{s} (\mathcal{G}^{trans}_i(\Psi_i(\mathbf{X}_i;\{\mathbf{X}\}_{k=1}^{s}))) \in \mathbb{R}^{N_T \times C_T}\]</span> 其中<span class="math inline">\(N_T\)</span>和<span class="math inline">\(C_T\)</span>表示结构关系节点<span class="math inline">\(\mathbf{T}\)</span>的数目和维度。</p><p>为了构建语义关系图，使用显式的语义感知限制和结构指导建模class-wise dependencies <span class="math display">\[\mathbf{G} = \mathcal{G}^{sem}((\mathcal{C}(\mathbf{\mathbf{X}}), \mathbf{T});\mathcal{A}(\mathbf{T},\mathcal{C}(\mathbf{\mathbf{X}}))) \in \mathbb{R}^{N_{cls}\times (C_G+C_T)},\]</span> 其中<span class="math inline">\(\mathcal{G}^{sem}\)</span>表示语义图神经网络，<span class="math inline">\(\mathcal{C}(·)\)</span>表示语义感知限制，<span class="math inline">\(\mathcal{A}(·)\)</span>表示<span class="math inline">\(\mathcal{G}^{sem}\)</span>的联合关系相关性矩阵，<span class="math inline">\(N_{cls}\)</span>和<span class="math inline">\(C_G\)</span>表示语义向量的类别数和维度。</p><p>给定两个关系图，使用协同学习的方式得到最终的预测结果。 <span class="math display">\[\mathbf{F} = \psi_t(\mathrm{GMP}(\mathbf{T}))\biguplus \psi_g(\mathbf{G}) \in \mathbb{R}^{N_{cls}},\]</span> 其中<span class="math inline">\(\mathrm{GMP}(·)\)</span>表示global max-pooling，<span class="math inline">\(\psi_{\{t,g\}}\)</span>表示类别分类器，<span class="math inline">\(\biguplus\)</span>表示加权和。</p><h3 id="structural-relation-graph">Structural Relation Graph</h3><p>图像中使用Transformer主要有两种方式：</p><ol type="1"><li>将Transformer嵌入CNN的backbone</li><li>将Transformer用于图像patch的序列特征</li></ol><p>作者认为后者计算代价大，数据有限的情况下网络难以优化，因此采用了第一种方式。</p><p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119234116531.png" alt="image-20220119234116531" style="zoom:50%;"></p><p>本文采用了channel-wise的相对位置编码<span class="math inline">\(\mathcal{E}(·)\)</span> <span class="math display">\[\mathbf{X}_e = \mathcal{R}(\phi(\mathbf{X})) + \mathcal{E}(\mathcal{R}(\phi(\mathbf{X}))) \in \mathbb{R}^{HW\times C_T}\]</span> 其中<span class="math inline">\(\mathcal{R}(·)\)</span>表示reshape操作，随后作者计算位置相关矩阵<span class="math inline">\(\mathbf{A}^p\)</span>（注意力权重）。 <span class="math display">\[\begin{align}\mathbf{A}^p &amp;= \mathrm{softmax}\left(\frac{\mathbf{X}_e\mathbf{W}_Q(\mathbf{X}_e\mathbf{W}_K)^\top}{\sqrt{C_T}}\right) \\\mathbf{H} &amp;= \mathbf{A}^p\mathbf{X}_e\mathbf{W}_V\end{align}\]</span> 为了抑制不同尺寸带来的噪声，加强小目标的结构信息，作者提出了一种cross-attention融合策略。 <span class="math display">\[\mathbf{T}_i = \mathcal{G}_i^{trans}(\mathcal{D}(\prod_i^s\mathcal{U}(\mathbf{X}_i)) + \mathbf{X}_i)\]</span> 其中<span class="math inline">\(\mathcal{U}(\cdot)\)</span>和<span class="math inline">\(\mathcal{D}(\cdot)\)</span>分别表示上采样和下采样。</p><p>Transformer的多头注意力机制可以捕获丰富的结构关系信息，跨尺度的注意力进一步增强了表示能力。</p><h3 id="semantic-relation-graph">Semantic Relation Graph</h3><p>作者认为图网络等方法没有考虑到每个样本的特点，因此在传统label graph的基础上，引入了语义相关的高阶特征。</p><p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119150006867.png" alt="image-20220119150006867" style="zoom:50%;"></p><p>最终损失函数 <span class="math display">\[\mathcal{L} = \mathcal{L}_{fuse} + \mathcal{L}_{regular}+ \mathcal{L}_{position}+ \mathcal{L}_{class}.\]</span></p><h2 id="experiment">Experiment</h2><p>选用MS-COCO和VOC 2007数据集</p><p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119150310549.png" alt="image-20220119150310549" style="zoom:50%;"></p><p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119150332617.png" alt="image-20220119150332617" style="zoom:50%;"></p><p><img src="/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119150357566.png" alt="image-20220119150357566" style="zoom:50%;"></p><h2 id="conclusion">Conclusion</h2><p>模型结构比较复杂，而且没有release代码，但motivation还是很有说服力。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;ICCV 2021，提出了一种新的基于Transformer的双关系图学习框架，从结构关系和语义关系两个角度探索相关性。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/2022/01/19/Transformer-based-Dual-Relation-Graph-for-Multi-label-Image-Recognition/image-20220119142439887.png&quot; alt=&quot;image-20220119142439887&quot; style=&quot;zoom:50%;&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Paper" scheme="https://entropy2333.github.io/categories/Paper/"/>
-    
-    
-      <category term="Multi-Label" scheme="https://entropy2333.github.io/tags/Multi-Label/"/>
-    
-      <category term="CV" scheme="https://entropy2333.github.io/tags/CV/"/>
-    
-      <category term="Transformer" scheme="https://entropy2333.github.io/tags/Transformer/"/>
     
   </entry>
   
